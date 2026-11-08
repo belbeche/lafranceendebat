@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}À propos{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>À propos</h1><p class="lede">{{ site_signature }} Parlons-nous avant de nous opposer.</p></div></header>
+<section class="section"><div class="container measure">
+    <p>La France en Débat est un réseau citoyen pluraliste, non partisan et indépendant. Il aide à comprendre un sujet, à débattre avec méthode, à proposer des solutions sourcées, à rencontrer les candidats et les élus, et à suivre ce qu'ils font de leurs engagements.</p>
+    <div class="mt-3">{% include '_free_promise.html.twig' %}</div>
+    <h2 class="h5 mt-4">Ce que nous faisons</h2>
+    <ul><li>Des <a href="{{ path('app_debats') }}">débats</a> suivant une <a href="{{ path('app_method') }}">méthode commune</a>.</li>
+        <li>Un registre de <a href="{{ path('app_propositions') }}">propositions</a> à fiche normalisée.</li>
+        <li>Un suivi des <a href="{{ path('app_revendications') }}">revendications à ne pas oublier</a> et des <a href="{{ path('app_suivi') }}">réponses des institutions</a>.</li></ul>
+    <h2 class="h5 mt-4">Ce que nous ne faisons pas</h2>
+    <ul><li>Nous ne disons pas pour qui voter, ne notons pas les candidats et ne publions aucun sondage présenté comme un résultat électoral.</li>
+        <li>Nous n'inventons aucun chiffre : ce qui n'est pas vérifié est marqué comme tel.</li>
+        <li>Nous ne laissons aucun automatisme décider seul d'une sanction.</li></ul>
+</div></section>
+<section class="section"><div class="container measure"><div class="commons-note"><h2 class="serif h4">{{ 'commons.title'|trans }}</h2><p class="mb-0">{{ 'commons.text'|trans }}</p></div></div></section>
+{% endblock %}

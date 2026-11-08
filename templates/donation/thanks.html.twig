@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Merci pour votre soutien{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Merci pour votre soutien</h1></div></header>
+<section class="section"><div class="container measure">
+{% if donation.status == 'payee' and donation.receipt %}
+    <p>Votre contribution de {{ (donation.amountCents / 100)|number_format(2, ',', ' ') }} euros est bien reçu. Votre justificatif n° {{ donation.receipt.number }} a été envoyé à {{ donation.donorEmail }}.</p>
+    <p><a class="btn btn-bleu" href="{{ path('app_donate_receipt', {token: donation.token}) }}">Télécharger mon justificatif (PDF)</a></p>
+    <p class="meta">Ce justificatif atteste du paiement. Il ne donne pas droit à une réduction d'impôt.</p>
+{% else %}
+    <p>Votre paiement est en cours de confirmation. Rechargez cette page dans une minute : votre justificatif s'affichera ici et vous sera envoyé par e-mail.</p>
+{% endif %}
+</div></section>
+{% endblock %}

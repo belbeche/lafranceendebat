@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'guide.page_title'|trans }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>{{ 'guide.page_title'|trans }}</h1><p class="lede mb-0">{{ 'guide.page_lede'|trans }}</p></div></header>
+<section class="section">{% include '_howto.html.twig' with {all: true} only %}</section>
+{% endblock %}

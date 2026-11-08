@@ -1,0 +1,126 @@
+nav.debates: Debates
+nav.propositions: Propostas
+nav.forgotten: Não esquecer
+nav.more: Mais
+nav.candidates: Candidatos
+nav.agenda: Agenda
+nav.charter: Carta da paz
+nav.about: Sobre
+nav.install: Instalar
+nav.submit: Enviar uma proposta
+nav.account: Minha conta
+nav.profile: Meu perfil
+nav.my_propositions: Minhas propostas
+nav.logout: Sair
+nav.login: Entrar
+nav.register: Criar minha conta (grátis)
+nav.language: Idioma
+nav.skip: Ir para o conteúdo
+tab.home: Início
+tab.account: Conta
+tab.login: Entrar
+tab.submit: Enviar uma proposta
+banner.text: Aqui separamos fatos de opiniões. Sem ódio, sem violência.
+banner.link: Ler a carta da paz
+free.badge: Grátis para sempre
+free.text: Grátis para todos, para sempre. Sem assinatura, sem publicidade, sem venda de dados.
+lang.title: Escolha seu idioma
+lang.subtitle: Você pode mudar a qualquer momento no menu.
+lang.continue: Continuar em %language%
+lang.other_note: 'Este idioma ainda não tem interface completa: o menu aparece em inglês. Use a tradução automática do navegador para o resto do site.'
+hero.title: Conversemos antes de nos opor.
+hero.cta_propose: Enviar uma proposta
+hero.cta_debate: Entrar num debate
+hero.cta_paths: O que você quer fazer?
+path.nav: Percursos guiados
+
+guide.label: 'Passo a passo'
+guide.steps: 'etapas'
+guide.page_title: 'Passo a passo'
+guide.page_lede: 'Cada função do site explicada em poucas etapas. Nenhum conhecimento técnico necessário.'
+guide.home.t: 'Primeiros passos'
+guide.home.cta: 'Criar a minha conta'
+guide.home.s1: 'Crie uma conta gratuita (um minuto, basta um e-mail).'
+guide.home.s2: 'Escolha por onde começar: debater, propor, dar a sua opinião ou agir junto das instituições.'
+guide.home.s3: 'Volte a «O meu espaço»: verá o ponto da situação das suas ideias e o que falta fazer.'
+guide.communaute.t: 'Participar na conversa'
+guide.communaute.cta: 'Abrir um tópico'
+guide.communaute.s1: 'Leia as regras à direita, cabem em quatro linhas.'
+guide.communaute.s2: 'Clique em «Abrir um tópico» e escreva com calma, com um título preciso.'
+guide.communaute.s3: 'Responda aos outros reformulando primeiro a ideia deles: é valorizado na classificação.'
+guide.communaute.s4: 'Uma mensagem problemática? Use «Denunciar», a equipa responde com um motivo.'
+guide.debats.t: 'Participar num debate'
+guide.debats.cta: 'Ver os debates'
+guide.debats.s1: 'Abra um debate e leia primeiro os factos fundamentados.'
+guide.debats.s2: 'Acrescente um argumento a favor, contra ou matizado, com fonte se possível.'
+guide.debats.s3: 'Apoie os argumentos mais sólidos, mesmo que contrariem a sua opinião.'
+guide.propositions.t: 'Apresentar e fazer avançar uma proposta'
+guide.propositions.cta: 'Apresentar uma proposta'
+guide.propositions.s1: 'Clique em «Apresentar uma proposta»: problema, medida, custo estimado, quem pode agir.'
+guide.propositions.s2: 'É revista e publicada no registo (em geral em 48 h).'
+guide.propositions.s3: 'Partilhe-a: cada apoio sobe-a na classificação.'
+guide.propositions.s4: 'Acompanhe-a em «O meu espaço» até ser transmitida aos eleitos.'
+guide.scrutins.t: 'Dar a sua opinião'
+guide.scrutins.cta: 'Ver as consultas'
+guide.scrutins.s1: 'Escolha uma consulta aberta.'
+guide.scrutins.s2: 'Leia as opções e os argumentos.'
+guide.scrutins.s3: 'Vote: uma voz por pessoa, resultado consultivo e público.'
+guide.services.t: 'Encontrar ou propor um serviço'
+guide.services.cta: 'Ver os serviços'
+guide.services.s1: 'Explore os serviços (mediação, formação, acompanhamento) e abra o adequado.'
+guide.services.s2: 'Encomende: o pagamento é seguro e fica retido.'
+guide.services.s3: 'Fale com o prestador pela mensagem da encomenda (sem dar contactos).'
+guide.services.s4: 'Confirme quando o serviço estiver feito: o prestador é então pago. Algum problema? Peça um reembolso.'
+guide.candidater.t: 'Obter um papel'
+guide.candidater.cta: 'Candidatar-se'
+guide.candidater.s1: 'Escolha o direito: mediador, ator, eleito ou associação.'
+guide.candidater.s2: 'Explique em poucas linhas o que irá trazer.'
+guide.candidater.s3: 'A equipa responde. Não é exigida antiguidade da conta.'
+guide.candidater.s4: 'O seu espaço dedicado aparece em «O meu espaço».'
+guide.acteurs.t: 'Agir junto das instituições'
+guide.acteurs.cta: 'Vias institucionais'
+guide.acteurs.s1: 'Encontre o eleito, a instituição ou o mediador em causa.'
+guide.acteurs.s2: 'Use a via legal adequada (petição, recurso, carta).'
+guide.acteurs.s3: 'Publique depois o acompanhamento na plataforma para que todos vejam a resposta.'
+guide.plan.t: 'Aplicar o plano perto de si'
+guide.plan.cta: 'Apresentar um resultado'
+guide.plan.s1: 'Encontre na página a ação adequada à sua situação (cidadão, associação, eleito, empresa).'
+guide.plan.s2: 'Faça a primeira ação da lista «esta semana».'
+guide.plan.s3: 'Apresente o resultado como proposta para ser comparado e replicado noutros locais.'
+home.live.title: 'Agora na comunidade'
+home.live.join: 'Entrar na Ágora'
+home.live.members: 'cidadãos inscritos'
+home.live.props: 'propostas publicadas'
+home.live.threads: 'tópicos de discussão'
+home.live.ballots: 'consultas abertas'
+home.live.empty: 'A Ágora espera o primeiro tópico. Abra-o: um desacordo, uma ideia, uma raiva a transformar.'
+home.how.title: 'Como funciona, em três passos'
+home.how.1t: '1. Inscrevo-me'
+home.how.1d: 'Grátis para sempre, basta um e-mail.'
+home.how.2t: '2. Participo'
+home.how.2d: 'Debate, proposta, consulta, petição ou mensagem a um eleito.'
+home.how.2l: 'Escolher como'
+home.how.3t: '3. Acompanho o resultado'
+home.how.3d: '«O meu espaço» mostra o ponto de cada ideia.'
+home.how.3l: 'Ver todos os passo a passo'
+door.how: 'Como:'
+door.debate: 'Leia os factos e acrescente um argumento.'
+door.propose: 'Preencha 4 campos, revisão em 48 h.'
+door.opinion: 'Escolha uma consulta, vote uma vez.'
+door.petition: 'Abra, leia, clique em apoiar.'
+door.institutions: 'Escolha a via legal e acompanhe a resposta.'
+door.candidates: 'Abra duas fichas lado a lado.'
+eco.title: 'Relançar a economia francesa: o Plano Marshall cidadão'
+eco.lede: 'Recuperar sem destruir: medir cada despesa, mutualizar o que for possível e reinvestir as poupanças comprovadas em emprego, produção e serviços essenciais.'
+eco.l1t: 'Medir'
+eco.l1d: 'Um diagnóstico de custos em 3 a 5 estruturas voluntárias.'
+eco.l2t: 'Mutualizar'
+eco.l2d: 'Compras conjuntas e funções de apoio partilhadas, sem monopólio.'
+eco.l3t: 'Reinvestir'
+eco.l3d: 'Cada poupança comprovada volta ao emprego e às missões úteis.'
+eco.cta: 'Ler o plano'
+eco.cta2: 'Agir esta semana'
+nav.guide: 'Passo a passo'
+contacts.title: 'Contactos úteis'
+contacts.lede: 'Quem contactar e para quê. Ligações e números oficiais, a verificar no site de cada organismo antes de ligar.'
+nav.contacts: 'Contactos úteis'

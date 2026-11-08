@@ -1,0 +1,18 @@
+<article class="argument {{ argument.stance }}" id="argument-{{ argument.id }}">
+    <p class="mb-2"><span class="etiquette {{ argument.stance == 'pour' ? 'vert' : (argument.stance == 'contre' ? 'rouge' : 'ambre') }}">{{ argument.stanceLabel }}</span>
+        <span class="meta">{{ argument.authorDisplayName }} · {{ argument.createdAt|date('d/m/Y H:i') }}</span>
+        {% if argument.updatedAt %}<span class="meta" title="Modifié {{ argument.editCount }} fois">· modifié le {{ argument.updatedAt|date('d/m/Y H:i') }}{{ argument.editCount > 1 ? ' (' ~ argument.editCount ~ ' fois)' : '' }} · <a href="{{ path('app_history', {type: 'argument', id: argument.id}) }}">historique</a></span>{% endif %}</p>
+    {% if argument.reformulation %}
+        <div class="reformulation"><strong>Ce que {{ argument.authorDisplayName }} a compris de la position à laquelle il répond :</strong><br>{{ argument.reformulation|nl2br }}</div>
+    {% endif %}
+    <p class="mb-2">{{ argument.content|nl2br }}</p>
+    {% if argument.sourceUrl %}<p class="meta mb-2">Source : <a href="{{ argument.sourceUrl }}" rel="noopener nofollow ugc" target="_blank">{{ argument.sourceUrl|u.truncate(70, '…') }}</a></p>{% endif %}
+    {% include '_reliability.html.twig' with {text: argument.content, sources: argument.sourceUrl ?? ''} only %}
+    <p class="meta mb-0 no-print">
+        {% if debat.open and not argument.parent and is_granted('ROLE_USER') %}<a href="{{ path('app_debat_show', {slug: debat.slug, repondre: argument.id}) }}#contribuer">Répondre</a> · {% endif %}
+        {% set isMine = app.user and argument.author and argument.author.id == app.user.id %}
+        {% if (isMine and debat.open) or is_granted('ROLE_MODERATOR') %}<a href="{{ path('app_debat_argument_edit', {slug: debat.slug, id: argument.id}) }}">Modifier</a> · {% endif %}
+        {% if isMine %}<details class="d-inline"><summary class="d-inline" style="cursor:pointer;color:var(--bs-link-color,#002395)">Retirer</summary><form method="post" action="{{ path('app_debat_argument_withdraw', {slug: debat.slug, id: argument.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('arg_withdraw' ~ argument.id) }}"> <button class="btn btn-sm btn-outline-danger" type="submit">Confirmer le retrait</button></form></details> · {% endif %}
+        {% if is_granted('ROLE_USER') %}<a href="{{ path('app_signalement_new', {type: 'argument', id: argument.id}) }}">Signaler</a>{% endif %}
+    </p>
+</article>

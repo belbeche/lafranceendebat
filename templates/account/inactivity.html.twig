@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Votre compte inactif{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Votre compte inactif</h1></div></header>
+<section class="section"><div class="container measure">
+{% if state == 'ask' %}
+    <p>Bonjour {{ user.firstName }}. Votre compte n'a pas été utilisé depuis longtemps. Que souhaitez-vous faire ?</p>
+    <form method="post" class="d-flex flex-wrap gap-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('inactivity' ~ user.id) }}">
+        <button class="btn btn-primary" name="choice" value="keep">Garder mon compte</button>
+        <button class="btn btn-outline-danger" name="choice" value="delete">Supprimer mon compte et mes données</button>
+    </form>
+    <p class="meta mt-3">Suppression : votre e-mail, mot de passe et soutiens sont effacés ; vos contributions publiées restent affichées sans votre nom. Cette action est définitive. <a href="{{ path('app_privacy_policy') }}#inactivite">En savoir plus</a></p>
+{% elseif state == 'kept' %}
+    <div class="alert alert-success">Merci, votre compte est conservé. Le délai repart de zéro.</div>
+{% elseif state == 'deleted' %}
+    <div class="alert alert-success">Votre compte et vos données personnelles ont été supprimés.</div>
+{% elseif state == 'none' %}
+    <div class="alert alert-info">Aucun avis d'inactivité n'est en cours pour ce compte.</div>
+{% else %}
+    <div class="alert alert-danger">Ce lien est invalide. Si vous voulez supprimer votre compte, connectez-vous et utilisez « Supprimer mon compte » dans votre profil.</div>
+{% endif %}
+</div></section>
+{% endblock %}

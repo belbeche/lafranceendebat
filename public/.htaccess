@@ -1,0 +1,18 @@
+# Durcissement Apache (en complement de la configuration du serveur).
+Options -Indexes -MultiViews
+ServerSignature Off
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    # Aucun fichier cache (.env, .git...) sauf /.well-known
+    RewriteRule "(^|/)\.(?!well-known/)" - [F,L]
+    # Front controller Symfony
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+<FilesMatch "\.(env|yaml|yml|twig|md|lock|log|sql|sqlite|db|bak|dist)$">
+    Require all denied
+</FilesMatch>
+<IfModule mod_headers.c>
+    Header always unset X-Powered-By
+    Header always setifempty X-Content-Type-Options "nosniff"
+</IfModule>

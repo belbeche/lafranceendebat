@@ -1,0 +1,33 @@
+{% extends 'space/_layout.html.twig' %}
+{% block title %}Espace acteur{% endblock %}
+{% set nav_mode = 'actor' %}{% set nav_title = 'Espace acteur' %}{% set nav_active = 'home' %}
+{% block space %}
+<h1>Espace acteur</h1><p class="sp-sub">Publiez des prestations et suivez vos paiements. Contribution de la plateforme : {{ (bps / 100)|number_format(1, ',', ' ') }} % du prix, déduite de votre versement.</p>
+<section><div>
+    <div class="carte p-3 mb-4">
+        <h2 class="h5">Paiements</h2>
+        {% if app.user.stripeReady %}
+            <p class="mb-2">Compte de paiement actif. Vous êtes réglé par virement Stripe.</p>
+            <a class="btn btn-primary" href="{{ path('app_actor_offer_new') }}">Proposer une prestation</a>
+        {% else %}
+            <p>Avant de publier, vérifiez votre identité et renseignez votre IBAN chez Stripe (quelques minutes). La plateforme ne voit ni ne conserve vos données bancaires.</p>
+            <form method="post" action="{{ path('app_actor_onboard') }}"><input type="hidden" name="_token" value="{{ csrf_token('actor_onboard') }}"><button class="btn btn-primary">Activer mes paiements</button></form>
+        {% endif %}
+    </div>
+    <h2 class="h5">Mes prestations</h2>
+    {% for o in offers %}
+    <div class="carte p-3 mb-2 d-flex flex-wrap justify-content-between gap-2 align-items-center">
+        <div><strong>{{ o.title }}</strong><br><span class="meta">{{ (o.priceCents / 100)|number_format(2, ',', ' ') }} € · {{ o.status }}{% if o.moderationNote %} · {{ o.moderationNote }}{% endif %}</span></div>
+        {% if o.status in ['Publiée', 'En attente'] %}<form method="post" action="{{ path('app_actor_offer_withdraw', {id: o.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('offer_withdraw' ~ o.id) }}"><button class="btn btn-sm btn-outline-danger" data-confirm="Retirer cette prestation ?">Retirer</button></form>{% endif %}
+    </div>
+    {% else %}<p class="text-muted">Aucune prestation.</p>{% endfor %}
+    <h2 class="h5 mt-4" id="commandes">Commandes reçues</h2>
+    <table class="table table-sm"><thead><tr><th>Date</th><th>Prestation</th><th>Client</th><th>Prix</th><th>Pour vous</th><th>État</th><th></th></tr></thead><tbody>
+    {% for o in orders %}
+    <tr><td>{{ o.createdAt|date('d/m/Y') }}</td><td>{{ o.offer.title }}</td><td>{{ o.buyer.publicName }}</td><td>{{ (o.amountCents / 100)|number_format(2, ',', ' ') }} €</td><td>{{ (o.netCents / 100)|number_format(2, ',', ' ') }} €</td><td>{{ o.status|replace({'_': ' '}) }}</td>
+    <td>{% if o.status in ['payee','terminee'] %}<a class="btn btn-sm btn-outline-primary mb-1" href="{{ path('app_order_messages', {id: o.id}) }}">Messages</a>{% endif %}{% if o.status == 'payee' %}<form method="post" action="{{ path('app_order_refund', {id: o.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('order_refund' ~ o.id) }}"><button class="btn btn-sm btn-outline-danger" data-confirm="Rembourser le client ?">Rembourser</button></form>{% endif %}</td></tr>
+    {% else %}<tr><td colspan="7" class="text-muted">Aucune commande.</td></tr>{% endfor %}
+    </tbody></table>
+    <p class="meta">Versement : à la confirmation du client, ou automatiquement {{ days }} jours après le paiement.</p>
+</div></section>
+{% endblock %}

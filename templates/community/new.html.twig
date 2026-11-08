@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ouvrir un fil{% endblock %}
+{% block body %}
+<section class="section"><div class="container"><div class="row justify-content-center"><div class="col-lg-8">
+    <p class="mb-2"><a href="{{ path('app_community') }}">L'Agora de la diplomatie</a></p>
+    <h1 class="h2">Ouvrir un fil</h1>
+    <p class="measure">Posez le sujet comme vous le diriez à quelqu'un qui n'est pas d'accord avec vous. Si vous êtes en colère, dites-le, puis dites ce que vous voudriez voir changer concrètement.</p>
+    <div class="form-card">
+        {{ form_start(form) }}{{ form_widget(form) }}
+        <button class="btn btn-rouge mt-3" type="submit">Publier le fil</button>
+        {{ form_end(form) }}
+    </div>
+</div></div></div></section>
+{% endblock %}

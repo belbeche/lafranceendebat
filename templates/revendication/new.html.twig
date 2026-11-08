@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}Déposer une revendication{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Déposer une revendication sourcée</h1>
+<p class="lede mb-0">Ce qui est dénoncé ou demandé, par n'importe quel acteur, à propos de n'importe quelle institution ou n'importe quel parti. Mêmes règles pour tous.</p></div></header>
+<section class="section"><div class="container"><div class="row g-4">
+<div class="col-lg-8">
+    {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+    <form method="post" class="carte p-3">
+        <input type="hidden" name="_token" value="{{ csrf_token('claim_new') }}">
+        <label class="form-label fw-bold" for="title">Intitulé (une phrase factuelle)</label>
+        <input class="form-control mb-3" id="title" name="title" maxlength="190" required value="{{ d.title }}">
+        <label class="form-label fw-bold" for="summary">Les faits : quoi, qui, quand, quelles conséquences</label>
+        <textarea class="form-control mb-3" id="summary" name="summary" rows="7" maxlength="3000" required>{{ d.summary }}</textarea>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><label class="form-label fw-bold" for="groupLabel">Portée par</label><select class="form-select" id="groupLabel" name="groupLabel">{% for g in groups %}<option {{ d.groupLabel == g ? 'selected' }}>{{ g }}</option>{% endfor %}</select></div>
+            <div class="col-md-6"><label class="form-label fw-bold" for="theme">Thème</label><select class="form-select" id="theme" name="theme">{% for t in themes %}<option {{ d.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+        </div>
+        <label class="form-label fw-bold" for="sourceUrl">Lien vers la source publique (https, obligatoire)</label>
+        <input class="form-control mb-3" id="sourceUrl" name="sourceUrl" type="url" required value="{{ d.sourceUrl }}">
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><label class="form-label fw-bold" for="sourceLabel">Nom de la source</label><input class="form-control" id="sourceLabel" name="sourceLabel" maxlength="190" value="{{ d.sourceLabel }}"></div>
+            <div class="col-md-6"><label class="form-label fw-bold" for="authority">Autorité qui peut répondre</label><input class="form-control" id="authority" name="authority" maxlength="190" value="{{ d.authority }}"></div>
+        </div>
+        <label class="form-label fw-bold" for="locale">Langue de votre texte</label>
+        <select class="form-select mb-3" id="locale" name="locale">{% for l in locales %}<option value="{{ l }}" {{ d.locale == l ? 'selected' }}>{{ l|upper }}</option>{% endfor %}</select>
+        <button class="btn btn-rouge btn-lg">Envoyer pour relecture</button>
+    </form>
+</div>
+<div class="col-lg-4"><div class="carte">
+    <h2 class="h6">Règles communes</h2>
+    <ul class="small ps-3 mb-0">
+        <li>Une source publique vérifiable pour chaque fait.</li>
+        <li>Aucune insulte, menace ni donnée personnelle : le texte est bloqué avant envoi.</li>
+        <li>Ni jugement de personne ni intention supposée : on décrit des faits et des demandes.</li>
+        <li>Même exigence pour un parti, une administration, une entreprise ou un élu.</li>
+        <li>Droit de réponse : la personne ou l'institution citée peut répondre, sa réponse est publiée à côté.</li>
+        <li>Relecture avant publication, motif donné en cas de refus. Cinq dépôts par jour maximum.</li>
+        <li>Votre texte sera traduit pour que chacun le lise dans sa langue.</li>
+    </ul>
+</div></div>
+</div></div></section>
+{% endblock %}

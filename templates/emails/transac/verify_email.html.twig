@@ -1,0 +1,8 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Confirmez votre adresse{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Confirmez votre adresse e-mail</h1>
+<p>Bonjour {{ user.firstName }}, un clic suffit pour confirmer que cette adresse est bien la vôtre. Sans cela, les paiements restent bloqués.</p>
+<p><a href="{{ url }}" style="display:inline-block;background:#002395;color:#fff;padding:12px 22px;text-decoration:none;font-weight:bold">Confirmer mon adresse</a></p>
+<p style="font-size:13px;color:#555">Lien valable 48 heures. Si vous n'avez pas créé de compte, ignorez ce message. <a href="{{ url('app_identity_notice') }}">Pourquoi une identité réelle ?</a></p>
+{% endblock %}

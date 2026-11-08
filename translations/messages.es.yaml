@@ -1,0 +1,173 @@
+nav.debates: Debates
+nav.propositions: Propuestas
+nav.forgotten: Que no se olvide
+nav.more: Más
+nav.candidates: Candidatos
+nav.monitoring: Seguimiento de instituciones
+nav.agenda: Agenda
+nav.charter: Carta de paz
+nav.method: Método de debate
+nav.about: Acerca de
+nav.install: Instalar
+nav.submit: Presentar una propuesta
+nav.account: Mi cuenta
+nav.profile: Mi perfil
+nav.my_propositions: Mis propuestas
+nav.admin: Administración
+nav.logout: Cerrar sesión
+nav.login: Iniciar sesión
+nav.register: Crear mi cuenta (gratis)
+nav.language: Idioma
+nav.skip: Ir al contenido
+tab.home: Inicio
+tab.account: Cuenta
+tab.login: Acceder
+tab.submit: Presentar una propuesta
+banner.text: Aquí se distinguen los hechos de las opiniones. Sin odio, sin violencia.
+banner.link: Leer la carta de paz
+free.badge: Gratis de por vida
+free.text: Gratis para todos, para siempre. Sin suscripción, sin publicidad, sin venta de datos.
+free.title: Gratis, para siempre
+free.body: 'La France en Débat es y seguirá siendo gratuita para todos los ciudadanos: sin suscripción, sin pago para registrarse, votar o proponer, sin publicidad y sin reventa de datos personales. Las funciones básicas nunca estarán detrás de un pago.'
+free.faq_q: ¿Es realmente gratis?
+lang.title: Elija su idioma
+lang.subtitle: Podrá cambiarlo en cualquier momento desde el menú.
+lang.continue: Continuar en %language%
+lang.other_note: 'Este idioma aún no tiene interfaz completa: el menú se muestra en inglés. Use la traducción automática de su navegador para el resto del sitio.'
+hero.title: Hablemos antes de enfrentarnos.
+hero.cta_propose: Presentar una propuesta
+hero.cta_debate: Unirse a un debate
+hero.cta_paths: ¿Qué quiere hacer?
+footer.project: El proyecto
+footer.legal: Legal
+footer.independent: Espacio ciudadano independiente y pluralista. No está vinculado a ningún partido, candidato ni institución.
+footer.disclaimer: Las consultas de este sitio no tienen ningún valor electoral oficial.
+legal.notice: Aviso legal
+legal.privacy: Privacidad (RGPD)
+legal.terms: Condiciones de uso
+legal.contact: Contacto
+path.nav: Recorridos guiados
+path.title: ¿Qué quiere hacer?
+path.subtitle: Elija su situación y le guiamos paso a paso. Leer no requiere cuenta.
+path.no_account: Sin cuenta
+path.account: Cuenta gratuita necesaria
+path.start: Empezar
+path.step: Paso
+path.all: Todos los recorridos
+path.go: Ir
+path.discover.title: Estoy descubriendo
+path.discover.desc: Entender el sitio en tres minutos, sin cuenta.
+path.discover.s1: 'Leer la carta de paz: las reglas del juego.'
+path.discover.s2: Explorar las propuestas más apoyadas.
+path.discover.s3: Ver lo que se ha denunciado y no debe olvidarse.
+path.debate.title: Quiero debatir
+path.debate.desc: Dar mi opinión y responder con calma a los demás.
+path.debate.s1: Elegir un debate abierto y leer los argumentos.
+path.debate.s2: Crear una cuenta gratuita (un minuto).
+path.debate.s3: Publicar un argumento, con fuente si es posible.
+path.propose.title: Quiero proponer
+path.propose.desc: Presentar una idea concreta, revisada antes de publicarse.
+path.propose.s1: Comprobar que la idea no existe ya.
+path.propose.s2: Crear una cuenta gratuita.
+path.propose.s3: Presentar la propuesta con una fuente.
+path.forgotten.title: Quiero que no se olvide
+path.forgotten.desc: Mantener viva una reivindicación ya denunciada.
+path.forgotten.s1: Leer las reivindicaciones que no deben olvidarse.
+path.forgotten.s2: Apoyar o enmendar una propuesta relacionada.
+path.forgotten.s3: 'Ver las vías institucionales: petición, referéndum, cargos electos.'
+path.follow.title: Quiero seguir a las instituciones
+path.follow.desc: Saber quién respondió y quién guardó silencio.
+path.follow.s1: Abrir el seguimiento de instituciones.
+path.follow.s2: Consultar los candidatos y sus compromisos.
+path.follow.s3: 'No perder las fechas clave: la agenda.'
+
+guide.label: 'Guía paso a paso'
+guide.steps: 'pasos'
+guide.page_title: 'Guía paso a paso'
+guide.page_lede: 'Cada función del sitio explicada en pocos pasos. No se requiere ningún conocimiento técnico.'
+guide.home.t: 'Empezar'
+guide.home.cta: 'Crear mi cuenta'
+guide.home.s1: 'Cree una cuenta gratuita (un minuto, basta un correo).'
+guide.home.s2: 'Elija su puerta de entrada: debatir, proponer, opinar o actuar ante las instituciones.'
+guide.home.s3: 'Vuelva a «Mi espacio»: verá cómo van sus ideas y qué le queda por hacer.'
+guide.communaute.t: 'Participar en la conversación'
+guide.communaute.cta: 'Abrir un hilo'
+guide.communaute.s1: 'Lea las reglas a la derecha, caben en cuatro líneas.'
+guide.communaute.s2: 'Haga clic en «Abrir un hilo» y escriba su tema con calma y un título preciso.'
+guide.communaute.s3: 'Responda a los demás reformulando primero su idea: se valora en la clasificación.'
+guide.communaute.s4: '¿Un mensaje molesto? Use «Denunciar», el equipo responde con un motivo.'
+guide.debats.t: 'Participar en un debate'
+guide.debats.cta: 'Ver los debates'
+guide.debats.s1: 'Abra un debate y lea primero los hechos con fuentes.'
+guide.debats.s2: 'Añada un argumento a favor, en contra o matizado, con fuente si es posible.'
+guide.debats.s3: 'Apoye los argumentos más sólidos, aunque vayan contra su opinión.'
+guide.propositions.t: 'Presentar y hacer avanzar una propuesta'
+guide.propositions.cta: 'Presentar una propuesta'
+guide.propositions.s1: 'Haga clic en «Presentar una propuesta»: problema, medida, coste estimado, quién puede actuar.'
+guide.propositions.s2: 'Se revisa y se publica en el registro (en general en 48 h).'
+guide.propositions.s3: 'Compártala: cada apoyo la hace subir en la clasificación.'
+guide.propositions.s4: 'Sígala en «Mi espacio» hasta su traslado a los cargos electos.'
+guide.scrutins.t: 'Dar su opinión'
+guide.scrutins.cta: 'Ver las consultas'
+guide.scrutins.s1: 'Elija una consulta abierta.'
+guide.scrutins.s2: 'Lea las opciones y los argumentos.'
+guide.scrutins.s3: 'Vote: una voz por persona, resultado consultivo y público.'
+guide.services.t: 'Encontrar u ofrecer un servicio'
+guide.services.cta: 'Ver los servicios'
+guide.services.s1: 'Explore los servicios (mediación, formación, acompañamiento) y abra el adecuado.'
+guide.services.s2: 'Pida: el pago es seguro y queda retenido.'
+guide.services.s3: 'Hable con el prestador por la mensajería del pedido (sin dar datos de contacto).'
+guide.services.s4: 'Confirme cuando el servicio esté hecho: entonces se paga al prestador. ¿Un problema? Pida un reembolso.'
+guide.candidater.t: 'Obtener un rol'
+guide.candidater.cta: 'Postular'
+guide.candidater.s1: 'Elija el derecho: mediador, actor, cargo electo o asociación.'
+guide.candidater.s2: 'Explique en pocas líneas lo que aportará.'
+guide.candidater.s3: 'El equipo responde. No se exige antigüedad de la cuenta.'
+guide.candidater.s4: 'Su espacio dedicado aparece en «Mi espacio».'
+guide.acteurs.t: 'Actuar ante las instituciones'
+guide.acteurs.cta: 'Vías institucionales'
+guide.acteurs.s1: 'Encuentre al cargo electo, la institución o el mediador correspondiente.'
+guide.acteurs.s2: 'Use la vía legal adecuada (petición, recurso, carta).'
+guide.acteurs.s3: 'Publique después el seguimiento en la plataforma para que todos vean la respuesta.'
+guide.plan.t: 'Aplicar el plan cerca de usted'
+guide.plan.cta: 'Presentar un resultado'
+guide.plan.s1: 'Localice en la página la acción que corresponde a su situación (ciudadano, asociación, cargo electo, empresa).'
+guide.plan.s2: 'Haga la primera acción de la lista «esta semana».'
+guide.plan.s3: 'Presente el resultado como propuesta para que se compare y se replique en otros lugares.'
+home.live.title: 'Ahora mismo en la comunidad'
+home.live.join: 'Unirse al Ágora'
+home.live.members: 'ciudadanos inscritos'
+home.live.props: 'propuestas publicadas'
+home.live.threads: 'hilos de debate'
+home.live.ballots: 'consultas abiertas'
+home.live.empty: 'El Ágora espera su primer hilo. Ábralo: un desacuerdo, una idea, una rabia por transformar.'
+home.how.title: 'Cómo funciona, en tres pasos'
+home.how.1t: '1. Me inscribo'
+home.how.1d: 'Gratis para siempre, basta un correo.'
+home.how.2t: '2. Participo'
+home.how.2d: 'Debate, propuesta, consulta, petición o mensaje a un cargo electo.'
+home.how.2l: 'Elegir cómo'
+home.how.3t: '3. Sigo el resultado'
+home.how.3d: '«Mi espacio» muestra cómo va cada idea.'
+home.how.3l: 'Ver todas las guías'
+door.how: 'Cómo:'
+door.debate: 'Lea los hechos y añada un argumento.'
+door.propose: 'Rellene 4 campos, revisión en 48 h.'
+door.opinion: 'Elija una consulta, vote una vez.'
+door.petition: 'Abra, lea, haga clic en apoyar.'
+door.institutions: 'Elija la vía legal y siga la respuesta.'
+door.candidates: 'Abra dos fichas una al lado de la otra.'
+eco.title: 'Relanzar la economía francesa: el Plan Marshall ciudadano'
+eco.lede: 'Recuperar sin romper: medir cada gasto, mutualizar lo que se pueda y reinvertir los ahorros demostrados en empleo, producción y servicios esenciales.'
+eco.l1t: 'Medir'
+eco.l1d: 'Un diagnóstico de costes en 3 a 5 estructuras voluntarias.'
+eco.l2t: 'Mutualizar'
+eco.l2d: 'Compras conjuntas y funciones de apoyo compartidas, sin monopolio.'
+eco.l3t: 'Reinvertir'
+eco.l3d: 'Cada ahorro demostrado vuelve al empleo y a las misiones útiles.'
+eco.cta: 'Leer el plan'
+eco.cta2: 'Actuar esta semana'
+nav.guide: 'Guía paso a paso'
+contacts.title: 'Contactos útiles'
+contacts.lede: 'A quién contactar y para qué. Enlaces y números oficiales, a verificar en el sitio de cada organismo antes de llamar.'
+nav.contacts: 'Contactos útiles'

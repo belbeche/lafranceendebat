@@ -1,0 +1,512 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Publications - La France en Débat{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">
+            <i class="fas fa-newspaper text-primary"></i>
+            Gestion des Publications
+        </h1>
+        <div>
+            <a href="{{ path('admin_posts_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Nouvelle Publication
+            </a>
+        </div>
+    </div>
+
+    <!-- Statistiques -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ posts|length }}</h4>
+                            <p class="mb-0">Total Publications</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-newspaper fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ posts|filter(p => p.isPublished)|length }}</h4>
+                            <p class="mb-0">Publications Actives</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-eye fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ posts|filter(p => not p.isPublished)|length }}</h4>
+                            <p class="mb-0">Publications Masquées</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-eye-slash fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h4>{{ campaignNotes|default([])|length }}</h4>
+                            <p class="mb-0">Notes de Campagne</p>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fas fa-sticky-note fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Notes de Campagne -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="fas fa-sticky-note text-info"></i>
+                Notes de Campagne Newsletter
+            </h5>
+            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#addCampaignNoteModal">
+                <i class="fas fa-plus-circle"></i> Ajouter une note
+            </button>
+        </div>
+        <div class="card-body">
+            {% if campaignNotes|default([])|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID Campagne</th>
+                            <th>Titre</th>
+                            <th>Statut</th>
+                            <th>Notes</th>
+                            <th>Dernière mise à jour</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for note in campaignNotes %}
+                        <tr>
+                            <td><span class="badge bg-secondary">#{{ note.campaignId }}</span></td>
+                            <td>{{ note.campaignTitle|default('Sans titre')|u.truncate(30, '...') }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if note.status == 'completed' %}bg-success
+                                    {% elseif note.status == 'suspended' %}bg-danger
+                                    {% elseif note.status == 'processing' %}bg-warning
+                                    {% elseif note.status == 'scheduled' %}bg-info
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ note.status|default('pending')|upper }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="campaign-notes">
+                                    {% for campaignNote in note.notes %}
+                                        <div class="note-item mb-2 p-2 bg-light rounded" id="note-{{ campaignNote.id }}">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <strong>{{ campaignNote.author }}:</strong>
+                                                    <p class="mb-1">{{ campaignNote.content|nl2br }}</p>
+                                                    <small class="text-muted">{{ campaignNote.createdAt|date('d/m/Y H:i') }}</small>
+                                                </div>
+                                                <div class="btn-group btn-group-sm">
+                                                    <button type="button" 
+                                                            class="btn btn-outline-warning edit-note" 
+                                                            data-note-id="{{ campaignNote.id }}"
+                                                            data-note-content="{{ campaignNote.content }}"
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editCampaignNoteModal">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <form method="post" 
+                                                          action="{{ path('admin_campaign_note_delete', {'id': campaignNote.id}) }}" 
+                                                          onsubmit="return confirm('Supprimer cette note ?');"
+                                                          class="d-inline">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete_note' ~ campaignNote.id) }}">
+                                                        <button type="submit" class="btn btn-outline-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>{{ note.updatedAt|date('d/m/Y H:i') }}</td>
+                            <td>
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-info add-note-to-campaign" 
+                                        data-campaign-id="{{ note.campaignId }}"
+                                        data-campaign-title="{{ note.campaignTitle }}"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#addNoteToCampaignModal">
+                                    <i class="fas fa-plus"></i> Ajouter note
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4">
+                <i class="fas fa-sticky-note fa-3x text-muted mb-3"></i>
+                <p class="text-muted">Aucune note de campagne pour le moment.</p>
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#addCampaignNoteModal">
+                    <i class="fas fa-plus-circle"></i> Ajouter votre première note
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Tableau des publications -->
+    <div class="card shadow">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0">
+                <i class="fas fa-list"></i>
+                Liste des Publications
+            </h5>
+        </div>
+        <div class="card-body">
+            {% if posts|length > 0 %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th width="60">ID</th>
+                            <th>Titre</th>
+                            <th>Type</th>
+                            <th>Auteur</th>
+                            <th>Date</th>
+                            <th>Commentaires</th>
+                            <th>Statut</th>
+                            <th width="180">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                            <td>
+                                <span class="badge bg-secondary">#{{ post.id }}</span>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if post.mediaPath %}
+                                        {% if post.mediaType == 'video' or post.isVideo %}
+                                            <i class="fas fa-video text-primary me-2"></i>
+                                        {% elseif post.mediaType == 'image' or post.isImage %}
+                                            <i class="fas fa-image text-success me-2"></i>
+                                        {% elseif post.mediaType == 'document' or post.isDocument %}
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        {% endif %}
+                                    {% else %}
+                                        <i class="fas fa-file-alt text-secondary me-2"></i>
+                                    {% endif %}
+                                    <div>
+                                        <strong>{{ post.title|u.truncate(40, '...') }}</strong>
+                                        <br>
+                                        <small class="text-muted">{{ post.content|striptags|u.truncate(60, '...') }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge 
+                                    {% if post.mediaType == 'video' %}bg-primary
+                                    {% elseif post.mediaType == 'image' %}bg-success
+                                    {% elseif post.mediaType == 'document' %}bg-danger
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ (post.mediaType ?: 'text')|upper }}
+                                </span>
+                            </td>
+                            <td>
+                                <small>{{ post.author.firstName ?? post.author.username ?? 'Admin' }}</small>
+                            </td>
+                            <td>
+                                <small>{{ post.createdAt|date('d/m/Y') }}</small>
+                                {% if post.updatedAt %}
+                                    <br>
+                                    <small class="text-muted">Modif: {{ post.updatedAt|date('d/m/Y') }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ post.comments|length }}</span>
+                                {% if post.comments|filter(c => not c.isApproved)|length > 0 %}
+                                    <span class="badge bg-warning ms-1" title="En attente de modération">
+                                        {{ post.comments|filter(c => not c.isApproved)|length }}
+                                    </span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="post" 
+                                      action="{{ path('admin_posts_toggle', {'id': post.id}) }}" 
+                                      class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ post.id) }}">
+                                    <button type="submit" 
+                                            class="btn btn-sm {% if post.isPublished %}btn-success{% else %}btn-secondary{% endif %}">
+                                        {{ post.isPublished ? 'Actif' : 'Masqué' }}
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{{ path('app_actualites_show', {'id': post.id}) }}" 
+                                       class="btn btn-outline-primary" 
+                                       title="Voir sur le site" 
+                                       target="_blank">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="{{ path('admin_posts_edit', {'id': post.id}) }}" 
+                                       class="btn btn-outline-warning" 
+                                       title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="post" 
+                                          action="{{ path('admin_posts_delete', {'id': post.id}) }}" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ? Cette action est irréversible.');"
+                                          class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                        <button type="submit" class="btn btn-outline-danger" title="Supprimer">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    {% if post.comments|filter(c => not c.isApproved)|length > 0 %}
+                                    <form method="post" 
+                                          action="{{ path('admin_posts_approve_comments', {'id': post.id}) }}" 
+                                          class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('approve_comments' ~ post.id) }}">
+                                        <button type="submit" 
+                                                class="btn btn-outline-success" 
+                                                title="Approuver tous les commentaires">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-newspaper fa-4x text-muted mb-3"></i>
+                <h4 class="text-muted">Aucune publication</h4>
+                <p class="text-muted">Commencez par créer votre première publication.</p>
+                <a href="{{ path('admin_posts_new') }}" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Créer une publication
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modals pour les notes de campagne -->
+<!-- Modal Ajouter une nouvelle note -->
+<div class="modal fade" id="addCampaignNoteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ path('admin_campaign_note_new') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('new_note') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus-circle text-info"></i> Nouvelle note de campagne
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">ID Campagne</label>
+                        <input type="number" name="campaignId" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Titre de la campagne</label>
+                        <input type="text" name="campaignTitle" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Statut</label>
+                        <select name="status" class="form-select">
+                            <option value="pending">En attente</option>
+                            <option value="processing">En cours</option>
+                            <option value="completed">Terminée</option>
+                            <option value="suspended">Suspendue</option>
+                            <option value="cancelled">Annulée</option>
+                            <option value="scheduled">Planifiée</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Note</label>
+                        <textarea name="content" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-info">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Ajouter une note à une campagne existante -->
+<div class="modal fade" id="addNoteToCampaignModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ path('admin_campaign_note_add') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('add_note') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-plus-circle text-info"></i> Ajouter une note
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="campaignId" id="modalCampaignId">
+                    <div class="mb-3">
+                        <label class="form-label">Campagne</label>
+                        <input type="text" id="modalCampaignTitle" class="form-control" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Note</label>
+                        <textarea name="content" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-info">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modifier une note -->
+<div class="modal fade" id="editCampaignNoteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ path('admin_campaign_note_edit') }}" id="editNoteForm">
+                <input type="hidden" name="_token" value="{{ csrf_token('edit_note') }}">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-edit text-warning"></i> Modifier la note
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="noteId" id="editNoteId">
+                    <div class="mb-3">
+                        <label class="form-label">Contenu de la note</label>
+                        <textarea name="content" id="editNoteContent" class="form-control" rows="4" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-warning">Modifier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.table td {
+    vertical-align: middle;
+}
+
+.badge {
+    font-size: 0.75em;
+}
+
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Assurer que les formulaires dans le btn-group soient correctement alignés */
+.btn-group form {
+    display: inline-block;
+    margin: 0;
+}
+
+.btn-group .btn {
+    border-radius: 0.25rem !important;
+    margin-right: 2px;
+}
+
+.btn-group .btn:first-child {
+    border-top-left-radius: 0.25rem !important;
+    border-bottom-left-radius: 0.25rem !important;
+}
+
+.btn-group .btn:last-child {
+    border-top-right-radius: 0.25rem !important;
+    border-bottom-right-radius: 0.25rem !important;
+    margin-right: 0;
+}
+
+.campaign-notes {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.note-item {
+    border-left: 3px solid #17a2b8;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestionnaire pour le bouton "Ajouter note à campagne"
+    document.querySelectorAll('.add-note-to-campaign').forEach(button => {
+        button.addEventListener('click', function() {
+            document.getElementById('modalCampaignId').value = this.dataset.campaignId;
+            document.getElementById('modalCampaignTitle').value = this.dataset.campaignTitle;
+        });
+    });
+
+    // Gestionnaire pour le bouton "Modifier note"
+    document.querySelectorAll('.edit-note').forEach(button => {
+        button.addEventListener('click', function() {
+            document.getElementById('editNoteId').value = this.dataset.noteId;
+            document.getElementById('editNoteContent').value = this.dataset.noteContent;
+        });
+    });
+
+    // Confirmation pour le toggle de statut
+    document.querySelectorAll('form[action*="toggle"]').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const button = this.querySelector('button[type="submit"]');
+            const isCurrentlyActive = button.classList.contains('btn-success');
+            const newStatus = isCurrentlyActive ? 'masquer' : 'publier';
+            
+            if (!confirm(`Voulez-vous vraiment ${newStatus} cette publication ?`)) {
+                e.preventDefault();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

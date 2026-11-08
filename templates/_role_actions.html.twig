@@ -1,0 +1,35 @@
+{# Panneau d'actions selon le rôle : chaque personne voit ce qu'elle peut faire ici, et comment obtenir plus de droits. ctx = contexte de la page. #}
+{% set is_actor = is_granted('ROLE_ACTOR') or is_granted('ROLE_ELU') or is_granted('ROLE_ASSOCIATION') %}
+{% set ctx = ctx|default('') %}
+<aside class="carte role-panel mb-3 {{ compact|default(false) ? 'role-panel-compact' }}" aria-label="Ce que vous pouvez faire">
+{% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+    <h2 class="h5">Vous visitez en lecture</h2>
+    <p>Avec un compte gratuit, vous pouvez proposer, soutenir, amender et déposer une demande de contribuable.</p>
+    <a class="btn btn-rouge w-100 mb-2" href="{{ path('app_register') }}">Créer mon compte gratuit</a>
+    <a class="btn btn-outline-dark w-100" href="{{ path('app_login') }}">Me connecter</a>
+{% else %}
+    <h2 class="h5">Vos actions ici
+        <span class="etiquette {{ is_actor or is_granted('ROLE_MODERATOR') ? 'rouge' : 'bleu' }}">{% if is_granted('ROLE_ADMIN') %}Administrateur{% elseif is_granted('ROLE_MODERATOR') %}Médiateur{% elseif is_granted('ROLE_ELU') %}Élu ou institution{% elseif is_granted('ROLE_ASSOCIATION') %}Association{% elseif is_granted('ROLE_ACTOR') %}Acteur ou prestataire{% elseif is_granted('ROLE_JOURNALIST') %}Journaliste indépendant{% else %}Citoyen{% endif %}</span></h2>
+    <ul class="list-unstyled d-grid gap-2 mb-0">
+        {% if ctx == 'debats' %}<li><a class="need-link need-primary" href="{{ path('app_debat_new') }}"><i class="bi bi-chat-square-text" aria-hidden="true"></i><span>Ouvrir un débat</span></a></li>{% endif %}
+        {% if ctx == 'agenda' and is_actor %}<li><a class="need-link need-primary" href="{{ path('app_agenda_new') }}"><i class="bi bi-calendar-plus" aria-hidden="true"></i><span>Proposer une rencontre</span></a></li>{% endif %}
+        {% if ctx == 'services' and is_granted('ROLE_ACTOR') %}<li><a class="need-link need-primary" href="{{ path('app_actor_offer_new') }}"><i class="bi bi-plus-circle" aria-hidden="true"></i><span>Publier un service</span></a></li>{% endif %}
+        <li><a class="need-link" href="{{ path('app_proposition_new') }}"><i class="bi bi-lightbulb" aria-hidden="true"></i><span>Écrire une proposition</span></a></li>
+        <li><a class="need-link" href="{{ path('app_revendication_new') }}"><i class="bi bi-bookmark-star" aria-hidden="true"></i><span>Déposer une demande sourcée</span></a></li>
+        {% if is_actor %}
+            <li><a class="need-link" href="{{ path('app_propositions') }}"><i class="bi bi-chat-square-quote" aria-hidden="true"></i><span>Donner un avis motivé (sur la fiche d'une proposition)</span></a></li>
+            <li><a class="need-link" href="{{ path('app_inbox') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i><span>Écrire aux citoyens, messagerie</span></a></li>
+            {% if is_granted('ROLE_ELU') %}<li><a class="need-link" href="{{ path('app_role_space', {slug: 'elu'}) }}"><i class="bi bi-bank" aria-hidden="true"></i><span>Mon espace élu</span></a></li>{% endif %}
+            {% if is_granted('ROLE_ASSOCIATION') %}<li><a class="need-link" href="{{ path('app_role_space', {slug: 'association'}) }}"><i class="bi bi-people" aria-hidden="true"></i><span>Mon espace association</span></a></li>{% endif %}
+            {% if is_granted('ROLE_ACTOR') %}<li><a class="need-link" href="{{ path('app_actor_space') }}"><i class="bi bi-briefcase" aria-hidden="true"></i><span>Mes services et commandes</span></a></li>{% endif %}
+        {% else %}
+            <li><a class="need-link" href="{{ path('app_role_request') }}"><i class="bi bi-person-check" aria-hidden="true"></i><span>Demander un droit d'acteur pour répondre et écrire</span></a></li>
+            <li><a class="need-link" href="{{ path('app_my_requests') }}"><i class="bi bi-card-checklist" aria-hidden="true"></i><span>Suivre mes demandes</span></a></li>
+        {% endif %}
+        {% if is_granted('ROLE_JOURNALIST') %}<li><a class="need-link" href="{{ path('app_tribune_new') }}"><i class="bi bi-newspaper" aria-hidden="true"></i><span>Écrire une tribune</span></a></li>{% endif %}
+        {% if is_granted('ROLE_MODERATOR') %}<li><a class="need-link" href="{{ path('app_role_space', {slug: 'mediateur'}) }}"><i class="bi bi-shield-check" aria-hidden="true"></i><span>Relire et modérer</span></a></li>{% endif %}
+        {% if is_granted('ROLE_ADMIN') %}<li><a class="need-link" href="{{ path('admin_dashboard') }}"><i class="bi bi-gear" aria-hidden="true"></i><span>Administration</span></a></li>{% endif %}
+    </ul>
+    {% if not is_actor %}<p class="meta mt-2 mb-0">La messagerie est réservée aux échanges avec les acteurs publics : un citoyen leur écrit, ils lui répondent. Elle ne sert pas à contourner la plateforme.</p>{% endif %}
+{% endif %}
+</aside>

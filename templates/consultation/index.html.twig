@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}Scrutins consultatifs{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'scrutins'} only %}
+<header class="page-head"><div class="container">
+    <h1>Scrutins consultatifs</h1>
+    <p class="mb-0">Des questions posées au réseau, avec une seule voix par personne. Les résultats sont des avis : ils n'ont aucune valeur électorale ni juridique.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: '', compact: true} only %}</div>
+<section class="section"><div class="container">
+    <h2 class="h4 mb-3">En cours</h2>
+    {% for c in open %}
+        <a class="carte d-block p-3 mb-2 text-decoration-none" href="{{ path('app_consultation_show', {id: c.id}) }}">
+            <strong>{{ c.question }}</strong><br><span class="meta">Clôture le {{ c.closesAt|date('d/m/Y') }}</span>
+        </a>
+    {% else %}
+        <p class="meta">Aucun scrutin ouvert pour le moment.</p>
+    {% endfor %}
+    {% if closed %}
+        <h2 class="h4 mt-4 mb-3">Terminés</h2>
+        {% for c in closed %}
+            <a class="carte d-block p-3 mb-2 text-decoration-none" href="{{ path('app_consultation_show', {id: c.id}) }}">
+                <strong>{{ c.question }}</strong><br><span class="meta">Clos le {{ c.closesAt|date('d/m/Y') }}</span>
+            </a>
+        {% endfor %}
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}<p class="mt-4"><a class="btn btn-outline-primary" href="{{ path('admin_consultation_new') }}">Créer un scrutin</a></p>{% endif %}
+</div></section>
+{% endblock %}

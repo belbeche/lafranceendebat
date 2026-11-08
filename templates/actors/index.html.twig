@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Acteurs publics{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'acteurs'} only %}
+<header class="page-head"><div class="container">
+    <h1>Porter une idée auprès des institutions</h1>
+    <p class="mb-0">La France en Débat n'est pas une institution. Voici les voies officielles réelles pour qu'une proposition soit lue et examinée. Les seuils et conditions changent : vérifiez-les toujours sur le site officiel.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: '', compact: true} only %}</div>
+<section class="section"><div class="container">
+    {% for key, group in groups %}
+        <h2 class="h4 mt-4 mb-3">{{ group.label }}</h2>
+        <div class="row g-3">
+            {% for a in group.items %}
+            <div class="col-md-6"><div class="carte h-100 p-3">
+                <h3 class="h6 mb-1">{{ a.name }} {% if not a.official %}<span class="etiquette">Site citoyen indépendant</span>{% endif %}</h3>
+                <p class="mb-2">{{ a.summary }}</p>
+                <p class="meta mb-2">{{ a.how }}</p>
+                <a class="btn btn-sm btn-outline-primary" href="{{ a.url }}" target="_blank" rel="noopener noreferrer">Ouvrir le site</a>
+            </div></div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div></section>
+{% endblock %}

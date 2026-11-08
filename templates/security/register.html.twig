@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Créer un compte{% endblock %}
+{% block body %}
+<section class="section"><div class="container"><div class="row justify-content-center"><div class="col-lg-7">
+    <h1 class="h2">Créer un compte</h1>
+    <p class="measure">Un compte est gratuit, pour toujours. Il permet de soutenir des propositions, d'en déposer et de participer aux débats. Votre nom complet n'est jamais affiché : seuls votre prénom et l'initiale de votre nom le sont.</p>
+    <p class="measure small"><strong>Identité réelle exigée.</strong> Les adresses e-mail jetables sont refusées et les tentatives suspectes sont enregistrées. <a href="{{ path('app_identity_notice') }}">Lire la notice</a>.</p>
+    {{ form_start(registrationForm, {attr: {class: 'form-card reg-form', novalidate: 'novalidate'}}) }}
+        {{ form_errors(registrationForm) }}
+        <div class="visually-hidden" aria-hidden="true"><label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <fieldset class="mb-4">
+            <legend class="h6">{{ registrationForm.profile.vars.label }}</legend>
+            <div class="reg-profiles">
+            {% set hints = {citoyen: 'Débattre, proposer, soutenir', contribuable: 'Déposer une demande, suivre son traitement', association: 'Porter des initiatives, recruter des bénévoles', entreprise: 'Proposer des services, candidater aux missions', elu: 'Répondre aux citoyens, donner un avis motivé', expert: 'Médiation, expertise, chiffrage'} %}
+            {% for child in registrationForm.profile %}
+                <label class="reg-profile" for="{{ child.vars.id }}">
+                    <input class="visually-hidden" type="radio" id="{{ child.vars.id }}" name="{{ child.vars.full_name }}" value="{{ child.vars.value }}" {{ child.vars.checked ? 'checked' }}>
+                    <span class="reg-profile-body"><strong>{{ child.vars.label }}</strong><small>{{ hints[child.vars.value] }}</small></span>
+                </label>
+            {% endfor %}
+            </div>
+            {{ form_errors(registrationForm.profile) }}
+        </fieldset>
+        <div id="reg-org" class="mb-3">{{ form_row(registrationForm.organisation) }}</div>
+        {{ form_row(registrationForm.firstName) }}
+        {{ form_row(registrationForm.lastName) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.phone) }}
+        {{ form_row(registrationForm.postalCode) }}
+        {{ form_row(registrationForm.plainPassword) }}
+        {{ form_row(registrationForm.ageOk) }}
+        {{ form_row(registrationForm.agreeCharter) }}
+        {{ form_row(registrationForm.newsletter) }}
+        {{ form_rest(registrationForm) }}
+        <button class="btn btn-rouge w-100 mt-3" type="submit">Créer mon compte</button>
+    {{ form_end(registrationForm) }}
+    <p class="mt-3">Déjà inscrit ? <a href="{{ path('app_login') }}">Se connecter</a></p>
+</div></div></div></section>
+<script>
+(function(){var box=document.getElementById('reg-org');if(!box)return;var radios=document.querySelectorAll('input[name$="[profile]"]');
+function sync(){var v='';radios.forEach(function(r){if(r.checked)v=r.value;});box.hidden=(v==='citoyen'||v==='contribuable');
+document.querySelectorAll('.reg-profile').forEach(function(l){var i=l.querySelector('input');l.classList.toggle('is-on',!!(i&&i.checked));});}
+radios.forEach(function(r){r.addEventListener('change',sync);});sync();})();
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Tableau de bord{% endblock %}
+{% block admin %}
+<h1 class="h3">Tableau de bord</h1>
+<div class="row g-3 mb-4">
+    {% for label, value in {'Débats à relire': draftDebatsCount, 'Tribunes à relire': pendingTribunesCount, 'Droits demandés': pendingRolesCount, 'Propositions en attente': pendingPropositionsCount, 'Arguments en attente': pendingArgumentsCount, 'Signalements ouverts': openReportsCount, 'Débats ouverts': openDebatsCount, 'Propositions publiées': validatedCount, 'Comptes': totalUsers, 'Visiteurs aujourd\'hui': todayVisitors} %}
+        <div class="col-6 col-md-3"><div class="carte"><p class="soutien-nombre mb-0">{{ value }}</p><p class="meta mb-0">{{ label }}</p></div></div>
+    {% endfor %}
+</div>
+<p><a class="btn btn-rouge" href="{{ path('admin_moderation') }}">Ouvrir la file de modération</a></p>
+{% endblock %}

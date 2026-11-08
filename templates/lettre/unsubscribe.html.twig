@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Se désinscrire{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:640px">
+    <h1 class="h3">Se désinscrire de la lettre</h1>
+    <p>Vous ne recevrez plus aucun message de la lettre.</p>
+    <form method="post" action="{{ path('app_lettre_unsubscribe', {id: id, token: token}) }}"><button class="btn btn-bleu">Confirmer la désinscription</button></form>
+</div></section>
+{% endblock %}

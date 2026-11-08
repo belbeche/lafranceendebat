@@ -1,0 +1,27 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Reçus fiscaux{% endblock %}
+{% block admin %}
+<h1 class="h3">Justificatifs de contribution</h1>
+{% if not enabled %}
+<div class="alert alert-warning">
+    <strong>Fonction désactivée.</strong> Seuls les organismes d'intérêt général ou reconnus d'utilité publique peuvent délivrer un reçu qui ouvre droit à une réduction d'impôt (articles 200 et 238 bis du CGI). Un reçu délivré à tort expose l'organisme à une amende de 25 % des sommes indiquées. Une entreprise individuelle ne peut pas en délivrer.
+    <br>Pour activer : le statut actuel (micro-entreprise) ne le permet pas ; il faudrait une structure éligible et la confirmation de l'administration fiscale (rescrit), puis renseigner dans <code>.env.local</code> : <code>DONATION_RECEIPTS_ENABLED=1</code>, <code>ASSO_NAME</code>, <code>ASSO_ADDRESS</code>, <code>ASSO_RNA</code>, <code>ASSO_OBJECT</code>, <code>ASSO_ELIGIBILITY</code>.
+    {% if missing %}<br>Informations manquantes : {{ missing|join(', ') }}.{% endif %}
+</div>
+{% else %}
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+<form method="post" class="row g-2 mb-4"><input type="hidden" name="_token" value="{{ csrf_token('receipt_new') }}">
+    <div class="col-md-4"><label class="form-label">Nom du donateur</label><input class="form-control" name="donor" required maxlength="160"></div>
+    <div class="col-md-5"><label class="form-label">Adresse complète du donateur</label><input class="form-control" name="address" required maxlength="255"></div>
+    <div class="col-md-3"><label class="form-label">Montant (euros)</label><input class="form-control" name="amount" inputmode="decimal" required></div>
+    <div class="col-md-3"><label class="form-label">Date du versement</label><input class="form-control" type="date" name="date" required></div>
+    <div class="col-md-3"><label class="form-label">Mode</label><select class="form-select" name="mode">{% for k, l in modes %}<option value="{{ k }}">{{ l }}</option>{% endfor %}</select></div>
+    <div class="col-md-3 d-flex align-items-end"><button class="btn btn-primary">Créer le reçu</button></div>
+</form>
+<p class="meta">Un reçu ne se crée que pour un don réellement reçu, jamais pour une prestation payée. Aucun don à un parti, un candidat ou une campagne.</p>
+{% endif %}
+<table class="table table-sm"><thead><tr><th>N°</th><th>Date</th><th>Donateur</th><th>Montant</th><th>Mode</th><th></th></tr></thead><tbody>
+{% for r in receipts %}<tr><td>{{ r.number }}</td><td>{{ r.receivedAt|date('d/m/Y') }}</td><td>{{ r.donorName }}</td><td>{{ (r.amountCents / 100)|number_format(2, ',', ' ') }} €</td><td>{{ r.paymentModeLabel }}</td><td>{% if enabled %}<a href="{{ path('admin_receipt_pdf', {id: r.id}) }}">PDF</a>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6" class="text-muted">Aucun reçu.</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

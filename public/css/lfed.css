@@ -1,0 +1,133 @@
+/* La France en Débat : feuille de style commune.
+   Pas de police externe (RGPD : aucune requête vers un tiers pour l'affichage du texte). */
+:root {
+    --bleu: #002395;
+    --bleu-nuit: #00164f;
+    --rouge: #ED2939;
+    --rouge-texte: #b3141f;      /* rouge lisible sur fond blanc (contraste AA) */
+    --papier: #f6f4ef;
+    --encre: #1b2233;
+    --encre-douce: #4a5468;
+    --filet: #d9d6cc;
+    --vert: #1d6b46;
+    --ambre: #8a5a00;
+    --serif: Charter, "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); color: var(--encre); background: var(--papier); display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6; }
+h1, h2, h3, .serif { font-family: var(--serif); letter-spacing: -.01em; }
+h1 { font-weight: 700; color: var(--bleu-nuit); }
+h2 { font-weight: 700; color: var(--bleu); }
+a { color: var(--bleu); }
+a:hover { color: var(--rouge-texte); }
+:focus-visible { outline: 3px solid var(--rouge); outline-offset: 2px; border-radius: 3px; }
+.skip-link { position: absolute; left: -999px; top: 0; background: #fff; color: var(--bleu); padding: .75rem 1rem; z-index: 2000; }
+.skip-link:focus { left: 8px; top: 8px; }
+.measure { max-width: 68ch; }
+
+/* Bandeau et navigation */
+.charte-banner { background: #fff7e0; color: #5c4300; text-align: center; padding: .45rem 1rem; font-size: .85rem; border-bottom: 1px solid #ecdca5; }
+.charte-banner a { color: inherit; font-weight: 600; }
+.navbar-master { background: var(--bleu-nuit); padding: .6rem 0; border-bottom: 4px solid transparent; border-image: linear-gradient(90deg, var(--bleu) 33.3%, #fff 33.3% 66.6%, var(--rouge) 66.6%) 1; }
+.navbar-brand { font-family: var(--serif); font-weight: 700; font-size: 1.35rem; color: #fff !important; }
+.navbar-brand span { color: #ff8b94; }
+.nav-link-custom { color: rgba(255,255,255,.88) !important; font-weight: 500; padding: .5rem .85rem !important; border-radius: 6px; }
+.nav-link-custom:hover, .nav-link-custom.active { color: #fff !important; background: rgba(255,255,255,.12); }
+.btn-rouge { background: var(--rouge-texte); color: #fff; border: 0; font-weight: 600; }
+.btn-rouge:hover, .btn-rouge:focus { background: #8f0f18; color: #fff; }
+.btn-bleu { background: var(--bleu); color: #fff; border: 0; font-weight: 600; }
+.btn-bleu:hover, .btn-bleu:focus { background: var(--bleu-nuit); color: #fff; }
+.btn-outline-blanc { border: 1px solid rgba(255,255,255,.6); color: #fff; }
+.btn-outline-blanc:hover { background: rgba(255,255,255,.14); color: #fff; }
+
+/* Pied de page */
+.footer-debat { background: var(--bleu-nuit); color: rgba(255,255,255,.8); padding: 3rem 0 1.5rem; margin-top: auto; }
+.footer-debat a { color: #fff; text-decoration: none; }
+.footer-debat a:hover { text-decoration: underline; color: #fff; }
+.footer-tricolore { height: 5px; background: linear-gradient(90deg, var(--bleu) 33.3%, #fff 33.3% 66.6%, var(--rouge) 66.6%); }
+
+/* Titres de page et sections */
+.page-head { background: #fff; border-bottom: 1px solid var(--filet); padding: 2.5rem 0 2rem; }
+.page-head h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: 0 0 .5rem; }
+.page-head .lede { color: var(--encre-douce); font-size: 1.1rem; max-width: 68ch; margin: 0; }
+.section { padding: 3rem 0; }
+.section-alt { background: #fff; border-top: 1px solid var(--filet); border-bottom: 1px solid var(--filet); }
+.zone-title { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: .35rem; }
+.zone-subtitle { color: var(--encre-douce); margin-bottom: 1.75rem; max-width: 68ch; }
+
+/* Accueil */
+.hero-sovereign { background: #fff; padding: 4.5rem 0 4rem; border-bottom: 1px solid var(--filet); }
+.hero-title { font-size: clamp(2.2rem, 6vw, 3.8rem); line-height: 1.08; color: var(--bleu-nuit); margin-bottom: 1rem; }
+.hero-sub { font-family: var(--serif); font-size: clamp(1.2rem, 2.4vw, 1.6rem); color: var(--rouge-texte); margin-bottom: 1.25rem; }
+.hero-text { color: var(--encre-douce); font-size: 1.1rem; max-width: 60ch; }
+.hero-rule { display: flex; height: 6px; width: 120px; margin-bottom: 1.5rem; }
+.hero-rule i { flex: 1; } .hero-rule i:nth-child(1) { background: var(--bleu); } .hero-rule i:nth-child(2) { background: #fff; box-shadow: inset 0 0 0 1px var(--filet); } .hero-rule i:nth-child(3) { background: var(--rouge); }
+
+/* Cartes et lignes de contenu */
+.carte { background: #fff; border: 1px solid var(--filet); border-radius: 10px; padding: 1.25rem 1.4rem; height: 100%; }
+.carte h3 { font-size: 1.15rem; margin-bottom: .5rem; }
+.carte-lien { text-decoration: none; color: inherit; display: block; }
+.carte-lien:hover .carte { border-color: var(--bleu); }
+.rangee { background: #fff; border: 1px solid var(--filet); border-left: 5px solid var(--bleu); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: .85rem; }
+.rangee.sans-reponse { border-left-color: var(--rouge); }
+.rangee h3 { font-size: 1.2rem; margin: 0 0 .35rem; }
+.rangee h3 a { text-decoration: none; }
+.rangee h3 a:hover { text-decoration: underline; }
+.meta { color: var(--encre-douce); font-size: .88rem; }
+.etiquette { display: inline-block; font-size: .8rem; font-weight: 600; padding: .15rem .6rem; border-radius: 999px; border: 1px solid var(--filet); background: var(--papier); color: var(--encre); }
+.etiquette.bleu { background: #e6ebff; border-color: #c3ceff; color: var(--bleu-nuit); }
+.etiquette.vert { background: #e3f3ea; border-color: #b6dcc6; color: var(--vert); }
+.etiquette.ambre { background: #fff2d6; border-color: #f0d9a0; color: var(--ambre); }
+.etiquette.rouge { background: #fde6e8; border-color: #f5b9be; color: var(--rouge-texte); }
+
+/* Soutien */
+.soutien { display: flex; flex-direction: column; align-items: center; min-width: 74px; text-align: center; }
+.soutien-nombre { font-family: var(--serif); font-size: 1.8rem; font-weight: 700; color: var(--bleu); line-height: 1; }
+.soutien-libelle { font-size: .72rem; color: var(--encre-douce); margin-bottom: .4rem; }
+
+/* Débats */
+.argument { background: #fff; border: 1px solid var(--filet); border-radius: 8px; padding: 1rem 1.15rem; margin-bottom: .8rem; }
+.argument.pour { border-left: 5px solid var(--vert); }
+.argument.contre { border-left: 5px solid var(--rouge); }
+.argument.nuance { border-left: 5px solid var(--ambre); }
+.argument .reformulation { background: var(--papier); border-radius: 6px; padding: .5rem .75rem; font-size: .92rem; margin-bottom: .6rem; }
+.reponses { margin-left: 1.25rem; padding-left: 1rem; border-left: 2px solid var(--filet); }
+.faits { background: #fff; border: 1px solid var(--filet); border-left: 5px solid var(--bleu); padding: 1rem 1.25rem; border-radius: 8px; }
+
+/* Fiche normalisée (propositions, engagements, candidats) */
+.fiche dt { font-weight: 600; color: var(--bleu-nuit); font-size: .92rem; margin-top: .9rem; }
+.fiche dd { margin: 0; }
+.fiche .manque { color: var(--encre-douce); font-style: italic; }
+.completude { height: 8px; background: #e7e4da; border-radius: 99px; overflow: hidden; }
+.completude > span { display: block; height: 100%; background: var(--bleu); }
+
+/* Mise en garde honnête */
+.limite { background: #fff7e0; border: 1px solid #ecdca5; border-radius: 8px; padding: .85rem 1.1rem; color: #5c4300; font-size: .94rem; }
+.limite strong { color: #4a3500; }
+
+/* Formulaires */
+.form-label { font-weight: 600; }
+.form-text { color: var(--encre-douce); }
+.form-card { background: #fff; border: 1px solid var(--filet); border-radius: 10px; padding: 1.5rem; }
+
+/* Admin */
+.admin-table th { white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; animation: none !important; } }
+@media print {
+    .navbar-master, .charte-banner, .footer-debat, .no-print, .skip-link { display: none !important; }
+    body { background: #fff; }
+    .carte, .rangee, .fiche { border-color: #999 !important; break-inside: avoid; }
+    a { color: inherit; text-decoration: none; }
+}
+
+/* Barre d'onglets mobile (type application) */
+.tabbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1030; display: grid; grid-template-columns: repeat(5, 1fr); align-items: end; background: #fff; border-top: 1px solid var(--filet); padding: .25rem .25rem calc(.25rem + env(safe-area-inset-bottom)); box-shadow: 0 -2px 10px rgba(0,22,79,.08); }
+.tabbar a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: .35rem 0; color: #4a5068; text-decoration: none; font-size: .68rem; min-height: 48px; justify-content: center; }
+.tabbar a i { font-size: 1.35rem; line-height: 1; }
+.tabbar a.active { color: var(--bleu); font-weight: 700; }
+.tabbar a.tab-main { background: var(--rouge-texte); color: #fff; width: 52px; height: 52px; min-height: 0; border-radius: 50%; margin: -18px auto 0; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+.tabbar a.tab-main i { font-size: 1.6rem; }
+@media (max-width: 991.98px) { body { padding-bottom: 72px; } .charte-banner { font-size: .78rem; } }
+@media (display-mode: standalone) { .charte-banner { display: none; } }

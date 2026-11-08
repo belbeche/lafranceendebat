@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><span class="etiquette bleu">{{ theme }}</span><h1 class="mt-2">{{ title }}</h1><p class="lead mb-0">{{ intro }}</p></div></header>
+<section class="section"><div class="container" style="max-width:820px">
+<div class="limite mb-4"><strong>Dossier de départ.</strong> Il rassemble les sources officielles du thème. Il n'exprime aucune opinion et sera complété par des dossiers citoyens validés par la modération.</div>
+<h2 class="h4">Sources officielles</h2>
+<ul>{% for l in links %}<li><a href="{{ l }}" target="_blank" rel="noopener noreferrer">{{ l|replace({'https://': '', 'www.': ''}) }}</a></li>{% endfor %}</ul>
+{% if slug == 'theme-ecole-et-transmission' %}<p>À lire aussi : <a href="{{ path('app_dossier', {slug: 'education'}) }}">Éducation : le savoir se partage, il ne se perd pas</a>.</p>{% endif %}
+<p class="mt-4"><a class="btn btn-rouge" href="{{ path('app_debat_new') }}">Ouvrir un débat sur ce thème</a> <a class="btn btn-outline-secondary" href="{{ path('app_dossier_new') }}">Compléter avec un dossier</a> <a class="btn btn-link" href="{{ path('app_dossiers') }}">Tous les dossiers</a></p>
+</div></section>
+{% endblock %}

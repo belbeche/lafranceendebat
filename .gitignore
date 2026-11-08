@@ -1,0 +1,109 @@
+
+###> symfony/framework-bundle ###
+/.env
+.env
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/public/uploads
+/config/packages/cache.yaml
+###< symfony/framework-bundle ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
+
+###> symfony/asset-mapper ###
+/assets/vendor/
+###< symfony/asset-mapper ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+# Fichier reserve Windows cree accidentellement (bloque git add/commit)
+/nul
+
+# Archive volumineuse (bloque le push GitHub, limite 100MB)
+/public.zip
+*.zip
+
+# copies locales du .env (secrets)
+/.env copy
+/.env*.bak
+/.env.local
+/cacert.pem
+
+/.env.local
+/.env.*.local
+/_to_delete/
+/var/
+/vendor/
+/node_modules/
+/public/bundles/
+*.tgz
+*.zip
+*.sql
+*.log
+*.bak
+
+# Code mort et outils de debug (hors application)
+/legacy/
+/src/Archive/
+/templates/_archive/
+/templates/conference_web_socket/
+/templates/debug/
+/_to_delete/
+/var/
+/vendor/
+/.env.local
+/.env.*.local
+
+# Documents internes et secrets
+docs-prives/
+.env
+.env.local
+.env.*.local
+tests/e2e/
+
+/public/uploads/*
+!/public/uploads/.gitkeep
+/docs/
+/docs-prives/
+/_update/
+/legacy/
+/public/uploads/
+/var/
+/vendor/
+/.env.local
+/.env.*.local
+/.env.bak*
+.env copy
+*.tgz
+*.zip
+/docs/
+/docs-prives/
+/_update/
+/legacy/
+/public/uploads/
+/var/
+/vendor/
+/.env.local
+/.env.*.local
+/.env.bak*
+.env copy
+*.tgz
+*.zip
+
+# Medias de l ancien projet, hors depot public
+/public/*.mp4
+/public/assets/video/
+/public/assets/img/yacht/
+/bin/mercure/

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Soutenir La France en Débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Soutenir La France en Débat</h1><p class="lede mb-0">Votre contribution finance l'hébergement, la modération et le développement de la plateforme. Elle ne donne pas droit à une réduction d'impôt : l'éditeur est une micro-entreprise, pas un organisme d'intérêt général.</p></div></header>
+<section class="section"><div class="container measure">
+    {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+    <form method="post" class="form-card">
+        <input type="hidden" name="_token" value="{{ csrf_token('donate') }}">
+        <label class="form-label" for="name">Nom et prénom</label><input class="form-control mb-3" id="name" name="name" value="{{ data.name }}" required maxlength="160" autocomplete="name">
+        <label class="form-label" for="address">Adresse complète (pour la facture ou le justificatif de paiement)</label><input class="form-control mb-3" id="address" name="address" value="{{ data.address }}" required maxlength="255" autocomplete="street-address">
+        <label class="form-label" for="email">E-mail (pour recevoir la confirmation)</label><input class="form-control mb-3" type="email" id="email" name="email" value="{{ data.email }}" required autocomplete="email">
+        <label class="form-label" for="amount">Montant de la contribution, en euros (minimum {{ min|number_format(0) }})</label><input class="form-control mb-3" id="amount" name="amount" inputmode="decimal" value="{{ data.amount }}" required>
+        <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="no_political" name="no_political" value="1" required><label class="form-check-label" for="no_political">Je confirme que ma contribution n'est destiné ni à un parti politique, ni à un candidat, ni à une campagne électorale. Aucune contrepartie ne m'est offerte.</label></div>
+        <button class="btn btn-bleu w-100">Payer par carte (paiement sécurisé Stripe)</button>
+    </form>
+    <p class="meta mt-3">Vos données servent uniquement à confirmer la contribution et à tenir la comptabilité. Voir la <a href="{{ path('app_privacy_policy') }}">politique de confidentialité</a>.</p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{# templates/emails/newsletter.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }}</title>
+</head>
+<body>
+    <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
+        <h1>{{ subject }}</h1>
+        
+        <div>
+            {{ content|raw }}
+        </div>
+        
+        <hr>
+        
+        <footer style="font-size: 12px; color: #666;">
+            <p>
+                Vous recevez cet email parce que vous êtes inscrit à notre newsletter.
+                <br>
+                <a href="{{ unsubscribeUrl }}" style="color: #666;">
+                    Se désabonner
+                </a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

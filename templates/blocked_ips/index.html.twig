@@ -1,0 +1,73 @@
+{# templates/admin/blocked_ips/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}IPs bloquées - La France en Débat{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #0a1a2d 0%, #1a365d 100%); min-height: 100vh;">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4">
+                <div class="card-body p-4">
+                    <h2 class="text-white">
+                        <i class="bi bi-shield-lock me-2" style="color: var(--gold);"></i>
+                        IPs BLOQUÉES
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4">
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-dark">
+                            <thead>
+                                <tr>
+                                    <th>IP</th>
+                                    <th>Raison</th>
+                                    <th>Bloqué le</th>
+                                    <th>Expire le</th>
+                                    <th>Par</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for blocked in blockedIps %}
+                                <tr>
+                                    <td><code>{{ blocked.ipAddress }}</code></td>
+                                    <td>{{ blocked.reason|default('-') }}</td>
+                                    <td>{{ blocked.blockedAt|date('d/m/Y H:i') }}</td>
+                                    <td>
+                                        {% if blocked.expiresAt %}
+                                            {{ blocked.expiresAt|date('d/m/Y H:i') }}
+                                            {% if blocked.isExpired %}
+                                                <span class="badge bg-warning">Expiré</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="badge bg-danger">Permanent</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ blocked.blockedBy|default('Système') }}</td>
+                                    <td>
+                                        <form method="post" action="{{ path('admin_unblock_ip', {'id': blocked.id}) }}" 
+                                              onsubmit="return confirm('Débloquer cette IP ?')">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('unblock' ~ blocked.id) }}">
+                                            <button type="submit" class="btn btn-sm btn-success">
+                                                <i class="bi bi-unlock"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

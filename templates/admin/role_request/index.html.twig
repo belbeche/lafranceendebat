@@ -1,0 +1,31 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Candidatures aux droits{% endblock %}
+{% block admin %}
+<h1 class="h3">Candidatures aux droits</h1>
+<h2 class="h5 mt-4">En attente ({{ pending|length }})</h2>
+{% for r in pending %}
+<div class="card mb-3"><div class="card-body">
+    <p class="mb-1"><strong>{{ r.user.publicName }}</strong> ({{ r.user.email }}) demande : {{ r.roleLabel }}<br><small class="text-muted">Compte créé le {{ r.user.createdAt|date('d/m/Y') }}, candidature du {{ r.createdAt|date('d/m/Y H:i') }}</small></p>
+    {% if r.organisation or r.proofUrl or r.territory or r.user.phone %}<ul class="list-unstyled meta mb-2">
+        {% if r.organisation %}<li><strong>Organisation :</strong> {{ r.organisation }}</li>{% endif %}
+        {% if r.territory %}<li><strong>Territoire :</strong> {{ r.territory }}</li>{% endif %}
+        {% if r.proofUrl %}<li><strong>Preuve :</strong> <a href="{{ r.proofUrl }}" target="_blank" rel="noopener noreferrer nofollow">{{ r.proofUrl }}</a></li>{% endif %}
+        <li><strong>Contact :</strong> {{ r.user.email }}{% if r.user.phone %}, {{ r.user.phone }}{% endif %}</li>
+    </ul>{% endif %}
+    <p style="white-space: pre-line">{{ r.motivation }}</p>
+    <form method="post" class="d-flex flex-wrap gap-2 align-items-start">
+        <input type="hidden" name="_token" value="{{ csrf_token('role_request_decide' ~ r.id) }}">
+        <input class="form-control" style="max-width: 340px" name="note" maxlength="1000" placeholder="Message pour le candidat (facultatif)">
+        <button class="btn btn-primary" formaction="{{ path('admin_role_request_decide', {id: r.id, decision: 'approve'}) }}" data-confirm="Accorder ce droit ?">Approuver</button>
+        <button class="btn btn-outline-danger" formaction="{{ path('admin_role_request_decide', {id: r.id, decision: 'reject'}) }}" data-confirm="Refuser cette candidature ?">Refuser</button>
+    </form>
+</div></div>
+{% else %}<p class="text-muted">Aucune candidature en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Décisions récentes</h2>
+<table class="table table-sm"><thead><tr><th>Membre</th><th>Droit</th><th>État</th><th>Date</th><th></th></tr></thead><tbody>
+{% for r in recent %}
+<tr><td>{{ r.user.publicName }}</td><td>{{ r.roleLabel }}</td><td>{{ r.status|replace({'_': ' '}) }}</td><td>{{ r.decidedAt|date('d/m/Y') }}</td>
+<td>{% if r.status == 'approuvee' %}<form method="post" action="{{ path('admin_role_request_decide', {id: r.id, decision: 'revoke'}) }}"><input type="hidden" name="_token" value="{{ csrf_token('role_request_decide' ~ r.id) }}"><button class="btn btn-sm btn-outline-danger" data-confirm="Retirer ce droit ?">Retirer</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="5" class="text-muted">Rien pour l'instant.</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

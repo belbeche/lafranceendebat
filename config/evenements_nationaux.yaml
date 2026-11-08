@@ -1,0 +1,14 @@
+# Journées nationales et internationales à date fixe, importées chaque année dans l'Agenda.
+# Chaque ligne doit citer une source officielle (hôte autorisé : voir App\Service\Agenda\EventVerifier::ALLOWED_HOSTS).
+# Pour ajouter une journée : une entrée de plus, rien d'autre à modifier.
+evenements:
+  - { mois: 3,  jour: 8,  nom: "Journée internationale des droits des femmes",              source: "https://www.egalite-femmes-hommes.gouv.fr/", description: "Journée de mobilisation pour l'égalité entre les femmes et les hommes." }
+  - { mois: 5,  jour: 9,  nom: "Journée de l'Europe",                                       source: "https://european-union.europa.eu/", description: "Célébration de la paix et de l'unité en Europe, en mémoire de la déclaration Schuman du 9 mai 1950." }
+  - { mois: 5,  jour: 27, nom: "Journée nationale de la Résistance",                        source: "https://www.defense.gouv.fr/", description: "Hommage aux résistants, à la date de la première réunion du Conseil national de la Résistance en 1943." }
+  - { mois: 6,  jour: 8,  nom: "Journée nationale d'hommage aux morts pour la France en Indochine", source: "https://www.defense.gouv.fr/", description: "Cérémonie nationale d'hommage." }
+  - { mois: 6,  jour: 18, nom: "Commémoration de l'appel du 18 juin 1940",                  source: "https://www.defense.gouv.fr/", description: "Journée nationale commémorative de l'appel du général de Gaulle à poursuivre le combat." }
+  - { mois: 6,  jour: 21, nom: "Fête de la musique",                                        source: "https://www.culture.gouv.fr/", description: "Fête gratuite et ouverte à toutes et tous, partout en France." }
+  - { mois: 9,  jour: 21, nom: "Journée internationale de la paix",                         source: "https://www.un.org/", description: "Journée des Nations unies consacrée à la paix et à la non-violence." }
+  - { mois: 11, jour: 20, nom: "Journée internationale des droits de l'enfant",            source: "https://www.un.org/", description: "Anniversaire de la Convention internationale des droits de l'enfant de 1989." }
+  - { mois: 11, jour: 25, nom: "Journée internationale pour l'élimination de la violence à l'égard des femmes", source: "https://www.un.org/", description: "Journée de sensibilisation et de mobilisation." }
+  - { mois: 12, jour: 9,  nom: "Journée de la laïcité",                                     source: "https://www.education.gouv.fr/", description: "Anniversaire de la loi de 1905 de séparation des Églises et de l'État." }

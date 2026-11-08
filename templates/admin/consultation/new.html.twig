@@ -1,0 +1,18 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Nouveau scrutin{% endblock %}
+{% block admin %}
+<h1 class="h3">Nouveau scrutin consultatif</h1>
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<form method="post" novalidate>
+    <input type="hidden" name="_token" value="{{ csrf_token('consultation_new') }}">
+    <label class="form-label fw-bold" for="question">Question (neutre, une seule idée)</label>
+    <input id="question" class="form-control mb-3" name="question" maxlength="160" required value="{{ d.question }}">
+    <label class="form-label fw-bold" for="context">Contexte (faits, sources, pas de consigne de vote)</label>
+    <textarea id="context" class="form-control mb-3" name="context" rows="5" maxlength="3000">{{ d.context }}</textarea>
+    <label class="form-label fw-bold" for="options">Réponses (2 à 6, une par ligne)</label>
+    <textarea id="options" class="form-control mb-3" name="options" rows="5" required>{{ d.options }}</textarea>
+    <label class="form-label fw-bold" for="closes">Clôture (fin de journée)</label>
+    <input id="closes" type="date" class="form-control mb-3" name="closes" value="{{ d.closes }}" required>
+    <button class="btn btn-primary" type="submit">Publier le scrutin</button>
+</form>
+{% endblock %}

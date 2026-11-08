@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+{% include 'dossier/_head.html.twig' %}
+<section class="section"><div class="container" style="max-width:860px">
+    <div class="carte mb-4"><h2 class="h5">Ce que dit la loi</h2>
+        <p class="mb-2"><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000032751714/2016-07-03" rel="noopener noreferrer nofollow"><strong>Article 421-1 du Code pénal (Légifrance)</strong></a> : sont des actes de terrorisme certains crimes et délits commis intentionnellement en relation avec une entreprise individuelle ou collective ayant pour but de troubler gravement l'ordre public par l'intimidation ou la terreur.</p>
+        <p class="mb-0">La qualification ne dépend ni de l'identité de l'auteur, ni de celle des victimes, ni de l'idéologie revendiquée. Un mobile raciste, antisémite ou religieux est une circonstance aggravante. La loi ne hiérarchise pas les victimes : toutes méritent la même mémoire.</p></div>
+    <h2 class="h4">Repères : des violences qui ont marqué la France</h2>
+    <p class="meta">Les qualifications judiciaires diffèrent : certains faits ont été jugés comme actes terroristes, d'autres comme meurtres à caractère antisémite ou raciste. Dates à vérifier auprès de sources officielles.</p>
+    <ul>
+        <li><strong>9 août 1982 :</strong> attentat de la rue des Rosiers, Paris.</li>
+        <li><strong>2006 :</strong> enlèvement et assassinat d'Ilan Halimi, crime antisémite.</li>
+        <li><strong>19 mars 2012 :</strong> attaque de l'école juive Ozar Hatorah, Toulouse.</li>
+        <li><strong>7 et 9 janvier 2015 :</strong> attentat contre Charlie Hebdo et prise d'otages de l'Hyper Cacher.</li>
+        <li><strong>13 novembre 2015 :</strong> attentats de Paris et Saint-Denis.</li>
+        <li><strong>14 juillet 2016 :</strong> attentat de Nice. <strong>26 juillet 2016 :</strong> assassinat du père Jacques Hamel dans son église.</li>
+        <li><strong>4 avril 2017 :</strong> meurtre antisémite de Sarah Halimi. <strong>23 mars 2018 :</strong> meurtre antisémite de Mireille Knoll.</li>
+        <li><strong>16 octobre 2020 :</strong> assassinat de Samuel Paty, professeur. <strong>29 octobre 2020 :</strong> attaque de la basilique Notre-Dame de Nice.</li>
+        <li><strong>13 octobre 2023 :</strong> assassinat de Dominique Bernard, professeur, à Arras.</li>
+        <li><strong>Octobre 2026 :</strong> attaque de Trappes, présentée par le parquet national antiterroriste comme visant des personnes en raison de leur couleur de peau, de leur origine ou de leur religion, réelle ou supposée. Les faits et leur qualification relèvent de l'enquête et de la justice : consultez les communiqués officiels.</li>
+    </ul>
+    <p class="meta">Liste non exhaustive. Sources : <a href="https://www.legifrance.gouv.fr/" rel="noopener noreferrer nofollow">Légifrance</a>, <a href="https://www.vie-publique.fr/" rel="noopener noreferrer nofollow">Vie publique</a>, communiqués du <a href="https://www.justice.gouv.fr/" rel="noopener noreferrer nofollow">ministère de la Justice</a>.</p>
+    <h2 class="h4 mt-4">La question posée</h2>
+    <p>Comment condamner chaque attaque sans ambiguïté, nommer le mobile quand la justice l'établit, et ne pas faire de la mémoire une arme dans une querelle politique ? Les déclarations publiques qui présentent un événement comme un « tournant » peuvent être discutées sur les faits, avec des sources, sans viser les personnes.</p>
+    <p><a class="btn btn-rouge" href="{{ path('app_debat_show', {slug: 'terrorisme-en-france-comment-se-souvenir-de-toutes-les-victimes'}) }}">Ouvrir le débat</a> <a class="btn btn-outline-dark" href="{{ path('app_dossier', {slug: 'histoire-guerres'}) }}">Histoire et désinformation</a></p>
+    <p class="meta">En cas de danger immédiat : 17 ou 112. Pour signaler un contenu haineux en ligne : <a href="https://www.internet-signalement.gouv.fr/" rel="noopener noreferrer nofollow">internet-signalement.gouv.fr</a> (Pharos).</p>
+</div></section>
+{% endblock %}

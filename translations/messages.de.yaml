@@ -1,0 +1,126 @@
+nav.debates: Debatten
+nav.propositions: Vorschläge
+nav.forgotten: Nicht vergessen
+nav.more: Mehr
+nav.candidates: Kandidaten
+nav.agenda: Kalender
+nav.charter: Friedenscharta
+nav.about: Über uns
+nav.install: Installieren
+nav.submit: Vorschlag einreichen
+nav.account: Mein Konto
+nav.profile: Mein Profil
+nav.my_propositions: Meine Vorschläge
+nav.logout: Abmelden
+nav.login: Anmelden
+nav.register: Konto erstellen (kostenlos)
+nav.language: Sprache
+nav.skip: Zum Inhalt springen
+tab.home: Start
+tab.account: Konto
+tab.login: Anmelden
+tab.submit: Vorschlag einreichen
+banner.text: Hier trennen wir Fakten von Meinungen. Kein Hass, keine Gewalt.
+banner.link: Friedenscharta lesen
+free.badge: Lebenslang kostenlos
+free.text: Für alle kostenlos, für immer. Kein Abo, keine Werbung, kein Datenverkauf.
+lang.title: Wählen Sie Ihre Sprache
+lang.subtitle: Sie können sie jederzeit im Menü ändern.
+lang.continue: Weiter auf %language%
+lang.other_note: 'Für diese Sprache gibt es noch keine vollständige Oberfläche: das Menü erscheint auf Englisch. Nutzen Sie die automatische Übersetzung Ihres Browsers für den Rest.'
+hero.title: Lasst uns reden, bevor wir uns bekämpfen.
+hero.cta_propose: Vorschlag einreichen
+hero.cta_debate: An einer Debatte teilnehmen
+hero.cta_paths: Was möchten Sie tun?
+path.nav: Geführte Wege
+
+guide.label: 'Schritt für Schritt'
+guide.steps: 'Schritte'
+guide.page_title: 'Schritt für Schritt'
+guide.page_lede: 'Jede Funktion der Website in wenigen Schritten erklärt. Keine technischen Kenntnisse nötig.'
+guide.home.t: 'Der Einstieg'
+guide.home.cta: 'Konto erstellen'
+guide.home.s1: 'Erstellen Sie ein kostenloses Konto (eine Minute, eine E-Mail genügt).'
+guide.home.s2: 'Wählen Sie Ihren Einstieg: debattieren, vorschlagen, Meinung abgeben oder bei Institutionen handeln.'
+guide.home.s3: 'Kehren Sie zu „Mein Bereich“ zurück: Dort sehen Sie den Stand Ihrer Ideen und was noch zu tun ist.'
+guide.communaute.t: 'An der Diskussion teilnehmen'
+guide.communaute.cta: 'Thema eröffnen'
+guide.communaute.s1: 'Lesen Sie die Regeln rechts, sie passen in vier Zeilen.'
+guide.communaute.s2: 'Klicken Sie auf „Thema eröffnen“ und schreiben Sie ruhig, mit präzisem Titel.'
+guide.communaute.s3: 'Antworten Sie anderen, indem Sie zuerst deren Idee umformulieren: Das wird im Ranking belohnt.'
+guide.communaute.s4: 'Eine problematische Nachricht? Nutzen Sie „Melden“, das Team antwortet mit Begründung.'
+guide.debats.t: 'An einer Debatte teilnehmen'
+guide.debats.cta: 'Debatten ansehen'
+guide.debats.s1: 'Öffnen Sie eine Debatte und lesen Sie zuerst die belegten Fakten.'
+guide.debats.s2: 'Fügen Sie ein Pro-, Contra- oder differenziertes Argument hinzu, wenn möglich mit Quelle.'
+guide.debats.s3: 'Unterstützen Sie die stärksten Argumente, auch wenn sie Ihrer Meinung widersprechen.'
+guide.propositions.t: 'Einen Vorschlag einreichen und voranbringen'
+guide.propositions.cta: 'Vorschlag einreichen'
+guide.propositions.s1: 'Klicken Sie auf „Vorschlag einreichen“: Problem, Maßnahme, geschätzte Kosten, wer handeln kann.'
+guide.propositions.s2: 'Sie wird geprüft und im Register veröffentlicht (meist innerhalb von 48 Std.).'
+guide.propositions.s3: 'Teilen Sie ihn: Jede Unterstützung bringt ihn im Ranking nach oben.'
+guide.propositions.s4: 'Verfolgen Sie ihn in „Mein Bereich“ bis zur Weitergabe an die Gewählten.'
+guide.scrutins.t: 'Ihre Meinung abgeben'
+guide.scrutins.cta: 'Abstimmungen ansehen'
+guide.scrutins.s1: 'Wählen Sie eine offene Abstimmung.'
+guide.scrutins.s2: 'Lesen Sie die Optionen und Argumente.'
+guide.scrutins.s3: 'Stimmen Sie ab: eine Stimme pro Person, beratendes und öffentliches Ergebnis.'
+guide.services.t: 'Eine Leistung finden oder anbieten'
+guide.services.cta: 'Leistungen ansehen'
+guide.services.s1: 'Stöbern Sie in den Leistungen (Mediation, Schulung, Begleitung) und öffnen Sie die passende.'
+guide.services.s2: 'Bestellen Sie: Die Zahlung ist gesichert und wird zurückgehalten.'
+guide.services.s3: 'Schreiben Sie dem Anbieter über die Bestellnachrichten (keine Kontaktdaten nötig).'
+guide.services.s4: 'Bestätigen Sie die erledigte Leistung: Dann wird der Anbieter bezahlt. Problem? Fordern Sie eine Erstattung an.'
+guide.candidater.t: 'Eine Rolle erhalten'
+guide.candidater.cta: 'Bewerben'
+guide.candidater.s1: 'Wählen Sie das Recht: Mediator, Akteur, Gewählter oder Verein.'
+guide.candidater.s2: 'Erklären Sie in wenigen Zeilen, was Sie beitragen.'
+guide.candidater.s3: 'Das Team antwortet. Es ist keine Mindestdauer des Kontos nötig.'
+guide.candidater.s4: 'Ihr eigener Bereich erscheint unter „Mein Bereich“.'
+guide.acteurs.t: 'Bei Institutionen handeln'
+guide.acteurs.cta: 'Institutionelle Wege'
+guide.acteurs.s1: 'Finden Sie den zuständigen Gewählten, die Institution oder den Mediator.'
+guide.acteurs.s2: 'Nutzen Sie den passenden Rechtsweg (Petition, Anrufung, Schreiben).'
+guide.acteurs.s3: 'Veröffentlichen Sie anschließend den Verlauf auf der Plattform, damit alle die Antwort sehen.'
+guide.plan.t: 'Den Plan vor Ort anwenden'
+guide.plan.cta: 'Ergebnis einreichen'
+guide.plan.s1: 'Finden Sie auf der Seite die Aktion für Ihre Situation (Bürger, Verein, Gewählte, Unternehmen).'
+guide.plan.s2: 'Führen Sie die erste Aktion der Liste „diese Woche“ aus.'
+guide.plan.s3: 'Reichen Sie das Ergebnis als Vorschlag ein, damit es verglichen und anderswo übernommen werden kann.'
+home.live.title: 'Gerade in der Gemeinschaft'
+home.live.join: 'Der Agora beitreten'
+home.live.members: 'registrierte Bürger'
+home.live.props: 'veröffentlichte Vorschläge'
+home.live.threads: 'Diskussionsthemen'
+home.live.ballots: 'offene Abstimmungen'
+home.live.empty: 'Die Agora wartet auf ihr erstes Thema. Eröffnen Sie es: ein Streit, eine Idee, Wut, die sich verwandeln lässt.'
+home.how.title: 'So funktioniert es, in drei Schritten'
+home.how.1t: '1. Ich registriere mich'
+home.how.1d: 'Für immer kostenlos, eine E-Mail genügt.'
+home.how.2t: '2. Ich beteilige mich'
+home.how.2d: 'Debatte, Vorschlag, Abstimmung, Petition oder Nachricht an Gewählte.'
+home.how.2l: 'Auswählen'
+home.how.3t: '3. Ich verfolge das Ergebnis'
+home.how.3d: '„Mein Bereich“ zeigt den Stand jeder Idee.'
+home.how.3l: 'Alle Anleitungen ansehen'
+door.how: 'So geht''s:'
+door.debate: 'Fakten lesen, dann ein Argument hinzufügen.'
+door.propose: '4 Felder ausfüllen, Prüfung binnen 48 Std.'
+door.opinion: 'Abstimmung wählen, einmal abstimmen.'
+door.petition: 'Öffnen, lesen, auf Unterstützen klicken.'
+door.institutions: 'Rechtsweg wählen und die Antwort verfolgen.'
+door.candidates: 'Zwei Profile nebeneinander öffnen.'
+eco.title: 'Frankreichs Wirtschaft ankurbeln: der Bürger-Marshallplan'
+eco.lede: 'Aufbauen ohne zu zerstören: jede Ausgabe messen, bündeln, was sich bündeln lässt, und belegte Einsparungen in Arbeit, Produktion und Grundversorgung reinvestieren.'
+eco.l1t: 'Messen'
+eco.l1d: 'Eine Kostenanalyse in 3 bis 5 freiwilligen Organisationen.'
+eco.l2t: 'Bündeln'
+eco.l2d: 'Gemeinsamer Einkauf und geteilte Supportfunktionen, ohne Monopol.'
+eco.l3t: 'Reinvestieren'
+eco.l3d: 'Jede belegte Einsparung fließt in Arbeit und nützliche Aufgaben zurück.'
+eco.cta: 'Plan lesen'
+eco.cta2: 'Diese Woche handeln'
+nav.guide: 'Schritt für Schritt'
+contacts.title: 'Nützliche Kontakte'
+contacts.lede: 'Wen Sie wofür kontaktieren. Offizielle Links und Nummern, vor dem Anruf auf der Website der jeweiligen Stelle prüfen.'
+nav.contacts: 'Nützliche Kontakte'

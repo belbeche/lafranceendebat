@@ -1,0 +1,23 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        
+        # Tables de l'ancienne application (yacht, dons, adhésions...) : conservées en base,
+        # ignorées par Doctrine pour qu'une mise à jour du schéma ne les supprime jamais.
+        schema_filter: '/^(?!(booking|bookings|conference|conferences|donation|donations|donation_history|donation_note|donation_notes|memberships|membership_types|service_solidaire|service_solidaires|slot|slots|solidarity_requests|conference_messages|conference_participant|conference_participants|chat_message|chat_messages|organization|organizations|practitioner|practitioners|registration|registrations|sessions)$)/'
+        
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        
+        mappings:
+            App:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App

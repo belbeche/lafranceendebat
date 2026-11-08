@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% import '_macros.html.twig' as ui %}
+{% block title %}Mon profil{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mon profil</h1>
+    <p class="lede mb-0">Affiché publiquement sous le nom « {{ user.publicName }} ».</p></div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-4"><div class="carte">
+        <p class="mb-1"><strong>{{ user.fullName }}</strong></p>
+        <p class="meta mb-3">{{ user.email }}</p>
+        <p class="mb-1">{{ propositions|length }} proposition{{ propositions|length > 1 ? 's' }}</p>
+        <p class="mb-1">{{ supportCount }} soutien{{ supportCount > 1 ? 's' }} apporté{{ supportCount > 1 ? 's' }}</p>
+        <p class="mb-3">{{ argumentCount }} contribution{{ argumentCount > 1 ? 's' }} aux débats</p>
+        <p class="meta">{% if user.hasAcceptedCharter %}Charte de paix acceptée le {{ user.charterAcceptedAt|date('d/m/Y') }}.{% else %}Charte de paix pas encore acceptée.{% endif %}</p>
+        <div class="d-grid gap-2">
+            <a class="btn btn-outline-dark btn-sm" href="{{ path('app_profile_edit') }}">Modifier mes informations</a>
+            <a class="btn btn-outline-dark btn-sm" href="{{ path('app_change_password') }}">Changer de mot de passe</a>
+            <a class="btn btn-outline-dark btn-sm" href="{{ path('app_login_history') }}">Mes connexions</a>
+            <a class="btn btn-outline-dark btn-sm" href="{{ path('app_notif_prefs') }}">Mes e-mails</a>
+        </div>
+    </div>
+    {% if myDebats|default %}
+    <div class="carte mt-3">
+        <h2 class="h6">Mes débats</h2>
+        <ul class="list-unstyled mb-0">
+        {% for d in myDebats %}
+            <li class="mb-2">{{ d.title }} <span class="meta">({{ d.status == 'draft' ? 'en attente de validation' : (d.status == 'open' ? 'ouvert' : 'clos') }})</span><br>
+                <a href="{{ path('app_debat_manage', {slug: d.slug}) }}">Gérer ce débat</a>{% if d.status != 'draft' %} · <a href="{{ path('app_debat_show', {slug: d.slug}) }}">Voir</a> · <a href="{{ path('app_history', {type: 'debat', id: d.id}) }}">Historique</a>{% endif %}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div class="carte mt-3">
+        <h2 class="h6">Supprimer mon compte</h2>
+        <p class="meta">Vos soutiens sont supprimés. Vos propositions et arguments déjà publiés sont conservés mais anonymisés.</p>
+        <form method="post" action="{{ path('app_profile_delete') }}" data-confirm="Supprimer définitivement votre compte ?">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
+            <button class="btn btn-outline-danger btn-sm" type="submit">Supprimer mon compte</button>
+        </form>
+    </div></div>
+    <div class="col-lg-8">
+        <h2 class="h4">Mes propositions</h2>
+        {% for p in propositions %}
+            <article class="rangee"><p class="mb-1">{{ ui.status_label(p) }}</p>
+                <h3><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a></h3>
+                <p class="meta mb-0">{{ p.supportCount }} soutien{{ p.supportCount > 1 ? 's' }}</p></article>
+        {% else %}<div class="carte">Aucune proposition déposée. <a href="{{ path('app_proposition_new') }}">Commencer</a></div>{% endfor %}
+    </div>
+</div></div></section>
+{% endblock %}

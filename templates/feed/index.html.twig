@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% import "_macros.html.twig" as ui %}
+{% block title %}Fil d'actualité{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Fil d'actualité</h1><p class="lede mb-0">Tout ce qui bouge, au même endroit. Une action par carte.</p></div></header>
+<section class="section"><div class="container" style="max-width:720px">
+    {% set ns = next_step() %}
+    <div class="next-step"><div><strong>{{ ns.title }}</strong><span>{{ ns.text }}</span></div><a class="btn btn-rouge" href="{{ ns.url }}">{{ ns.cta }}</a></div>
+    <div class="feed-compose d-flex flex-wrap gap-2 mb-3">
+        <a class="btn btn-outline-dark btn-sm" href="{{ path('app_proposition_new') }}"><i class="bi bi-lightbulb" aria-hidden="true"></i> Proposer</a>
+        <a class="btn btn-outline-dark btn-sm" href="{{ path('app_community_new') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i> Lancer une discussion</a>
+        <a class="btn btn-outline-dark btn-sm" href="{{ path('app_debat_new') }}"><i class="bi bi-chat-square-text" aria-hidden="true"></i> Ouvrir un débat</a>
+        <a class="btn btn-outline-dark btn-sm" href="{{ path('app_revendication_new') }}"><i class="bi bi-bookmark-star" aria-hidden="true"></i> Déposer une demande</a>
+    </div>
+    {% for it in items %}
+    <article class="carte feed-card mb-3">
+        <p class="mb-1"><span class="etiquette {{ it.kind in ['service', 'rencontre'] ? 'rouge' : 'bleu' }}">{{ it.label }}</span> {% if it.theme %}<span class="meta">{{ it.theme }}</span>{% endif %} <span class="meta">{{ it.at|date('d/m/Y') }}</span></p>
+        <h2 class="h5 mb-1"><a href="{{ it.url }}">{% if it.entity %}{{ tr(it.entity, it.kind == 'agora' ? 'title' : 'title') }}{% else %}{{ it.title }}{% endif %}</a></h2>
+        <p class="mb-2">{{ (it.text ?? '')|striptags|slice(0, 240) }}{{ (it.text ?? '')|length > 240 ? '…' }}</p>
+        {% if it.kind == 'service' %}<p class="mb-2"><strong>{{ it.price|number_format(0, ',', ' ') }} €</strong> <span class="meta">par {{ it.by }}, prix fixé par le prestataire</span></p>{% endif %}
+        {% if it.kind == 'rencontre' %}<p class="meta mb-2">{{ it.when|date('d/m/Y H:i') }}</p>{% endif %}
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            {% if it.kind == 'proposition' %}{{ ui.support_button(it.entity, it.entity.id in supportedIds) }}{% endif %}
+            <a class="btn btn-sm btn-bleu" href="{{ it.url }}">{{ it.cta }}</a>
+        </div>
+    </article>
+    {% else %}<p class="meta">Rien pour l'instant. <a href="{{ path('app_proposition_new') }}">Soyez la première personne à proposer.</a></p>{% endfor %}
+</div></section>
+{% endblock %}

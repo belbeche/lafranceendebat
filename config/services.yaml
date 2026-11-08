@@ -1,0 +1,194 @@
+# config/services.yaml
+parameters:
+    env(SESSION_IN_DB): '0'
+    env(MARKETPLACE_OPEN): '0'
+    env(DONATION_RECEIPTS_ENABLED): '0'
+    env(ASSO_NAME): ''
+    env(ASSO_ADDRESS): ''
+    env(ASSO_RNA): ''
+    env(ASSO_OBJECT): ''
+    env(ASSO_ELIGIBILITY): ''
+    app.marketplace_open: '%env(bool:MARKETPLACE_OPEN)%'
+    env(PUBLISHER_EMAIL): 'lettre@lafranceendebat.fr'
+    env(HOST_NAME): 'Shiftek IT'
+    env(HOST_ADDRESS): '39 La Guillaudais, 44170 La Grigonnais, France'
+    env(MAIL_FROM): ''
+    env(DEEPL_API_KEY): ''
+    env(TRUSTED_PROXIES): '127.0.0.1,REMOTE_ADDR'
+    env(GEMINI_API_KEY): ''
+    env(GEMINI_MODEL): 'gemini-2.5-flash'
+    env(DEEPL_API_URL): 'https://api-free.deepl.com'
+    env(TRANSLATE_PROVIDER): ''
+    env(MYMEMORY_EMAIL): ''
+    env(LIBRETRANSLATE_URL): ''
+    env(LIBRETRANSLATE_KEY): ''
+    env(SES_SNS_TOPIC_ARN): ''
+    env(STRIPE_SECRET_KEY): ''
+    env(STRIPE_WEBHOOK_SECRET): ''
+    env(PLATFORM_COMMISSION_BPS): '500'
+    env(MAIL_FROM_NAME): 'La France en Débat'
+    # --- PARAMÈTRES GÉNÉRAUX DU PROJET ---
+    app_url: '%env(default::APP_URL)%'
+    app.timezone: 'Europe/Paris'
+    app.default_email: 'contact@la-france-en-debat.fr'
+    app.default_sender_name: 'La France en Débat'
+    app.site_url: 'https://la-france-en-debat.fr'
+    
+    # --- ÉDITEUR DU SITE (mentions légales, e-mails, justificatifs) ---
+    # L'éditeur est une micro-entreprise : renseignez ces valeurs dans .env.local (voir .env.example).
+    # Les anciennes variables ASSOCIATION_* restent lues par compatibilité (voir src/Twig/AppExtension.php).
+    publisher_name: '%env(default::PUBLISHER_NAME)%'
+    publisher_address: '%env(default::PUBLISHER_ADDRESS)%'
+    publisher_siret: '%env(default::PUBLISHER_SIRET)%'
+    publisher_contact: '%env(default::PUBLISHER_CONTACT)%'
+
+    # --- DOSSIERS D'UPLOAD (on garde juste ce qui pourrait servir) ---
+    avatars_directory: '%kernel.project_dir%/public/uploads/avatars'
+
+    # --- MODÉRATION (Mots interdits) ---
+    forbidden_words:
+        - 'idiot'
+        - 'imbecile'
+        - 'connard'
+        - 'connasse'
+        - 'salope'
+        - 'salaud'
+        - 'nazi'
+        - 'bougnoule'
+        - 'youpin'
+        - 'enculé'
+        - 'enculer'
+        - 'ordure'
+        - 'pourriture'
+        - 'ta_gueule'
+        - 'ferme_ta_gueule'
+        - 'fdp'
+        - 'fils_de_pute'
+        - 'pute'
+        - 'putain_de_merde'
+        - 'batard'
+        - 'abruti'
+        - 'debile'
+        - 'cretin'
+        - 'cretine'
+        - 'taré'
+        - 'gogol'
+        - 'sous_homme'
+        - 'race_de_sous_homme'
+        - 'nègre'
+        - 'bamboula'
+        - 'sale_arabe'
+        - 'sale_noir'
+        - 'sale_juif'
+        - 'sale_francais'
+        - 'sale_blanc'
+        - 'tapette'
+        - 'pede'
+        - 'enfoire'
+        - 'enfoiré'
+        - 'merdeux'
+        - 'merdeuse'
+        - 'trouduc'
+        - 'trou_du_cul'
+        - 'va_te_faire_foutre'
+        - 'nique_ta_mere'
+        - 'ntm'
+        - 'niquer_ta_mere'
+        - 'casse_toi_pauvre_con'
+        - 'pauvre_con'
+        - 'grosse_merde'
+        - 'sac_a_merde'
+        - 'raclure'
+        - 'crevure'
+        - 'sous_merde'
+        # Ajoute ici d'autres mots à filtrer
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $projectDir: '%kernel.project_dir%'
+            $kernelEnvironment: '%kernel.environment%'
+            $uploadDirectory: '%kernel.project_dir%'
+            $allowedIps: ''
+            $sesVerificationToken: ''
+            $kernelProjectDir: '%kernel.project_dir%'
+            $mailFrom: '%env(MAIL_FROM)%'
+            $mailFromName: '%env(MAIL_FROM_NAME)%'
+
+    # --- CONTRÔLEURS ---
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
+
+    # --- SERVICES MÉTIER (Ceux qu'on garde) ---
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Message/'
+            - '../src/Archive/'
+
+    # --- SERVICE DE MODÉRATION (NOUVEAU) ---
+    App\Service\ContentModerator:
+        arguments:
+            $forbiddenWords: '%forbidden_words%'
+
+    App\Service\Agenda\NationalEventImporter:
+        arguments:
+            $icsFeeds: '%env(string:AGENDA_ICS_FEEDS)%'
+            $nationalFile: '%kernel.project_dir%/config/evenements_nationaux.yaml'
+            $reportFile: '%kernel.project_dir%/var/agenda_import.json'
+
+    App\Service\Security\DisposableEmailPolicy:
+        arguments:
+            $listFile: '%kernel.project_dir%/config/disposable_domains.txt'
+
+    # --- CONFIGURATION DE BASE ---
+    Symfony\Component\HttpFoundation\Session\SessionInterface:
+        public: true
+        factory: ['@session.factory', 'createSession']
+
+    Symfony\Component\HttpFoundation\Session\SessionFactory:
+        alias: session.factory
+
+    App\Service\Lettre\LettreTokens:
+        arguments:
+            $secret: '%kernel.secret%'
+
+    App\Service\Ses\SnsVerifier:
+        arguments:
+            $expectedTopicArn: '%env(SES_SNS_TOPIC_ARN)%'
+
+    App\Service\Payment\PaymentGateway: '@App\Service\Payment\StripeGateway'
+    App\Service\Payment\StripeGateway:
+        arguments:
+            $secretKey: '%env(STRIPE_SECRET_KEY)%'
+    App\Service\Payment\StripeWebhookVerifier:
+        arguments:
+            $secret: '%env(STRIPE_WEBHOOK_SECRET)%'
+    App\Service\Payment\MarketplaceService:
+        arguments:
+            $commissionBps: '%env(int:PLATFORM_COMMISSION_BPS)%'
+            $open: '%app.marketplace_open%'
+
+    app.session_handler:
+        class: SessionHandlerInterface
+        factory: ['App\Session\SessionHandlerFactory', 'create']
+        arguments: ['%env(bool:SESSION_IN_DB)%', '@doctrine.dbal.default_connection']
+
+    App\Service\DonationReceiptService:
+        arguments:
+            $enabled: '%env(bool:DONATION_RECEIPTS_ENABLED)%'
+            $orgName: '%env(ASSO_NAME)%'
+            $orgAddress: '%env(ASSO_ADDRESS)%'
+            $orgRna: '%env(ASSO_RNA)%'
+            $orgObject: '%env(ASSO_OBJECT)%'
+            $eligibility: '%env(ASSO_ELIGIBILITY)%'
+
+    App\Service\Audience\ViewTracker:
+        arguments:
+            $secret: '%kernel.secret%'

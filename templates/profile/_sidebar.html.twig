@@ -1,0 +1,47 @@
+{# templates/profile/_sidebar.html.twig #}
+<div class="card border-0 shadow-sm rounded-3 mb-4">
+    <div class="card-body text-center p-4">
+        <!-- Avatar -->
+        <div class="mb-4">
+            {% if app.user.avatarPath %}
+                <img src="{{ asset('uploads/avatars/' ~ app.user.avatarPath) }}" 
+                     class="rounded-circle img-fluid" 
+                     style="width: 120px; height: 120px; object-fit: cover;"
+                     alt="{{ app.user.fullName }}">
+            {% else %}
+                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mx-auto" 
+                     style="width: 120px; height: 120px;">
+                    <i class="fas fa-user fa-3x text-white"></i>
+                </div>
+            {% endif %}
+        </div>
+        
+        <h5 class="fw-bold text-dark mb-1">{{ app.user.fullName }}</h5>
+        <p class="text-muted small mb-3">{{ app.user.email }}</p>
+        
+        <!-- Menu -->
+        <div class="list-group list-group-flush mt-3">
+            <a href="{{ path('app_profile') }}" 
+               class="list-group-item list-group-item-action border-0 py-3 {{ app.request.get('_route') == 'app_profile' ? 'active' : '' }}">
+                <i class="fas fa-user me-2"></i>Profil
+            </a>
+            <a href="{{ path('app_profile_edit') }}" 
+               class="list-group-item list-group-item-action border-0 py-3 {{ app.request.get('_route') == 'app_profile_edit' ? 'active' : '' }}">
+                <i class="fas fa-edit me-2"></i>Modifier le profil
+            </a>
+            <a href="{{ path('app_my_propositions') }}" class="list-group-item list-group-item-action border-0 py-3 {{ app.request.get('_route') == 'app_my_propositions' ? 'active' : '' }}">
+                <i class="bi bi-list-check me-2"></i>Mes propositions
+            </a>
+            <a href="{{ path('app_ranking') }}" class="list-group-item list-group-item-action border-0 py-3">
+                <i class="bi bi-trophy me-2"></i>Classement des artisans de paix
+            </a>
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="dropdown-divider"></div>
+                <a href="{{ path('admin_dashboard') }}" 
+                   class="list-group-item list-group-item-action border-0 py-3 text-warning">
+                    <i class="fas fa-cog me-2"></i>Administration
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ candidat.name }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>{{ candidat.name }}</h1>
+    <p class="lede">{{ candidat.role ?: 'Fonction non renseignée' }}{% if candidat.declaredLabel %} · se déclare : {{ candidat.declaredLabel }}{% endif %}</p>
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        {% if candidat.biography %}<p class="measure">{{ candidat.biography|nl2br }}</p>{% endif %}
+        <h2 class="h4 mt-3">Engagements documentés</h2>
+        {% for e in candidat.engagements %}
+            <div class="form-card mb-3">
+                <p class="mb-1"><span class="etiquette bleu">{{ e.theme }}</span> <span class="etiquette">{{ e.statusLabel }}</span></p>
+                <h3 class="h5">{{ e.title }}</h3>
+                {% include 'candidat/_engagement.html.twig' with {engagement: e} only %}
+                <p class="meta mb-0">Fiche renseignée à {{ e.sheetCompleteness }} / 7 · mise à jour le {{ e.updatedAt|date('d/m/Y') }}</p>
+            </div>
+        {% else %}
+            <div class="carte">Aucun engagement documenté pour le moment.</div>
+        {% endfor %}
+    </div>
+    <div class="col-lg-4"><div class="carte">
+        <h2 class="h6">Informations</h2>
+        <p class="mb-1">{% if candidat.acceptsPublicDebate %}A accepté un débat public contradictoire.{% else %}Aucun débat public contradictoire accepté à ce jour.{% endif %}</p>
+        {% if candidat.programUrl %}<p class="mb-0"><a href="{{ candidat.programUrl }}" rel="noopener nofollow" target="_blank">Programme officiel</a></p>{% endif %}
+        <p class="meta mt-3 mb-0">Fiche établie à partir de sources publiques. La personne peut demander une correction.</p>
+    </div></div>
+</div></div></section>
+{% endblock %}

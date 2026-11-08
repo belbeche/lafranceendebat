@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+{% include 'dossier/_head.html.twig' %}
+<section class="section"><div class="container" style="max-width:860px">
+    <p class="meta">Texte de référence : <a href="https://www.conseil-constitutionnel.fr/le-bloc-de-constitutionnalite/texte-integral-de-la-constitution-du-4-octobre-1958-en-vigueur" rel="noopener noreferrer nofollow">Constitution du 4 octobre 1958, texte intégral (Conseil constitutionnel)</a>. Cette fiche est un résumé citoyen, pas un avis juridique.</p>
+    <h2 class="h4">Ce que dit le texte</h2>
+    <ul>
+        <li><strong>Préambule :</strong> attachement aux droits de l'homme et à la souveraineté nationale, tels que définis en 1789 et complétés en 1946.</li>
+        <li><strong>Article 3 :</strong> la souveraineté nationale appartient au peuple, qui l'exerce par ses représentants et par la voie du référendum. Aucune section du peuple ni aucun individu ne peut s'en attribuer l'exercice.</li>
+        <li><strong>Article 11 :</strong> le Président peut soumettre certains projets au référendum. Un référendum d'initiative partagée (RIP) est possible : il faut le soutien d'un cinquième des membres du Parlement et d'un dixième des électeurs inscrits.</li>
+        <li><strong>Article 12 :</strong> le Président peut dissoudre l'Assemblée nationale après consultation du Premier ministre et des présidents des assemblées, sans pouvoir le refaire dans l'année qui suit les élections.</li>
+        <li><strong>Article 49, alinéa 3 :</strong> le Premier ministre peut engager la responsabilité du Gouvernement sur un texte, qui est alors considéré comme adopté sauf motion de censure votée.</li>
+        <li><strong>Article 89 :</strong> la Constitution peut être révisée, mais la forme républicaine du gouvernement ne peut pas faire l'objet d'une révision.</li>
+    </ul>
+    <h2 class="h4 mt-4">Points positifs pour notre démarche</h2>
+    <ul>
+        <li>L'article 3 reconnaît que la souveraineté vient du peuple : le débat citoyen est dans l'esprit du texte.</li>
+        <li>Le RIP donne une voie légale à l'initiative citoyenne, à condition de réunir des parlementaires et des électeurs.</li>
+        <li>Le droit de pétition et de manifestation pacifique sont des moyens légaux de se faire entendre, tout comme les consultations sur cette plateforme (consultatives, sans valeur légale).</li>
+    </ul>
+    <h2 class="h4 mt-4">Limites à connaître</h2>
+    <ul>
+        <li>Le seuil du RIP est très élevé : un dixième des électeurs représente de l'ordre de 4,9 millions de personnes. Le premier RIP engagé, en 2019, est resté loin de ce seuil.</li>
+        <li>Un référendum n'est possible que sur certains sujets, et le résultat d'une consultation en ligne comme la nôtre n'oblige personne.</li>
+        <li>Le Gouvernement dispose d'outils puissants dans la fabrication de la loi (article 49 alinéa 3, vote bloqué) et le Président de la dissolution : les débats sur l'équilibre des pouvoirs sont légitimes et se mènent à visage découvert.</li>
+    </ul>
+    <h2 class="h4 mt-4">Notre idée dans ce cadre</h2>
+    <p>Nous souhaitons un lieu de dialogue, de prévention et de responsabilité des élus, où les citoyens participent directement. Cela s'inscrit dans la Constitution : l'article 89 interdit de remettre en cause la forme républicaine du gouvernement. Quand nous parlons de dépasser les affrontements entre camps, il s'agit donc de <strong>pratiques politiques</strong> (dialogue, transparence, participation) et non de sortir de la démocratie ni de la République.</p>
+    <p>Chaque acteur, élu, ministère, association ou citoyen qui œuvre de bonne foi peut s'exprimer ici dans les mêmes conditions. Nous ne désignons pas de minorités à la vindicte : on discute des actes et des idées, avec des sources.</p>
+    <p><a class="btn btn-rouge" href="{{ path('app_debat_new') }}">Ouvrir un débat sur ces questions</a> <a class="btn btn-outline-dark" href="{{ path('app_institutional_routes') }}">Les voies institutionnelles</a></p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Propos bloqué{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">{{ repeat ? 'Récidive : propos bloqués à répétition' : 'Un propos a été bloqué' }}</h1>
+<table style="border-collapse:collapse;font-size:14px">
+<tr><td style="padding:3px 12px 3px 0;color:#555">Membre</td><td><strong>{{ incident.user ? incident.user.fullName ~ ' (#' ~ incident.user.id ~ ')' : 'compte supprimé' }}</strong></td></tr>
+<tr><td style="padding:3px 12px 3px 0;color:#555">Motif</td><td><strong>{{ incident.reasons|join(', ') }}</strong> (gravité {{ incident.severity }})</td></tr>
+<tr><td style="padding:3px 12px 3px 0;color:#555">Où</td><td>{{ incident.context }}</td></tr>
+<tr><td style="padding:3px 12px 3px 0;color:#555">Sur 30 jours</td><td>{{ monthCount }} incident(s)</td></tr>
+</table>
+<p style="margin:14px 0 4px;color:#555">Extrait (non publié) :</p>
+<blockquote style="margin:0;padding:8px 12px;border-left:3px solid #ED2939;background:#f6f7fb">{{ incident.excerpt }}</blockquote>
+<p style="margin-top:18px"><a href="{{ url('admin_moderation_incidents') }}" style="display:inline-block;background:#002395;color:#fff;padding:10px 20px;text-decoration:none;font-weight:bold">Ouvrir les signalements</a></p>
+<p style="font-size:12px;color:#777">Message automatique réservé à l'équipe de modération. Le contenu n'a pas été publié. Un rappel courtois a été envoyé au membre (1 par jour au maximum).</p>
+{% endblock %}

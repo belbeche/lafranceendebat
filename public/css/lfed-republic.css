@@ -1,0 +1,23 @@
+/* Habillage commun « République » : memes reperes que la console, l'espace citoyen et l'espace acteur. */
+body { background: #f4f5f9; }
+.page-head { background: var(--bleu-nuit); color: #fff; border-bottom: 0; position: relative; }
+.page-head h1, .page-head .lede, .page-head p { color: #fff; }
+.page-head a { color: #cfdaf6; }
+/* Encadrés clairs dans un bandeau sombre : garder un texte foncé lisible (la règle .page-head p, plus spécifique, les rendait blancs sur fond clair). */
+.page-head .limite, .page-head .limite p, .page-head .alert, .page-head .alert p { color: #5c4300; }
+.page-head .limite strong, .page-head .alert strong { color: #4a3500; }
+.page-head .limite a, .page-head .alert a { color: #002395; }
+.page-head .limite { margin-top: 1rem; }
+.page-head::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg, #002395 33.3%, #fff 33.3% 66.6%, #ED2939 66.6%); }
+.carte, .rangee, .hub-box { border-color: #dde0ee; border-radius: 8px; }
+.rangee { border-left-width: 6px; }
+.btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.btn-sm { min-height: 38px; }
+.devise-band { background: #fff; border-top: 1px solid #dde0ee; padding: 1.75rem 0; }
+.devise-band .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+.devise-band h2 { font-family: var(--serif); font-size: 1.05rem; margin: 0 0 .25rem; }
+.devise-band p { margin: 0; font-size: .92rem; color: var(--encre-douce); }
+.devise-band .liberte { border-top: 4px solid #002395; padding-top: .6rem; }
+.devise-band .egalite { border-top: 4px solid #d9dbe8; padding-top: .6rem; }
+.devise-band .fraternite { border-top: 4px solid #ED2939; padding-top: .6rem; }
+.devise-flag { height: 6px; background: linear-gradient(90deg, #002395 33.3%, #fff 33.3% 66.6%, #ED2939 66.6%); }

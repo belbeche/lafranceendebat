@@ -1,0 +1,14 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}{{ approved ? 'Contribution publiée' : 'Contribution non publiée' }}{% endblock %}
+{% block content %}
+{% if approved %}
+<h1 style="font-size:20px;color:#00164f">Votre contribution est publiée</h1>
+<p>Après relecture, « {{ label }} » est maintenant visible par tous.</p>
+<p><a href="{{ link }}" style="display:inline-block;background:#002395;color:#fff;padding:12px 22px;text-decoration:none;font-weight:bold">Voir la publication</a></p>
+{% else %}
+<h1 style="font-size:20px;color:#00164f">Votre contribution n'a pas été publiée</h1>
+<p>Après relecture, « {{ label }} » n'a pas pu être publiée.</p>
+{% if note %}<p style="border-left:4px solid #ED2939;padding-left:12px"><strong>Motif :</strong> {{ note }}</p>{% endif %}
+<p>Vous pouvez la reformuler et la déposer à nouveau. La charte de paix s'applique à tous : critiquer les mesures, pas les personnes.</p>
+{% endif %}
+{% endblock %}

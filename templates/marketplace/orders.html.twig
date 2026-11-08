@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes commandes{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes commandes</h1></div></header>
+<section class="section"><div class="container">
+{% for o in orders %}
+    <div class="carte p-3 mb-3 d-flex flex-wrap justify-content-between gap-3 align-items-center">
+        <div><strong>{{ o.offer.title }}</strong><br><span class="meta">{{ o.offer.provider.publicName }} · {{ o.createdAt|date('d/m/Y') }} · {{ (o.amountCents / 100)|number_format(2, ',', ' ') }} € · {{ o.status|replace({'_': ' '}) }}</span></div>
+        <div class="d-flex gap-2 flex-wrap">{% if o.status in ['payee','terminee'] %}<a class="btn btn-outline-primary" href="{{ path('app_order_messages', {id: o.id}) }}">Messages</a>{% endif %}
+        {% if o.status == 'payee' %}
+        <form method="post" action="{{ path('app_order_confirm', {id: o.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('order_confirm' ~ o.id) }}"><button class="btn btn-primary" data-confirm="Confirmer que la prestation a été réalisée ? Le prestataire sera réglé.">La prestation a été réalisée</button></form>
+        {% endif %}</div>
+    </div>
+{% else %}<p class="text-muted">Aucune commande. <a href="{{ path('app_services') }}">Voir les services</a>.</p>{% endfor %}
+<p class="meta">En cas de problème, écrivez-nous via la page <a href="{{ path('app_contact') }}">Contact</a> avant la fin du délai de {{ days }} jours : nous pouvons suspendre le reversement et rembourser.</p>
+</div></section>
+{% endblock %}

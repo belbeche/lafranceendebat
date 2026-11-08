@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ kind == 'offre' ? "Proposer mon aide" : "Demander de l'aide" }} | La France en Débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>{{ kind == 'offre' ? "Je propose mon aide" : "J'ai besoin d'aide" }}</h1>
+<p class="lede mb-0">{{ kind == 'offre' ? "Dites ce que vous savez faire et pour qui. Les membres intéressés vous répondent." : "Décrivez un besoin précis. Plus il est concret, plus vite quelqu'un répond." }}</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+    {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+    <form method="post" class="form-card">
+        <input type="hidden" name="_token" value="{{ csrf_token('mission_post') }}">
+        <div class="mb-3"><span class="form-label d-block">Type d'annonce</span>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="kind" id="k1" value="demande" {{ kind != 'offre' ? 'checked' }}><label class="form-check-label" for="k1">J'ai besoin d'aide</label></div>
+            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="kind" id="k2" value="offre" {{ kind == 'offre' ? 'checked' }}><label class="form-check-label" for="k2">Je propose mon aide</label></div></div>
+        <div class="mb-3"><label class="form-label" for="title">Titre</label><input class="form-control" id="title" name="title" maxlength="120" required value="{{ title }}" placeholder="Ex. : relire la traduction d'un débat en anglais"></div>
+        <div class="mb-3"><label class="form-label" for="description">Description</label><textarea class="form-control" id="description" name="description" rows="6" minlength="40" maxlength="1500" required>{{ description }}</textarea>
+            <div class="form-text">Ce qu'il faut faire, pour quand, quelles compétences. Sans e-mail ni téléphone : les réponses passent par la plateforme.</div></div>
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><label class="form-label" for="territory">Territoire (facultatif)</label><input class="form-control" id="territory" name="territory" maxlength="80" value="{{ territory }}" placeholder="Ville, département ou « à distance »"></div>
+            <div class="col-md-6"><label class="form-label" for="pay">Rémunération</label><select class="form-select" id="pay" name="pay">{% for k, l in {free: 'Bénévole', paid: 'Rémunérée', both: 'Bénévole ou rémunérée'} %}<option value="{{ k }}" {{ pay == k ? 'selected' }}>{{ l }}</option>{% endfor %}</select></div>
+        </div>
+        <p class="meta">La plateforme ne garantit aucune rémunération : elle se convient entre vous. Votre annonce est relue avant publication.</p>
+        <button class="btn btn-bleu" type="submit">Envoyer pour relecture</button>
+    </form>
+</div></section>
+{% endblock %}

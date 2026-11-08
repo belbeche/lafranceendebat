@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{% block title %}La France en Débat{% endblock %}</title></head>
+<body style="margin:0;background:#f4f3ef;font-family:Arial,Helvetica,sans-serif;color:#1b1f33;line-height:1.6">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:24px 12px">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:580px;background:#ffffff">
+<tr><td style="height:6px;background:#002395;font-size:0">&nbsp;</td></tr>
+<tr><td style="padding:24px 28px 8px"><span style="font-size:20px;font-weight:bold;color:#00164f">La France en Débat</span><br><span style="font-size:12px;color:#4a4f66;letter-spacing:1px">Dialogue · Paix · Démocratie</span></td></tr>
+<tr><td style="padding:8px 28px 24px">{% block content %}{% endblock %}</td></tr>
+<tr><td style="height:4px;background:#ED2939;font-size:0">&nbsp;</td></tr>
+<tr><td style="padding:16px 28px;font-size:12px;color:#555">
+Vous recevez ce message parce que vous avez utilisé le site La France en Débat. Il s'agit d'un message de service, pas d'une lettre d'information.<br>
+{{ publisher.trade ?? 'La France en Débat' }}{% if publisher.address %}, {{ publisher.address }}{% endif %}
+</td></tr>
+</table></td></tr></table>
+</body></html>

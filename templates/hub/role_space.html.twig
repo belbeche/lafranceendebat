@@ -1,0 +1,24 @@
+{% extends 'space/_layout.html.twig' %}
+{% block title %}{{ space.title }}{% endblock %}
+{% set nav_active = 'home' %}
+{% block space %}
+<h1>{{ space.title }}</h1><p class="sp-sub">{{ space.intro }}</p>
+<section><div>
+    {% if slug == 'mediateur' %}
+        <h2 class="h5 mb-3">À relire ({{ pending|length }})</h2>
+        <p><a class="btn btn-primary" href="{{ path('admin_moderation') }}">Ouvrir la file de modération</a></p>
+        <ul class="list-group mb-4">
+            {% for p in pending %}<li class="list-group-item">{{ p.title }}</li>{% else %}<li class="list-group-item">Rien en attente.</li>{% endfor %}
+        </ul>
+    {% endif %}
+    <h2 class="h5 mb-3">Propositions les plus soutenues</h2>
+    <ul class="list-group mb-4">
+        {% for p in top %}<li class="list-group-item d-flex justify-content-between"><span>{{ p.title }}</span><span class="meta">{{ p.supportCount }} soutiens</span></li>{% else %}<li class="list-group-item">Aucune proposition validée.</li>{% endfor %}
+    </ul>
+    <h2 class="h5 mb-3">Mes propositions</h2>
+    <ul class="list-group mb-4">
+        {% for p in mine %}<li class="list-group-item">{{ p.title }} <span class="meta">({{ p.status }})</span></li>{% else %}<li class="list-group-item">Aucune pour le moment. <a href="{{ path('app_proposition_new') }}">Déposer une proposition</a></li>{% endfor %}
+    </ul>
+    <a href="{{ path('app_hub') }}">Retour à mon espace</a>
+</div></section>
+{% endblock %}

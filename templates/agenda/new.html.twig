@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Proposer une rencontre{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Proposer une rencontre</h1><p class="lede mb-0">Débat public, atelier, permanence ou rencontre avec un élu. Elle est publiée à l'agenda après validation, avec sa conversation sur la plateforme.</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if errors %}<div class="alert alert-danger"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<form method="post" class="form-card">
+    <input type="hidden" name="_token" value="{{ csrf_token('event_new') }}">
+    <div class="mb-3"><label class="form-label" for="name">Titre</label><input class="form-control" id="name" name="name" value="{{ d.name }}" maxlength="200" required></div>
+    <div class="row g-3 mb-3"><div class="col-md-6"><label class="form-label" for="kind">Type</label><select class="form-select" id="kind" name="kind">{% for k, l in kinds %}<option value="{{ k }}" {{ d.kind == k ? 'selected' }}>{{ l }}</option>{% endfor %}</select></div>
+    <div class="col-md-6"><label class="form-label" for="date">Date et heure</label><input class="form-control" type="datetime-local" id="date" name="date" value="{{ d.date }}" required></div></div>
+    <div class="mb-3"><label class="form-label" for="location">Lieu (ou « en ligne »)</label><input class="form-control" id="location" name="location" value="{{ d.location }}" maxlength="255"></div>
+    <div class="mb-3"><label class="form-label" for="description">Description (objet, public, modalités)</label><textarea class="form-control" id="description" name="description" rows="5" maxlength="2000" required>{{ d.description }}</textarea></div>
+    <button class="btn btn-rouge" type="submit">Envoyer pour validation</button> <a class="btn btn-link" href="{{ path('app_agenda') }}">Annuler</a>
+</form>
+</div></section>
+{% endblock %}

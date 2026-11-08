@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}Missions et rémunération{% endblock %}
+{% block body %}
+{% macro actors(info, signup) %}
+    <div class="need-actors" aria-label="Acteurs concernés">
+    {% if info.matches %}<p class="meta mb-1"><strong>{{ info.generic ? 'Acteurs de ce profil' : 'Acteurs dont les compétences correspondent' }}</strong></p>
+        <ul class="list-unstyled mb-2">{% for a in info.matches %}<li><i class="bi bi-person-badge" aria-hidden="true"></i> <strong>{{ a.user.publicName }}</strong> <span class="meta">{{ a.organisation ?: a.label }}{% if a.territory %}, {{ a.territory }}{% endif %}{% if a.skills is defined %} · compétence : {{ a.skills|slice(0, 2)|join(', ') }}{% endif %}</span></li>{% endfor %}</ul>
+    {% else %}<p class="meta mb-1">Aucun acteur inscrit ne correspond encore à ce besoin{% if info.eligible > 0 and not info.generic %} ({{ info.eligible }} acteur{{ info.eligible > 1 ? 's' : '' }} de ce profil, sans compétence liée précisée){% endif %}.</p>
+        <p class="meta mb-2">Vous êtes
+        {% for r in info.roles|filter(r => signup[r] is defined)|slice(0, 3) %}<a href="{{ path('app_register', {profil: signup[r][0]}) }}">{{ signup[r][1] }}</a>{{ loop.last ? '' : (loop.revindex == 2 ? ' ou ' : ', ') }}{% endfor %}
+        ? Inscrivez-vous et décrivez vos compétences : vous apparaîtrez ici.</p>{% endif %}
+    </div>
+{% endmacro %}
+
+<header class="page-head"><div class="container">
+    <h1>Missions : chacun peut contribuer, certains peuvent en vivre</h1>
+    <p class="lead mb-2">Toutes les missions sont ouvertes à tout le monde, sans condition de statut. Les unes sont bénévoles et reconnues publiquement, les autres peuvent être rémunérées par ceux qui en ont besoin.</p>
+    <p class="mb-0"><strong>Comment ça marche :</strong> 1. Choisissez une mission. 2. Présentez-vous en quelques lignes. 3. Votre candidature est transmise aux acteurs concernés, qui vous répondent par e-mail.</p>
+    <p class="mt-3 mb-0"><a class="btn btn-rouge" href="{{ path('app_mission_post_new', {type: 'demande'}) }}">J'ai besoin d'aide</a> <a class="btn btn-bleu" href="{{ path('app_mission_post_new', {type: 'offre'}) }}">Je propose mon aide</a> <a class="btn btn-outline-light" href="{{ path('app_mission_posts') }}">Voir les annonces des membres</a></p>
+</div></header>
+<section class="section pb-0"><div class="container">
+    <h2 class="serif">Les missions du Plan Marshall citoyen</h2>
+    <p class="lead">Le <a href="{{ path('app_plan_marshall') }}">Plan Marshall citoyen</a> relance l'économie en mesurant avant de couper. Chaque mesure a besoin de personnes précises, avec un livrable et une preuve.</p>
+    <div class="row g-3">
+    {% for m in plan %}
+        <div class="col-md-6 col-lg-4"><div class="carte h-100">
+            <p class="mb-1">{% if m[4] == 'paid' %}<span class="etiquette rouge">Rémunérée</span>{% else %}<span class="etiquette rouge">Bénévole ou rémunérée</span>{% endif %}</p>
+            <h3 class="h5">{{ m[0] }}</h3>
+            <p class="mb-2">{{ m[1] }}</p>
+            <p class="meta mb-1"><strong>Compétences utiles :</strong> {{ m[2] }}</p>
+            <p class="meta mb-2"><strong>Preuve :</strong> {{ m[3] }}</p>
+            {{ _self.actors(planActors['p' ~ loop.index0], signup) }}
+                        <a class="btn btn-sm btn-bleu" href="{{ path('app_mission_apply', {key: 'p' ~ loop.index0}) }}">Je candidate</a>
+        </div></div>
+    {% endfor %}
+    </div>
+</div></section>
+<section class="section pb-0"><div class="container"><h2 class="serif">Les missions pour faire vivre la plateforme</h2></div></section>
+<section class="section"><div class="container">
+    <div class="row g-3">
+    {% for m in missions %}
+        <div class="col-md-6"><div class="carte h-100">
+            <p class="mb-1">{% if m[3] == 'paid' %}<span class="etiquette rouge">Rémunérée</span>{% elseif m[3] == 'free' %}<span class="etiquette bleu">Bénévole, reconnue</span>{% else %}<span class="etiquette rouge">Bénévole ou rémunérée</span>{% endif %} <span class="meta">Ouvert à tous</span></p>
+            <h2 class="h5">{{ m[0] }}</h2>
+            <p>{{ m[1] }}</p>
+            {% if missionActors['m' ~ loop.index0] is defined %}{{ _self.actors(missionActors['m' ~ loop.index0], signup) }}{% endif %}
+                        <a class="btn btn-sm btn-bleu" href="{{ path(m[4]) }}">{{ m[5] }}</a>
+            {% if targets[loop.index0] is defined %}<a class="btn btn-sm btn-rouge" href="{{ path('app_mission_apply', {key: 'm' ~ loop.index0}) }}">Je candidate</a>{% endif %}
+        </div></div>
+    {% endfor %}
+    </div>
+    <div class="commons-note mt-4">
+        <h2 class="h5 serif">Comment la rémunération fonctionne</h2>
+        <ol class="mb-2">
+            <li>Un prestataire vérifié publie un service avec son propre prix, dans la rubrique <a href="{{ path('app_services') }}">Services</a>.</li>
+            <li>Le client paie en ligne. Le paiement est retenu par la plateforme jusqu'à confirmation de la prestation, il n'est pas encore versé.</li>
+            <li>Une fois la prestation réalisée et confirmée par le client, le montant net est reversé au prestataire. La commission de la plateforme est affichée avant le paiement.</li>
+            <li>En cas de problème, la commande peut être remboursée tant qu'elle n'est pas confirmée.</li>
+        </ol>
+        <p class="mb-0">Les missions bénévoles ne rapportent pas d'argent : elles donnent de la visibilité (<a href="{{ path('app_ranking') }}">classement des artisans de paix</a>) et font avancer le bien commun. Les revenus dépendent des prestations réellement vendues, rien n'est garanti. Chacun reste responsable de ses obligations fiscales et sociales.</p>
+    </div>
+    <p class="mt-4"><a class="btn btn-outline-dark" href="{{ path('app_role_request') }}">Candidater pour aider</a> <a class="btn btn-outline-dark" href="{{ path('app_tutorials') }}">Voir les tutoriels</a></p>
+</div></section>
+{% endblock %}

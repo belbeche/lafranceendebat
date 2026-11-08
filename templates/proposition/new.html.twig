@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+{% block title %}Déposer une proposition{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Déposer une proposition</h1>
+    <p class="lede">Trois petites étapes, moins de cinq minutes. Seuls le thème, le titre et la mesure sont obligatoires.</p>
+</div></header>
+<section class="section"><div class="container"><div class="row"><div class="col-lg-8">
+    {% if revendication %}
+        <div class="limite mb-3">Cette proposition répond à la revendication : <strong>{{ revendication.title }}</strong>.</div>
+    {% endif %}
+    {% if duplicates|default([]) %}
+        <div class="alert alert-warning" role="alert">
+            <strong>Des propositions proches existent déjà.</strong> Soutenir l'une d'elles pèse plus lourd qu'une proposition de plus :
+            <ul class="mb-2 mt-2">{% for d in duplicates %}<li><a href="{{ path('app_proposition_show', {id: d.p.id}) }}" target="_blank" rel="noopener">{{ d.p.title }}</a> ({{ d.p.supportCount }} soutien{{ d.p.supportCount > 1 ? 's' }})</li>{% endfor %}</ul>
+            Si la vôtre est vraiment différente, cliquez de nouveau sur « Envoyer pour relecture ».
+        </div>
+    {% endif %}
+    <div class="form-card">
+        {{ form_start(form, {attr: {id: 'prop-wizard', novalidate: 'novalidate'}}) }}
+            {{ form_errors(form) }}
+            <ol class="wiz-steps" aria-label="Étapes">
+                <li data-step-ind="1" class="is-on">1. Le sujet</li>
+                <li data-step-ind="2">2. Votre idée</li>
+                <li data-step-ind="3">3. Pour finir</li>
+            </ol>
+
+            <fieldset class="wiz-step" data-step="1">
+                <legend class="h5">De quoi parle votre proposition ?</legend>
+                <p class="meta">Choisissez le thème le plus proche.</p>
+                {{ form_errors(form.theme) }}
+                <div class="d-flex flex-wrap gap-2 wiz-chips">
+                    {% for choice in form.theme.children %}
+                        <label class="wiz-chip"><input type="radio" name="{{ choice.vars.full_name }}" value="{{ choice.vars.value }}" {{ choice.vars.checked ? 'checked' }} required> <span>{{ choice.vars.label }}</span></label>
+                    {% endfor %}
+                </div>
+            </fieldset>
+
+            <fieldset class="wiz-step" data-step="2" hidden>
+                <legend class="h5">Votre idée, simplement</legend>
+                {{ form_row(form.title, {label: 'En une phrase, que proposez-vous ?', help: 'Exemple : Rendre gratuites les cantines scolaires pour les familles modestes.', attr: {'data-min': 10, autocomplete: 'off'}}) }}
+                <div id="prop-similar" class="alert alert-info py-2" hidden aria-live="polite"></div>
+                {{ form_row(form.description, {label: 'Que faut-il changer, concrètement ?', help: 'Qui est concerné ? Qu\'est-ce qui change ? À partir de quand ? Parlez de faits et de mesures, pas de personnes.', attr: {rows: 6, 'data-min': 50}}) }}
+                <p class="meta" id="desc-count" aria-live="polite"></p>
+            </fieldset>
+
+            <fieldset class="wiz-step" data-step="3" hidden>
+                <legend class="h5">Pour finir</legend>
+                {{ form_row(form.sourceUrl, {label: 'Un lien pour appuyer votre idée (facultatif)', help: 'INSEE, Légifrance, Cour des comptes, étude publiée... Une source rend la proposition plus crédible.'}) }}
+                <details class="mb-3 wiz-more">
+                    <summary>Aller plus loin (facultatif) : coût, financement, délai, risques</summary>
+                    <div class="pt-3">
+                        {% if form.dossierSlug is defined %}{{ form_row(form.dossierSlug, {label: 'Dossier de référence', help: 'Choisi automatiquement selon le thème. Changez-le seulement si besoin.', required: false}) }}{% endif %}
+                        {{ form_row(form.problem) }}
+                        {{ form_row(form.competentAuthority) }}
+                        {{ form_row(form.estimatedCost) }}
+                        {{ form_row(form.financing) }}
+                        {{ form_row(form.timeline) }}
+                        {{ form_row(form.indicator) }}
+                        {{ form_row(form.risks) }}
+                        {{ form_row(form.peaceContribution) }}
+                        {{ form_row(form.petition) }}
+                        {{ form_row(form.petitionGoal) }}
+                    </div>
+                </details>
+                {{ form_row(form.charter) }}
+            </fieldset>
+
+            {% do form.theme.setRendered %}
+            <div class="d-flex gap-2 mt-3 flex-wrap">
+                <button type="button" class="btn btn-outline-secondary" id="wiz-prev" hidden>Retour</button>
+                <button type="button" class="btn btn-bleu btn-primary" id="wiz-next">Suivant</button>
+                <button type="submit" class="btn btn-rouge" id="wiz-send" hidden>Envoyer pour relecture</button>
+                <a class="btn btn-link" href="{{ path('app_propositions') }}">Annuler</a>
+            </div>
+            <noscript><p class="meta mt-2">JavaScript est désactivé : tous les champs s'affichent, remplissez-les puis envoyez.</p></noscript>
+        {{ form_end(form) }}
+    </div>
+    <p class="meta mt-3">Votre proposition sera relue par un modérateur avant publication. Elle apparaîtra sous votre prénom et l'initiale de votre nom.</p>
+</div></div></div></section>
+<script src="{{ asset('js/proposal-wizard.js') }}" data-similar="{{ path('app_proposition_similar') }}" defer></script>
+{% endblock %}

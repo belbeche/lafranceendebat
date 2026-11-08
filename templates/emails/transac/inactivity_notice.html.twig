@@ -1,0 +1,9 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Votre compte est inactif{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Souhaitez-vous garder votre compte ?</h1>
+<p>Bonjour {{ user.firstName }}, vous ne vous êtes pas connecté à La France en Débat depuis plus de {{ months }} mois. Nous ne conservons pas indéfiniment les données personnelles de comptes inutilisés.</p>
+<p><strong>Sans réponse de votre part avant le {{ deadline|date('d/m/Y') }}, votre compte sera supprimé</strong> : votre e-mail, votre mot de passe et vos soutiens seront effacés. Vos contributions publiées resteront affichées sans votre nom.</p>
+<p><a href="{{ url }}" style="background:#002395;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none;display:inline-block">Choisir : garder ou supprimer mon compte</a></p>
+<p>Il suffit aussi de vous reconnecter avant cette date pour conserver votre compte. Ce message ne contient aucun pixel de suivi.</p>
+{% endblock %}

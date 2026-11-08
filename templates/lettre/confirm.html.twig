@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Confirmer l'inscription{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:640px">
+    <h1 class="h3">Confirmer votre inscription</h1>
+    <p>Un dernier geste pour recevoir la lettre de La France en Débat.</p>
+    <form method="post" action="{{ path('app_lettre_confirm', {id: id, token: token}) }}"><button class="btn btn-rouge">Oui, je confirme</button></form>
+</div></section>
+{% endblock %}

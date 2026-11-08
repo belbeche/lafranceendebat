@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+{% import 'community/_macros.html.twig' as c %}
+{% block title %}L'Agora de la diplomatie{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'communaute'} only %}
+<section class="section"><div class="container"><div class="row g-4">
+    <aside class="col-lg-3 order-lg-1">
+        <nav class="side" aria-label="Catégories">
+            <p class="side-title">Catégories</p>
+            <a class="side-link {{ category ? '' : 'on' }}" href="{{ path('app_community') }}">Tous les fils</a>
+            {% for key, label in categories %}
+                <a class="side-link {{ category == key ? 'on' : '' }}" href="{{ path('app_community', {categorie: key}) }}">{{ label }}</a>
+            {% endfor %}
+            <a class="side-link side-sep" href="{{ path('app_ranking') }}"><i class="bi bi-trophy" aria-hidden="true"></i> Classement</a>
+            <a class="side-link" href="{{ path('app_scrutins') }}"><i class="bi bi-check2-square" aria-hidden="true"></i> Scrutins</a>
+        </nav>
+    </aside>
+    <div class="col-lg-6 order-lg-2">
+        <h1 class="h3 mb-1">L'Agora de la diplomatie</h1>
+        <p class="meta mb-3">{{ discussions|length }} fil{{ discussions|length > 1 ? 's' }} affiché{{ discussions|length > 1 ? 's' }}. Un désaccord bien posé vaut mieux que cent slogans.</p>
+        {% if is_granted('ROLE_USER') %}
+            <a class="compose-teaser" href="{{ path('app_community_new') }}">
+                {{ c.avatar(app.user) }}
+                <span>Un désaccord, une idée, une colère à transformer ? Ouvrez un fil…</span>
+            </a>
+        {% else %}
+            <div class="compose-teaser compose-teaser-off">
+                <span>Pour ouvrir un fil et répondre, <a href="{{ path('app_login') }}">connectez-vous</a> ou <a href="{{ path('app_register') }}">créez un compte gratuit</a>.</span>
+            </div>
+        {% endif %}
+        {% for d in discussions %}
+            {% set n = counts[d.id] ?? 0 %}
+            <article class="post-card">
+                <a class="post-link" href="{{ path('app_community_show', {id: d.id}) }}" aria-label="Ouvrir : {{ d.title }}"></a>
+                <div class="post-top">
+                    {{ c.avatar(d.author) }}
+                    <div>
+                        <strong>{{ d.author ? d.author.publicName : 'Citoyen' }}</strong>
+                        <span class="meta"> · {{ d.lastActivityAt|ago }}</span><br>
+                        <span class="etiquette bleu">{{ d.categoryLabel }}</span>
+                        {% if d.pinned %}<span class="etiquette"><i class="bi bi-pin-angle" aria-hidden="true"></i> Épinglé</span>{% endif %}
+                        {% if d.locked %}<span class="etiquette"><i class="bi bi-lock" aria-hidden="true"></i> Verrouillé</span>{% endif %}
+                    </div>
+                </div>
+                <h2 class="post-title">{{ tr(d, 'title') }}</h2>
+                <p class="post-excerpt">{{ tr(d, 'body')|striptags|u.truncate(180, '…') }}</p>
+                <p class="post-foot"><i class="bi bi-chat-dots" aria-hidden="true"></i> {{ n }} réponse{{ n > 1 ? 's' }}{% if n == 0 %} · soyez le premier à répondre{% endif %}</p>
+            </article>
+        {% else %}
+            <div class="post-card">Aucun fil pour le moment. Ouvrez le premier, calmement.</div>
+        {% endfor %}
+    </div>
+    <aside class="col-lg-3 order-lg-3">
+        <div class="side">
+            <p class="side-title">Les règles</p>
+            <ul class="small ps-3 mb-3">
+                <li>On critique des idées, jamais des personnes.</li>
+                <li>Aucun appel à la violence : message bloqué avant publication.</li>
+                <li>Pas de donnée personnelle ni de rumeur présentée comme un fait.</li>
+                <li>Reformuler l'autre avant de répondre est valorisé.</li>
+            </ul>
+            <a class="btn btn-sm btn-primary w-100 mb-2" href="{{ path('app_institutional_routes') }}">Agir sans violence</a>
+            <a class="btn btn-sm btn-outline-primary w-100" href="{{ path('app_actors') }}">Acteurs publics</a>
+            <p class="small meta mt-3 mb-0">Tout message peut être signalé. Les nouveaux comptes sont relus avant publication. Chaque rejet est motivé.</p>
+        </div>
+    </aside>
+</div></div></section>
+{% endblock %}

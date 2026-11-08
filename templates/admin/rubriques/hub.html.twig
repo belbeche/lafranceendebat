@@ -1,0 +1,33 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Rubriques{% endblock %}
+{% block admin %}
+<h1 class="h3 mb-1">Rubriques et contenus</h1>
+<p class="text-muted">Chaque rubrique se gère ici : publier, retirer, refuser avec motif, corriger, supprimer. Les contenus en attente se traitent aussi dans la <a href="{{ path('admin_moderation') }}">file de modération</a>.</p>
+<div class="table-responsive"><table class="table table-sm align-middle bg-white admin-table">
+<thead><tr><th scope="col">Rubrique</th><th scope="col">En attente</th><th scope="col">Publiés</th><th scope="col">Refusés</th><th></th></tr></thead>
+<tbody>{% for r in rows %}<tr>
+<td><strong>{{ r.label }}</strong><div class="small text-muted">{{ r.desc }}</div></td>
+<td>{% if r.count.pending %}<a class="badge text-bg-warning text-decoration-none" href="{{ path('admin_rubrique', {kind: r.kind, statut: 'pending'}) }}">{{ r.count.pending }}</a>{% else %}0{% endif %}</td>
+<td>{{ r.count.published }}</td><td>{{ r.count.rejected }}</td>
+<td class="text-end"><a class="btn btn-sm btn-bleu" href="{{ path('admin_rubrique', {kind: r.kind}) }}">Gérer</a></td></tr>{% endfor %}</tbody></table></div>
+<h2 class="h5 mt-4">Vue d'ensemble de toute la plateforme</h2>
+<p class="text-muted small">Chiffres en direct. {{ editorialCount }} dossiers éditoriaux et de départ sont intégrés à la plateforme (voir <a href="{{ path('admin_rubrique', {kind: 'dossiers'}) }}">Dossiers</a>).</p>
+<div class="table-responsive"><table class="table table-sm align-middle bg-white admin-table">
+<thead><tr><th scope="col">Rubrique</th><th scope="col">Total</th><th scope="col">Répartition par statut</th><th></th></tr></thead><tbody>
+{% for o in overview %}<tr><td>{{ o.label }}</td><td>{{ o.total is null ? 'n/d' : o.total }}</td>
+<td class="small">{% for s, n in o.by %}<span class="me-2">{{ s ?: 'sans statut' }} : {{ n }}</span>{% else %}<span class="text-muted">{{ o.total ? '' : 'Aucun élément pour le moment' }}</span>{% endfor %}</td>
+<td class="text-end"><a class="btn btn-sm btn-outline-dark" href="{{ path(o.route) }}">Ouvrir</a></td></tr>{% endfor %}</tbody></table></div>
+{% if is_granted('ROLE_ADMIN') %}<div class="bg-white border rounded p-3 mt-4 d-flex flex-wrap align-items-center gap-3"><div class="flex-grow-1"><strong>Mettre à jour le site après une livraison</strong><div class="small text-muted">Vide les caches applicatifs, les gabarits compilés et l'opcache PHP. Les CSS prennent un nouveau numéro de version tout seuls.</div></div>
+<form method="post" action="{{ path('admin_clear_cache') }}"><input type="hidden" name="_token" value="{{ csrf_token('clearcache') }}"><button class="btn btn-bleu">Vider les caches</button></form></div>{% endif %}
+{% if is_granted('ROLE_ADMIN') %}<div class="border rounded p-3 mt-3 {{ maintenance ? 'bg-warning-subtle' : 'bg-white' }}">
+<strong>Mode maintenance : {{ maintenance ? 'ACTIF depuis ' ~ maintenance.since|date('H:i') : 'inactif' }}</strong>
+<div class="small text-muted mb-2">Les visiteurs voient une page de mise à jour (code 503, pas d'erreur brute). Les administrateurs connectés naviguent normalement. Sonde de surveillance : <code>/sante</code>.</div>
+<form method="post" action="{{ path('admin_maintenance_mode') }}" class="row g-2 align-items-end"><input type="hidden" name="_token" value="{{ csrf_token('maintenancemode') }}">
+{% if maintenance %}<div class="col-auto"><input type="hidden" name="etat" value="off"><button class="btn btn-bleu">Rouvrir le site</button></div>
+{% else %}<input type="hidden" name="etat" value="on"><div class="col-12 col-md-6"><label class="form-label small mb-0" for="mm">Message aux visiteurs (facultatif)</label><input id="mm" name="message" maxlength="300" class="form-control" placeholder="Mise à jour des débats, retour dans quelques minutes."></div>
+<div class="col-6 col-md-2"><label class="form-label small mb-0" for="mn">Durée (min)</label><input id="mn" name="minutes" type="number" min="0" max="720" class="form-control" placeholder="15"></div>
+<div class="col-auto"><button class="btn btn-outline-danger">Activer la maintenance</button></div>{% endif %}</form></div>{% endif %}
+<h2 class="h5 mt-4">Autres rubriques</h2>
+<div class="row g-2">{% for l in [['Propositions','admin_proposition_index'],['Débats','admin_debat_index'],['Revendications','admin_revendication_index'],['Candidats','admin_candidat_index'],['Engagements','admin_engagement_index'],['Agenda','admin_event_index'],['Piliers d\'accueil','admin_mission_index'],['Comptes','admin_users'],['Lettres','admin_lettre_index'],['Acteurs publics','admin_actors'],['Services et commandes','admin_services'],['Candidatures aux droits','admin_role_requests']] %}
+<div class="col-6 col-md-3"><a class="btn btn-outline-dark w-100" href="{{ path(l[1]) }}">{{ l[0] }}</a></div>{% endfor %}</div>
+{% endblock %}

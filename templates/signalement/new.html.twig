@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Signaler un contenu{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Signaler un contenu</h1></div></header>
+<section class="section"><div class="container"><div class="row"><div class="col-lg-7">
+    <div class="carte mb-3"><p class="meta mb-1">Contenu signalé</p><p class="mb-0">{{ excerpt }}</p></div>
+    <div class="form-card">
+        {{ form_start(form) }}{{ form_widget(form) }}
+        <button class="btn btn-rouge mt-3" type="submit">Envoyer le signalement</button>
+        <a class="btn btn-link mt-3" href="{{ path(backRoute, backParams) }}">Annuler</a>
+        {{ form_end(form) }}
+    </div>
+    <p class="meta mt-3">Un contenu signalé par plusieurs personnes différentes repasse automatiquement en relecture humaine. Aucune décision n'est prise par un automatisme seul.</p>
+</div></div></div></section>
+{% endblock %}

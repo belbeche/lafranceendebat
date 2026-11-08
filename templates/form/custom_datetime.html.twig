@@ -1,0 +1,42 @@
+{# templates/form/custom_datetime.html.twig #}
+
+{% block datetime_widget %}
+<div class="datetime-widget">
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-calendar"></i>
+                </span>
+                <input type="date" 
+                       id="{{ id }}_date"
+                       name="{{ full_name }}[date]"
+                       value="{{ value ? value|date('Y-m-d') : '' }}"
+                       class="form-control"
+                       min="{{ 'now'|date('Y-m-d') }}"
+                       {% if required %}required{% endif %}
+                       placeholder="Date d'envoi">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-text">
+                    <i class="fas fa-clock"></i>
+                </span>
+                <input type="time" 
+                       id="{{ id }}_time"
+                       name="{{ full_name }}[time]"
+                       value="{{ value ? value|date('H:i') : '09:00' }}"
+                       class="form-control"
+                       step="300"
+                       {% if required %}required{% endif %}
+                       placeholder="Heure d'envoi">
+            </div>
+        </div>
+    </div>
+    <div class="form-text mt-2">
+        <i class="fas fa-info-circle"></i>
+        Sélectionnez une date et heure dans le futur pour planifier l'envoi
+    </div>
+</div>
+{% endblock %}

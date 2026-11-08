@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Messages avec {{ other.publicName }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1 class="h3">Conversation avec {{ other.publicName }}</h1><p class="mb-0"><a href="{{ path('app_inbox') }}">Toutes mes conversations</a> · Les nouveaux messages apparaissent seuls, sans recharger la page.</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+<div id="fil" data-thread data-feed="{{ path('app_inbox_feed', {id: other.id}) }}" data-last="{{ last }}">
+{% for m in messages %}
+    <div class="carte p-3 mb-2 {{ m.sender == me ? 'ms-5' : 'me-5' }}" data-id="{{ m.id }}">
+        <p class="meta mb-1">{{ m.sender.publicName }} · {{ m.createdAt|date('d/m/Y H:i') }}</p>
+        <p class="mb-0" style="white-space: pre-line">{{ m.body }}</p>
+    </div>
+{% else %}<p class="text-muted" data-empty>Aucun message. Expliquez votre demande en quelques phrases claires : le contexte, ce que vous attendez, une échéance si elle existe.</p>{% endfor %}
+</div>
+<div id="bas"></div>
+{% if error %}<div class="alert alert-danger mt-3">{{ error }}</div>{% endif %}
+{% if canWrite %}
+<form method="post" class="mt-3">
+    <input type="hidden" name="_token" value="{{ csrf_token('dm' ~ other.id) }}">
+    <label class="form-label" for="body">Votre message</label>
+    <textarea class="form-control mb-2" id="body" name="body" rows="4" maxlength="2000" required></textarea>
+    <p class="meta">Pas d'e-mail, de téléphone ni de lien externe : l'échange reste ici, sous la charte de paix.</p>
+    <button class="btn btn-primary">Envoyer</button>
+</form>
+{% else %}<p class="meta mt-3">La messagerie est réservée aux échanges avec les acteurs publics (élus, associations, prestataires, médiateurs). Pour écrire à cette personne, <a href="{{ path('app_role_request') }}">demandez un droit d'acteur</a>.</p>{% endif %}
+</div></section>
+{% endblock %}

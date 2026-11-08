@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block title %}Conditions de la place de marché{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Conditions de la place de marché</h1><p class="lede mb-0">Missions rémunérées : règles pour les prestataires et les clients</p></div></header>
+<section class="section"><div class="container measure">
+    <p class="meta">Ces conditions complètent les <a href="{{ path('app_terms_of_service') }}">conditions d'utilisation</a>. Éditeur : {{ publisher.name ?: 'à compléter' }}, contact : <a href="mailto:{{ publisher.email }}">{{ publisher.email }}</a>.</p>
+
+    <h2 class="h5">1. Objet et rôle de la plateforme</h2>
+    <p>La place de marché met en relation des membres qui proposent un savoir-faire (prestataires) et des membres qui souhaitent en bénéficier (clients). La plateforme est un intermédiaire technique : le contrat de prestation est conclu entre le client et le prestataire. L'éditeur n'est pas partie à ce contrat et n'est pas l'employeur des prestataires. L'inscription, le débat et le vote restent gratuits.</p>
+
+    <h2 class="h5">2. Prestataires</h2>
+    <ul>
+        <li>Être majeur et disposer d'un statut permettant de facturer (micro-entrepreneur, indépendant, société ou association). Indiquer son numéro SIRET lorsqu'il existe.</li>
+        <li>Faire vérifier son identité et ses coordonnées bancaires par le prestataire de paiement Stripe avant de publier.</li>
+        <li>Décrire précisément la prestation (contenu, durée, livrable) et fixer un prix réel. Les prestations gratuites ou à prix symbolique sont refusées ; le prix minimum est de 10 euros.</li>
+        <li>Rester responsable de ses déclarations sociales et fiscales. La plateforme ne les effectue pas à sa place.</li>
+    </ul>
+
+    <h2 class="h5">3. Prix, contribution de la plateforme et paiement</h2>
+    <p>Le prix payé par le client est affiché avant le paiement, avec la contribution retenue par la plateforme. Le paiement est traité par Stripe : la plateforme ne voit ni ne conserve les numéros de carte ni les IBAN. Le montant est retenu jusqu'à confirmation de la prestation par le client, puis versé au prestataire, net de la contribution. L'éditeur n'applique pas la TVA sur sa contribution (article 293 B du CGI). Le régime de TVA de chaque prestataire dépend de sa situation.</p>
+
+    <h2 class="h5">4. Annulation, remboursement, litiges</h2>
+    <p>Une commande peut être remboursée tant qu'elle n'a pas été confirmée. Si vous êtes consommateur, les règles légales de rétractation s'appliquent, sous réserve de l'exécution anticipée de la prestation à votre demande. En cas de désaccord, contactez d'abord le prestataire par la messagerie de la commande, puis la plateforme. Médiateur de la consommation : {% if publisher.mediator %}{{ publisher.mediator }}{% if publisher.mediator_url %} ({{ publisher.mediator_url }}){% endif %}{% else %}à compléter par l'éditeur avant l'ouverture des paiements{% endif %}.</p>
+
+    <h2 class="h5" id="politique">5. Interdiction de tout usage politique ou électoral</h2>
+    <p>La plateforme est indépendante de tout parti, candidat ou groupement politique. Pour respecter les règles de financement de la vie politique, <strong>la place de marché ne peut pas servir</strong> à :</p>
+    <ul>
+        <li>acheter ou vendre une prestation <strong>pour le compte d'un candidat, d'un parti ou groupement politique, d'un mandataire financier ou d'une campagne électorale</strong>, ou destinée à leur être remise ;</li>
+        <li>proposer de la propagande, du tractage, de la communication de campagne, du démarchage électoral ou toute prestation visant à faire élire ou à soutenir une candidature ;</li>
+        <li>collecter ou reverser des dons, cotisations, cagnottes ou financements au profit d'un parti, d'un candidat ou d'une campagne ;</li>
+        <li>fournir à un candidat ou à un parti un service gratuit ou à un prix inférieur à sa valeur de marché, y compris par l'intermédiaire d'un tiers.</li>
+    </ul>
+    <p>Le client confirme avant chaque paiement que la prestation n'est destinée à aucun de ces usages ; le prestataire le confirme avant chaque publication. Cette déclaration est conservée avec la commande. En cas de fausse déclaration, la plateforme peut retirer la prestation, annuler et rembourser la commande, suspendre le compte et, si la loi l'exige, transmettre les informations aux autorités compétentes. Les collectivités publiques achètent selon leurs propres règles de commande publique, hors paiement en ligne par carte.</p>
+
+    <h2 class="h5">6. Catégories autorisées</h2>
+    <p>Médiation et dialogue, formation et pédagogie, accompagnement de projet, information juridique et administrative, animation de débat ou d'événement, étude, diagnostic et évaluation. Toute autre prestation est refusée par la modération. Sont également interdits : contenus illicites, discriminatoires ou haineux, atteinte à la charte de paix, usurpation d'identité, sortie de la plateforme pour éviter la commission (les coordonnées sont masquées dans la messagerie).</p>
+
+    <h2 class="h5">7. Modération</h2>
+    <p>Chaque prestation est relue avant publication. La modération peut refuser ou retirer une prestation, avec un motif communiqué au prestataire, et annuler une commande en cours avec remboursement du client.</p>
+
+    <h2 class="h5">8. Obligations d'information fiscale</h2>
+    <p>Les plateformes en ligne doivent déclarer chaque année à l'administration fiscale les revenus perçus par leurs vendeurs (directive européenne dite DAC7). Pour cela, la plateforme et son prestataire de paiement peuvent collecter vos nom, adresse, date de naissance, identifiant fiscal et le montant des sommes perçues. Les petits vendeurs bénéficient de seuils d'exonération fixés par la loi.</p>
+
+    <h2 class="h5">9. Données personnelles</h2>
+    <p>Voir la <a href="{{ path('app_privacy_policy') }}">politique de confidentialité</a> : les données de paiement sont traitées par Stripe ; la plateforme conserve les commandes, montants et déclarations pour ses obligations comptables.</p>
+
+    <h2 class="h5">10. Droit applicable</h2>
+    <p>Droit français. À défaut d'accord amiable, les tribunaux compétents sont ceux du ressort de l'éditeur, sans préjudice des droits du consommateur.</p>
+</div></section>
+{% endblock %}

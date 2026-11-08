@@ -1,0 +1,32 @@
+{# templates/post/by_type.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualités {{ currentType|capitalize }} | La France en Débat{% endblock %}
+
+{% block body %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <!-- En-tête -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-8">
+                <h2 class="section-title mb-2">
+                    <i class="fas fa-{{ currentType == 'video' ? 'video' : (currentType == 'image' ? 'image' : (currentType == 'document' ? 'file-pdf' : 'file-alt') ) }} me-2"></i>
+                    Actualités {{ currentType|capitalize }}
+                </h2>
+                <p class="text-muted mb-0">
+                    {{ posts|length }} publication(s) trouvée(s)
+                </p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{{ path('app_actualites') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-1"></i> Retour aux actualités
+                </a>
+            </div>
+        </div>
+
+        <!-- Contenu identique à index.html.twig mais filtré -->
+        {% include 'post/_post_grid.html.twig' with {'posts': posts} %}
+    </div>
+</section>
+{% endblock %}

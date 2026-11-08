@@ -1,0 +1,98 @@
+{# templates/emails/newsletter_template.html.twig #}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject|default('Newsletter JoyMe') }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .unsubscribe-link {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .unsubscribe-link:hover {
+            text-decoration: underline;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>JoyMe</h1>
+            <p>Votre communauté solidaire</p>
+        </div>
+        
+        <div class="content">
+            <h2>{{ subject|default('Newsletter JoyMe') }}</h2>
+            
+            <div style="color: #333; line-height: 1.8;">
+                {{ content|default('Contenu de la newsletter')|raw }}
+            </div>
+            
+            <div style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 5px;">
+                <p style="margin: 0; font-size: 14px; color: #666;">
+                    💡 <strong>Astuce :</strong> Partagez cette newsletter avec vos amis !
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>
+                Vous recevez cet email car vous êtes inscrit à la newsletter de JoyMe.<br>
+                <a href="{{ unsubscribeUrl|default('#') }}" class="unsubscribe-link" style="color: #667eea;">
+                    Se désinscrire de la newsletter
+                </a>
+            </p>
+            <p>
+                © {{ "now"|date("Y") }} JoyMe. Tous droits réservés.<br>
+                <small>Email envoyé depuis notre plateforme solidaire</small>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

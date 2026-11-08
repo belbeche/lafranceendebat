@@ -1,0 +1,6 @@
+version: 2
+secret:
+  # Les tests de bout en bout n'utilisent que des mots de passe jetables sur une base de test locale.
+  ignored-paths:
+    - "tests/**"
+    - "docs/**"

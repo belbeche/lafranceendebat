@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'path.title'|trans }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>{{ 'path.title'|trans }}</h1><p class="lede">{{ 'path.subtitle'|trans }}</p></div></header>
+<section class="section"><div class="container">
+    <div class="row g-3">
+        {% for slug, p in paths %}
+        <div class="col-md-6 col-lg-4">
+            <a class="path-card" href="{{ path('app_path', {slug: slug}) }}">
+                <i class="bi {{ p[0] }} fs-2 text-primary" aria-hidden="true"></i>
+                <h2 class="h5 mt-2">{{ ('path.' ~ slug ~ '.title')|trans }}</h2>
+                <p class="mb-0 text-muted">{{ ('path.' ~ slug ~ '.desc')|trans }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mt-4">{% include '_free_promise.html.twig' %}</div>
+</div></section>
+{% endblock %}

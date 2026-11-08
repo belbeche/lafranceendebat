@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ouvrir un débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Ouvrir un débat</h1><p class="lede mb-0">Un bon débat commence par un exposé neutre et des faits vérifiés. Il est relu avant publication, puis chacun y dépose des arguments pour, contre ou nuancés.</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if errors %}<div class="alert alert-danger"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<form method="post" class="form-card" id="debat-form" data-check="{{ checkUrl }}" data-theme-dossier="{{ themeDossier|json_encode|e('html_attr') }}" data-theme-sources="{{ themeSources|json_encode|e('html_attr') }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('debat_new') }}">
+    <div class="mb-3"><label class="form-label" for="title">Question posée au débat</label><input class="form-control" id="title" name="title" value="{{ d.title }}" maxlength="180" required placeholder="Comment financer durablement les urgences de proximité ?"></div>
+    <div class="mb-3"><label class="form-label" for="theme">Thème</label><select class="form-select" id="theme" name="theme" required><option value="">Choisir</option>{% for t in themes %}<option {{ d.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}<option value="__autre" {{ d.theme == '__autre' ? 'selected' }}>Autre thème (je le précise)</option></select>
+        <div id="theme-other-box" class="mt-2" {{ d.theme != '__autre' ? 'hidden' }}><label class="form-label" for="theme_other">Votre thème</label><input class="form-control" id="theme_other" name="theme_other" maxlength="40" value="{{ d.theme_other }}" placeholder="Ex. : Agriculture, Handicap, Outre-mer"><div class="form-text">3 à 40 caractères. Il rejoindra la liste des thèmes une fois le débat ouvert.</div></div></div>
+    <div class="mb-3"><label class="form-label" for="dossier">Dossier de référence</label><select class="form-select" id="dossier" name="dossier" required><option value="">Choisir un dossier</option>{% for slug, t in dossiers %}<option value="{{ slug }}" {{ d.dossier == slug ? 'selected' }}>{{ t }}</option>{% endfor %}<option value="__nouveau" {{ d.dossier == '__nouveau' ? 'selected' }}>Aucun ne convient : créer un nouveau dossier</option></select>
+        <div id="dossier-new-box" class="mt-2" {{ d.dossier != '__nouveau' ? 'hidden' }}><label class="form-label" for="dossier_title">Titre du nouveau dossier</label><input class="form-control" id="dossier_title" name="dossier_title" maxlength="160" value="{{ d.dossier_title }}"><div class="form-text">Le dossier reprendra votre exposé et vos sources. Il sera relu avant publication, vous pouvez déjà ouvrir le débat. Pour un dossier plus complet, passez par <a href="{{ path('app_dossier_new') }}">le formulaire dédié</a>.</div></div>
+        <div class="form-text">Tout débat s'appuie sur un dossier de référence.</div></div>
+    <div id="theme-sources" class="alert alert-info" hidden aria-live="polite"><strong>Sources officielles recommandées pour ce thème</strong> (cliquez pour ajouter à vos sources) :<div class="d-flex flex-wrap gap-2 mt-2" id="theme-sources-list"></div></div>
+    <div class="mb-3"><label class="form-label" for="summary">Exposé neutre du problème (100 à 6000 caractères)</label><textarea class="form-control" id="summary" name="summary" rows="6" maxlength="6000" required>{{ d.summary }}</textarea><div class="form-text">Décrivez la situation sans prendre parti ni viser une personne.</div></div>
+    <div class="mb-3"><label class="form-label" for="facts">Faits vérifiés et sources</label><textarea class="form-control" id="facts" name="facts" rows="4" required>{{ d.facts }}</textarea><div class="form-text">Chiffres, dates, et au moins un lien https vers une source publique.</div></div>
+    <div class="mb-3"><label class="form-label" for="authority">Autorité compétente (facultatif)</label><input class="form-control" id="authority" name="authority" value="{{ d.authority }}" maxlength="255" placeholder="Commune, Région, Ministère…"></div>
+    <section class="obl-panel mb-3" aria-labelledby="obl-t" aria-live="polite">
+        <h2 class="h6" id="obl-t">Obligations liées aux sources officielles</h2>
+        <ul class="list-unstyled mb-1" id="obl-list"></ul>
+        <p class="meta mb-0" id="obl-summary">Remplissez le formulaire : chaque point passe de « Pas encore » à « En cours » puis « Respecté ».</p>
+    </section>
+    <button class="btn btn-rouge" type="submit">Envoyer pour relecture</button> <a class="btn btn-link" href="{{ path('app_debats') }}">Annuler</a>
+</form>
+</div></section>
+<script nonce="{{ csp_nonce() }}">
+(function () {
+  function bind(selId, boxId, val) {
+    var s = document.getElementById(selId), b = document.getElementById(boxId);
+    if (!s || !b) return;
+    function f() { b.hidden = s.value !== val; var i = b.querySelector('input'); if (i) i.required = s.value === val; }
+    s.addEventListener('change', f); f();
+  }
+  bind('theme', 'theme-other-box', '__autre');
+  bind('dossier', 'dossier-new-box', '__nouveau');
+})();
+</script>
+<script src="{{ asset('js/debat-obligations.js') }}" defer></script>
+{% endblock %}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmation de candidature - JoyMe</title>
+    <style>
+        body {
+            font-family: 'Montserrat', Arial, sans-serif;
+            line-height: 1.7;
+            color: #222;
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 24px;
+            background: linear-gradient(120deg, #e0f7fa 0%, #f8fdfd 100%);
+        }
+        .header {
+            background: linear-gradient(120deg, #1a5e63 60%, #34a0a4 100%);
+            color: #fff;
+            padding: 48px 32px 32px 32px;
+            text-align: center;
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 4px 18px rgba(26, 94, 99, 0.10);
+        }
+        .content {
+            background: #fff;
+            padding: 48px 32px;
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 8px 32px rgba(26, 94, 99, 0.08);
+        }
+        .confirmation-box {
+            background: linear-gradient(120deg, #e0f7fa 60%, #d1ecf1 100%);
+            border: 2px solid #34a0a4;
+            border-radius: 14px;
+            padding: 28px;
+            margin: 32px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(52, 160, 164, 0.08);
+        }
+        .next-steps {
+            background: #f1f8fa;
+            border-left: 5px solid #34a0a4;
+            padding: 24px 20px;
+            margin: 28px 0;
+            border-radius: 0 10px 10px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 36px;
+            border-top: 1px solid #d1ecf1;
+            color: #7b8a8b;
+            font-size: 15px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(120deg, #34a0a4 60%, #1a5e63 100%);
+            color: #fff;
+            padding: 16px 34px;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 18px 0;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            font-size: 1.1em;
+            transition: all 0.25s cubic-bezier(.4,0,.2,1);
+            box-shadow: 0 2px 8px rgba(26, 94, 99, 0.10);
+        }
+        .btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(52, 160, 164, 0.18);
+            background: linear-gradient(120deg, #1a5e63 60%, #34a0a4 100%);
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 28px 0;
+            background: #f8fdfd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 6px rgba(52, 160, 164, 0.07);
+        }
+        .details-table td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #e0f7fa;
+        }
+        .details-table tr:last-child td {
+            border-bottom: none;
+        }
+        .details-table td:first-child {
+            font-weight: 600;
+            color: #1a5e63;
+            width: 42%;
+            background: #e0f7fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="margin: 0; font-size: 28px;">📨 CANDIDATURE ENREGISTRÉE</h1>
+        <p style="margin: 10px 0 0 0; font-size: 18px; opacity: 0.9;">association SUSPENSION</p>
+    </div>
+    
+    <div class="content">
+        <h2 style="color: #0d332c; margin-bottom: 10px;">Bonjour {{ candidature.prenom }} {{ candidature.nom }},</h2>
+        
+        <p style="font-size: 16px;">Nous accusons réception de votre candidature pour le poste de 
+        <strong>{{ candidature.poste }}</strong> au sein de notre association.</p>
+        
+        <div class="confirmation-box">
+            <h3 style="color: #1a5e63; margin-top: 0;">✅ Candidature reçue</h3>
+            <p style="margin-bottom: 0;">Votre dossier a été enregistré avec succès le 
+            <strong>{{ candidature.createdAt|date('d/m/Y à H:i') }}</strong></p>
+        </div>
+
+        <table class="details-table">
+            <tr>
+                <td>Poste concerné :</td>
+                <td>{{ candidature.poste }}</td>
+            </tr>
+            <tr>
+                <td>Disponibilité :</td>
+                <td>{{ candidature.disponibilite }}</td>
+            </tr>
+            <tr>
+                <td>Email :</td>
+                <td>{{ candidature.email }}</td>
+            </tr>
+            <tr>
+                <td>Téléphone :</td>
+                <td>{{ candidature.telephone ?? 'Non renseigné' }}</td>
+            </tr>
+        </table>
+
+        <div class="next-steps">
+            <h4 style="color: #1a5e63; margin-top: 0;">📋 Prochaines étapes</h4>
+            <ol style="font-size: 15px;">
+                <li><strong>Examen de votre candidature</strong> par notre équipe (sous 5 jours ouvrés)</li>
+                <li><strong>Contact téléphonique</strong> si votre profil correspond à nos besoins</li>
+                <li><strong>Entretien</strong> pour échanger sur votre motivation et nos projets</li>
+                <li><strong>Réponse définitive</strong> sous 15 jours maximum</li>
+            </ol>
+        </div>
+
+        <p style="font-size: 16px;">Nous étudierons attentivement votre profil et votre motivation. 
+        En attendant, n'hésitez pas à consulter notre site pour mieux connaître nos actions.</p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="{{ url('app_home') }}" class="btn">
+                <i class="fas fa-info-circle"></i> Découvrir nos actions
+            </a>
+        </div>
+
+        <p style="font-size: 16px;">Nous vous remercions pour l'intérêt que vous portez à notre association 
+        et pour votre souhait de vous engager à nos côtés.</p>
+        
+        <p style="font-size: 16px;">Cordialement,<br>
+        <strong style="color: #1a5e63;">L'équipe de JoyMe</strong></p>
+    </div>
+    
+    <!-- Footer Événementiel -->
+    <footer class="footer-event bg-primary text-white">
+        <div class="container">
+            <div class="row">
+                <!-- Logo et description -->
+                <div class="col-lg-4 mb-4">
+                    <a href="/" class="d-block mb-3">
+                        <img src="{{ asset('assets/img/lbf2.png') }}" 
+                             alt="JoyMe" width="360">
+                    </a>
+                    <p style="opacity: 0.8; line-height: 1.6;">
+                        Premier Yacht-Clinique Flottant • Bateau d'Intérêt Patrimonial<br>
+                        Innovation sociale & médicale en Méditerranée
+                    </p>
+                    <div class="mt-3">
+                        <span class="footer-badge">BIP 2026</span>
+                        <span class="footer-badge" style="background: var(--gold);">INPI MÉDITERRAPIE™</span>
+                    </div>
+                </div>
+            </div>
+            
+            <hr style="border-color: rgba(255, 255, 255, 0.1); margin: 2rem 0;">
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <p style="opacity: 0.6; font-size: 0.9rem;">
+                        © {{ "now"|date("Y") }} JoyMe • Association SUSPENSION • SARL JoyMe Neuro
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p style="opacity: 0.6; font-size: 0.9rem;">
+                        Site conçu par <a href="https://axishumain.fr" style="color: black!important;">AxisHumain <i class="bi bi-heart-fill" style="color: #ff4757;"></i> pour l'innovation sociale
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+    .footer-event {
+        background: linear-gradient(135deg, var(--dark-navy), #0A1F3D);
+        color: rgba(255, 255, 255, 0.9);
+        padding: 4rem 0 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .footer-event::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-teal), var(--primary-navy));
+    }
+    .footer-badge {
+        display: inline-block;
+        background: var(--accent-teal, #00b4d8);
+        color: white;
+        border-radius: 12px;
+        padding: 0.25em 0.8em;
+        font-size: 0.85em;
+        margin-right: 0.5em;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+    }
+    hr {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    @media (max-width: 768px) {
+        .footer-event {
+            padding: 3rem 0 1.5rem;
+        }
+    }
+    </style>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ t.title }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container" style="max-width:820px"><p class="meta mb-1"><a class="text-white" href="{{ path('app_tribunes') }}">Journalistes indépendants</a></p><h1>{{ t.title }}</h1><p class="lead mb-0">{{ t.lead }}</p></div></header>
+<section class="section"><article class="container" style="max-width:820px">
+    <p class="meta">Par {{ t.author.publicName }} · publié le {{ t.publishedAt|date('d/m/Y') }}. Tribune signée, l'avis exprimé engage son auteur.</p>
+    {% include '_reliability.html.twig' with {text: t.body, sources: t.sourceList} %}
+    <div>{{ t.body|e|nl2br }}</div>
+    <h2 class="h5 mt-4">Sources</h2>
+    <ul>{% for s in t.sourceList %}<li><a href="{{ s }}" target="_blank" rel="noopener noreferrer nofollow">{{ s }}</a></li>{% endfor %}</ul>
+    <p class="carte mt-4 mb-0">Vous êtes cité ou en désaccord ? Vous disposez d'un droit de réponse : <a href="{{ path('app_contact') }}">écrivez à l'équipe</a>, votre réponse sera publiée à la suite. Un contenu problématique peut aussi être signalé.</p>
+</article></section>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>{{ title }}</h1></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if errors %}<div class="alert alert-danger"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<div class="limite mb-3">Les corrections faites dans les 5 minutes après la publication ne sont pas signalées. Au-delà, la page affiche « modifié le » pour que les lecteurs sachent que le texte a changé. Le contenu repasse par le filtre de la charte de paix.{% if note %}<br><strong>{{ note }}</strong>{% endif %}</div>
+<form method="post" class="form-card">
+    <input type="hidden" name="_token" value="{{ csrf_token(token) }}">
+    {% for f in fields %}
+    <div class="mb-3"><label class="form-label" for="{{ f.name }}">{{ f.label }}</label>
+    {% if f.type == 'textarea' %}<textarea class="form-control" id="{{ f.name }}" name="{{ f.name }}" rows="{{ f.rows ?? 5 }}" maxlength="{{ f.max }}" {{ (f.required ?? true) ? 'required' }}>{{ f.value }}</textarea>
+    {% elseif f.type == 'select' %}<select class="form-select" id="{{ f.name }}" name="{{ f.name }}">{% for o in f.options %}<option {{ f.value == o ? 'selected' }}>{{ o }}</option>{% endfor %}</select>
+    {% else %}<input class="form-control" id="{{ f.name }}" name="{{ f.name }}" value="{{ f.value }}" maxlength="{{ f.max }}" {{ (f.required ?? true) ? 'required' }}>{% endif %}
+    </div>
+    {% endfor %}
+    <button class="btn btn-rouge" type="submit">Enregistrer</button>
+    <a class="btn btn-link" href="{{ back ?: path('app_home') }}">Annuler</a>
+</form>
+</div></section>
+{% endblock %}

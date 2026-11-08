@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+{% include 'dossier/_head.html.twig' %}
+<section class="section"><div class="container" style="max-width:860px">
+    <h2 class="h4">AI Act, article 14 : la supervision humaine</h2>
+    <p>Le règlement européen sur l'intelligence artificielle (règlement (UE) 2024/1689) impose que les systèmes d'IA à haut risque soient conçus pour permettre une supervision humaine effective. L'objectif est de prévenir ou limiter les risques et les erreurs. Concrètement, la personne chargée du contrôle doit pouvoir :</p>
+    <ul>
+        <li>comprendre les résultats et repérer les anomalies ;</li>
+        <li>interpréter correctement les recommandations du système ;</li>
+        <li>décider de ne pas suivre un résultat manifestement inadapté ;</li>
+        <li>intervenir ou interrompre le système.</li>
+    </ul>
+    <p>La supervision est proportionnée au risque : elle n'impose pas qu'un humain valide chaque micro-décision. La responsabilité reste humaine. <a href="https://eur-lex.europa.eu/" rel="noopener noreferrer nofollow">Texte officiel sur EUR-Lex</a>.</p>
+    <h2 class="h4 mt-4">Pas d'IA fiable sans données fiables</h2>
+    <p>Automatiser sur des données non vérifiées, sans responsable identifié et avec des indicateurs contradictoires, produit des erreurs plus vite. Les équipes qui obtiennent des résultats contrôlent la qualité avant le modèle, nomment un responsable par jeu de données critique et définissent chaque indicateur une seule fois. Cette plateforme applique le même principe : sources obligatoires, relecture humaine, score de fiabilité seulement indicatif.</p>
+    <h2 class="h4 mt-4">Code généré par l'IA : l'avis d'un expert</h2>
+    <p>Bjarne Stroustrup, créateur du C++, se dit, selon des propos rapportés, sceptique à l'idée de remplacer les langages de programmation par le langage naturel : le code généré serait plus volumineux, avec plus de bugs et de failles possibles, et le valider demande des développeurs seniors. L'IA accélère l'écriture, mais la fiabilité, la performance et la sécurité demandent toujours une expertise humaine. <span class="meta">Propos rapportés par un article de presse spécialisée : vérifiez la source d'origine.</span></p>
+    <p><a class="btn btn-rouge" href="{{ path('app_debat_show', {slug: 'superintelligence-artificielle-faut-il-arreter-la-course'}) }}">Débat : superintelligence</a> <a class="btn btn-outline-dark" href="{{ path('app_debat_show', {slug: 'faut-il-apprendre-a-utiliser-l-intelligence-artificielle-des-l-ecole-2'}) }}">Débat : l'IA à l'école</a></p>
+</div></section>
+{% endblock %}

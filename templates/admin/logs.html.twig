@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Journal | Administration{% endblock %}
+{% block body %}
+<section class="section"><div class="container">
+    <h1 class="h3">Journal ({{ file }})</h1>
+    <form class="row g-2 mb-3" method="get">
+        <div class="col-md-3"><select class="form-select" name="niveau" aria-label="Niveau"><option value="erreurs" {{ level == 'erreurs' ? 'selected' }}>Erreurs et connexions</option><option value="tout" {{ level == 'tout' ? 'selected' }}>Tout (sans dépréciations)</option></select></div>
+        <div class="col-md-6"><input class="form-control" name="q" value="{{ q }}" placeholder="Filtrer : login, csrf, un chemin, un mot" aria-label="Filtre"></div>
+        <div class="col-md-3"><button class="btn btn-bleu w-100">Afficher</button></div>
+    </form>
+    {% if not exists %}<div class="alert alert-warning">Le fichier de journal n'existe pas ou n'est pas lisible.</div>{% endif %}
+    <p class="meta">Les 150 dernières lignes correspondantes, la plus récente en premier. Heures en UTC (Paris = UTC+1).</p>
+    <pre style="white-space:pre-wrap;font-size:.8rem">{% for l in lines %}{{ l }}
+{% else %}Aucune ligne.{% endfor %}</pre>
+</div></section>
+{% endblock %}

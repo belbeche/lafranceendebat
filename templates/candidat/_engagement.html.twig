@@ -1,0 +1,14 @@
+<dl class="fiche">
+    {% macro row(label, value) %}<dt>{{ label }}</dt><dd>{% if value %}{{ value|nl2br }}{% else %}<span class="manque">Non renseigné</span>{% endif %}</dd>{% endmacro %}
+    {% import _self as f %}
+    {{ f.row('Problème visé', engagement.problem) }}
+    {{ f.row('Mesure', engagement.measure) }}
+    {{ f.row('Qui peut décider', engagement.competentAuthority) }}
+    {{ f.row('Coût annoncé et méthode', engagement.announcedCost) }}
+    {{ f.row('Financement', engagement.financing) }}
+    {{ f.row('Délai', engagement.timeline) }}
+    {{ f.row('Indicateur de résultat', engagement.indicator) }}
+    {{ f.row('Risques', engagement.risks) }}
+    {{ f.row('Réponse aux objections', engagement.objectionsReply) }}
+    <dt>Source</dt><dd>{% if engagement.sourceUrl %}<a href="{{ engagement.sourceUrl }}" rel="noopener nofollow" target="_blank">{{ engagement.sourceUrl|u.truncate(70, '…') }}</a>{% else %}<span class="manque">Aucune source indiquée</span>{% endif %}</dd>
+</dl>

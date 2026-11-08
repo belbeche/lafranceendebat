@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Cookies et mesure de lecture{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Cookies et mesure de lecture</h1></div></header>
+<section class="section"><div class="container measure">
+    <p>Ce site n'utilise <strong>aucun traceur publicitaire, aucun réseau social intégré et aucun outil d'analyse d'un tiers</strong> (ni Google Analytics, ni Facebook, ni pixel). La seule mesure d'audience est faite par la plateforme elle-même, sur ses propres serveurs, et vous décidez ici de ce qui est autorisé.</p>
+
+    <div class="carte mb-4" id="choix">
+        <h2 class="h5">Votre choix actuel</h2>
+        {% set c = consent_current() %}
+        <p>
+            {% if c is null %}Vous n'avez pas encore choisi. <strong>Tant que vous n'avez pas accepté, la mesure du temps de lecture est désactivée.</strong>
+            {% elseif c.audience %}Vous avez <strong>accepté</strong> la mesure du temps de lecture.
+            {% else %}Vous avez <strong>refusé</strong> la mesure du temps de lecture.{% endif %}
+        </p>
+        <form method="post" action="{{ path('app_consent_choice') }}">
+            <input type="hidden" name="_token" value="{{ csrf_token('consent') }}"><input type="hidden" name="back" value="/cookie-preferences">
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="aud" name="audience" value="1" {{ c and c.audience ? 'checked' }}>
+                <label class="form-check-label" for="aud"><strong>Mesure du temps de lecture</strong> (facultatif). Compte combien de temps et jusqu'où une page de débat ou de proposition est lue, pour afficher publiquement l'intérêt des lecteurs. Aucune information sur vous.</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="nec" checked disabled>
+                <label class="form-check-label" for="nec"><strong>Cookies nécessaires</strong> (toujours actifs, sans consentement). Connexion, sécurité des formulaires, mémorisation de vos choix.</label>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-primary" name="choice" value="custom">Enregistrer mon choix</button>
+                <button class="btn btn-outline-primary" name="choice" value="accept">Tout accepter</button>
+                <button class="btn btn-outline-primary" name="choice" value="refuse">Tout refuser</button>
+                {% if c and c.audience %}<button class="btn btn-outline-danger" name="choice" value="withdraw">Retirer mon consentement</button>{% endif %}
+            </div>
+        </form>
+        <p class="meta mt-3 mb-0">Refuser est aussi simple qu'accepter, et vous pouvez changer d'avis à tout moment sur cette page (lien « Cookies » en bas de chaque page). Votre choix est conservé {{ consentMonths }} mois, puis redemandé. Preuve de consentement conservée 13 mois : identifiant aléatoire du navigateur, choix, date, version du texte (v{{ consentVersion }}). Aucune adresse IP.</p>
+    </div>
+
+    <h2 class="h5">Tous les cookies déposés par ce site</h2>
+    <div class="table-responsive"><table class="table table-sm">
+        <thead><tr><th>Nom</th><th>À quoi il sert</th><th>Durée</th><th>Consentement</th></tr></thead>
+        <tbody>
+            <tr><td>session (PHPSESSID)</td><td>Vous reconnaître pendant la visite, protéger les formulaires contre la falsification (jeton CSRF)</td><td>Fermeture du navigateur</td><td>Non requis</td></tr>
+            <tr><td>REMEMBERME</td><td>« Se souvenir de moi », uniquement si vous cochez la case à la connexion</td><td>7 jours</td><td>Non requis (demandé par vous)</td></tr>
+            <tr><td>lfed_consent</td><td>Mémoriser votre choix sur cette page et son identifiant de preuve</td><td>{{ consentMonths }} mois</td><td>Non requis</td></tr>
+            <tr><td>lfed_welcome</td><td>Ne plus afficher le bandeau de bienvenue</td><td>1 an</td><td>Non requis</td></tr>
+            <tr><td>lfed_lang</td><td>Mémoriser la langue choisie</td><td>1 an</td><td>Non requis</td></tr>
+            <tr><td>lfed_sv</td><td>Empêcher de répondre deux fois à la même enquête (aucune donnée personnelle)</td><td>1 an</td><td>Non requis (posé uniquement si vous répondez à une enquête)</td></tr>
+        </tbody>
+    </table></div>
+
+    <h2 class="h5">La mesure de lecture, étape par étape</h2>
+    <ol>
+        <li><strong>Sans votre accord ni cookie</strong> : à l'ouverture d'un débat ou d'une proposition, le serveur ajoute une lecture, une fois par lecteur et par jour. Le lecteur est une empreinte calculée avec votre adresse IP, votre navigateur et un secret, qui change chaque jour : elle ne permet pas de vous reconnaître d'un jour à l'autre. Les robots sont écartés.</li>
+        <li><strong>Avec votre accord</strong> : un petit script mesure le temps pendant lequel la page est ouverte et active, et jusqu'où vous avez défilé. Ces deux nombres sont rattachés à l'empreinte du jour, jamais à votre compte.</li>
+        <li><strong>Affichage public</strong> : nombre de lectures, temps moyen, part de lectures approfondies et part de départs rapides, par débat et proposition. Ces chiffres servent aussi au classement « tendance » des débats.</li>
+        <li><strong>Conservation</strong> : 13 mois, puis suppression automatique. Données exclusivement internes : aucun transfert, aucune revente.</li>
+    </ol>
+    <p>Détails complets : <a href="{{ path('app_privacy_policy') }}">politique de confidentialité</a>. Vous pouvez écrire à l'adresse de contact pour toute question, et saisir la <a href="https://www.cnil.fr" rel="noopener">CNIL</a>.</p>
+</div></section>
+{% endblock %}

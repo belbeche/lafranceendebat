@@ -1,0 +1,45 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Acteurs publics{% endblock %}
+{% block admin %}
+<h1 class="h3">Acteurs publics (démarchage professionnel)</h1>
+<p>{{ eligible }} contact(s) jamais invité(s), {{ consented }} ont accepté de recevoir vos informations. Chaque contact reçoit une seule invitation, jamais de relance ; les suivants ne sont envoyés qu'à ceux qui ont accepté (au plus un par semaine). Statuts : {% for s, n in counts %}{{ s }} {{ n }}{{ not loop.last ? ', ' }}{% else %}aucun contact importé{% endfor %}.</p>
+{% for t, m in app.flashes %}{% for x in m %}<div class="alert alert-{{ t }}">{{ x }}</div>{% endfor %}{% endfor %}
+<h2 class="h5">Import automatique depuis les données ouvertes</h2>
+<p class="meta">Un clic par source officielle. Seules les adresses professionnelles publiées sont reprises, avec la page source. Rien n'est envoyé : chaque fiche reste à valider. Utilisez « Simuler » pour compter avant d'importer.</p>
+<div class="row g-3 mb-4">
+{% set auto = [
+  {key: 'annuaire', title: "Annuaire de l'administration", text: "Mairies, préfectures, départements et services de l'État avec l'adresse e-mail publiée (Licence Ouverte 2.0).", filters: true},
+  {key: 'assemblee', title: 'Assemblée nationale', text: "Députés en exercice : adresse institutionnelle publiée dans les données ouvertes de l'Assemblée.", filters: false},
+  {key: 'senat', title: 'Sénat', text: "Sénateurs en exercice qui publient une adresse @senat.fr (données ouvertes du Sénat).", filters: false}
+] %}
+{% for a in auto %}
+<div class="col-md-4"><form method="post" action="{{ path('admin_actors_import_auto') }}" class="carte p-3 h-100 d-flex flex-column gap-2">
+    <input type="hidden" name="_token" value="{{ csrf_token('actors_auto') }}"><input type="hidden" name="source" value="{{ a.key }}">
+    <strong>{{ a.title }}</strong><span class="meta">{{ a.text }}</span>
+    {% if a.filters %}<div class="d-flex gap-2"><input class="form-control form-control-sm" name="recherche" value="Mairie" aria-label="Type d'organisme"><input class="form-control form-control-sm" name="departement" placeholder="Dép. (ex. 70)" aria-label="Département" style="max-width:110px"></div>{% endif %}
+    <div class="d-flex gap-2 mt-auto"><button class="btn btn-primary" name="mode" value="importer">Importer maintenant</button><button class="btn btn-outline-primary" name="mode" value="simuler">Simuler</button></div>
+</form></div>
+{% endfor %}
+<div class="col-md-12"><div class="carte p-3 meta"><strong>Élus locaux et associations.</strong> Le Répertoire national des élus et le Répertoire national des associations ne publient pas d'adresse e-mail : on ne peut donc pas les importer comme contacts. Pour ces acteurs, écrivez à la mairie ou à l'association via l'adresse de l'Annuaire, ou ajoutez la fiche à la main avec sa source.</div></div>
+</div>
+{% if error is defined and error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+{% if result %}
+<div class="alert alert-info"><strong>{{ result.added }}</strong> ajouté(s), {{ result.skipped }} déjà connu(s), {{ result.rejected|length }} refusé(s).
+{% if result.rejected %}<ul class="mb-0 mt-2">{% for r in result.rejected|slice(0, 20) %}<li>Ligne {{ r.line }} : {{ r.reason }}</li>{% endfor %}</ul>{% endif %}</div>
+{% endif %}
+<form method="post" action="{{ path('admin_actors_import') }}" enctype="multipart/form-data" class="carte p-3 mb-4" style="max-width:720px">
+    <input type="hidden" name="_token" value="{{ csrf_token('actors_import') }}">
+    <h2 class="h5">Importer un fichier CSV</h2>
+    <p class="meta">En-têtes : <code>email, organisation, fonction, categorie, source_url</code> (catégories : commune, departement, region, parlementaire, administration, association, autre). 2000 lignes et 1 Mo maximum. Les adresses de messageries grand public (gmail, orange, free...) sont refusées. <code>source_url</code> est la page publique où l'adresse est publiée.</p>
+    <input class="form-control mb-3" type="file" name="csv" accept=".csv,text/csv" required>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="attest" name="attest" value="1" required><label class="form-check-label" for="attest">Je certifie que ces adresses sont des adresses professionnelles publiées par les organismes eux-mêmes, que je ne les ai pas obtenues par collecte automatisée de pages personnelles, et que mes messages concerneront leurs fonctions.</label></div>
+    <button class="btn btn-primary">Importer</button>
+</form>
+<p><a class="btn btn-outline-primary" href="{{ path('admin_lettre_new') }}">Écrire une invitation ou un message</a></p>
+<h2 class="h5">Derniers contacts importés</h2>
+<table class="table table-sm"><thead><tr><th>Organisation</th><th>Fonction</th><th>E-mail</th><th>Coordonnées</th><th>Catégorie</th><th>Statut</th><th>Invité</th><th>Accord</th><th>Dernier envoi</th><th></th></tr></thead><tbody>
+{% for a in recent %}<tr><td>{{ a.organisation }}</td><td>{{ a.role }}</td><td>{{ a.email }}</td><td class="small">{{ a.phone }}{{ a.phone and (a.address or a.city) ? ' · ' }}{{ a.address }} {{ a.postalCode }} {{ a.city }}{% if a.website %}<br><a href="{{ a.website }}" rel="noopener nofollow">{{ a.website }}</a>{% endif %}</td><td>{{ a.categoryLabel }}</td><td>{{ a.status }}</td><td>{{ a.invitedAt ? a.invitedAt|date('d/m/Y') : '' }}</td><td>{{ a.consentAt ? 'oui' : '' }}</td><td>{{ a.lastContactedAt ? a.lastContactedAt|date('d/m/Y') : '' }}</td>
+<td>{% if a.status == 'actif' %}<form method="post" action="{{ path('admin_actor_exclude', {id: a.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('actor_exclude' ~ a.id) }}"><button class="btn btn-sm btn-outline-danger" data-confirm="Exclure définitivement ce contact ?">Exclure</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="10" class="text-muted">Aucun contact.</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

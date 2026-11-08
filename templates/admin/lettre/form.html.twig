@@ -1,0 +1,34 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ isNew ? 'Nouvelle lettre' : 'Modifier la lettre' }}{% endblock %}
+{% block admin %}
+<h1 class="h3">{{ isNew ? 'Nouvelle lettre' : 'Modifier la lettre' }}</h1>
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<form method="post" novalidate>
+    <input type="hidden" name="_token" value="{{ csrf_token('lettre_edit') }}">
+    <label class="form-label fw-bold" for="locale">Langue de la lettre</label>
+    <select id="locale" class="form-select mb-3" name="locale">
+        <option value="">Toutes les langues</option>
+        {% for code in ['fr','en','es','de','it','pt','ar','tr','ru','zh','hi','ja'] %}<option value="{{ code }}" {{ lettre.locale == code ? 'selected' }}>{{ code|upper }}</option>{% endfor %}
+    </select>
+    <p class="form-text">Une lettre par langue : seuls les destinataires qui ont choisi cette langue la reçoivent. Créez la même lettre dans chaque langue pour que chacun la lise dans la sienne.</p>
+    <label class="form-label fw-bold" for="audience">Destinataires</label>
+    <select id="audience" class="form-select mb-3" name="audience">
+        <option value="abonnes" {{ lettre.audience == 'abonnes' ? 'selected' }}>Abonnés qui ont confirmé leur adresse</option>
+        <option value="invitation" {{ lettre.audience == 'invitation' ? 'selected' }}>Acteurs publics : invitation unique (premier contact, avec lien d'acceptation)</option>
+        <option value="acteurs" {{ lettre.audience == 'acteurs' ? 'selected' }}>Acteurs publics qui ont accepté de recevoir vos informations</option>
+    </select>
+    <div class="row g-2 mb-3"><div class="col-md-6"><label class="form-label fw-bold" for="actor_category">Cibler une catégorie d'acteurs (acteurs publics seulement)</label>
+        <select id="actor_category" class="form-select" name="actor_category"><option value="">Toutes les catégories</option>{% for k, v in constant('App\\Entity\\ActorContact::CATEGORIES') %}<option value="{{ k }}" {{ lettre.actorCategory == k ? 'selected' }}>{{ v }}</option>{% endfor %}</select></div>
+        <div class="col-md-6"><label class="form-label fw-bold" for="actor_dept">Cibler un département (ex. 27, 70, 2A)</label><input id="actor_dept" class="form-control" name="actor_dept" maxlength="3" value="{{ lettre.actorDept }}" placeholder="Tous les départements"></div></div>
+    <details class="mb-3"><summary class="fw-bold">Message adapté à chaque catégorie d'acteur</summary>
+    <p class="small text-muted mt-2 mb-1">Dans votre texte, écrivez <code>{accroche}</code> : il est remplacé par la phrase de la catégorie de chaque destinataire. Vous pouvez aussi utiliser <code>{organisation}</code>, <code>{type}</code> et <code>{ville}</code>. Le bouton « Envoyer un test » montre le rendu pour la catégorie ciblée.</p>
+    <ul class="small">{% for k, v in constant('App\\Service\\Lettre\\ActorMessageTemplates::ACCROCHES') %}<li><strong>{{ constant('App\\Entity\\ActorContact::CATEGORIES')[k] }}</strong> : {{ v }}</li>{% endfor %}</ul>
+    <p class="small text-muted">Chaque organisation ne reçoit qu'un seul message, même si plusieurs de ses adresses sont dans la liste. Les contacts déjà invités ou contactés sont ignorés.</p></details>
+    <label class="form-label fw-bold" for="subject">Objet</label>
+    <input id="subject" class="form-control mb-3" name="subject" maxlength="160" required value="{{ lettre.subject }}">
+    <label class="form-label fw-bold" for="body">Contenu (texte brut)</label>
+    <textarea id="body" class="form-control mb-2" name="body" rows="16" maxlength="20000" required>{{ lettre.body }}</textarea>
+    <p class="small text-muted">Texte brut uniquement : une ligne vide sépare les paragraphes, les adresses https:// deviennent des liens. Aucun HTML n'est accepté.</p>
+    <button class="btn btn-bleu">Enregistrer le brouillon</button>
+</form>
+{% endblock %}

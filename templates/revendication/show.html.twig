@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% import '_macros.html.twig' as ui %}
+{% block title %}{{ tr(revendication, 'title') }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <p class="mb-2"><span class="etiquette bleu">{{ revendication.groupLabel }}</span> <span class="etiquette {{ ui.revendication_status_class(revendication.status) }}">{{ revendication.statusLabel }}</span> <span class="etiquette">{{ revendication.theme }}</span></p>
+    <h1>{{ tr(revendication, 'title') }}</h1>
+    <p class="mb-2">{% include '_edit_actions.html.twig' with {mine: app.user and revendication.submittedBy and revendication.submittedBy.id == app.user.id, editUrl: path('app_revendication_edit', {slug: revendication.slug}), historyUrl: path('app_history', {type: 'revendication', id: revendication.id}), edited: revendication.editedAt, count: revendication.editCount} only %}</p>
+    <p class="meta mb-0">{% if revendication.awaitingAnswer %}Sans réponse publique depuis {{ revendication.daysSinceUpdate }} jour{{ revendication.daysSinceUpdate > 1 ? 's' }}.{% else %}Dernière mise à jour le {{ revendication.updatedAt|date('d/m/Y') }}.{% endif %}</p>
+</div></header>
+{% include 'translation/_note.html.twig' with {e: revendication, type: 'revendication'} only %}
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        <h2 class="h4">Ce qui est dénoncé ou demandé</h2>
+        <p class="measure">{{ tr(revendication, 'summary')|nl2br }}</p>
+        {% include '_reliability.html.twig' with {text: revendication.summary ~ ' ' ~ (revendication.verificationNote ?? ''), sources: revendication.sourceUrl ?? ''} only %}
+        {% if revendication.verificationNote %}<div class="limite mb-3"><strong>À vérifier.</strong><br>{{ revendication.verificationNote|nl2br }}</div>{% endif %}
+        <dl class="fiche">
+            <dt>Source</dt>
+            <dd>{% if revendication.sourceUrl %}<a href="{{ revendication.sourceUrl }}" rel="noopener nofollow" target="_blank">{{ revendication.sourceLabel ?: revendication.sourceUrl }}</a>{% elseif revendication.sourceLabel %}{{ revendication.sourceLabel }}{% else %}<span class="manque">Aucune source indiquée</span>{% endif %}</dd>
+            <dt>Qui peut répondre</dt><dd>{{ revendication.competentAuthority ?: 'Non renseigné' }}</dd>
+            <dt>Voie juridique envisageable</dt><dd>{{ revendication.legalPath ?: 'Non renseignée' }}</dd>
+        </dl>
+
+        <h2 class="h4 mt-4">Transmissions et réponses</h2>
+        {% for t in revendication.transmissions %}
+            <div class="rangee">
+                <p class="mb-1"><strong>{{ t.recipient }}</strong> · {{ t.routeLabel }} · <span class="etiquette bleu">{{ t.statusLabel }}</span></p>
+                <p class="meta mb-1">{% if t.sentAt %}Envoyée le {{ t.sentAt|date('d/m/Y') }}{% else %}Préparée, pas encore envoyée{% endif %}</p>
+                {% if t.responseSummary %}<blockquote class="mb-1">{{ t.responseSummary|nl2br }}</blockquote>{% endif %}
+                {% if t.referenceUrl %}<a href="{{ t.referenceUrl }}" rel="noopener nofollow" target="_blank">Document de référence</a>{% endif %}
+            </div>
+        {% else %}
+            <p class="meta">Aucune transmission enregistrée à ce jour.</p>
+        {% endfor %}
+    </div>
+    <div class="col-lg-4">
+        <div class="carte">
+            <h2 class="h5">Propositions qui y répondent</h2>
+            {% for p in propositions %}<p class="mb-1"><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a> <span class="meta">({{ p.supportCount }})</span></p>
+            {% else %}<p class="meta">Aucune proposition publiée pour l'instant.</p>{% endfor %}
+            <a class="btn btn-rouge w-100 mt-2" href="{{ path('app_proposition_new', {revendication: revendication.slug}) }}">Proposer une réponse</a>
+        </div>
+    </div>
+</div></div></section>
+{% endblock %}

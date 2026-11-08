@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Utiliser une identité réelle | La France en Débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Utiliser une identité réelle</h1>
+    <p class="lead mb-0">Un débat apaisé suppose que chacun sache à qui il parle. Cette notice explique ce que nous demandons, ce que nous enregistrons, et ce qui se passe en cas de problème.</p>
+</div></header>
+<section class="section"><div class="container" style="max-width:820px">
+    <h2 class="h4">1. Ce que nous demandons</h2>
+    <ul>
+        <li>Votre vrai prénom et votre vrai nom. Seuls votre prénom et l'initiale de votre nom sont affichés publiquement.</li>
+        <li>Une adresse e-mail durable, que vous relevez. Les adresses temporaires ou jetables sont refusées.</li>
+        <li>Un seul compte par personne. Pas de compte au nom d'un tiers.</li>
+    </ul>
+    <h2 class="h4 mt-4">2. Pourquoi</h2>
+    <p>Pour éviter les faux comptes, les soutiens fabriqués, le harcèlement et les fraudes aux paiements. C'est ce qui permet de garder des échanges sans haine ni violence, conformément à la <a href="{{ path('app_charter') }}">charte de paix</a>.</p>
+    <h2 class="h4 mt-4">3. Ce qui est enregistré</h2>
+    <p>Pour la sécurité de la plateforme, un journal conserve, pour les membres connectés : la date, l'adresse IP, le pays quand il est connu, l'appareil, les connexions réussies ou échouées et les pages consultées (sans paramètres ni jetons). Il est consultable uniquement par l'administration, conservé 12 mois puis supprimé automatiquement. Il n'est pas utilisé à des fins publicitaires et n'est transmis à aucun tiers, sauf demande des autorités.</p>
+    <p>Base légale : intérêt légitime de sécurité du service et obligations légales de conservation des données de connexion. Vos droits (accès, rectification, effacement, opposition) sont détaillés dans la <a href="{{ path('app_privacy_policy') }}">politique de confidentialité</a>.</p>
+    <h2 class="h4 mt-4">4. Ce qui se passe en cas de problème</h2>
+    <ol>
+        <li><strong>Avertissement.</strong> Adresse jetable à l'inscription : refus et message d'explication. Plusieurs connexions échouées : e-mail d'alerte au titulaire du compte.</li>
+        <li><strong>Restriction.</strong> Un compte existant avec une adresse suspecte est restreint : vous pouvez lire et débattre, mais les paiements et l'ouverture d'un compte Stripe sont bloqués. Vous avez 7 jours pour remplacer l'adresse par une adresse valide, la restriction est alors levée automatiquement.</li>
+        <li><strong>Désactivation.</strong> Sans régularisation, le compte est désactivé. Les informations de connexion restent enregistrées.</li>
+        <li><strong>Signalement.</strong> En cas de répétition (trois inscriptions refusées en 24 h, tentatives d'accès à un compte, usurpation d'identité, fraude), la modération peut signaler les faits aux autorités compétentes.</li>
+    </ol>
+    <h2 class="h4 mt-4">5. Adresse refusée par erreur ?</h2>
+    <p>Écrivez-nous depuis la <a href="{{ path('app_contact') }}">page contact</a> avec une autre adresse : nous ajoutons les adresses légitimes à la liste blanche.</p>
+    <p class="meta mt-4">Cette notice complète les <a href="{{ path('app_terms_of_service') }}">conditions d'utilisation</a>.</p>
+</div></section>
+{% endblock %}

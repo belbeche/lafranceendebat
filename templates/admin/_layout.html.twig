@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% set admin_native = true %}
+{% block body %}
+<div class="container section">
+    <div class="row g-4">
+        <aside class="col-lg-2">
+            {% include 'admin/_nav.html.twig' %}
+        </aside>
+        <div class="col-lg-10">{% block admin %}{% endblock %}</div>
+    </div>
+</div>
+{% endblock %}

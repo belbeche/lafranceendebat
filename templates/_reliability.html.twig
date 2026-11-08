@@ -1,0 +1,5 @@
+{# Variables : text, sources. Score indicatif, jamais une décision. #}
+{% set r = reliability(text, sources|default('')) %}
+<details class="reliab reliab-{{ r.level }} mb-3"><summary><strong>{{ r.label }} : {{ r.score }}/100</strong></summary>
+    <ul class="mb-1 mt-2">{% for x in r.reasons %}<li>{{ x }}</li>{% endfor %}{% if r.ai %}{% for x in r.ai.issues %}<li>Avis IA : {{ x }}</li>{% endfor %}{% endif %}</ul>
+    <p class="meta mb-0">Score calculé automatiquement{{ r.ai ? ' avec un avis d\'IA' : '' }}. Il aide la lecture, ne décide de rien et peut se tromper : vérifiez les sources.</p></details>

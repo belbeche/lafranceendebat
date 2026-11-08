@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Traduire{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Traduire en {{ locale|upper }}</h1><p class="lede mb-0">Votre traduction est relue avant publication. Restez fidèle au texte, sans ajout ni opinion.</p></div></header>
+<section class="section"><div class="container">
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<form method="post" class="carte p-3">
+    <input type="hidden" name="_token" value="{{ csrf_token('translate' ~ type ~ id) }}">
+    {% for f in fields %}
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><p class="meta mb-1">Texte d'origine</p><div class="carte p-2" style="white-space:pre-line">{{ original[f] }}</div></div>
+            <div class="col-md-6"><label class="form-label fw-bold" for="{{ f }}">Votre traduction</label><textarea class="form-control" id="{{ f }}" name="{{ f }}" rows="{{ original[f]|length > 200 ? 8 : 2 }}" {{ loop.index <= 2 ? 'required' }}>{{ values[f] }}</textarea></div>
+        </div>
+    {% endfor %}
+    <button class="btn btn-primary">Envoyer pour relecture</button>
+</form>
+</div></section>
+{% endblock %}

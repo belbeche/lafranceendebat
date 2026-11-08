@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}Débats{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'debats'} only %}
+<header class="page-head"><div class="container">
+    <h1>Débats</h1>
+    <p class="lede">Chaque débat commence par un exposé neutre et des faits vérifiés. On y dépose des arguments pour, contre ou nuancés, et on reformule la position de l'autre avant de lui répondre.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: 'debats', compact: true} only %}</div>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        <p class="mb-3">Trier : <a class="etiquette {{ tri == 'tendance' ? 'bleu' }}" href="{{ path('app_debats', {theme: theme, tri: 'tendance'}) }}">Tendance</a> <a class="etiquette {{ tri == 'lus' ? 'bleu' }}" href="{{ path('app_debats', {theme: theme, tri: 'lus'}) }}">Les plus lus</a> <a class="etiquette {{ tri == 'recent' ? 'bleu' }}" href="{{ path('app_debats', {theme: theme, tri: 'recent'}) }}">Récents</a></p>
+        {% for d in debats %}
+            <article class="rangee">
+                <p class="mb-1"><span class="etiquette bleu">{{ d.theme }}</span> <span class="etiquette {{ d.open ? 'vert' }}">{{ d.statusLabel }}</span> <span class="meta">{{ d.proposedBy ? 'par ' ~ d.proposedBy.publicName : 'par la rédaction' }}</span></p>
+                <h3><a href="{{ path('app_debat_show', {slug: d.slug}) }}">{{ d.title }}</a></h3>
+                <p class="mb-1">{{ d.summary|u.truncate(220, '…', false) }}</p>
+                {% set st = stats[d.id]|default(null) %}
+                <p class="meta mb-0">{% if st %}{{ st.views }} lecture{{ st.views > 1 ? 's' }}{% if st.samples >= 5 %} · {{ st.avgSeconds|duration }} de lecture en moyenne · {{ st.label }}{% endif %}{% else %}Pas encore lu{% endif %}</p>
+            </article>
+        {% else %}
+            <div class="carte">Aucun débat{{ theme ? ' dans ce thème' }} pour le moment.</div>
+        {% endfor %}
+    </div>
+    <div class="col-lg-4"><div class="carte">
+        <h2 class="h5">Filtrer par thème</h2>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="etiquette {{ not theme ? 'bleu' }}" href="{{ path('app_debats') }}">Tous</a>
+            {% for t in themes %}<a class="etiquette {{ t == theme ? 'bleu' }}" href="{{ path('app_debats', {theme: t, tri: tri}) }}">{{ t }}</a>{% endfor %}
+        </div>
+        <p class="meta mt-3 mb-0"><a href="{{ path('app_method') }}">Lire la méthode en 12 étapes</a></p>
+    </div></div>
+</div></section>
+{% endblock %}

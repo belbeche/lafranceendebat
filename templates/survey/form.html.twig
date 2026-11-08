@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ s.title }} | Enquête | La France en Débat{% endblock %}
+{% block body %}
+{% if preview %}
+<div class="alert alert-warning mb-0 rounded-0 text-center"><strong>Aperçu</strong> : voici exactement ce que verront les participants. Rien n'est enregistré ici.
+    {% if s.isDraft %}<form method="post" action="{{ path('admin_survey_act', {id: s.id, action: 'publier'}) }}" class="d-inline-flex flex-wrap gap-2 align-items-center ms-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('survey' ~ s.id) }}">
+        <label class="mb-0"><input type="checkbox" name="envoyer" value="1" checked> envoyer l'invitation aux abonnés confirmés</label>
+        <button class="btn btn-sm btn-bleu">Publier</button>
+        <a class="btn btn-sm btn-outline-dark" href="{{ path('admin_survey_edit', {id: s.id}) }}">Modifier</a>
+    </form>{% endif %}</div>
+{% endif %}
+<header class="page-head"><div class="container"><h1>{{ s.title }}</h1><p class="lead mb-0">{{ s.intro|e|nl2br }}</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if done %}
+    <div class="alert alert-success">Vous avez déjà répondu à cette enquête. Merci.</div>
+    {% if canSeeResults %}<p><a class="btn btn-bleu" href="{{ path('app_survey_results', {id: s.id}) }}">Voir les résultats</a></p>{% endif %}
+{% elseif not preview and not s.isOpen %}
+    <div class="alert alert-info">Cette enquête est clôturée.</div>
+    {% if canSeeResults %}<p><a class="btn btn-bleu" href="{{ path('app_survey_results', {id: s.id}) }}">Voir les résultats</a></p>{% endif %}
+{% else %}
+    {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+    <form method="{{ preview ? 'get' : 'post' }}" {{ preview ? 'onsubmit="return false"' : '' }} class="form-card" novalidate>
+        {% if not preview %}<input type="hidden" name="_token" value="{{ csrf_token('survey' ~ s.id) }}"><div class="visually-hidden" aria-hidden="true"><label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>{% endif %}
+        {% for q in s.questions %}
+        {% set i = loop.index0 %}
+        <fieldset class="mb-4">
+            <legend class="h6">{{ loop.index }}. {{ q.label }}{% if q.required %} <span class="text-danger" aria-label="obligatoire">*</span>{% endif %}</legend>
+            {% if q.type == 'choix' or q.type == 'oui-non' %}
+                {% for o in q.options %}<div class="form-check"><input class="form-check-input" type="radio" name="q[{{ i }}]" id="q{{ i }}_{{ loop.index }}" value="{{ o }}" {{ values[i] is defined and values[i] == o ? 'checked' }}><label class="form-check-label" for="q{{ i }}_{{ loop.index }}">{{ o }}</label></div>{% endfor %}
+            {% elseif q.type == 'multiple' %}
+                {% for o in q.options %}<div class="form-check"><input class="form-check-input" type="checkbox" name="q[{{ i }}][]" id="q{{ i }}_{{ loop.index }}" value="{{ o }}" {{ values[i] is defined and o in values[i] ? 'checked' }}><label class="form-check-label" for="q{{ i }}_{{ loop.index }}">{{ o }}</label></div>{% endfor %}
+            {% elseif q.type == 'echelle' %}
+                <div class="d-flex gap-3 align-items-center flex-wrap">{% for n in 1..5 %}<div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="q[{{ i }}]" id="q{{ i }}_{{ n }}" value="{{ n }}" {{ values[i] is defined and values[i] == n ~ '' ? 'checked' }}><label class="form-check-label" for="q{{ i }}_{{ n }}">{{ n }}</label></div>{% endfor %}<small class="meta">1 = pas du tout, 5 = tout à fait</small></div>
+            {% else %}
+                <textarea class="form-control" name="q[{{ i }}]" rows="3" maxlength="1000" aria-label="{{ q.label }}">{{ values[i] is defined ? values[i] }}</textarea>
+            {% endif %}
+        </fieldset>
+        {% endfor %}
+        <p class="meta">Réponse anonyme : aucune adresse IP ni e-mail n'est conservée avec vos réponses. Une seule réponse par personne.</p>
+        {% if not preview %}<button class="btn btn-bleu" type="submit">Envoyer mes réponses</button>{% endif %}
+    </form>
+{% endif %}
+</div></section>
+{% endblock %}

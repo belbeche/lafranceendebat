@@ -1,0 +1,23 @@
+{% import 'community/_macros.html.twig' as c %}
+<article class="com" id="reponse-{{ r.id }}">
+    {{ c.avatar(r.author) }}
+    <div class="com-main">
+        <div class="com-bubble">
+            <p class="com-head"><strong>{{ r.author ? r.author.publicName : 'Citoyen' }}</strong> <time datetime="{{ r.createdAt|date('c') }}" title="{{ r.createdAt|date('d/m/Y H:i') }}">{{ r.createdAt|ago }}</time></p>
+            {% if r.reformulation %}<p class="com-reformule"><strong>Ce que je comprends :</strong> {{ r.reformulation|nl2br }}</p>{% endif %}
+            <p class="com-text">{{ r.body|nl2br }}</p>
+        </div>
+        <div class="com-actions">
+            {% include '_edit_actions.html.twig' with {mine: app.user and r.author and r.author.id == app.user.id, editUrl: path('app_community_reply_edit', {id: r.id}), withdrawUrl: path('app_community_reply_withdraw', {id: r.id}), token: 'reply_withdraw' ~ r.id, historyUrl: path('app_history', {type: 'reponse', id: r.id}), edited: r.editedAt, count: r.editCount} only %}
+            {% if is_granted('ROLE_USER') and r.author and r.author != app.user %}
+                <form method="post" action="{{ path('app_community_thank', {id: r.id}) }}" class="m-0">
+                    <input type="hidden" name="_token" value="{{ csrf_token('thank' ~ r.id) }}">
+                    <button class="act {{ r.id in thanked ? 'act-on' : '' }}" type="submit" {{ r.id in thanked ? 'aria-pressed="true"' : 'aria-pressed="false"' }}><i class="bi bi-heart{{ r.id in thanked ? '-fill' : '' }}" aria-hidden="true"></i> {{ r.id in thanked ? 'Merci envoyé' : 'Merci' }}{% if (thanks[r.id] ?? 0) > 0 %} · {{ thanks[r.id] }}{% endif %}</button>
+                </form>
+                <a class="act" href="{{ path('app_signalement_new', {type: 'reponse', id: r.id}) }}">Signaler</a>
+            {% elseif (thanks[r.id] ?? 0) > 0 %}
+                <span class="act act-static"><i class="bi bi-heart-fill" aria-hidden="true"></i> {{ thanks[r.id] }}</span>
+            {% endif %}
+        </div>
+    </div>
+</article>

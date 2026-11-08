@@ -1,0 +1,7 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Message reçu{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Nous avons bien reçu votre message</h1>
+<p>Bonjour {{ contact.prenom }}, merci de nous avoir écrit à propos de « {{ contact.sujet }} ». Une personne vous répondra. Les messages respectueux reçoivent toujours une réponse.</p>
+<p style="font-size:13px;color:#555">Si vous n'êtes pas à l'origine de ce message, ignorez cet e-mail.</p>
+{% endblock %}

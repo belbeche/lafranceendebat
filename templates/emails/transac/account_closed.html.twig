@@ -1,0 +1,9 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Compte désactivé{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Votre compte a été désactivé</h1>
+<p>Bonjour, votre compte sur La France en Débat a été désactivé. Vos informations de connexion (date, adresse IP, pays) restent enregistrées.</p>
+<p><strong>Raison :</strong> {{ reason }}</p>
+<p>Merci d'utiliser une identité valide : toute tentative suspecte pourra être signalée.</p>
+<p><a href="{{ url('app_identity_notice') }}">Notice : utiliser une identité réelle</a></p>
+{% endblock %}

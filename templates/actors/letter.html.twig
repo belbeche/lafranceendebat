@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Écrire à un acteur public{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Écrire à un acteur public</h1>
+    <p class="mb-0">Lettre préparée pour « {{ proposition.title }} ». Relisez-la, adaptez-la, puis envoyez-la depuis votre propre messagerie ou le formulaire officiel. Rien n'est envoyé par ce site.</p>
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-4">
+        <form method="get" class="carte p-3">
+            <label class="form-label" for="acteur">Destinataire</label>
+            <select class="form-select mb-3" id="acteur" name="acteur">
+                {% for a in actors %}<option value="{{ a.slug }}" {{ a.slug == actor.slug ? 'selected' }}>{{ a.name }}</option>{% endfor %}
+            </select>
+            <label class="form-label" for="nom">Votre nom (facultatif)</label>
+            <input class="form-control mb-3" id="nom" name="nom" maxlength="80" value="{{ name }}">
+            <button class="btn btn-primary w-100" type="submit">Mettre à jour la lettre</button>
+        </form>
+        <p class="meta mt-3">Où l'envoyer : <a href="{{ actor.url }}" target="_blank" rel="noopener noreferrer">{{ actor.name }}</a>. {{ actor.how }}</p>
+    </div>
+    <div class="col-lg-8">
+        <label class="form-label" for="lettre">Texte de la lettre</label>
+        <textarea class="form-control" id="lettre" rows="18" readonly>{{ letter }}</textarea>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <button type="button" class="btn btn-primary" data-copy-from="#lettre">Copier le texte</button>
+            <a class="btn btn-outline-primary" href="mailto:?subject={{ subject|url_encode }}&body={{ letter|url_encode }}">Ouvrir dans ma messagerie</a>
+            <a class="btn btn-link" href="{{ path('app_proposition_show', {id: proposition.id}) }}">Retour à la proposition</a>
+        </div>
+    </div>
+</div></div></section>
+{% endblock %}

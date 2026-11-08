@@ -1,0 +1,9 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Connexions de {{ u.fullName }}{% endblock %}
+{% block admin %}
+<h1 class="h3">Connexions de {{ u.fullName }}</h1>
+<p class="meta">{{ u.email }} · dernière connexion : {{ u.lastLogin ? u.lastLogin|date('d/m/Y H:i') : 'non enregistrée' }}. Historique conservé 90 jours, adresses raccourcies.</p>
+<div class="table-responsive"><table class="table table-sm bg-white admin-table"><thead><tr><th>Date</th><th>Résultat</th><th>Appareil</th><th>Adresse</th></tr></thead>
+<tbody>{% for e in events %}<tr><td>{{ e.at|date('d/m/Y H:i') }}</td><td>{{ e.success ? 'Réussie' : 'Échec' }}</td><td>{{ e.device }}</td><td>{{ e.ip }}</td></tr>{% else %}<tr><td colspan="4" class="text-muted">Aucune connexion enregistrée.</td></tr>{% endfor %}</tbody></table></div>
+<a href="{{ path('admin_users') }}">Retour aux comptes</a>
+{% endblock %}

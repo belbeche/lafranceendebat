@@ -1,0 +1,11 @@
+{# e = entité, type = revendication|proposition|discussion|service_offer #}
+{% set loc = app.request.locale %}
+{% if loc != tr_source(e) %}
+    {% set note = tr_note(e) %}
+    <div class="container"><p class="meta mt-3 mb-0">
+    {% if note == 'auto' %}Traduction automatique. Une erreur ? <a href="{{ path('app_translate_contribute', {type: type, id: e.id, locale: loc}) }}">Proposer une meilleure traduction</a>.
+    {% elseif note == 'user' %}Traduit par un contributeur, relu par l'équipe.
+    {% else %}Ce texte n'est pas encore traduit dans votre langue. <a href="{{ path('app_translate_contribute', {type: type, id: e.id, locale: loc}) }}">Le traduire</a> (ouvert à tous, relecture avant publication).
+    {% endif %}
+    </p></div>
+{% endif %}

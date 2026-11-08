@@ -1,0 +1,287 @@
+{# templates/email/contact.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Nouveau Message - Yacht Club</title>
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #1a365d; 
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80');
+            background-size: cover;
+            background-blend-mode: overlay;
+            background-color: rgba(240, 244, 248, 0.9);
+        }
+        .container { 
+            max-width: 650px; 
+            margin: 40px auto; 
+            padding: 0 20px; 
+        }
+        .header { 
+            background: linear-gradient(135deg, #0c4b8f 0%, #1e88e5 100%); 
+            color: white; 
+            padding: 40px; 
+            text-align: center; 
+            border-radius: 20px 20px 0 0; 
+            position: relative;
+            overflow: hidden;
+        }
+        .header:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="white" fill-opacity="0.1" d="M0,50 Q25,40 50,50 T100,50 V100 H0 Z"/></svg>');
+            background-size: 100px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        .header h1:before {
+            content: "⛵";
+            margin-right: 15px;
+            font-size: 36px;
+            vertical-align: middle;
+        }
+        .header p {
+            margin: 10px 0 0;
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        .content { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: white!important;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-block;
+            padding: 10px 30px;
+            border: 2px solid #0c4b8f;
+            border-radius: 50px;
+            background: linear-gradient(to right, transparent 50%, #0c4b8f 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: all 0.3s ease;
+        }
+        .info-box { 
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); 
+            border-left: 4px solid #0c4b8f; 
+            padding: 25px; 
+            margin: 25px 0; 
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+        }
+        .label { 
+            font-weight: 600; 
+            color: #0c4b8f; 
+            min-width: 120px;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-right: 10px;
+        }
+        .value {
+            color: #2d3748;
+            font-weight: 500;
+        }
+        .info-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .message-container {
+            background: white;
+            border: 1px solid #e2e8f0;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+            line-height: 1.8;
+            background: linear-gradient(to bottom right, #ffffff, #fafcff);
+            position: relative;
+        }
+        .message-container:before {
+            content: "✉️";
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 2px solid #e2e8f0;
+            font-size: 18px;
+        }
+        .message-title {
+            color: #0c4b8f;
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .message-content {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 16px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 13px;
+            font-weight: 300;
+        }
+        .footer-logo {
+            color: #0c4b8f;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .signature {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px dashed #cbd5e0;
+        }
+        .signature p {
+            margin: 5px 0;
+            color: #4a5568;
+        }
+        .signature strong {
+            color: #0c4b8f;
+        }
+        .icon {
+            display: inline-block;
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
+            color: #0c4b8f;
+        }
+        .watermark {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.1;
+            font-size: 120px;
+            color: #0c4b8f;
+        }
+        @media (max-width: 600px) {
+            .container { 
+                padding: 10px; 
+                margin: 20px auto;
+            }
+            .header { 
+                padding: 30px 20px; 
+            }
+            .content { 
+                padding: 25px; 
+            }
+            .label { 
+                display: block; 
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>NOUVEAU MESSAGE</h1>
+            <p>Yacht Club - Excellence & Prestige</p>
+        </div>
+        <div class="content">
+            <div class="logo-container">
+                <div class="logo">Yacht Club</div>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-item">
+                    <span class="label"><span class="icon">👤</span> Nom :</span>
+                    <span class="value">{{ contact.prenom }} {{ contact.nom|upper }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><span class="icon">📧</span> Email :</span>
+                    <span class="value">{{ contact.email }}</span>
+                </div>
+                {% if contact.telephone %}
+                <div class="info-item">
+                    <span class="label"><span class="icon">📱</span> Téléphone :</span>
+                    <span class="value">{{ contact.telephone }}</span>
+                </div>
+                {% endif %}
+                <div class="info-item">
+                    <span class="label"><span class="icon">🏷️</span> Sujet :</span>
+                    <span class="value">{{ contact.sujet }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><span class="icon">⏱️</span> Date :</span>
+                    <span class="value">{{ contact.createdAt|date('d/m/Y à H:i') }}</span>
+                </div>
+            </div>
+            
+            <div class="message-container">
+                <h3 class="message-title">Message</h3>
+                <div class="message-content">
+                    {{ contact.message|nl2br }}
+                </div>
+            </div>
+            
+            <div class="signature">
+                <p><strong>À votre service,</strong></p>
+                <p>L'équipe du Yacht Club</p>
+                <p></p>
+            </div>
+            
+            <div class="footer">
+                <div class="footer-logo">YACHT CLUB</div>
+                <p>Cet email a été envoyé automatiquement depuis notre formulaire de contact exclusif.</p>
+                <p>© {{ "now"|date('Y') }} Yacht Club • Tous droits réservés • Confidentialité assurée</p>
+                <p style="font-size: 11px; margin-top: 10px; color: #a0aec0;">
+                    Excellence • Élégance • Prestige
+                </p>
+            </div>
+            
+            <div class="watermark">⛵</div>
+        </div>
+    </div>
+</body>
+</html>

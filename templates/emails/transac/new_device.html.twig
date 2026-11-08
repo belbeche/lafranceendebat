@@ -1,0 +1,10 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Nouvelle connexion{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Nouvelle connexion à votre compte</h1>
+<p>Bonjour {{ user.firstName }}, une connexion a eu lieu le {{ at|date('d/m/Y à H:i') }} depuis <strong>{{ device }}</strong>{% if ip %} (adresse {{ ip }}){% endif %}. Cet appareil ne s'était jamais connecté.</p>
+<p><strong>C'est vous ?</strong> Vous n'avez rien à faire.</p>
+<p><strong>Ce n'est pas vous ?</strong> Changez votre mot de passe et déconnectez les autres appareils :</p>
+<p><a href="{{ url('app_login_history') }}" style="display:inline-block;background:#ED2939;color:#fff;padding:12px 22px;text-decoration:none;font-weight:bold">Voir mes connexions et tout déconnecter</a></p>
+<p style="font-size:13px;color:#555">Message automatique de sécurité, envoyé uniquement quand un nouvel appareil se connecte.</p>
+{% endblock %}

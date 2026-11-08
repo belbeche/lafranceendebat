@@ -1,0 +1,23 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Journal de {{ u.email }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_security') }}">&larr; Journal de sécurité</a></p>
+<h1 class="h3">{{ u.firstName }} {{ u.lastName }} <small class="meta">{{ u.email }}</small></h1>
+<p class="meta">Inscrit le {{ u.createdAt|date('d/m/Y') }}. Compte {{ u.isActive ? 'actif' : 'désactivé' }}.
+{% if u.isRestricted %}<span class="badge text-bg-danger">Restreint depuis le {{ u.restrictedAt|date('d/m/Y') }}</span> {{ u.restrictionReason }}{% endif %}</p>
+<form method="post" class="d-flex flex-wrap gap-2 mb-4">
+    <input type="hidden" name="_token" value="{{ csrf_token('sec' ~ u.id) }}">
+    <input class="form-control" style="max-width:320px" name="reason" placeholder="Motif (restriction)" maxlength="200">
+    {% if not u.isRestricted %}<button class="btn btn-danger" formaction="{{ path('admin_security_act', {id: u.id, action: 'restreindre'}) }}">Restreindre (paiements bloqués)</button>
+    {% else %}<button class="btn btn-success" formaction="{{ path('admin_security_act', {id: u.id, action: 'lever'}) }}">Lever la restriction</button>{% endif %}
+    <button class="btn btn-outline-dark" formaction="{{ path('admin_security_act', {id: u.id, action: 'avertir'}) }}">Envoyer l'avertissement</button>
+</form>
+<div class="row g-4">
+    <div class="col-lg-6"><h2 class="h5">Adresses IP et pays</h2>
+        <table class="table table-sm"><tbody>{% for i in ips %}<tr><td>{{ i.ip }}</td><td>{{ i.c ?? '?' }}</td><td>{{ i.n }} fois</td><td class="small">{{ i.last|date('d/m/Y H:i') }}</td></tr>{% else %}<tr><td class="meta">Rien d'enregistré.</td></tr>{% endfor %}</tbody></table></div>
+    <div class="col-lg-6"><h2 class="h5">Pages les plus visitées</h2>
+        <table class="table table-sm"><tbody>{% for p in pages %}<tr><td class="small">{{ p.p }}</td><td>{{ p.n }}</td><td class="small">{{ p.last|date('d/m/Y H:i') }}</td></tr>{% else %}<tr><td class="meta">Rien d'enregistré.</td></tr>{% endfor %}</tbody></table></div>
+</div>
+<h2 class="h5 mt-4">Chronologie</h2>
+<table class="table table-sm"><tbody>{% for e in events %}<tr><td class="text-nowrap">{{ e.at|date('d/m/Y H:i') }}</td><td>{{ e.typeLabel }}</td><td>{{ e.ip }} {{ e.country }}</td><td class="small">{{ e.path ?? e.detail }}</td></tr>{% else %}<tr><td class="meta">Aucun événement.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

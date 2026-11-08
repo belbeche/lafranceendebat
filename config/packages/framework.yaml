@@ -1,0 +1,38 @@
+framework:
+    secret: '%env(APP_SECRET)%'
+    http_method_override: false
+    handle_all_throwables: true
+    csrf_protection: true
+    # Derriere le proxy/WAF de l'hebergeur : fait confiance a X-Forwarded-Proto pour generer des liens https.
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
+    session:
+        handler_id: app.session_handler
+        cookie_secure: auto
+        cookie_httponly: true
+        cookie_samesite: lax
+        gc_maxlifetime: 7200
+    php_errors:
+        log: true
+    # Limites de debit (anti-abus, anti-bombardement d'e-mails, anti-force brute)
+    rate_limiter:
+        translation_user: { policy: sliding_window, limit: 20, interval: '1 day' }
+        debate_user: { policy: sliding_window, limit: 3, interval: '1 day' }
+        event_user: { policy: sliding_window, limit: 3, interval: '1 day' }
+        tribune_user: { policy: sliding_window, limit: 3, interval: '1 day' }
+        contact_apply_user: { policy: sliding_window, limit: 6, interval: '1 day' }
+        claim_user: { policy: sliding_window, limit: 5, interval: '1 day' }
+        lettre_ip: { policy: sliding_window, limit: 5, interval: '1 hour' }
+        lettre_email: { policy: fixed_window, limit: 2, interval: '1 day' }
+        register_ip: { policy: sliding_window, limit: 8, interval: '1 hour' }
+        contact_ip: { policy: sliding_window, limit: 5, interval: '1 hour' }
+        reset_ip: { policy: sliding_window, limit: 10, interval: '1 hour' }
+        order: { policy: sliding_window, limit: 10, interval: '1 hour' }
+        message: { policy: sliding_window, limit: 30, interval: '1 hour' }
+        reset_email: { policy: sliding_window, limit: 3, interval: '1 hour' }
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /admin
+Disallow: /profil
+Disallow: /login
+Disallow: /inscription
+Disallow: /reset-password
+Disallow: /lettre/confirmer
+Disallow: /lettre/desinscription
+Disallow: /messages
+Disallow: /notifications
+Disallow: /api/
+Disallow: /mon-espace
+Disallow: /mes-demandes
+Disallow: /espace
+Disallow: /webhook
+
+Sitemap: https://lafranceendebat.fr/sitemap.xml

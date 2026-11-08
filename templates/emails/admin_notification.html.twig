@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }}</title>
+</head>
+<body>
+    <h1>{{ subject }}</h1>
+    <p>{{ message|e|nl2br }}</p>
+    {% if donation is defined %}
+        <p><strong>Don :</strong> #{{ donation.id }} - {{ donation.amount }}€</p>
+    {% endif %}
+    <p><small>Envoyé le {{ date|date('d/m/Y H:i') }}</small></p>
+</body>
+</html>

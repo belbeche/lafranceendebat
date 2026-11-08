@@ -1,0 +1,30 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Services{% endblock %}
+{% block admin %}
+<h1 class="h3">Services</h1>
+<h2 class="h5 mt-4">Prestations à relire ({{ pending|length }})</h2>
+{% for o in pending %}
+<div class="card mb-3"><div class="card-body">
+    <p class="mb-1"><strong>{{ o.title }}</strong> · {{ o.categoryLabel }} · {{ (o.priceCents / 100)|number_format(2, ',', ' ') }} € · {{ o.provider.publicName }}</p>
+    <p style="white-space: pre-line">{{ o.description }}</p>
+    <form method="post" class="d-flex flex-wrap gap-2"><input type="hidden" name="_token" value="{{ csrf_token('service_decide' ~ o.id) }}">
+        <input class="form-control" style="max-width: 340px" name="note" maxlength="500" placeholder="Note (facultatif)">
+        <button class="btn btn-primary" formaction="{{ path('admin_service_decide', {id: o.id, decision: 'approve'}) }}">Publier</button>
+        <button class="btn btn-outline-danger" formaction="{{ path('admin_service_decide', {id: o.id, decision: 'reject'}) }}">Refuser</button>
+    </form>
+</div></div>
+{% else %}<p class="text-muted">Rien à relire.</p>{% endfor %}
+<h2 class="h5 mt-4">Prestations publiées</h2>
+{% for o in published %}
+<form method="post" action="{{ path('admin_service_withdraw_political', {id: o.id}) }}" class="d-flex flex-wrap gap-2 align-items-center mb-1"><input type="hidden" name="_token" value="{{ csrf_token('service_political' ~ o.id) }}">
+    <span>{{ o.title }} · {{ o.provider.publicName }} · {{ (o.priceCents / 100)|number_format(2, ',', ' ') }} €</span>
+    <button class="btn btn-sm btn-outline-danger">Retirer : usage politique</button>
+</form>
+{% else %}<p class="text-muted">Aucune prestation publiée.</p>{% endfor %}
+<h2 class="h5 mt-4">Dernières commandes</h2>
+<table class="table table-sm"><thead><tr><th>Date</th><th>Prestation</th><th>Acheteur</th><th>Prix</th><th>Commission</th><th>Déclaration</th><th>État</th><th></th></tr></thead><tbody>
+{% for o in orders %}<tr><td>{{ o.createdAt|date('d/m/Y') }}</td><td>{{ o.offer.title }}</td><td>{{ o.buyer.publicName }}</td><td>{{ (o.amountCents / 100)|number_format(2, ',', ' ') }} €</td><td>{{ (o.commissionCents / 100)|number_format(2, ',', ' ') }} €</td><td>{{ o.politicalDeclarationAt ? 'faite' : 'absente' }}</td><td>{{ o.status|replace({'_': ' '}) }}</td>
+<td>{% if o.status == 'payee' %}<form method="post" action="{{ path('app_order_refund', {id: o.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('order_refund' ~ o.id) }}"><button class="btn btn-sm btn-outline-danger" data-confirm="Rembourser l'acheteur ?">Rembourser</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="7" class="text-muted">Aucune commande.</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

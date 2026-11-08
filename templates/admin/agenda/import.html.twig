@@ -1,0 +1,17 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Import de l'agenda national{% endblock %}
+{% block admin %}
+<h1 class="h3">Import de l'agenda national</h1>
+<p class="meta">Jours fériés officiels (calendrier.api.gouv.fr), journées nationales et internationales (fichier <code>config/evenements_nationaux.yaml</code>) et flux ICS officiels (variable <code>AGENDA_ICS_FEEDS</code>). Chaque événement est vérifié : titre, date, source officielle reconnue, charte. Les doublons sont ignorés.</p>
+<form method="post" action="{{ path('admin_agenda_import_run') }}" class="mb-4"><input type="hidden" name="_token" value="{{ csrf_token('agenda_import') }}"><button class="btn btn-bleu">Importer maintenant</button> <a class="btn btn-outline-dark" href="{{ path('app_agenda') }}">Voir l'agenda</a></form>
+<h2 class="h5">Dernier import</h2>
+{% if report %}
+<p>Le {{ report.at|date('d/m/Y H:i') }} : <strong>{{ report.created }}</strong> créés, {{ report.updated }} mis à jour, {{ report.unchanged }} inchangés, {{ report.rejected|length }} refusés.</p>
+{% if report.rejected %}<ul>{% for x in report.rejected %}<li>{{ x }}</li>{% endfor %}</ul>{% endif %}
+{% if report.errors %}<div class="alert alert-warning"><strong>Sources indisponibles ou invalides :</strong><ul class="mb-0">{% for x in report.errors %}<li>{{ x }}</li>{% endfor %}</ul></div>{% endif %}
+{% else %}<p class="meta">Aucun import enregistré.</p>{% endif %}
+<h2 class="h5 mt-4">Automatisation (cron)</h2>
+<p>Ligne à ajouter dans la tâche planifiée de l'hébergeur (chaque nuit à 5 h) :</p>
+<pre class="p-2 border"><code>0 5 * * * cd /chemin/du/site &amp;&amp; php8.4 bin/console app:agenda:importer --env=prod &gt;&gt; var/log/agenda_import.log 2&gt;&amp;1</code></pre>
+<p class="meta">Hôtes de sources reconnus : {{ hosts|join(', ') }} (et leurs sous-domaines).</p>
+{% endblock %}

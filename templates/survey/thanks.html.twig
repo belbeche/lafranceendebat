@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Merci | Enquête{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:640px">
+    <h1 class="h3">Merci, votre réponse est enregistrée</h1>
+    <p>« {{ s.title }} »</p>
+    {% if canSeeResults %}<p><a class="btn btn-bleu" href="{{ path('app_survey_results', {id: s.id}) }}">Voir les résultats</a></p>{% else %}<p class="meta">Les résultats seront publiés dès {{ constant('App\\Entity\\Survey::MIN_PUBLIC_RESPONSES') }} réponses, pour protéger l'anonymat.</p>{% endif %}
+    <p><a href="{{ path('app_surveys') }}">Voir les autres enquêtes</a></p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,6 @@
+services:
+    App\Service\Payment\PaymentGateway: '@App\Service\Payment\Testing\FakeGateway'
+    App\Service\Payment\Testing\FakeGateway: ~
+    App\Service\Payment\StripeWebhookVerifier:
+        arguments:
+            $secret: 'whsec_test_secret'

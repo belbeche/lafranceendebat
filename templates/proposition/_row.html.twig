@@ -1,0 +1,18 @@
+{% import '_macros.html.twig' as ui %}
+<article class="rangee d-flex gap-3 align-items-start">
+    <div class="soutien">
+        <span class="soutien-nombre" aria-label="{{ proposition.supportCount }} soutiens">{{ proposition.supportCount }}</span>
+        <span class="soutien-libelle">soutien{{ proposition.supportCount > 1 ? 's' }}</span>
+        {{ ui.support_button(proposition, proposition.id in supportedIds) }}
+    </div>
+    <div class="flex-grow-1">
+        <p class="mb-1"><span class="etiquette bleu">{{ proposition.theme }}</span>
+            {% if proposition.revendication %}<span class="etiquette ambre">Répond à une revendication</span>{% endif %}</p>
+        <h3><a href="{{ path('app_proposition_show', {id: proposition.id}) }}">{{ tr(proposition, 'title') }}</a></h3>
+        <p class="mb-1">{{ tr(proposition, 'description')|u.truncate(200, '…', false) }}</p>
+        <p class="meta mb-0">
+            {{ proposition.authorDisplayName }} · {{ proposition.createdAt|date('d/m/Y') }}
+            {% if proposition.sourceUrl %} · source citée{% else %} · aucune source indiquée{% endif %}
+        </p>
+    </div>
+</article>

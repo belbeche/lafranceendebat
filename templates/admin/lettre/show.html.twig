@@ -1,0 +1,28 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ lettre.subject }}{% endblock %}
+{% block admin %}
+<h1 class="h3">{{ lettre.subject }}</h1>
+{% if lettre.forActors and (lettre.actorCategory or lettre.actorDept) %}<p class="mb-1">Ciblage : {{ lettre.actorCategory ? constant('App\\Entity\\ActorContact::CATEGORIES')[lettre.actorCategory] : 'toutes catégories' }}, {{ lettre.actorDept ? 'département ' ~ lettre.actorDept : 'tous départements' }}.</p>{% endif %}
+<p class="mb-1">Audience : <strong>{{ lettre.audience == 'invitation' ? 'Acteurs publics : invitation unique' : (lettre.forActors ? 'Acteurs publics ayant accepté' : 'Abonnés confirmés') }}</strong></p>
+<p>Statut : <strong>{{ lettre.status }}</strong>{% if lettre.targetCount %} · {{ lettre.sentCount }} envoyé(s) sur {{ lettre.targetCount }}, {{ lettre.failedCount }} échec(s){% endif %}</p>
+{% if problem %}<div class="alert alert-warning">{{ problem }}</div>{% endif %}
+<div class="border rounded p-3 mb-4 bg-white" style="max-width:640px">{{ html|raw }}</div>
+{% if lettre.editable %}
+<div class="d-flex flex-wrap gap-2 mb-4">
+    <a class="btn btn-outline-secondary" href="{{ path('admin_lettre_edit', {id: lettre.id}) }}">Modifier</a>
+    <form method="post" action="{{ path('admin_lettre_test', {id: lettre.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('lettre_test' ~ lettre.id) }}"><button class="btn btn-outline-primary">M'envoyer un test</button></form>
+    <form method="post" action="{{ path('admin_lettre_delete', {id: lettre.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('lettre_delete' ~ lettre.id) }}"><button class="btn btn-outline-danger">Supprimer</button></form>
+</div>
+<form method="post" action="{{ path('admin_lettre_queue', {id: lettre.id}) }}" class="carte" style="max-width:640px">
+    <input type="hidden" name="_token" value="{{ csrf_token('lettre_queue' ~ lettre.id) }}">
+    <p class="mb-2"><strong>Lancer l'envoi à {{ eligible }} {{ lettre.audience == 'invitation' ? 'acteur(s) public(s) jamais invité(s)' : (lettre.forActors ? 'acteur(s) public(s) consentants' : 'abonné(s) confirmés') }}.</strong> Action définitive.</p>
+    <label class="form-label" for="confirm_count">Tapez le nombre {{ eligible }} pour confirmer</label>
+    <input id="confirm_count" class="form-control mb-2" name="confirm_count" inputmode="numeric" autocomplete="off" required>
+    <button class="btn btn-rouge" {{ problem or eligible == 0 ? 'disabled' }}>Mettre en file d'envoi</button>
+</form>
+{% elseif lettre.status in ['en file', 'en cours'] %}
+<form method="post" action="{{ path('admin_lettre_cancel', {id: lettre.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('lettre_cancel' ~ lettre.id) }}"><button class="btn btn-outline-danger">Annuler l'envoi</button></form>
+{% elseif lettre.status == 'annulee' %}
+<form method="post" action="{{ path('admin_lettre_delete', {id: lettre.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('lettre_delete' ~ lettre.id) }}"><button class="btn btn-outline-danger">Supprimer</button></form>
+{% endif %}
+{% endblock %}

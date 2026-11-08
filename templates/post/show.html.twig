@@ -1,0 +1,169 @@
+{# templates/post/show.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ post.title }} | La France en Débat{% endblock %}
+
+{% block body %}
+<!-- Publication individuelle -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Fil d'Ariane -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Accueil</a></li>
+                        <li class="breadcrumb-item"><a href="{{ path('app_actualites') }}">Actualités</a></li>
+                        <li class="breadcrumb-item active">{{ post.title|u.truncate(30, '...') }}</li>
+                    </ol>
+                </nav>
+
+                <!-- Publication -->
+                <article class="card shadow">
+                    <!-- En-tête -->
+                    <div class="card-header bg-white">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge 
+                                {% if post.type == 'video' %}bg-primary
+                                {% elseif post.type == 'image' %}bg-success
+                                {% elseif post.type == 'document' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                <i class="fas fa-{{ post.type == 'video' ? 'video' : (post.type == 'image' ? 'image' : (post.type == 'document' ? 'file-pdf' : 'file-alt')) }} me-1"></i>
+                                {{ post.type|capitalize }}
+                            </span>
+                            <small class="text-muted">
+                                <i class="fas fa-calendar me-1"></i>
+                                {{ post.createdAt|date('d/m/Y à H:i') }}
+                            </small>
+                        </div>
+                        <h1 class="h3 mb-0">{{ post.title }}</h1>
+                    </div>
+
+                    <!-- Média principal -->
+                    {% if post.isVideo and post.mediaPath %}
+                    <div class="ratio ratio-16x9">
+                        <video controls class="w-100 h-100" style="object-fit: contain; background: #000;">
+                            <source src="{{ asset(post.mediaUrl) }}" type="video/mp4">
+                            Votre navigateur ne supporte pas la vidéo.
+                        </video>
+                    </div>
+                    {% elseif post.isImage and post.mediaPath %}
+                    <img src="{{ asset(post.mediaUrl) }}" class="card-img-top" alt="{{ post.title }}" style="max-height: 500px; object-fit: contain;">
+                    {% elseif post.isDocument and post.mediaPath %}
+                    <div class="card-body text-center py-5 bg-light">
+                        <i class="fas fa-file-pdf fa-5x text-danger mb-3"></i>
+                        <h4 class="mb-3">{{ post.title }}</h4>
+                        <a href="{{ asset(post.mediaUrl) }}" class="btn btn-primary btn-lg" download>
+                            <i class="fas fa-download me-2"></i>Télécharger le document
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Contenu -->
+                    <div class="card-body">
+                        <div class="post-content mb-4">
+                            {{ post.content|nl2br }}
+                        </div>
+
+                        <!-- Métadonnées -->
+                        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                            <div class="text-muted small">
+                                <i class="fas fa-user me-1"></i>
+                                Publié par {{ post.author.firstName ?? 'Équipe La France en Débat' }}
+                            </div>
+                            <div class="text-muted small">
+                                <i class="fas fa-comments me-1"></i>
+                                {{ post.comments|length }} commentaire(s)
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Section commentaires -->
+                <div class="card mt-4 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-comments me-2"></i>
+                            Commentaires ({{ post.comments|filter(c => c.isApproved)|length }})
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Liste des commentaires -->
+                        <div class="comments-list mb-4">
+                            {% for comment in post.comments|filter(c => c.isApproved) %}
+                            <div class="comment-item border-bottom pb-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <strong class="text-primary">{{ comment.author.firstName ?? 'Utilisateur' }}</strong>
+                                    <small class="text-muted">{{ comment.createdAt|date('d/m/Y à H:i') }}</small>
+                                </div>
+                                <p class="mb-0">{{ comment.content }}</p>
+                            </div>
+                            {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-comment-slash fa-2x text-muted mb-2"></i>
+                                <p class="text-muted mb-0">Aucun commentaire pour le moment.</p>
+                                <p class="text-muted small">Soyez le premier à commenter !</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Formulaire de commentaire -->
+                        {% if app.user %}
+                        <form method="post" class="comment-form">
+                            <input type="hidden" name="post_id" value="{{ post.id }}">
+                            <div class="input-group input-group-sm">
+                                {{ form_widget(commentForm.content, {'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': 'Laissez un commentaire...',
+                                    'rows': 1
+                                }}) }}
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                            {{ form_rest(commentForm) }}
+                        </form>
+                        {% else %}
+                        <div class="alert alert-info small mb-0 py-2">
+                            <a href="{{ path('app_login') }}" class="alert-link">Connectez-vous</a> pour commenter.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Publications similaires -->
+{% if relatedPosts|length > 0 %}
+<section class="py-5">
+    <div class="container">
+        <h3 class="text-center mb-4">Publications similaires</h3>
+        <div class="row g-4">
+            {% for relatedPost in relatedPosts %}
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm">
+                    {% if relatedPost.isVideo and relatedPost.mediaPath %}
+                    <div class="ratio ratio-16x9">
+                        <video class="w-100 h-100" style="object-fit: cover;">
+                            <source src="{{ asset(relatedPost.mediaUrl) }}" type="video/mp4">
+                        </video>
+                    </div>
+                    {% elseif relatedPost.isImage and relatedPost.mediaPath %}
+                    <img src="{{ asset(relatedPost.mediaUrl) }}" class="card-img-top" alt="{{ relatedPost.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="card-title">{{ relatedPost.title|u.truncate(50, '...') }}</h6>
+                        <p class="card-text small">{{ relatedPost.content|u.truncate(100, '...') }}</p>
+                        <a href="{{ path('app_actualites_show', {'id': relatedPost.id}) }}" class="btn btn-outline-primary btn-sm">Lire la suite</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

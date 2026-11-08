@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ ('welcome.' ~ profile ~ '.t')|trans }}{% endblock %}
+{% block body %}
+<section class="container py-5" style="max-width:760px">
+    <h1 class="serif">{{ ('welcome.' ~ profile ~ '.t')|trans }}</h1>
+    <p class="lead">{{ ('welcome.' ~ profile ~ '.d')|trans }}</p>
+    <h2 class="h5 mt-4">{{ 'welcome.next'|trans }}</h2>
+    <ol class="list-unstyled d-grid gap-2 mt-3">
+        {% for a in actions %}
+        <li><a class="btn {{ loop.first ? 'btn-primary' : 'btn-outline-primary' }} w-100 text-start py-3" href="{{ path(a[0], a[1]) }}">{{ loop.index }}. {{ a[2]|trans }}</a></li>
+        {% endfor %}
+    </ol>
+    <p class="mt-4"><a href="{{ path('app_welcome') }}">{{ 'welcome.back'|trans }}</a></p>
+</section>
+{% endblock %}

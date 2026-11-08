@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{# Habillage « console » commun : espace citoyen, espace acteur, espaces de rôle. #}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/lfed-hub.css') }}?v={{ asset_version() }}"><link rel="stylesheet" href="{{ asset('css/lfed-space.css') }}?v={{ asset_version() }}">{% endblock %}
+{% set nav_active = nav_active|default('home') %}
+{% set space_native = true %}
+{% block body %}
+<div class="sp-shell">
+    {% include 'space/_nav.html.twig' %}
+    <div class="sp-main">{% block space %}{% endblock %}</div>
+</div>
+<div class="hub-flag" aria-hidden="true"></div>
+{% endblock %}

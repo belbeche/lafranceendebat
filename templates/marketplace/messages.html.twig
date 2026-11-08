@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Messages de la commande{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1 class="h3">{{ order.offer.title }}</h1><p class="mb-0">Entre {{ order.buyer.publicName }} et {{ order.offer.provider.publicName }}. Tous les échanges restent sur la plateforme.</p></div></header>
+<section class="section"><div class="container" style="max-width: 760px">
+<div id="fil" data-thread data-feed="{{ path('app_order_feed', {id: order.id}) }}" data-last="{{ messages ? (messages|last).id : 0 }}">
+{% for m in messages %}
+    <div class="carte p-3 mb-2 {{ m.author == me ? 'ms-5' : 'me-5' }}" data-id="{{ m.id }}">
+        <p class="meta mb-1">{{ m.author.publicName }} · {{ m.createdAt|date('d/m/Y H:i') }}</p>
+        <p class="mb-0" style="white-space: pre-line">{{ m.body }}</p>
+    </div>
+{% else %}<p class="text-muted" data-empty>Aucun message. Précisez ici vos consignes, dates et attentes.</p>{% endfor %}
+</div>
+<div id="bas"></div>
+{% if error %}<div class="alert alert-danger mt-3">{{ error }}</div>{% endif %}
+{% if canPost %}
+<form method="post" class="mt-3">
+    <input type="hidden" name="_token" value="{{ csrf_token('msg' ~ order.id) }}">
+    <label class="form-label" for="body">Votre message</label>
+    <textarea class="form-control mb-2" id="body" name="body" rows="4" maxlength="2000" required></textarea>
+    <p class="meta">Pas d'e-mail, de téléphone ni de lien externe : cela protège votre paiement.</p>
+    <button class="btn btn-primary">Envoyer</button>
+</form>
+{% else %}<p class="meta mt-3">L'envoi est ouvert aux deux parties une fois la commande payée.</p>{% endif %}
+</div></section>
+{% endblock %}

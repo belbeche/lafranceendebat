@@ -1,0 +1,31 @@
+{# Menu de l'administration, partagé par toutes les pages d'administration. #}
+<nav class="list-group no-print" aria-label="Administration">
+                {% if is_granted('ROLE_ADMIN') %}<a class="list-group-item list-group-item-action" href="{{ path('admin_dashboard') }}">Tableau de bord</a>{% endif %}
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_moderation') }}">Modération</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_moderation_incidents') }}">Propos bloqués</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_rubriques') }}">Rubriques et dossiers</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_translations') }}">Traductions</a>
+                {% if is_granted('ROLE_ADMIN') %}<a class="list-group-item list-group-item-action" href="{{ path('admin_logs') }}">Journal</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_backups') }}">Sauvegardes</a>{% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_proposition_index') }}">Propositions</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_debat_index') }}">Débats</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_revendication_index') }}">Revendications</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_revendication_import') }}">Import de revendications</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_transmission_index') }}">Transmissions</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_candidat_index') }}">Candidats</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_engagement_index') }}">Engagements</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_event_index') }}">Agenda</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_mission_index') }}">Piliers d'accueil</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_users') }}">Comptes</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_statistics') }}">Statistiques</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_lettre_index') }}">Lettres</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_role_requests') }}">Candidatures aux droits</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_actors') }}">Acteurs publics (démarchage)</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_services') }}">Services et commandes</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_visitors') }}">Visiteurs</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_security') }}">Journal de sécurité</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_agenda_import') }}">Import de l'agenda</a>
+                <a class="list-group-item list-group-item-action" href="{{ path('admin_surveys') }}">Enquêtes</a>
+                {% endif %}
+            </nav>

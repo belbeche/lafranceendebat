@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier mes informations{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Modifier mes informations</h1></div></header>
+<section class="section"><div class="container"><div class="row"><div class="col-lg-6"><div class="form-card">
+    {{ form_start(form) }}{{ form_widget(form) }}
+    <button class="btn btn-bleu mt-3" type="submit">Enregistrer</button>
+    <a class="btn btn-link mt-3" href="{{ path('app_profile') }}">Annuler</a>
+    {{ form_end(form) }}
+</div></div></div></div></section>
+{% endblock %}
