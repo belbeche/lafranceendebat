@@ -1,17 +1,34 @@
+# robots.txt de La France en Débat
+# Les pages publiques (débats, propositions, dossiers, tribunes) sont ouvertes aux moteurs de recherche.
+# Les pages privées ou sans intérêt pour la recherche sont exclues de l'exploration.
+# Attention : ce fichier n'est qu'une demande de politesse, pas une protection. Les pages sensibles
+# sont protégées par la connexion (voir config/packages/security.yaml), jamais par ce fichier.
+
 User-agent: *
+Allow: /
+
+# Administration et comptes
 Disallow: /admin
-Disallow: /profil
 Disallow: /login
 Disallow: /inscription
 Disallow: /reset-password
-Disallow: /lettre/confirmer
-Disallow: /lettre/desinscription
-Disallow: /messages
-Disallow: /notifications
-Disallow: /api/
+Disallow: /profil
+Disallow: /compte
 Disallow: /mon-espace
 Disallow: /mes-demandes
 Disallow: /espace
+Disallow: /messages
+Disallow: /notifications
+
+# Actions et formulaires (aucun contenu à indexer)
+Disallow: /api/
 Disallow: /webhook
+Disallow: /cookies/choix
+Disallow: /mesure/
+Disallow: /lettre/confirmer
+Disallow: /lettre/desinscription
+Disallow: /soutenir
+Disallow: /propositions/nouvelle
+Disallow: /debats/ouvrir
 
 Sitemap: https://lafranceendebat.fr/sitemap.xml
