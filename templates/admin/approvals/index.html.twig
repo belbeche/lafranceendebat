@@ -1,15 +1,5 @@
 {% extends 'admin/_layout.html.twig' %}
-{% block title %}À valider<script nonce="{{ csp_nonce() }}">
-document.querySelectorAll('[data-check-all]').forEach(function (a) {
-  a.addEventListener('change', function () {
-    document.querySelectorAll('input[data-group="' + a.dataset.checkAll + '"]').forEach(function (c) { c.checked = a.checked; });
-  });
-});
-document.querySelectorAll('button[data-confirm]').forEach(function (b) {
-  b.addEventListener('click', function (e) { if (!window.confirm(b.dataset.confirm)) { e.preventDefault(); } });
-});
-</script>
-{% endblock %}
+{% block title %}À valider{% endblock %}
 {% block admin %}
 <h1 class="h3">À valider</h1>
 <p class="text-muted">Tout ce qui attend une décision, au même endroit. Un clic suffit. Ce qui est rédigé par l'IA est étiqueté : relisez la source avant d'approuver.</p>
