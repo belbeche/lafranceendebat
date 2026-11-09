@@ -41,6 +41,8 @@
     <link rel="stylesheet" href="{{ asset('css/lfed-i18n.css') }}?v={{ asset_version() }}">
     <link rel="stylesheet" href="{{ asset('css/lfed-republic.css') }}?v={{ asset_version() }}">
     <link rel="stylesheet" href="{{ asset('css/lfed-space.css') }}?v={{ asset_version() }}">
+    {# Habillage de la console : aussi chargé hors /admin, car le menu admin s'affiche à côté des pages d'aperçu (enquêtes, lettres). #}
+    <link rel="stylesheet" href="{{ asset('css/lfed-admin.css') }}?v={{ asset_version() }}">
     {% block stylesheets %}{% endblock %}
 </head>
 <body{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %} data-live-url="{{ path('app_live') }}"{% endif %}>

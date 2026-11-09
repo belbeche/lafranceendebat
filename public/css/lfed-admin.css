@@ -26,3 +26,7 @@
 .adm-quick { display: flex; flex-wrap: wrap; gap: 10px; }
 .adm-quick a { border: 1px solid #c9cde3; border-radius: 6px; padding: 9px 14px; font-size: 14px; text-decoration: none; color: #14182b; min-height: 44px; display: inline-flex; align-items: center; }
 .adm-quick a:hover { border-color: #002395; color: #002395; }
+
+/* Menu admin à côté d'une page publique (aperçu) : colonne fixe, pas de double marge */
+.adm-side .adm-nav { flex: none; width: 100%; }
+.adm-shell > .adm-main { padding-left: 0; }
