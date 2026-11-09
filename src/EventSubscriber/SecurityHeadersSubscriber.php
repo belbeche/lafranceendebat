@@ -83,7 +83,9 @@ class SecurityHeadersSubscriber implements EventSubscriberInterface
             "connect-src 'self' https://cdn.jsdelivr.net",
             "manifest-src 'self'",
             "worker-src 'self'",
-            "form-action 'self'",
+            // Le paiement (contribution, commande de service) POSTe sur le site puis redirige vers Stripe Checkout :
+            // Chrome applique form-action aussi aux redirections, donc Stripe doit être autorisé ici, et seulement lui.
+            "form-action 'self' https://checkout.stripe.com",
             "frame-ancestors 'none'",
             "base-uri 'none'",
             "object-src 'none'",
