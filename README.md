@@ -1,5 +1,11 @@
 # La France en Débat
 
+**Français** | [English](README.en.md)
+
+![La France en Débat](public/img/lfed-banner-1000.jpg)
+
+[Site en ligne](https://lafranceendebat.fr) · [Code source (AGPL-3.0)](https://github.com/belbeche/lafranceendebat) · [Premiers tickets](https://github.com/belbeche/lafranceendebat/labels/good%20first%20issue)
+
 Plateforme citoyenne de débat apaisé, de propositions sourcées et de suivi des engagements. Symfony 6.4, PHP 8.2+, Bootstrap 5.
 
 Ce code est ouvert pour que chacun puisse **vérifier comment la plateforme fonctionne** (classements, collecte de données, modération) et **contribuer**. Les secrets, données de membres et réglages de production ne sont pas dans ce dépôt.
@@ -35,6 +41,10 @@ Chaque fichier `tests/e2e/e2e_*.php` est un scénario autonome qui affiche `OK` 
 - [`docs-publics/CONVENTIONS_DE_CODE.md`](docs-publics/CONVENTIONS_DE_CODE.md) : comment documenter, écrire et proposer du code.
 - [`CONTRIBUTING.md`](CONTRIBUTING.md) : comment proposer un changement.
 - [`SECURITY.md`](SECURITY.md) : comment signaler une faille (merci de ne pas ouvrir de ticket public).
+
+## Contribuer
+
+Contribuer ne coûte rien, il n'y a pas de contrat à signer. Vos contributions restent sous la même licence que le projet (AGPL-3.0). Les tickets débutants sont marqués [`good first issue`](https://github.com/belbeche/lafranceendebat/labels/good%20first%20issue) (liste dans [`docs-publics/TICKETS_DEBUTANTS.md`](docs-publics/TICKETS_DEBUTANTS.md)).
 
 ## Licence
 

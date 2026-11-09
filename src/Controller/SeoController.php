@@ -26,7 +26,7 @@ class SeoController extends AbstractController
         $base = $isLocal ? $request->getSchemeAndHttpHost() : 'https://' . $host;
         $abs = fn (string $route, array $params = []): string => $base . $this->generateUrl($route, $params, U::ABSOLUTE_PATH);
         $urls = [];
-        foreach (['app_home', 'app_debats', 'app_propositions', 'app_taxpayers', 'app_revendications', 'app_missions', 'app_tribunes', 'app_dossiers', 'app_inspirations', 'app_charter', 'app_method', 'app_plan_marshall', 'app_institutional_routes', 'app_ranking'] as $r) {
+        foreach (['app_home', 'app_debats', 'app_propositions', 'app_taxpayers', 'app_revendications', 'app_missions', 'app_tribunes', 'app_dossiers', 'app_inspirations', 'app_charter', 'app_how_it_works', 'app_open_source', 'app_method', 'app_plan_marshall', 'app_institutional_routes', 'app_ranking'] as $r) {
             try {
                 $urls[] = [$abs($r), null];
             } catch (\Throwable) {

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Code source{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Code source</h1><p class="lede mb-0">Ce site est un logiciel libre : vous pouvez lire son code, le vérifier et y contribuer.</p></div></header>
+<section class="section"><div class="container measure">
+    <p><a class="btn btn-bleu" href="{{ repo }}" rel="noopener">Voir le code sur GitHub</a></p>
+
+    <h2 class="h4">La licence : GNU AGPL v3</h2>
+    <p>Tout le monde peut utiliser, étudier et modifier le code. Quiconque fait fonctionner une version modifiée comme service en ligne doit publier ses modifications sous la même licence. C'est voulu pour une plateforme citoyenne : <strong>le code ne peut pas être privatisé</strong>.</p>
+    <p>Le texte complet de la licence est dans le fichier <code>LICENSE</code> du dépôt, et sur <a href="https://www.gnu.org/licenses/agpl-3.0.html" rel="noopener">gnu.org</a>.</p>
+
+    <h2 class="h4">Pourquoi c'est ouvert</h2>
+    <ul>
+        <li>Les <strong>algorithmes de classement</strong> sont publics, avec leurs paramètres exacts.</li>
+        <li>Chacun peut vérifier <strong>quelles données sont collectées</strong> et combien de temps elles sont conservées.</li>
+        <li>La <strong>modération</strong> est documentée : le filtre bloque le ton (insultes, menaces, haine), jamais les opinions.</li>
+    </ul>
+
+    <h2 class="h4">Contribuer</h2>
+    <p>Contribuer ne coûte rien et n'exige aucun contrat. Vos contributions restent sous la même licence que le projet (AGPL-3.0). Les premiers tickets, pour démarrer, sont marqués « good first issue ». Lisez le code de conduite : on applique aux relectures de code le même respect que celui demandé dans les débats.</p>
+    <p>Une faille de sécurité ? Ne publiez rien : suivez la procédure du fichier <code>SECURITY.md</code> (signalement privé).</p>
+
+    <p class="meta">Les secrets, les données des membres et les réglages de production ne sont pas dans le code publié. Voir aussi la <a href="{{ path('app_privacy_policy') }}">politique de confidentialité</a> et <a href="{{ path('app_how_it_works') }}">Comment ça marche</a>.</p>
+</div></section>
+{% endblock %}

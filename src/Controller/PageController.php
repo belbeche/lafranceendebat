@@ -16,6 +16,13 @@ class PageController extends AbstractController
         return $this->render('pages/how_it_works.html.twig', ['tiers' => \App\Service\RankingService::TIERS]);
     }
 
+    /** Page « Code source » : exigée par l'esprit de l'AGPL-3.0 (les utilisateurs du service doivent pouvoir obtenir le code). */
+    #[Route('/code-source', name: 'app_open_source', methods: ['GET'])]
+    public function openSource(): Response
+    {
+        return $this->render('pages/open_source.html.twig', ['repo' => 'https://github.com/belbeche/lafranceendebat']);
+    }
+
     #[Route('/marche-a-suivre', name: 'app_guide', methods: ['GET'])]
     public function guide(): Response
     {
