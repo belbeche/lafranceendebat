@@ -6,68 +6,65 @@
 <p class="lead mb-0">Deux façons de s'y retrouver : choisir un sujet qui vous importe pour voir ce que propose chaque formation, ou ouvrir une formation pour lire ses textes. Chaque ligne renvoie à la source officielle.</p></div></header>
 <section class="section"><div class="container" style="max-width:1080px">
 {% include 'programme/_coverage_notice.html.twig' %}
+{% set usedThemes = [] %}{% for t in themes %}{% set c = 0 %}{% for p in parties %}{% set c = c + matrix[p.code][t]|default(0) %}{% endfor %}{% if c > 0 %}{% set usedThemes = usedThemes|merge([t]) %}{% endif %}{% endfor %}
 
-<h2 class="h4" id="sujet">1. Par sujet : que propose chaque formation ?</h2>
-<nav aria-label="Choisir un sujet" class="d-flex flex-wrap gap-2 mb-3">
-  {% for t in themes %}<a class="btn {{ t == theme ? 'btn-bleu' : 'btn-outline-primary' }}" style="min-height:44px" href="{{ path('app_parties', {theme: t, _fragment: 'sujet'}) }}"{% if t == theme %} aria-current="true"{% endif %}>{{ t }}</a>{% endfor %}
-  {% if theme %}<a class="btn btn-link" href="{{ path('app_parties') }}">Effacer le choix</a>{% endif %}
-</nav>
+<div class="carte mb-4">
+  <h2 class="h5" id="sujet">Choisissez un sujet</h2>
+  <p class="small text-muted mb-2">Vous verrez ce que propose chaque formation sur ce sujet, avec la source.</p>
+  <nav aria-label="Sujets" class="d-flex flex-wrap gap-2">
+    {% for t in usedThemes %}<a class="btn btn-sm {{ t == theme ? 'btn-bleu' : 'btn-outline-primary' }}" style="min-height:44px;display:inline-flex;align-items:center" href="{{ path('app_parties', {theme: t, _fragment: 'sujet'}) }}"{% if t == theme %} aria-current="true"{% endif %}>{{ t }}</a>{% endfor %}
+    {% if theme %}<a class="btn btn-link btn-sm" href="{{ path('app_parties') }}">Tout afficher</a>{% endif %}
+  </nav>
+</div>
 
 {% if theme %}
-  <h3 class="h5">{{ theme }}</h3>
-  {% set shown = false %}
+  <h2 class="h4">{{ theme }} : ce que propose chaque formation</h2>
   <div class="row g-3 mb-4">
   {% for p in parties %}{% set items = byTheme[p.code]|default([]) %}
-    <div class="col-md-6"><article class="carte h-100" {% if p.color %}style="border-left:6px solid {{ p.color }}"{% endif %}>
-      <h4 class="h6 mb-2"><a href="{{ path('app_party', {code: p.code}) }}">{{ p.name }}</a></h4>
+    <div class="col-md-6 col-lg-4"><article class="carte h-100" {% if p.color %}style="border-top:5px solid {{ p.color }}"{% endif %}>
+      <h3 class="h6 mb-2"><a href="{{ path('app_party', {code: p.code}) }}">{{ p.name }}</a></h3>
       {% if items %}
-        <ul class="mb-1 ps-3">
-        {% for it in items|slice(0, 3) %}
-          <li class="mb-1"><a href="{{ path('app_programme_show', {id: it.id}) }}">{{ it.title }}</a>
-            <span class="meta d-block">{{ it.source == 'manuel' ? 'Programme publié par la formation' : (it.source == 'SENAT' ? 'Proposition de loi, Sénat' : 'Proposition de loi, Assemblée nationale') }}{% if it.depositedAt %}, {{ it.depositedAt|date('d/m/Y') }}{% endif %}</span></li>
-        {% endfor %}
+        <ul class="mb-1 ps-3">{% for it in items|slice(0, 3) %}
+          <li class="mb-2"><a href="{{ path('app_programme_show', {id: it.id}) }}">{{ it.title }}</a>
+            <span class="meta d-block">{{ it.source == 'manuel' ? 'Programme de la formation' : (it.source == 'SENAT' ? 'Proposition de loi (Sénat)' : 'Proposition de loi (Assemblée)') }}{% if it.depositedAt %}, {{ it.depositedAt|date('d/m/Y') }}{% endif %}</span></li>{% endfor %}
         </ul>
-        {% if items|length > 3 %}<a class="small" href="{{ path('app_programmes', {groupe: p.code, theme: theme}) }}">Voir les {{ items|length }} textes sur ce sujet</a>{% endif %}
-      {% else %}
-        <p class="mb-0 text-muted">Rien de publié sur ce sujet dans nos sources officielles.</p>
-      {% endif %}
+        {% if items|length > 3 %}<a class="small" href="{{ path('app_programmes', {groupe: p.code, theme: theme}) }}">Voir les {{ items|length }} textes</a>{% endif %}
+      {% else %}<p class="mb-0 small text-muted">Rien de publié sur ce sujet dans nos sources.</p>{% endif %}
     </article></div>
   {% endfor %}
   </div>
 {% else %}
-  <p class="text-muted">Choisissez un sujet ci-dessus. Le tableau suivant montre combien de textes chaque formation a publiés par thème : cliquez un nombre pour lire ces textes.</p>
-  <div style="overflow-x:auto" class="mb-4">
-  <table class="table table-sm align-middle" style="min-width:760px">
-    <caption class="visually-hidden">Nombre de textes publiés par formation et par thème</caption>
-    <thead><tr><th scope="col">Formation</th>{% for t in themes %}<th scope="col" class="small text-center">{{ t }}</th>{% endfor %}</tr></thead>
-    <tbody>
-    {% for p in parties %}<tr><th scope="row"><a href="{{ path('app_party', {code: p.code}) }}">{{ p.name }}</a></th>
-      {% for t in themes %}{% set n = matrix[p.code][t]|default(0) %}<td class="text-center">{% if n %}<a href="{{ path('app_parties', {theme: t, _fragment: 'sujet'}) }}">{{ n }}</a>{% else %}<span class="text-muted" aria-label="aucun">·</span>{% endif %}</td>{% endfor %}
-    </tr>{% endfor %}
-    </tbody>
-  </table></div>
-{% endif %}
-
-<h2 class="h4 mt-4" id="formations">2. Par formation : ce qu'elle a publié</h2>
-{% if parties %}
-<div class="row g-3">
-{% for p in parties %}{% set pf = profiles[p.code]|default(null) %}
-<div class="col-md-6"><article class="carte h-100" {% if p.color %}style="border-left:6px solid {{ p.color }}"{% endif %}>
-    <h3 class="h5 mb-1"><a href="{{ path('app_party', {code: p.code}) }}">{{ p.name }}</a></h3>
-    <p class="mb-2">
-      {% if p.programme > 0 %}<span class="etiquette bleu">{{ '2022' in p.name ? 'Programme 2022 (ancien)' : 'Programme publié : ' ~ p.programme ~ ' mesures' }}</span>{% else %}<span class="etiquette">Pas de programme importé</span>{% endif %}
-      {% if p.bills > 0 %}<span class="etiquette">{{ p.bills }} proposition{{ p.bills > 1 ? 's' }} de loi</span>{% endif %}
-      {% if p.costed > 0 %}<span class="etiquette rouge">{{ p.costed }} chiffrée{{ p.costed > 1 ? 's' }} avec source</span>{% endif %}
-    </p>
-    {% set top = [] %}{% for t in themes %}{% if matrix[p.code][t]|default(0) > 0 %}{% set top = top|merge([{t: t, n: matrix[p.code][t]}]) %}{% endif %}{% endfor %}
-    {% if top %}<p class="small mb-2">Thèmes traités : {% for x in top|sort((a, b) => b.n <=> a.n)|slice(0, 4) %}<a href="{{ path('app_parties', {theme: x.t, _fragment: 'sujet'}) }}">{{ x.t }} ({{ x.n }})</a>{{ not loop.last ? ', ' }}{% endfor %}</p>{% endif %}
-    <p class="small text-muted mb-1">{{ p.n }} proposition{{ p.n > 1 ? 's' }} · {{ p.costed }} chiffrée{{ p.costed > 1 ? 's' }} avec source</p>
-    <p class="small mb-0"><a href="{{ path('app_party', {code: p.code}) }}">Lire ses textes</a>{% if pf and pf.officialSite %} · <a href="{{ pf.officialSite }}" rel="noopener nofollow" target="_blank">Site officiel</a>{% endif %}{% if pf and pf.programmeUrl %} · <a href="{{ pf.programmeUrl }}" rel="noopener nofollow" target="_blank">Programme officiel</a>{% endif %}</p>
-</article></div>
-{% endfor %}
-</div>
-{% else %}
-<p>Aucune proposition n'est encore importée. Les propositions de loi de l'Assemblée nationale et du Sénat arrivent par l'import officiel.</p>
+  {% set withProg = parties|filter(p => p.programme > 0) %}
+  {% set billsOnly = parties|filter(p => p.programme == 0) %}
+  {% macro card(p, profiles, matrix, themes) %}
+    {% set pf = profiles[p.code]|default(null) %}
+    <div class="col-md-6 col-lg-4"><article class="carte h-100" {% if p.color %}style="border-top:5px solid {{ p.color }}"{% endif %}>
+      <h3 class="h6 mb-2"><a href="{{ path('app_party', {code: p.code}) }}">{{ p.name }}</a></h3>
+      <p class="mb-2">
+        {% if p.programme > 0 %}<span class="etiquette bleu">{{ '2022' in p.name ? 'Programme 2022 (ancien)' : 'Programme : ' ~ p.programme ~ ' mesures' }}</span>{% endif %}
+        {% if p.bills > 0 %}<span class="etiquette">{{ p.bills }} proposition{{ p.bills > 1 ? 's' }} de loi</span>{% endif %}
+      </p>
+      <p class="small text-muted mb-1">{{ p.n }} proposition{{ p.n > 1 ? 's' }} · {{ p.costed }} chiffrée{{ p.costed > 1 ? 's' }} avec source</p>
+      <p class="small mb-0"><a href="{{ path('app_party', {code: p.code}) }}">Lire ses textes</a>{% if pf and pf.officialSite %} · <a href="{{ pf.officialSite }}" rel="noopener nofollow" target="_blank">Site officiel</a>{% endif %}</p>
+    </article></div>
+  {% endmacro %}
+  {% if withProg %}
+    <h2 class="h4" id="formations">Formations avec un programme publié</h2>
+    <div class="row g-3 mb-4">{% for p in withProg %}{{ _self.card(p, profiles, matrix, themes) }}{% endfor %}</div>
+  {% endif %}
+  {% if billsOnly %}
+    <h2 class="h4">Groupes parlementaires : propositions de loi uniquement</h2>
+    <p class="small text-muted">Pas de programme publié dans nos sources : on ne montre que leurs propositions de loi déposées.</p>
+    <div class="row g-3 mb-4">{% for p in billsOnly %}{{ _self.card(p, profiles, matrix, themes) }}{% endfor %}</div>
+  {% endif %}
+  {% if not parties %}<p>Aucune proposition n'est encore importée.</p>{% endif %}
+  <details class="mb-4"><summary class="btn btn-outline-secondary" style="min-height:44px">Voir le tableau complet formations et sujets</summary>
+    <div style="overflow-x:auto" class="mt-3"><table class="table table-sm align-middle" style="min-width:700px">
+      <caption>Nombre de textes publiés par formation et par sujet (programme et propositions de loi)</caption>
+      <thead><tr><th scope="col">Formation</th>{% for t in usedThemes %}<th scope="col" class="small text-center">{{ t }}</th>{% endfor %}</tr></thead>
+      <tbody>{% for p in parties %}<tr><th scope="row" class="small">{{ p.name }}</th>{% for t in usedThemes %}{% set n = matrix[p.code][t]|default(0) %}<td class="text-center">{% if n %}<a href="{{ path('app_parties', {theme: t, _fragment: 'sujet'}) }}">{{ n }}</a>{% endif %}</td>{% endfor %}</tr>{% endfor %}</tbody>
+    </table></div>
+  </details>
 {% endif %}
 <p class="meta mt-4">Une formation qui souhaite publier ses mesures de programme peut écrire à la modération avec le lien de son site officiel : sans source officielle, rien n'est publié. Pour savoir comment les groupes ont voté sur un sujet, voir <a href="{{ path('app_positions') }}">Positions et votes</a>. Pour comparer des positions de candidats, des sites indépendants existent, comme <a href="https://monvote2027.fr/" rel="noopener nofollow" target="_blank">MonVote2027</a> ; nous n'en reprenons ni les notations ni les classements.</p>
 {% include 'programme/_source_note.html.twig' %}
