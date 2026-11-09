@@ -28,7 +28,12 @@
     <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="ia" name="ia" value="1" {{ includeAi ? 'checked' }}><label class="form-check-label" for="ia">Afficher à part les hypothèses de chiffrage par IA (non officielles, relues par la modération). Elles ne sont jamais ajoutées aux chiffrages sourcés.</label></div>
     <button class="btn btn-bleu">Calculer</button> <a class="btn btn-outline-dark" href="{{ path('app_budget_calculator') }}">Tout décocher</a>
     {% else %}
-    <p>Aucune proposition chiffrée pour le moment. Les chiffrages sourcés sont ajoutés par la modération, uniquement avec une source publiée et un niveau de crédibilité. Les hypothèses IA n'apparaissent qu'après relecture.</p>
+    <div class="carte">
+    <h2 class="h5">À quoi sert cette page ?</h2>
+    <p class="mb-2">Elle additionne le coût annuel de mesures que vous cochez, pour donner un ordre de grandeur, avec la source et le niveau de fiabilité de chaque chiffre.</p>
+    <p class="mb-2"><strong>Pourquoi c'est vide ?</strong> Un chiffre n'apparaît que s'il vient d'une source publiée (étude d'impact, Cour des comptes, institut indépendant). Aucune mesure n'est chiffrée pour le moment, et nous n'inventons aucun montant.</p>
+    <p class="mb-0">En attendant : <a href="{{ path('app_parties') }}">comparer les formations par sujet</a>, lire <a href="{{ path('app_programmes') }}">leurs propositions</a> ou <a href="{{ path('app_positions') }}">voir comment les groupes ont voté</a>.</p>
+</div>
     {% endif %}
 </form>
 {% include 'programme/_source_note.html.twig' %}

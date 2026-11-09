@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\PartyProfile;
 use App\Entity\PartyProposal;
+use App\Entity\Proposition;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,20 +21,47 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class PartyController extends AbstractController
 {
+    /**
+     * Page de décryptage : chaque formation en quelques chiffres (type de document, thèmes traités) et, au choix,
+     * un thème précis comparé entre formations (?theme=Santé). Tout est un comptage ou une citation sourcée, ordre alphabétique.
+     */
     #[Route('/partis', name: 'app_parties', methods: ['GET'])]
-    public function index(EntityManagerInterface $em): Response
+    public function index(Request $request, EntityManagerInterface $em): Response
     {
         $rows = $em->createQuery(
-            'SELECT p.groupCode AS code, MAX(p.groupName) AS name, MAX(p.groupColor) AS color, MAX(p.source) AS source, COUNT(p.id) AS n,
+            'SELECT p.groupCode AS code, MAX(p.groupName) AS name, MAX(p.groupColor) AS color, COUNT(p.id) AS n,
+                    SUM(CASE WHEN p.source = :man THEN 1 ELSE 0 END) AS programme,
+                    SUM(CASE WHEN p.source <> :man THEN 1 ELSE 0 END) AS bills,
                     SUM(CASE WHEN p.costMillions IS NOT NULL THEN 1 ELSE 0 END) AS costed
              FROM App\Entity\PartyProposal p WHERE p.published = true GROUP BY p.groupCode ORDER BY name ASC'
-        )->getArrayResult();
+        )->setParameter('man', PartyProposal::SOURCE_MANUAL)->getArrayResult();
         $profiles = [];
         foreach ($em->getRepository(PartyProfile::class)->findAll() as $pf) {
             $profiles[$pf->getGroupCode()] = $pf;
         }
+        // Matrice formation x thème (nombre de textes publiés)
+        $matrix = [];
+        foreach ($em->createQuery('SELECT p.groupCode AS code, p.theme AS theme, COUNT(p.id) AS n FROM App\Entity\PartyProposal p WHERE p.published = true AND p.theme IS NOT NULL GROUP BY p.groupCode, p.theme')->getArrayResult() as $r) {
+            $matrix[$r['code']][$r['theme']] = (int) $r['n'];
+        }
+        // Thème choisi : les mesures de chaque formation (programme d'abord, puis propositions de loi récentes)
+        $theme = (string) $request->query->get('theme', '');
+        $theme = in_array($theme, Proposition::THEMES, true) ? $theme : '';
+        $byTheme = [];
+        if ($theme) {
+            $list = $em->getRepository(PartyProposal::class)->createQueryBuilder('p')
+                ->andWhere('p.published = true')->andWhere('p.theme = :t')->setParameter('t', $theme)
+                ->addOrderBy('p.depositedAt', 'DESC')->addOrderBy('p.id', 'DESC')->setMaxResults(600)->getQuery()->getResult();
+            foreach ($list as $pp) {
+                $byTheme[$pp->getGroupCode()][] = $pp;
+            }
+            foreach ($byTheme as $code => $items) {
+                usort($items, static fn ($a, $b) => (PartyProposal::SOURCE_MANUAL === $b->getSource()) <=> (PartyProposal::SOURCE_MANUAL === $a->getSource()));
+                $byTheme[$code] = $items;
+            }
+        }
 
-        return $this->render('party/index.html.twig', ['parties' => $rows, 'profiles' => $profiles]);
+        return $this->render('party/index.html.twig', ['parties' => $rows, 'profiles' => $profiles, 'themes' => Proposition::THEMES, 'matrix' => $matrix, 'theme' => $theme, 'byTheme' => $byTheme]);
     }
 
     #[Route('/partis/{code}', name: 'app_party', requirements: ['code' => '[A-Za-z0-9\-]{2,12}'], methods: ['GET'])]
