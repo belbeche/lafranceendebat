@@ -15,6 +15,8 @@ parameters:
     env(MAIL_FROM): ''
     env(DEEPL_API_KEY): ''
     env(TRUSTED_PROXIES): '127.0.0.1,REMOTE_ADDR'
+    # Contributions de soutien en ligne (page /soutenir). Indépendant des reçus fiscaux, qui restent désactivés (micro-entreprise).
+    env(DONATIONS_OPEN): '0'
     env(GEMINI_API_KEY): ''
     env(GEMINI_MODEL): 'gemini-2.5-flash'
     env(DEEPL_API_URL): 'https://api-free.deepl.com'
@@ -179,6 +181,10 @@ services:
         class: SessionHandlerInterface
         factory: ['App\Session\SessionHandlerFactory', 'create']
         arguments: ['%env(bool:SESSION_IN_DB)%', '@doctrine.dbal.default_connection']
+
+    App\Service\DonationService:
+        arguments:
+            $open: '%env(bool:DONATIONS_OPEN)%'
 
     App\Service\DonationReceiptService:
         arguments:

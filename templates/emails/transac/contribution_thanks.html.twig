@@ -1,0 +1,7 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Merci pour votre soutien{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Merci pour votre soutien</h1>
+<p>Bonjour {{ name }}, votre contribution de {{ (cents / 100)|number_format(2, ',', ' ') }} euros a bien été reçue. Elle finance l'hébergement, la modération et le développement de La France en Débat.</p>
+<p style="font-size:13px;color:#555">Cette contribution ne donne pas droit à une réduction d'impôt (l'éditeur est une micro-entreprise). Elle ne finance ni un parti politique, ni un candidat, ni une campagne électorale.</p>
+{% endblock %}

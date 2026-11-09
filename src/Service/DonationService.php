@@ -6,7 +6,12 @@ use App\Entity\Donation;
 use App\Service\Payment\PaymentGateway;
 use Doctrine\ORM\EntityManagerInterface;
 
-/** Don en ligne : création de la session de paiement, puis (une fois payé) émission du reçu et envoi du PDF. */
+/**
+ * Contribution de soutien en ligne : création de la session de paiement Stripe, puis, une fois payée,
+ * confirmation par e-mail. Le reçu fiscal PDF n'est émis que si les reçus sont activés (organisme éligible) ;
+ * pour une micro-entreprise ils restent désactivés (DONATION_RECEIPTS_ENABLED=0).
+ * La page est ouverte par DONATIONS_OPEN=1, indépendamment des reçus (utile aussi pour tester en mode test Stripe).
+ */
 class DonationService
 {
     public const MIN_CENTS = 500;
@@ -18,12 +23,19 @@ class DonationService
         private readonly DonationReceiptService $receipts,
         private readonly TransactionalMailer $mailer,
         private readonly Security\DisposableEmailPolicy $emailPolicy,
+        private readonly bool $open = false,
     ) {
     }
 
     public function isOpen(): bool
     {
-        return $this->receipts->isEnabled() && $this->gateway->isConfigured();
+        return $this->open && $this->gateway->isConfigured();
+    }
+
+    /** Vrai si un reçu fiscal PDF doit être émis (organisme éligible uniquement). */
+    public function issuesReceipts(): bool
+    {
+        return $this->receipts->isEnabled();
     }
 
     /** @return array{donation:Donation,url:string} */
@@ -35,8 +47,9 @@ class DonationService
         if ($cents < self::MIN_CENTS || $cents > self::MAX_CENTS) {
             throw new \DomainException(sprintf('La contribution doit être compris entre %d et %d euros.', self::MIN_CENTS / 100, self::MAX_CENTS / 100));
         }
-        if (mb_strlen(trim($name)) < 3 || mb_strlen(trim($address)) < 8 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \DomainException('Nom, adresse complète et e-mail valides obligatoires pour établir le justificatif.');
+        $needsAddress = $this->issuesReceipts();
+        if (mb_strlen(trim($name)) < 3 || ($needsAddress && mb_strlen(trim($address)) < 8) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \DomainException($needsAddress ? 'Nom, adresse complète et e-mail valides obligatoires pour établir le justificatif.' : 'Nom et e-mail valides obligatoires pour confirmer votre contribution.');
         }
         if ($this->emailPolicy->isSuspicious($email)) {
             throw new \DomainException('Utilisez une adresse e-mail durable : le justificatif ne peut pas être envoyé à une adresse jetable.');
@@ -59,10 +72,15 @@ class DonationService
             return false;
         }
         $d->setStatus(Donation::PAID);
-        $receipt = $this->receipts->issue($d->getDonorName(), $d->getDonorAddress(), $d->getAmountCents(), new \DateTimeImmutable(), 'carte', null);
-        $d->setReceipt($receipt);
-        $this->em->flush();
-        $this->mailer->donationReceipt($d->getDonorEmail(), $d->getDonorName(), $receipt->getNumber(), $this->receipts->pdf($receipt));
+        if ($this->issuesReceipts()) {
+            $receipt = $this->receipts->issue($d->getDonorName(), $d->getDonorAddress(), $d->getAmountCents(), new \DateTimeImmutable(), 'carte', null);
+            $d->setReceipt($receipt);
+            $this->em->flush();
+            $this->mailer->donationReceipt($d->getDonorEmail(), $d->getDonorName(), $receipt->getNumber(), $this->receipts->pdf($receipt));
+        } else {
+            $this->em->flush();
+            $this->mailer->contributionThanks($d->getDonorEmail(), $d->getDonorName(), $d->getAmountCents());
+        }
 
         return true;
     }

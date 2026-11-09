@@ -84,6 +84,12 @@ class TransactionalMailer
         $this->send($to, 'Votre reçu de don ' . $number, 'donation_receipt', ['name' => $name, 'number' => $number], null, [$pdf, 'recu-' . $number . '.pdf']);
     }
 
+    /** Confirmation d'une contribution de soutien (sans reçu fiscal). */
+    public function contributionThanks(string $to, string $name, int $cents): void
+    {
+        $this->send($to, 'Merci pour votre soutien', 'contribution_thanks', ['name' => $name, 'cents' => $cents]);
+    }
+
     /** Alerte interne aux administrateurs : une action sensible vient d'avoir lieu sur un compte. */
     public function adminAccountAlert(string $to, string $title, array $lines, ?int $userId): void
     {

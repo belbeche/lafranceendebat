@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-/** Contributions de soutien en ligne (micro-entreprise : aucun reçu fiscal). Fermé tant que DONATION_RECEIPTS_ENABLED vaut 0. */
+/** Contributions de soutien en ligne (micro-entreprise : aucun reçu fiscal). Fermée tant que DONATIONS_OPEN vaut 0. */
 class DonationController extends AbstractController
 {
     #[Route('/soutenir', name: 'app_donate', methods: ['GET', 'POST'])]
@@ -45,7 +45,7 @@ class DonationController extends AbstractController
             }
         }
 
-        return $this->render('donation/form.html.twig', ['data' => $data, 'error' => $error, 'min' => DonationService::MIN_CENTS / 100]);
+        return $this->render('donation/form.html.twig', ['data' => $data, 'error' => $error, 'min' => DonationService::MIN_CENTS / 100, 'needsAddress' => $donations->issuesReceipts()]);
     }
 
     #[Route('/soutenir/merci/{token}', name: 'app_donate_thanks', requirements: ['token' => '[a-f0-9]{48}'], methods: ['GET'])]

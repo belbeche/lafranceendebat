@@ -7,7 +7,7 @@
     <form method="post" class="form-card">
         <input type="hidden" name="_token" value="{{ csrf_token('donate') }}">
         <label class="form-label" for="name">Nom et prénom</label><input class="form-control mb-3" id="name" name="name" value="{{ data.name }}" required maxlength="160" autocomplete="name">
-        <label class="form-label" for="address">Adresse complète (pour la facture ou le justificatif de paiement)</label><input class="form-control mb-3" id="address" name="address" value="{{ data.address }}" required maxlength="255" autocomplete="street-address">
+        {% if needsAddress %}<label class="form-label" for="address">Adresse complète (pour le justificatif de paiement)</label><input class="form-control mb-3" id="address" name="address" value="{{ data.address }}" required maxlength="255" autocomplete="street-address">{% endif %}
         <label class="form-label" for="email">E-mail (pour recevoir la confirmation)</label><input class="form-control mb-3" type="email" id="email" name="email" value="{{ data.email }}" required autocomplete="email">
         <label class="form-label" for="amount">Montant de la contribution, en euros (minimum {{ min|number_format(0) }})</label><input class="form-control mb-3" id="amount" name="amount" inputmode="decimal" value="{{ data.amount }}" required>
         <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="no_political" name="no_political" value="1" required><label class="form-check-label" for="no_political">Je confirme que ma contribution n'est destiné ni à un parti politique, ni à un candidat, ni à une campagne électorale. Aucune contrepartie ne m'est offerte.</label></div>
