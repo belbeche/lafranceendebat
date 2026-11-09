@@ -29,6 +29,7 @@ class TranslateContentCommand extends Command
     {
         $this->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Nombre maximal de contenus par exécution', '30')
             ->addOption('type', null, InputOption::VALUE_REQUIRED, 'revendication, proposition, discussion, service_offer ou all', 'all')
+            ->addOption('duree', null, InputOption::VALUE_REQUIRED, 'Durée maximale en secondes : la commande s\'arrête proprement avant la limite de l\'hébergeur (2 minutes)', '90')
             ->addOption('tout', null, InputOption::VALUE_NONE, 'Inclut les contenus non publiés (relecture admin dans toutes les langues)');
     }
 
@@ -43,6 +44,8 @@ class TranslateContentCommand extends Command
         $only = (string) $input->getOption('type');
         $done = 0;
         $calls = 0;
+        // Budget de temps : un cron coupé net par l'hébergeur (code 124) laisse des traductions à moitié faites.
+        $deadline = microtime(true) + max(10, (int) $input->getOption('duree'));
         foreach (ContentTranslator::TYPES as $type => [$class]) {
             if ('all' !== $only && $only !== $type) {
                 continue;
@@ -50,12 +53,15 @@ class TranslateContentCommand extends Command
             $qb = $this->em->getRepository($class)->createQueryBuilder('e')->orderBy('e.id', 'DESC');
             $input->getOption('tout') || $this->onlyPublic($qb, $type);
             foreach ($qb->setMaxResults(200)->getQuery()->toIterable() as $e) {
-                if ($done >= $limit) {
+                if ($done >= $limit || microtime(true) >= $deadline) {
                     break 2;
                 }
                 $have = $this->repo->localesFor($type, (int) $e->getId());
                 $touched = false;
                 foreach (Revendication::LOCALES as $loc) {
+                    if (microtime(true) >= $deadline) {
+                        break;
+                    }
                     if (in_array($loc, $have, true) || $loc === ($this->translator->sourceLocale($e) ?? '') || !$this->translator->supports($loc)) {
                         continue;
                     }
