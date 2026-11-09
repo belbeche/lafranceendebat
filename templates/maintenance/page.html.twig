@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="60">
+<title>{{ cause == 'panne' ? 'Service momentanément indisponible' : 'Maintenance en cours' }} | La France en Débat</title>
+<style>body{font-family:system-ui,Arial,sans-serif;margin:0;background:#f4f5f9;color:#1b1f33;display:grid;place-items:center;min-height:100vh}main{max-width:600px;padding:32px 24px}h1{color:#00164f;font-size:1.7rem}.bar{height:5px;background:linear-gradient(90deg,#002395 33%,#fff 33% 66%,#ED2939 66%);margin-bottom:24px}.devise{color:#4a5170;font-size:.95rem;margin-top:28px}</style></head>
+<body><main><div class="bar"></div>
+{% if cause == 'panne' %}
+<h1>Le service est momentanément indisponible</h1>
+<p>Nous rencontrons un incident technique et l'équipe est prévenue. Vos contributions déjà publiées ne sont pas perdues. Réessayez dans quelques minutes.</p>
+{% else %}
+<h1>Mise à jour en cours</h1>
+<p>{{ message ?: 'Nous améliorons La France en Débat. Le site revient dans quelques minutes.' }}</p>
+{% if until and until > date().timestamp %}<p><strong>Retour prévu vers {{ until|date('H\\hi', 'Europe/Paris') }}.</strong></p>{% endif %}
+<p>Si vous étiez en train d'écrire, copiez votre texte avant de quitter la page, puis republiez-le après la reprise.</p>
+{% endif %}
+<p>Cette page se recharge toute seule chaque minute.</p>
+<p class="devise">Liberté, Égalité, Fraternité. Dialogue. Paix. Démocratie.</p></main></body></html>

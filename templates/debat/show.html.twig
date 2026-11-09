@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ debat.title }}{% endblock %}
+{% block meta_description %}{{ (debat.summary|default(debat.title))|striptags|slice(0, 155) }}{% endblock %}
+{% block meta_og %}
+<meta property="og:site_name" content="{{ site_name }}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{{ debat.title|slice(0, 110) }}">
+<meta property="og:description" content="{{ (debat.summary|default(debat.title))|striptags|slice(0, 200) }}">
+<meta property="og:url" content="{{ url('app_debat_show', {slug: debat.slug}) }}">
+<meta property="og:locale" content="{{ app.request.locale }}">
+<meta property="article:published_time" content="{{ debat.createdAt|date('c') }}">
+<meta property="article:section" content="{{ debat.theme }}">
+<meta property="og:image" content="{{ absolute_url(asset('img/lfed-banner.jpg')) }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ debat.title|slice(0, 70) }}">
+<meta name="twitter:description" content="{{ (debat.summary|default(debat.title))|striptags|slice(0, 180) }}">
+{% endblock %}
+{% block body %}
+<script type="application/ld+json" nonce="{{ csp_nonce() }}">{{ {'@context': 'https://schema.org', '@type': 'DiscussionForumPosting', 'headline': debat.title|slice(0, 110), 'url': url('app_debat_show', {slug: debat.slug}), 'datePublished': debat.createdAt|date('c'), 'inLanguage': app.request.locale, 'author': {'@type': debat.proposedBy ? 'Person' : 'Organization', 'name': debat.proposedBy ? debat.proposedBy.publicName : site_name}, 'publisher': {'@type': 'Organization', 'name': site_name, 'url': url('app_home')}}|json_encode(constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}</script>
+<header class="page-head"><div class="container">
+    <p class="mb-2"><span class="etiquette bleu">{{ debat.theme }}</span> <span class="etiquette {{ debat.open ? 'vert' }}">{{ debat.statusLabel }}</span>
+        {% if debat.closesAt %}<span class="meta">· clôture prévue le {{ debat.closesAt|date('d/m/Y') }}</span>{% endif %}</p>
+    <h1>{{ debat.title }}</h1>
+    {% set dl = dossier_link(debat.dossierSlug ?: dossier_theme_slug(debat.theme)) %}
+    <p class="meta mb-1">{% if debat.proposedBy %}Débat ouvert par <strong>{{ debat.proposedBy.publicName }}</strong>{% else %}Question posée par <strong>la rédaction de La France en Débat</strong> (éditeur : {{ publisher.director }}){% endif %} · publié le {{ debat.createdAt|date('d/m/Y') }}{% if dl %} · Dossier : <a class="text-white" href="{{ dl.url }}">{{ dl.title }}</a>{% endif %}</p>
+    {% if debat.updatedAt %}<p class="meta mb-0">Modifié le {{ debat.updatedAt|date('d/m/Y') }} · <a href="{{ path('app_history', {type: 'debat', id: debat.id}) }}" class="text-white">historique</a></p>{% endif %}
+    {% if app.user and (is_granted('ROLE_MODERATOR') or (debat.proposedBy and debat.proposedBy.id == app.user.id)) %}
+        <p class="mt-2 mb-0"><a class="btn btn-sm btn-outline-light" href="{{ path('app_debat_manage', {slug: debat.slug}) }}">Gérer ce débat</a></p>
+    {% endif %}
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        {% include '_read_stats.html.twig' with {stats: viewStats, kind: 'debat', id: debat.id} only %}
+        <h2 class="h4">Le sujet, présenté sans parti pris</h2>
+        <p class="measure">{{ debat.summary|nl2br }}</p>
+        {% if obligations|default([]) %}
+        <section class="obl-panel mb-3" id="sources-officielles" aria-labelledby="obl-t">
+            <h2 class="h6" id="obl-t">Respect des obligations sur les sources officielles</h2>
+            <ul class="list-unstyled mb-2">{% for o in obligations %}<li class="obl obl-{{ o.status }}"><span class="obl-tag">{{ o.status == 'ok' ? '✔' : (o.status == 'wip' ? '…' : '○') }} {{ o.statusLabel }}</span> {{ o.label }}{% if not o.required %} <small class="text-muted">(recommandé)</small>{% endif %}{% if o.status != 'ok' %}<small class="d-block text-muted ms-4">{{ o.hint }}</small>{% endif %}</li>{% endfor %}</ul>
+            <p class="meta mb-1">Sources officielles à consulter sur ce thème :
+                {% for u in officialSources %}<a href="{{ u }}" target="_blank" rel="noopener noreferrer">{{ u|replace({'https://': '', 'www.': ''}) }}</a>{{ not loop.last ? ' · ' }}{% endfor %}</p>
+            <p class="meta mb-0">Un débat est relu seulement si les points obligatoires sont « Respecté ». « En cours » : le point est partiellement rempli. « Pas encore » : rien n'est indiqué. <a href="{{ path('app_method') }}">Voir la méthode</a></p>
+        </section>
+        {% endif %}
+        {% include '_reliability.html.twig' with {text: debat.summary ~ ' ' ~ (debat.facts ?? ''), sources: debat.facts ?? ''} %}
+        {% if debat.facts %}
+            <div class="faits mb-3"><h3 class="h6">Faits vérifiés (avec source et date)</h3>{{ debat.facts|nl2br }}</div>
+        {% endif %}
+        {% if debat.competentAuthority %}<p><strong>Qui peut décider :</strong> {{ debat.competentAuthority }}</p>{% endif %}
+        {% if debat.outcome %}<div class="limite mb-3"><strong>Compte rendu et suites données.</strong><br>{{ debat.outcome|nl2br }}</div>{% endif %}
+
+        <h2 class="h4 mt-4">Les arguments</h2>
+        <p class="meta">{{ counts.pour ?? 0 }} pour · {{ counts.contre ?? 0 }} contre · {{ counts.nuance ?? 0 }} nuancé{{ (counts.nuance ?? 0) > 1 ? 's' }}. Le nombre d'arguments ne dit pas qui a raison.</p>
+        {% for root in roots %}
+            {% include 'debat/_argument.html.twig' with {argument: root, debat: debat} only %}
+            {% set replies = root.replies|filter(r => r.visible) %}
+            {% if replies|length %}
+                <div class="reponses">
+                    {% for reply in replies %}{% include 'debat/_argument.html.twig' with {argument: reply, debat: debat} only %}{% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="carte">Aucun argument pour le moment. Soyez le premier à contribuer.</div>
+        {% endfor %}
+
+        <h2 class="h4 mt-5" id="contribuer">{{ replyTo ? 'Répondre à un argument' : 'Ajouter un argument' }}</h2>
+        {% if not debat.open %}
+            <div class="limite">Ce débat est clos.</div>
+        {% elseif not is_granted('ROLE_USER') %}
+            <p><a href="{{ path('app_login') }}">Connectez-vous</a> ou <a href="{{ path('app_register') }}">créez un compte</a> pour participer.</p>
+        {% else %}
+            <div class="form-card">
+                {{ form_start(form) }}{{ form_widget(form) }}
+                <button class="btn btn-bleu mt-3" type="submit">Publier</button>
+                {% if replyTo %}<a class="btn btn-link mt-3" href="{{ path('app_debat_show', {slug: debat.slug}) }}">Annuler</a>{% endif %}
+                {{ form_end(form) }}
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-lg-4">
+        <div class="carte">
+            <h2 class="h6">Propositions issues de ce débat</h2>
+            {% for p in propositions %}<p class="mb-1"><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a></p>
+            {% else %}<p class="meta mb-0">Aucune proposition rattachée.</p>{% endfor %}
+        </div>
+    </div>
+</div></div></section>
+{% endblock %}

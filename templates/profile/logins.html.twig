@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes connexions{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes connexions</h1><p class="mb-0">Les 50 dernières connexions à votre compte, conservées 90 jours. Si l'une d'elles n'est pas la vôtre, changez votre mot de passe tout de suite.</p></div></header>
+<section class="section"><div class="container">
+    <p>Dernière connexion réussie : <strong>{{ user.lastLogin ? user.lastLogin|date('d/m/Y à H:i') : 'non enregistrée' }}</strong></p>
+    <div class="table-responsive"><table class="table table-sm bg-white">
+        <thead><tr><th>Date</th><th>Résultat</th><th>Appareil</th><th>Adresse (raccourcie)</th></tr></thead>
+        <tbody>{% for e in events %}<tr><td>{{ e.at|date('d/m/Y H:i') }}</td><td>{{ e.success ? 'Réussie' : 'Échec (mauvais mot de passe)' }}</td><td>{{ e.device ?? 'inconnu' }}</td><td>{{ e.ip ?? '' }}</td></tr>{% else %}<tr><td colspan="4" class="text-muted">Aucune connexion enregistrée pour le moment.</td></tr>{% endfor %}</tbody>
+    </table></div>
+    <form method="post" action="{{ path('app_logout_others') }}" class="mb-3"><input type="hidden" name="_token" value="{{ csrf_token('logout_others') }}"><button class="btn btn-rouge" data-confirm="Déconnecter tous les autres appareils ?">Déconnecter tous les autres appareils</button> <span class="meta">Utile si vous avez perdu un téléphone ou utilisé un ordinateur partagé.</span></form>
+<p><a class="btn btn-primary" href="{{ path('app_change_password') }}">Changer mon mot de passe</a> <a class="btn btn-outline-dark" href="{{ path('app_profile') }}">Retour au profil</a></p>
+</div></section>
+{% endblock %}

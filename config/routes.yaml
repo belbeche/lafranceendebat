@@ -1,0 +1,23 @@
+controllers:
+    resource: ../src/Controller/
+    type: attribute
+    # Surface heritee de l'ancienne application (envois en masse, imports CSV, webhooks, pistage e-mail) :
+    # volontairement retiree du routage pour reduire la surface d'attaque.
+    exclude:
+        - '../src/Controller/Webhook'
+        - '../src/Controller/Admin/PostController.php'
+
+app_forgot_password_request:
+  path: /reset-password
+  controller: App\Controller\ResetPasswordController::request
+
+app_check_email:
+  path: /reset-password/check-email
+  controller: App\Controller\ResetPasswordController::checkEmail
+
+well_known_chrome_devtools:
+    path: /.well-known/appspecific/com.chrome.devtools.json
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template: 'empty.json.twig'
+

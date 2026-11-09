@@ -1,0 +1,13 @@
+{
+  "_aide": "Une entrée par formation : sigle, nom, pages officielles à surveiller. Pour ajouter une formation, ajouter une entrée. Le fichier de mesures relu s'appelle <fichier>.json dans ce dossier ; tant qu'il n'existe pas, rien n'est importé.",
+  "partis": [
+    {"code": "LFI", "nom": "La France insoumise", "fichier": "lfi", "pages": ["https://melenchon2027.fr/programme/decouvrir/"]},
+    {"code": "HOR", "nom": "Horizons (Édouard Philippe)", "fichier": "philippe", "pages": ["https://www.edouardphilippe.fr/priorites/pour-une-france-plus-prospere"]},
+    {"code": "RN", "nom": "Rassemblement National", "fichier": "rn", "pages": ["https://rassemblementnational.fr/22-mesures", "https://rassemblementnational.fr/"]},
+    {"code": "PS", "nom": "Parti socialiste", "fichier": "ps", "pages": ["https://projet-socialiste.fr/"]},
+    {"code": "RE", "nom": "Renaissance", "fichier": "renaissance", "pages": ["https://parti-renaissance.fr/"]},
+    {"code": "LR", "nom": "Les Républicains", "fichier": "lr", "pages": ["https://republicains.fr/"]},
+    {"code": "LE", "nom": "Les Écologistes", "fichier": "ecologistes", "pages": ["https://www.lesecologistes.fr/"]},
+    {"code": "PCF", "nom": "Parti communiste français", "fichier": "pcf", "pages": ["https://www.pcf.fr/"]}
+  ]
+}

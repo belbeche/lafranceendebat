@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Résultats : {{ s.title }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Résultats</h1><p class="lead mb-0">{{ s.title }}</p></div></header>
+<section class="section"><div class="container" style="max-width:820px">
+{% if stats is null %}
+    <div class="alert alert-info">{{ n }} réponse{{ n > 1 ? 's' }} pour l'instant. Les résultats sont publiés dès {{ constant('App\\Entity\\Survey::MIN_PUBLIC_RESPONSES') }} réponses, pour protéger l'anonymat.</div>
+{% else %}
+    <p class="meta">{{ n }} personne{{ n > 1 ? 's' }} {{ n > 1 ? 'ont' : 'a' }} répondu. Ces résultats décrivent les participants, pas la population française.</p>
+    {% include '_survey_bars.html.twig' with {stats: stats} only %}
+{% endif %}
+<p><a href="{{ path('app_surveys') }}">&larr; Toutes les enquêtes</a></p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,5 @@
+framework:
+    mailer:
+        dsn: '%env(MAILER_DSN)%'
+        # Envoi immediat pendant la requete : aucun transport asynchrone pour les e-mails.
+        message_bus: false

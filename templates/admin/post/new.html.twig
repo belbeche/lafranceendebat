@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle Publication - La France en Débat{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle"></i>
+                        Créer une Nouvelle Publication
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.title, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Titre accrocheur...'}}) }}
+                                <div class="form-text">Donnez un titre percutant à votre publication</div>
+                                {{ form_errors(form.title) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                {{ form_label(form.type, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                                {{ form_widget(form.type, {'attr': {'class': 'form-select'}}) }}
+                                <div class="form-text">Choisissez le type de contenu</div>
+                                {{ form_errors(form.type) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(form.content, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                        {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows': 6, 'placeholder': 'Rédigez le contenu de votre publication...'}}) }}
+                        <div class="form-text">Décrivez en détail votre actualité, événement ou information</div>
+                        {{ form_errors(form.content) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(form.mediaFile, null, {'label_attr': {'class': 'form-label fw-bold'}}) }}
+                        {{ form_widget(form.mediaFile, {'attr': {'class': 'form-control'}}) }}
+                        <div class="form-text">
+                            <strong>Formats acceptés :</strong><br>
+                            • Images : JPG, PNG, GIF (max 10MB)<br>
+                            • Vidéos : MP4, MPEG (max 1GB)<br>
+                            • Documents : PDF, DOC, DOCX (max 100MB)
+                        </div>
+                        {{ form_errors(form.mediaFile) }}
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            {{ form_widget(form.isPublished, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(form.isPublished, null, {'label_attr': {'class': 'form-check-label fw-bold'}}) }}
+                        </div>
+                        <div class="form-text">
+                            Si activé, la publication sera visible immédiatement sur le site.
+                            Sinon, elle sera enregistrée comme brouillon.
+                        </div>
+                    </div>
+
+                    <!-- Aperçu des types de médias -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-info-circle"></i>
+                                Aperçu des types de publications
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-3">
+                                    <i class="fas fa-file-alt fa-2x text-secondary mb-2"></i>
+                                    <p class="small mb-0"><strong>Texte</strong><br>Publication simple</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fas fa-image fa-2x text-success mb-2"></i>
+                                    <p class="small mb-0"><strong>Image</strong><br>Avec visuel</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fas fa-video fa-2x text-primary mb-2"></i>
+                                    <p class="small mb-0"><strong>Vidéo</strong><br>Contenu vidéo</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <i class="fas fa-file-pdf fa-2x text-danger mb-2"></i>
+                                    <p class="small mb-0"><strong>Document</strong><br>PDF, Word, etc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ path('admin_posts_index') }}" class="btn btn-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Retour à la liste
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Créer la publication
+                        </button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-label {
+    font-weight: 600;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+</style>
+{% endblock %}

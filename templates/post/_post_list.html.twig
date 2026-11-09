@@ -1,0 +1,140 @@
+{# templates/post/_post_list.html.twig #}
+{% if posts is defined and posts|length > 0 %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th width="50">ID</th>
+                    <th>Titre</th>
+                    <th>Auteur</th>
+                    <th>Catégorie</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                    <th>Vues</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td class="fw-bold text-muted">#{{ post.id }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if post.image %}
+                                    <img src="{{ asset('uploads/posts/' ~ post.image) }}" 
+                                         class="rounded me-3" 
+                                         style="width: 60px; height: 40px; object-fit: cover;"
+                                         alt="{{ post.title }}">
+                                {% endif %}
+                                <div>
+                                    <h6 class="fw-bold mb-1">
+                                        <a href="{{ path('app_post_show', {slug: post.slug}) }}" 
+                                           class="text-decoration-none text-dark">
+                                            {{ post.title }}
+                                        </a>
+                                    </h6>
+                                    {% if post.tags|length > 0 %}
+                                        <div class="small">
+                                            {% for tag in post.tags|slice(0, 2) %}
+                                                <span class="badge bg-light text-dark border me-1">
+                                                    #{{ tag.name }}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if post.author.avatarPath %}
+                                    <img src="{{ asset('uploads/avatars/' ~ post.author.avatarPath) }}" 
+                                         class="rounded-circle me-2" 
+                                         style="width: 32px; height: 32px; object-fit: cover;"
+                                         alt="{{ post.author.fullName }}">
+                                {% endif %}
+                                <span>{{ post.author.fullName }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            {% if post.category %}
+                                <span class="badge bg-primary">{{ post.category.name }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge 
+                                {% if post.status == 'published' %}bg-success
+                                {% elseif post.status == 'draft' %}bg-secondary
+                                {% elseif post.status == 'pending' %}bg-warning
+                                {% else %}bg-info{% endif %}">
+                                {{ post.status|trans }}
+                            </span>
+                        </td>
+                        <td>
+                            <small class="text-muted">
+                                {{ post.publishedAt ? post.publishedAt|date('d/m/Y') : post.createdAt|date('d/m/Y') }}
+                            </small>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <i class="far fa-eye text-muted me-1"></i>
+                                <span>{{ post.views ?? 0 }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ path('app_post_show', {slug: post.slug}) }}" 
+                                   class="btn btn-outline-primary" 
+                                   title="Voir">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                {% if is_granted('EDIT', post) or is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_post_edit', {id: post.id}) }}" 
+                                       class="btn btn-outline-success" 
+                                       title="Modifier">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" 
+                                            class="btn btn-outline-danger" 
+                                            title="Supprimer"
+                                            data-confirm-submit="delete-form-{{ post.id }}" data-confirm="Supprimer cet article ?">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <form id="delete-form-{{ post.id }}" 
+                                          action="{{ path('app_post_delete', {id: post.id}) }}" 
+                                          method="post" 
+                                          style="display: none;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    {% if pagination is defined and pagination %}
+        <div class="mt-4">
+            {{ knp_pagination_render(posts) }}
+        </div>
+    {% endif %}
+
+{% else %}
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <i class="fas fa-newspaper fa-4x text-muted"></i>
+        </div>
+        <h4 class="fw-bold text-dark mb-3">Aucun article trouvé</h4>
+        <p class="text-muted mb-4">Il n'y a pas encore d'articles publiés.</p>
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_AUTHOR') %}
+            <a href="{{ path('app_post_new') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Créer votre premier article
+            </a>
+        {% endif %}
+    </div>
+{% endif %}

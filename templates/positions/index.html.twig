@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+{% block title %}Où se situent-ils ? Positions, votes et faisabilité{% endblock %}
+{% block body %}
+<div class="container py-4">
+    {% include 'programme/_coverage_notice.html.twig' %}
+<h1 class="h2">Où se situent-ils ?</h1>
+<p class="text-muted" style="max-width:72ch">Pour chaque sujet : l'essentiel en quelques lignes, ce qu'on sait de sa faisabilité, la manière dont chaque groupe de l'Assemblée a voté (scrutins officiels), puis la position des personnalités avec leur source. Rien n'est déduit d'une étiquette de parti, et rien n'est classé.</p>
+
+{% if themes|length > 1 %}
+<nav class="d-flex flex-wrap gap-2 mb-3" aria-label="Filtrer par thème">
+  <a class="btn btn-sm {{ theme == '' ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ path('app_positions') }}">Tous les thèmes</a>
+  {% for t in themes %}<a class="btn btn-sm {{ theme == t ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ path('app_positions', {theme: t}) }}">{{ t }}</a>{% endfor %}
+</nav>
+{% endif %}
+
+<section id="mon-avis" class="card border-primary mb-4"><div class="card-body">
+  <h2 class="h5">Mon avis : qui est le plus proche de moi ?</h2>
+  <p class="small text-muted mb-2">Répondez « Pour » ou « Contre » sous les sujets qui vous parlent. Le calcul se fait dans votre navigateur, rien n'est envoyé ni enregistré chez nous. C'est un repère de lecture, pas une consigne de vote.</p>
+  <div id="mon-avis-result" aria-live="polite" class="small"><span class="text-muted">Répondez à au moins 3 sujets pour voir un résultat.</span></div>
+  <button type="button" class="btn btn-sm btn-link px-0" id="mon-avis-reset" hidden>Effacer mes réponses</button>
+</div></section>
+
+{% for b in blocks %}
+{% set s = b.statement %}
+<article class="card mb-4" id="a{{ s.id }}"><div class="card-body">
+  <div class="d-flex flex-wrap justify-content-between gap-2">
+    <span class="badge text-bg-light align-self-start">{{ s.theme }}</span>
+    <a class="small" href="#a{{ s.id }}" aria-label="Lien direct vers ce sujet">Lien direct</a>
+  </div>
+  <h2 class="h5 mt-2">{{ s.text }}</h2>
+  {% if s.synthesis %}<p class="mb-3" style="max-width:75ch"><strong>En bref.</strong> {{ s.synthesis }}</p>{% endif %}
+
+  {% set via = s.viability %}
+  <h3 class="h6">Est-ce faisable ?</h3>
+  <dl class="row small mb-3">
+  {% for key, label in axes %}
+    <dt class="col-sm-4">{{ label }}</dt>
+    <dd class="col-sm-8">{% if via[key] is defined %}{{ via[key].text }}{% if via[key].source_url %} <a href="{{ via[key].source_url }}" rel="nofollow noopener" target="_blank">Source</a>{% endif %}{% else %}<span class="text-muted">Non documenté pour l'instant.</span>{% endif %}</dd>
+  {% endfor %}
+  </dl>
+
+  {% if b.scrutins %}
+  <h3 class="h6">Comment les groupes ont voté</h3>
+  {% for num, sc in b.scrutins %}
+    <div class="mb-3">
+      <div class="small text-muted mb-1">Scrutin n° {{ num }}{% if sc.date %} du {{ sc.date|date('d/m/Y') }}{% endif %} · <a href="{{ sc.url }}" rel="nofollow noopener" target="_blank">fiche officielle</a></div>
+      {% for v in sc.votes %}
+        {% set t = v.total %}
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <div class="small" style="width:11rem" title="{{ v.groupName }}">{{ v.groupCode }}</div>
+          {% if t > 0 %}
+          <div class="progress flex-grow-1" role="img" style="height:1.1rem" aria-label="{{ v.groupName }} : {{ v.pour }} pour, {{ v.contre }} contre, {{ v.abstention }} abstention">
+            <div class="progress-bar" style="width:{{ (v.pour / t * 100)|round(1) }}%;background:#002395">{% if v.pour / t > 0.15 %}{{ v.pour }}{% endif %}</div>
+            <div class="progress-bar" style="width:{{ (v.contre / t * 100)|round(1) }}%;background:#ED2939">{% if v.contre / t > 0.15 %}{{ v.contre }}{% endif %}</div>
+            <div class="progress-bar" style="width:{{ (v.abstention / t * 100)|round(1) }}%;background:#9aa3b8;color:#14213d">{% if v.abstention / t > 0.15 %}{{ v.abstention }}{% endif %}</div>
+          </div>
+          <div class="small fw-semibold" style="width:6rem">{{ v.positionLabel }}</div>
+          {% else %}<div class="small text-muted flex-grow-1">Pas de vote exprimé.</div>{% endif %}
+        </div>
+      {% endfor %}
+      <div class="small text-muted">Bleu : pour. Rouge : contre. Gris : abstention. La position d'un groupe est celle de la majorité de ses votants.</div>
+    </div>
+  {% endfor %}
+  {% endif %}
+
+  {% if b.hasStances %}
+  <details class="mt-2"><summary class="fw-semibold">Positions des personnalités ({{ b.cols|reduce((n, l) => n + l|length, 0) }})</summary>
+    <div class="row g-3 mt-1">
+    {% for val, label in labels %}
+        <div class="col-6 col-md"><div class="small fw-bold text-center border-bottom pb-1 mb-2">{{ label }}</div>
+        {% for x in b.cols[val] %}
+            <details class="mb-2"><summary class="small">{{ x.candidat.name }}</summary>
+            <p class="small text-muted mb-1">{{ x.summary }}</p>
+            <a class="small" href="{{ x.sourceUrl }}" rel="nofollow noopener" target="_blank">Source : {{ x.sourceDomain }}</a></details>
+        {% else %}<div class="small text-muted text-center">-</div>{% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+  </details>
+  {% endif %}
+
+  <div class="mt-3 d-flex gap-2 align-items-center" role="group" aria-label="Mon avis sur ce sujet" data-avis="{{ s.id }}">
+    <span class="small">Mon avis :</span>
+    <button type="button" class="btn btn-sm btn-outline-primary" data-v="1">Pour</button>
+    <button type="button" class="btn btn-sm btn-outline-danger" data-v="-1">Contre</button>
+  </div>
+</div></article>
+{% else %}<p>Aucune affirmation publiée pour le moment.</p>{% endfor %}
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+(function () {
+  var data = {{ compare|json_encode|raw }};
+  var KEY = 'lfd_positions_avis';
+  var box = document.getElementById('mon-avis-result');
+  var reset = document.getElementById('mon-avis-reset');
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
+  function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) { /* stockage indisponible : le calcul reste valable pour la page */ } }
+  var answers = load();
+  function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+  function paint() {
+    document.querySelectorAll('[data-avis]').forEach(function (g) {
+      var cur = answers[g.getAttribute('data-avis')];
+      g.querySelectorAll('button').forEach(function (b) { b.classList.toggle('active', String(cur) === b.getAttribute('data-v')); b.setAttribute('aria-pressed', String(cur) === b.getAttribute('data-v')); });
+    });
+    var ids = Object.keys(answers);
+    reset.hidden = ids.length === 0;
+    if (ids.length < 3) { box.innerHTML = '<span class="text-muted">Répondez à au moins 3 sujets pour voir un résultat. (' + ids.length + ' pour l\'instant)</span>'; return; }
+    var score = {};
+    ids.forEach(function (id) {
+      var actors = data[id] || {};
+      Object.keys(actors).forEach(function (a) {
+        if (actors[a] === 0) { return; }
+        score[a] = score[a] || { ok: 0, n: 0 };
+        score[a].n += 1;
+        if (actors[a] === answers[id]) { score[a].ok += 1; }
+      });
+    });
+    var rows = Object.keys(score).filter(function (a) { return score[a].n >= 2; }).map(function (a) { return { name: a, pct: Math.round(score[a].ok / score[a].n * 100), n: score[a].n }; });
+    rows.sort(function (x, y) { return y.pct - x.pct || y.n - x.n; });
+    if (!rows.length) { box.innerHTML = '<span class="text-muted">Pas encore assez de positions comparables sur ces sujets.</span>'; return; }
+    box.innerHTML = '<ul class="list-unstyled mb-1">' + rows.slice(0, 12).map(function (r) {
+      var label = r.name.substring(2) + (r.name.charAt(0) === 'g' ? ' (groupe à l\'Assemblée)' : '');
+      return '<li class="d-flex align-items-center gap-2 mb-1"><span style="width:16rem">' + esc(label) + '</span><span class="progress flex-grow-1" style="height:.9rem"><span class="progress-bar" style="width:' + r.pct + '%;background:#002395"></span></span><span style="width:8rem">' + r.pct + ' % sur ' + r.n + '</span></li>';
+    }).join('') + '</ul><span class="text-muted">Part des sujets où la position publique coïncide avec la vôtre, hors positions neutres ou abstentions.</span>';
+  }
+  document.querySelectorAll('[data-avis] button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var id = b.parentNode.getAttribute('data-avis'), v = parseInt(b.getAttribute('data-v'), 10);
+      if (answers[id] === v) { delete answers[id]; } else { answers[id] = v; }
+      save(answers); paint();
+    });
+  });
+  reset.addEventListener('click', function () { answers = {}; save(answers); paint(); });
+  paint();
+})();
+</script>
+{% endblock %}

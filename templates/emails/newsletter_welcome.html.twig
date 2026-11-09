@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue à bord de JoyMe</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .header::before {
+            content: "⚓";
+            font-size: 60px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            opacity: 0.3;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            margin: 15px 0 0;
+            font-size: 18px;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        .gold-text {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .content {
+            padding: 40px 30px;
+        }
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e6f2ff;
+            padding-bottom: 25px;
+        }
+        .welcome-icon {
+            font-size: 64px;
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+        .ship-logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .features {
+            background: linear-gradient(135deg, #e6f2ff 0%, #f0f7ff 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin: 30px 0;
+            border: 2px solid #3399ff;
+        }
+        .features h3 {
+            color: #003366;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-align: center;
+        }
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+        .features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #cce0ff;
+            display: flex;
+            align-items: center;
+        }
+        .features li:last-child {
+            border-bottom: none;
+        }
+        .features li::before {
+            content: "⚓ ";
+            color: #ff9900;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #003366;
+            padding: 16px 35px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            margin: 25px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            border: 2px solid #ff9900;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            text-decoration: none;
+            color: #003366;
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+        .footer {
+            background: linear-gradient(135deg, #0A1F3D 0%, #003366 100%);
+            color: white;
+            padding: 35px 25px;
+            text-align: center;
+            font-size: 14px;
+            border-top: 4px solid #ffd700;
+        }
+        .unsubscribe {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #b3d9ff;
+        }
+        .unsubscribe a {
+            color: #ffd700;
+            text-decoration: underline;
+        }
+        .social-links {
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .social-links a {
+            display: inline-block;
+            margin: 0 12px;
+            color: #ffd700;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: white;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .stat-item {
+            background: rgba(0, 102, 204, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 102, 204, 0.2);
+        }
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #003366;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #0066cc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .mediterrapie-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #40E0D0 0%, #00b4d8 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .quote {
+            font-style: italic;
+            color: #0066cc;
+            text-align: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: #f0f7ff;
+            border-radius: 10px;
+            border-left: 4px solid #ffd700;
+        }
+        .quote-author {
+            text-align: right;
+            margin-top: 10px;
+            color: #003366;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌊 Bienvenue à bord de<br><span class="gold-text">JOYME</span></h1>
+            <p>Votre inscription à notre newsletter Méditerrapie™ est confirmée</p>
+            <div style="margin-top: 15px;">
+                <div class="mediterrapie-badge">YACHT-CHARTER SOLIDAIRE • 2011</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="welcome-section">
+                <div class="welcome-icon">✨</div>
+                <h2>Cher(e) Navigateur(rice) du Bien-Être,</h2>
+                <p>Nous sommes ravis de vous accueillir dans l'aventure unique de <strong>JoyMe</strong>, le premier yacht-charter solidaire alliant luxe, neurosciences et impact social.</p>
+                
+                <div class="quote">
+                    "Offrez du répit aux plus fragiles grâce à la solidarité des plus aisés"
+                    <div class="quote-author">— Équipe JoyMe</div>
+                </div>
+            </div>
+
+            <div class="features">
+                <h3>⚓ CE QUI VOUS ATTEND DANS NOTRE NEWSLETTER :</h3>
+                <ul>
+                    <li><strong>Innovations Méditerrapie™</strong> - Dernières avancées en neurosciences marines</li>
+                    <li><strong>Événements Exclusifs</strong> - Soirées de gala, séminaires & charters solidaires</li>
+                    <li><strong>Témoignages Inspirants</strong> - Histoires de répit pour aidants & familles</li>
+                    <li><strong>Calendrier des Départs</strong> - Prochains charters bien-être en Méditerranée</li>
+                    <li><strong>Offres Privilège</strong> - Accès anticipé aux réservations & réductions exclusives</li>
+                    <li><strong>Seniority-Report</strong> - Conseils personnalisés pour votre profil de répit</li>
+                </ul>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">66%</div>
+                    <div class="stat-label">RÉDUCTION D'IMPÔT</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">30%</div>
+                    <div class="stat-label">RÉDUCTION CORTISOL</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">SATISFACTION CLIENT</div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <p><strong>Restez connecté pour naviguer vers le bien-être avec nous !</strong></p>
+                
+                <a href="{{ url('app_home') }}" class="cta-button">
+                    ⚓ DÉCOUVRIR NOS CHARTERS
+                </a>
+                
+                <div class="social-links">
+                    <h6 style="color: #003366; margin-bottom: 1rem;">SUIVEZ-NOUS</h6>
+                    <a href="https://www.instagram.com/suspension.live/" title="Instagram">📷 Instagram</a> •
+                    <a href="https://www.linkedin.com/in/alain-tixier-1826a14/" title="LinkedIn">💼 LinkedIn</a>
+                </div>
+
+                <div class="information-links" style="margin-top: 20px;">
+                    <h6 style="color: #003366; margin-bottom: 1rem;">INFORMATIONS</h6>
+                    <ul style="list-style: none; padding: 0; margin: 0; color: #666;">
+                        <li style="margin-bottom: 10px;"><a href="{{ path('app_legal_notice') }}" style="color: #0066cc; text-decoration: underline;">Mentions légales</a></li>
+                        <li style="margin-bottom: 10px;"><a href="{{ path('app_privacy_policy') }}" style="color: #0066cc; text-decoration: underline;">RGPD & Confidentialité</a></li>
+                        <li><a href="#" style="color: #0066cc; text-decoration: underline;">Conditions générales</a></li>
+                    </ul>
+                </div>
+                
+                <p style="margin-top: 20px; font-size: 14px; color: #666;">
+                    <strong>📍 Escales :</strong> Monaco • Cannes • Antibes • Nice • Saint-Tropez
+                </p>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #e6f2ff 0%, #ccffff 100%); padding: 25px; border-radius: 12px; margin-top: 30px; border: 2px solid #40E0D0;">
+                <h4 style="color: #003366; margin-bottom: 15px; text-align: center;">🧠 VOTRE PROTOCOLE MÉDITERRAPIE™</h4>
+                <p style="margin: 0; color: #003366; text-align: center;">
+                    En tant qu'abonné premium, vous recevrez prochainement notre guide exclusif "7 jours pour un cerveau marin apaisé" et des invitations aux ateliers neurosciences à bord.
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p style="font-size: 16px; margin-bottom: 10px;">
+                <strong>JOYME</strong><br>
+                <em>Yacht-Charter Solidaire • Depuis 2011</em>
+            </p>
+            <p style="margin-bottom: 20px;">
+                🌊 <strong>Méditerrapie™</strong> • <strong>Charter Solidaire</strong> • <strong>Événementiel Premium</strong>
+            </p>
+            
+            <div style="margin: 20px 0;">
+                <p>
+                    <strong>Alain Tixier</strong> - Fondateur & Armateur<br>
+                    <br>
+                    <strong>Veasna Chea</strong> - Responsable Événementiel<br>
+                    💬 <a href="https://wa.me/+33629026050" style="color: #ffd700;">+33 6 29 02 60 50 (WhatsApp)</a>
+                </p>
+            </div>
+            
+            <p>
+                📧 <strong>{{ publisher.email }}</strong><br>
+                🌐 <a href="https://labouffonne.eu" style="color: #ffd700;">https://labouffonne.eu</a>
+            </p>
+            
+            <div class="unsubscribe">
+                <p>
+                    ⚠️ Vous recevez cet email car vous vous êtes inscrit à la newsletter exclusive de JoyMe.<br>
+                    <a href="{{ unsubscribeUrl }}">⛔ Se désinscrire de la newsletter</a>
+                </p>
+                <p style="margin-top: 15px; color: #b3d9ff;">
+                    © {{ "now"|date("Y") }} JoyMe • Navire construit en 2011<br>
+                    <em>Patrimoine nautique français • Tous droits réservés</em>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

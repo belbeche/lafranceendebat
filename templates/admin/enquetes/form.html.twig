@@ -1,0 +1,28 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ s.id ? 'Modifier' : 'Nouvelle' }} enquête{% endblock %}
+{% block admin %}
+<h1 class="h3">{{ s.id ? 'Modifier l\'enquête' : 'Nouvelle enquête' }}</h1>
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+{% if not s.id %}<div class="carte mb-3" style="max-width:820px"><strong>Partir d'un modèle</strong> (sujets importés de la plateforme) :
+    {% for k, l in models %}<a class="btn btn-sm btn-outline-dark ms-1 mb-1" href="{{ path('admin_survey_new', {modele: k}) }}">{{ l }}</a>{% endfor %}</div>{% endif %}
+<form method="post" style="max-width:820px">
+    <input type="hidden" name="_token" value="{{ csrf_token('survey_edit') }}">
+    <div class="mb-3"><label class="form-label" for="title">Titre</label><input class="form-control" id="title" name="title" maxlength="160" required value="{{ d.title }}"></div>
+    <div class="mb-3"><label class="form-label" for="intro">Présentation et message d'invitation (20 à 1500 caractères)</label><textarea class="form-control" id="intro" name="intro" rows="4" maxlength="1500" required>{{ d.intro }}</textarea></div>
+    <div class="mb-3"><label class="form-label" for="questions">Questions (une par ligne)</label>
+        <textarea class="form-control font-monospace" id="questions" name="questions" rows="9" required>{{ d.questions }}</textarea>
+        <div class="form-text">Format : <code>type | question | réponse 1 ; réponse 2</code>. Ajoutez <code>*</code> après le type pour une réponse obligatoire. Types : {% for k, l in types %}<code>{{ k }}</code> ({{ l }}){{ not loop.last ? ', ' }}{% endfor %}.<br>Exemple : <code>choix* | Quelle priorité pour 2027 ? | Santé ; École ; Justice</code></div></div>
+    <div class="mb-3 small"><strong>Ajouter une question :</strong>
+        {% for k, l in types %}<button type="button" class="btn btn-sm btn-outline-secondary ms-1" data-add="{{ k }}">{{ l }}</button>{% endfor %}
+        <button type="button" class="btn btn-sm btn-outline-primary ms-1" data-themes="{{ themes|join(' ; ') }}">Importer les sujets de la plateforme</button></div>
+    <div class="row g-3 mb-3"><div class="col-md-6"><label class="form-label" for="closes">Date de clôture (facultatif)</label><input class="form-control" type="date" id="closes" name="closes" value="{{ d.closes }}"></div>
+    <div class="col-md-6 d-flex align-items-end"><div class="form-check"><input class="form-check-input" type="checkbox" id="public" name="public" value="1" {{ d.public ? 'checked' }}><label class="form-check-label" for="public">Résultats publics (dès {{ constant('App\\Entity\\Survey::MIN_PUBLIC_RESPONSES') }} réponses)</label></div></div></div>
+    <button class="btn btn-bleu">Enregistrer et voir l'aperçu</button> <a class="btn btn-outline-dark" href="{{ path('admin_surveys') }}">Annuler</a>
+</form>
+<script>
+(function(){var t=document.getElementById('questions');if(!t)return;
+function add(line){t.value=(t.value.trim()?t.value.replace(/\s+$/,'')+"\n":'')+line;t.focus();}
+document.querySelectorAll('[data-add]').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.add;add(k+(k==='choix'||k==='multiple'?' | Votre question | Réponse 1 ; Réponse 2':' | Votre question'));});});
+document.querySelectorAll('[data-themes]').forEach(function(b){b.addEventListener('click',function(){add('choix* | Quel sujet est votre priorité ? | '+b.dataset.themes);});});})();
+</script>
+{% endblock %}

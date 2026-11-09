@@ -1,0 +1,10 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Votre message n'a pas été publié{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Un de vos messages n'a pas été publié</h1>
+<p>Bonjour {{ user.firstName }}, le filtre de La France en Débat a bloqué un texte que vous venez de soumettre
+{% if 'menace' in reasons or 'haine' in reasons %}parce qu'il contenait une menace, un appel à la violence ou des propos visant un groupe de personnes{% elseif 'donnees_personnelles' in reasons %}parce qu'il contenait des données personnelles (téléphone ou e-mail){% else %}parce qu'il contenait des termes insultants{% endif %}.</p>
+<p>Rien n'est perdu : reformulez votre idée en critiquant les faits, les mesures ou les institutions, pas les personnes. Un désaccord, même vif, est le bienvenu quand il reste respectueux. Voir la <a href="{{ url('app_how_it_works') }}">charte de paix</a>.</p>
+{% if monthCount >= 3 %}<p><strong>Ce n'est pas la première fois ce mois-ci ({{ monthCount }} messages bloqués).</strong> L'équipe de modération a été prévenue. En cas de répétition, l'accès aux contributions peut être suspendu.</p>{% else %}<p>L'équipe de modération a été prévenue de ce blocage.</p>{% endif %}
+<p style="font-size:12px;color:#777">Message automatique. Le texte bloqué n'a pas été publié.</p>
+{% endblock %}

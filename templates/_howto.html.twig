@@ -1,0 +1,20 @@
+{# Marche à suivre : une seule source pour toutes les pages et pour /guide. key = clé du guide, all = tous. Textes dans translations (guide.*). #}
+{% set guides = {
+  'home': {icon: 'compass', route: 'app_register', n: 3},
+  'communaute': {icon: 'chat-dots', route: 'app_community_new', n: 4},
+  'debats': {icon: 'chat-square-text', route: 'app_debats', n: 3},
+  'propositions': {icon: 'lightbulb', route: 'app_proposition_new', n: 4},
+  'scrutins': {icon: 'check2-square', route: 'app_scrutins', n: 3},
+  'services': {icon: 'briefcase', route: 'app_services', n: 4},
+  'candidater': {icon: 'person-plus', route: 'app_role_request', n: 4},
+  'acteurs': {icon: 'bank', route: 'app_institutional_routes', n: 3},
+  'plan': {icon: 'tools', route: 'app_proposition_new', n: 3}
+} %}
+{% set keys = all|default(false) ? guides|keys : [key|default('home')] %}
+{% for k in keys %}{% set g = guides[k] %}
+<div class="container"><details class="howto" open>
+    <summary><i class="bi bi-{{ g.icon }}" aria-hidden="true"></i> {{ 'guide.label'|trans }} : {{ ('guide.' ~ k ~ '.t')|trans }} <span class="meta">({{ g.n }} {{ 'guide.steps'|trans }})</span></summary>
+    <ol>{% for i in 1..g.n %}<li>{{ ('guide.' ~ k ~ '.s' ~ i)|trans }}</li>{% endfor %}</ol>
+    <a class="btn btn-sm btn-primary" href="{{ path(g.route) }}">{{ ('guide.' ~ k ~ '.cta')|trans }}</a>
+</details></div>
+{% endfor %}

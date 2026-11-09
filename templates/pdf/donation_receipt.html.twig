@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Reçu {{ r.number }}</title>
+<style>
+ body{font-family:DejaVu Sans,sans-serif;font-size:11px;color:#111;margin:0}
+ h1{font-size:16px;margin:0 0 4px;color:#002395}
+ .sub{font-size:10px;color:#444;margin-bottom:14px}
+ table{width:100%;border-collapse:collapse;margin-bottom:10px}
+ td,th{border:1px solid #999;padding:6px 8px;vertical-align:top;text-align:left}
+ th{background:#f0f2f8;width:34%;font-weight:bold}
+ .amount{font-size:14px;font-weight:bold}
+ .note{font-size:9px;color:#444;margin-top:10px}
+ .sign{height:60px}
+</style></head><body>
+<h1>Justificatif de contribution</h1>
+<div class="sub">Document de paiement, sans valeur de reçu fiscal. Numéro d'ordre : <strong>{{ r.number }}</strong></div>
+
+<table>
+<tr><th>Éditeur</th><td><strong>{{ org.name }}</strong><br>{{ org.address }}<br>SIRET : {{ org.rna }}</td></tr>
+<tr><th>Contributeur</th><td><strong>{{ r.donorName }}</strong><br>{{ r.donorAddress }}</td></tr>
+<tr><th>Somme versée</th><td class="amount">{{ (r.amountCents / 100)|number_format(2, ',', ' ') }} euros<br><span style="font-weight:normal">Somme en toutes lettres : {{ words }}</span></td></tr>
+<tr><th>Date du versement</th><td>{{ r.receivedAt|date('d/m/Y') }}</td></tr>
+<tr><th>Nature du versement</th><td>Numéraire. Mode de versement : {{ r.paymentModeLabel }}. Contribution de soutien à une micro-entreprise.</td></tr>
+</table>
+
+<p>Cette contribution ne donne droit à aucune réduction d'impôt : l'éditeur est une micro-entreprise et non un organisme d'intérêt général.</p>
+<p>Cette contribution ne finance ni un parti politique, ni un candidat, ni une campagne électorale.</p>
+<p>Date d'émission : le {{ r.createdAt|date('d/m/Y') }}</p>
+<div class="sign"></div>
+<div class="note">Justificatif édité par ordinateur : la somme versée est encadrée par des astérisques.<br>***{{ (r.amountCents / 100)|number_format(2, ',', ' ') }} euros***</div>
+</body></html>

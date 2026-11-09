@@ -1,0 +1,30 @@
+<?php
+require '/home/claude/app/vendor/autoload.php';
+(new Symfony\Component\Dotenv\Dotenv())->bootEnv('/home/claude/app/.env');
+use App\Service\PoliticalGuard;
+use App\Entity\{User,ServiceOffer};
+$k=new App\Kernel('test',true);$k->boot();$c=$k->getContainer()->get('test.client');$c->disableReboot();$c->getCookieJar()->set(new Symfony\Component\BrowserKit\Cookie('lfed_lang','fr'));
+$ok=0;$ko=0;function t($n,$x){global $ok,$ko;if($x){$ok++;echo "OK  $n\n";}else{$ko++;echo "KO  $n\n";}}
+$g=new PoliticalGuard();
+t('campagne électorale bloquée',(bool)$g->find('Je réalise votre campagne électorale municipale'));
+t('tractage bloqué',(bool)$g->find('Distribution de tracts et tractage le week-end'));
+t('démarchage électoral bloqué',(bool)$g->find('Démarchage électoral par téléphone'));
+t('pour mon candidat bloqué',(bool)$g->find('Flyers pour mon candidat'));
+t('médiation neutre acceptée',$g->find('Médiation entre voisins et animation d\'un atelier de débat apaisé')===null);
+t('formation élus acceptée',$g->find('Formation des élus locaux à la lecture d\'un budget communal')===null);
+$em=$c->getContainer()->get('doctrine')->getManager();$h=$c->getContainer()->get('security.user_password_hasher');
+$mk=function($roles,$p)use($em,$h){$u=new User();$u->setEmail($p.uniqid().'@t.fr')->setRoles($roles);$u->setPassword($h->hashPassword($u,'x'));$u->setFirstName($p);$u->setLastName('T');$em->persist($u);$em->flush();return $u;};
+$prov=$mk(['ROLE_USER','ROLE_ACTOR'],'prov');$buyer=$mk(['ROLE_USER'],'buy');
+$o=(new ServiceOffer($prov))->setTitle('Médiation de voisinage')->setDescription(str_repeat('Description claire. ',8))->setCategory('mediation')->setPriceCents(5000)->setStatus(ServiceOffer::STATUS_PUBLISHED);$em->persist($o);$em->flush();
+$c->loginUser($buyer);
+$c->request('GET','/services/'.$o->getId());$cr=$c->getCrawler();
+t('case déclaration présente',str_contains($c->getResponse()->getContent(),'no_political'));
+$tok=$cr->filter('form[action$="/commander"] input[name=_token]')->attr('value');
+$c->request('POST','/services/'.$o->getId().'/commander',['_token'=>$tok,'cgv'=>'1','note'=>'ok']);
+$c->followRedirect();t('sans déclaration refusé',str_contains($c->getResponse()->getContent(),'confirmer que cette prestation'));
+$c->request('POST','/services/'.$o->getId().'/commander',['_token'=>$tok,'cgv'=>'1','no_political'=>'1','note'=>'Pour ma campagne électorale svp']);
+$c->followRedirect();t('note politique refusée',str_contains($c->getResponse()->getContent(),'usage politique'));
+$c->request('GET','/conditions-place-de-marche');t('page conditions 200 + section politique',$c->getResponse()->getStatusCode()==200&&str_contains($c->getResponse()->getContent(),'Interdiction de tout usage politique'));
+$c->request('GET','/mentions-legales');t('mentions légales 200',$c->getResponse()->getStatusCode()==200&&str_contains($c->getResponse()->getContent(),'Indépendance politique'));
+$c->request('GET','/conditions-utilisation');t('CGU renvoient aux conditions',str_contains($c->getResponse()->getContent(),'conditions-place-de-marche'));
+echo "$ok ok / $ko ko\n";

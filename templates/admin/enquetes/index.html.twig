@@ -1,0 +1,22 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Enquêtes{% endblock %}
+{% block admin %}
+<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="h3 mb-0">Enquêtes</h1><a class="btn btn-bleu" href="{{ path('admin_survey_new') }}">Nouvelle enquête</a></div>
+<p class="meta">Brouillon, puis aperçu obligatoire de la version exacte, puis publication. L'invitation part par lots aux abonnés confirmés de la lettre, une seule fois par personne.</p>
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Titre</th><th>État</th><th>Réponses</th><th>Invitations</th><th></th></tr></thead><tbody>
+{% for s in list %}
+<tr><td>{{ s.title }}</td>
+<td>{{ s.status == 'draft' ? 'Brouillon' : (s.status == 'open' ? 'Ouverte' : 'Clôturée') }}</td>
+<td>{{ counts[s.id] }}</td>
+<td>{{ s.sendStatus == 'none' ? 'non envoyée' : (s.sendStatus == 'sending' ? 'en cours (' ~ s.sentCount ~ ')' : s.sentCount ~ ' envoyées') }}</td>
+<td class="text-nowrap">
+    {% if s.status == 'draft' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_survey_edit', {id: s.id}) }}">Modifier</a> <a class="btn btn-sm btn-bleu" href="{{ path('admin_survey_preview', {id: s.id}) }}">Aperçu et publier</a>{% endif %}
+    {% if s.status == 'open' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_survey_field', {id: s.id}) }}">Saisie terrain</a> {% endif %}{% if s.status != 'draft' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_survey_results', {id: s.id}) }}">Résultats</a> <a class="btn btn-sm btn-outline-dark" href="{{ path('admin_survey_report', {id: s.id}) }}">PV</a> <a class="btn btn-sm btn-outline-dark" href="{{ path('admin_survey_export', {id: s.id}) }}">CSV</a>{% endif %}
+    <form method="post" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('survey' ~ s.id) }}">
+    {% if s.status == 'open' and s.sendStatus == 'none' %}<button class="btn btn-sm btn-bleu" formaction="{{ path('admin_survey_act', {id: s.id, action: 'envoyer'}) }}">Envoyer l'invitation</button>{% endif %}
+    {% if s.status == 'open' %}<button class="btn btn-sm btn-outline-danger" formaction="{{ path('admin_survey_act', {id: s.id, action: 'cloturer'}) }}">Clôturer</button>{% endif %}
+    {% if is_granted('ROLE_ADMIN') %}<button class="btn btn-sm btn-outline-danger" formaction="{{ path('admin_survey_act', {id: s.id, action: 'supprimer'}) }}" onclick="return confirm('Supprimer définitivement cette enquête et ses réponses ?')">Supprimer</button>{% endif %}</form>
+</td></tr>
+{% else %}<tr><td colspan="5" class="meta">Aucune enquête.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

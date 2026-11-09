@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+{% block title %}Plan Marshall citoyen{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'plan'} only %}
+<header class="page-head"><div class="container"><h1>Le Plan Marshall citoyen</h1>
+    <p class="lede">Redresser sans casser : mesurer les besoins, mieux réallouer les ressources, restaurer la capacité productive et protéger les services essentiels. Document de travail, version de discussion d'octobre 2026.</p>
+    <p class="limite mb-0">Ce n'est ni un chiffrage budgétaire certifié, ni un avis juridique, ni une candidature officielle. Les chiffres de contexte devront être actualisés.</p></div></header>
+<section class="section pb-0"><div class="container"><div class="carte"><h2 class="h5">Une idée qui a déjà fonctionné : coopérer pour reconstruire</h2>
+<p class="mb-2">Le Plan Marshall de 1948 a financé la reconstruction de l'Europe de l'Ouest à condition que les pays travaillent ensemble. Deux ans plus tard, la déclaration Schuman mettait en commun le charbon et l'acier. Le Plan Marshall citoyen reprend ce principe à l'échelle locale : chacun contribue selon ses compétences, l'économie repart, le savoir se transmet.</p>
+<p class="mb-0"><a href="{{ path('app_dossier', {slug: 'histoire-guerres'}) }}">Lire le dossier histoire</a> · <a href="{{ path('app_missions') }}">Voir les missions rémunérées et bénévoles</a></p></div></div></section>
+
+
+<section class="section"><div class="container"><div class="row g-4"><div class="col-lg-8">
+    <h2 class="h4">Le point de départ</h2>
+    <p>La France doit à la fois préserver ses services publics et sa protection sociale, gagner en productivité, soutenir l'emploi, financer les transitions et rétablir des finances publiques soutenables. Aucune politique unique ne règle tout cela. Le plan retient cinq problèmes à instruire avec des données :</p>
+    <ul>
+        <li>des dépenses dont l'efficacité n'est pas toujours mesurée de façon comparable ;</li>
+        <li>des associations et structures de l'économie sociale et solidaire (ESS) dont une part des ressources part en administration, achats et reporting ;</li>
+        <li>des besoins sociaux non couverts alors que des locaux, équipements et compétences restent sous-utilisés ;</li>
+        <li>des freins à la productivité, à l'investissement et à la formation dans les TPE et PME ;</li>
+        <li>un manque de lisibilité entre financement, service rendu et résultat, source de défiance.</li>
+    </ul>
+
+    <h2 class="h4 mt-4">La règle des cinq questions</h2>
+    <ol>
+        <li>Quel besoin public ou social la dépense doit-elle satisfaire ?</li>
+        <li>Quel résultat concret est attendu, pour qui et à quelle échéance ?</li>
+        <li>Existe-t-il une solution moins coûteuse à qualité égale ou supérieure ?</li>
+        <li>Le service ou l'achat peut-il être mutualisé sans fragiliser l'accès, la qualité ou la confidentialité ?</li>
+        <li>Si une économie est constatée, à quoi sera-t-elle réaffectée, et comment sera-t-elle contrôlée ?</li>
+    </ol>
+
+    <h2 class="h4 mt-4">Ne pas confondre économie, coupe et gain de productivité</h2>
+    <div class="table-responsive"><table class="table table-sm">
+        <thead><tr><th scope="col">Notion</th><th scope="col">Règle</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">Économie brute</th><td>Baisse de dépense par rapport à une référence comparable. Documenter le calcul et les coûts de transition.</td></tr>
+            <tr><th scope="row">Économie nette</th><td>Économie brute moins les frais de mise en œuvre et d'exploitation. Seule celle-ci peut être annoncée comme un gain.</td></tr>
+            <tr><th scope="row">Capacité libérée</th><td>Heures, places ou équipements rendus disponibles. Ne pas la présenter comme une économie en euros tant qu'elle n'est pas valorisée.</td></tr>
+            <tr><th scope="row">Valeur sociale</th><td>Amélioration mesurée pour les bénéficiaires (accès, délais, qualité). À mesurer séparément des effets financiers.</td></tr>
+            <tr><th scope="row">Réinvestissement</th><td>Réaffectation autorisée d'une économie, dans le respect de la convention de financement et du droit.</td></tr>
+        </tbody>
+    </table></div>
+
+    <h2 class="h4 mt-4">Six mesures pour l'économie sociale et solidaire</h2>
+    <ul>
+        <li><strong>Diagnostic de coûts et de mission</strong> dans 3 à 5 structures volontaires, sur 6 à 8 semaines. Aucun objectif de réduction uniforme.</li>
+        <li><strong>Achats groupés</strong> volontaires et transparents, en commençant par deux catégories simples (téléphonie, matériel reconditionné).</li>
+        <li><strong>Mutualisation de fonctions support</strong> à adhésion volontaire, avec possibilité de sortie. Pas de monopole imposé.</li>
+        <li><strong>Revue des subventions</strong> et de la charge administrative, sans déplacer une dépense d'un financeur à l'autre sans accord écrit.</li>
+        <li><strong>Inventaire et réaffectation</strong> des actifs sous-utilisés, après vérification juridique, assurantielle et fiscale.</li>
+        <li><strong>Réinvestissement encadré</strong> des économies, décidé à l'avance avec le financeur. Un reliquat n'est jamais libre par défaut.</li>
+    </ul>
+
+    <h2 class="h4 mt-4">Douze mesures nationales à instruire</h2>
+    <p>Ce sont des propositions, pas des économies acquises. Chacune doit être chiffrée par une équipe indépendante avant généralisation et comporte un garde-fou. Elles sont publiées dans <a href="{{ path('app_revendications') }}">les revendications</a>.</p>
+    <p class="meta">Revue des dépenses par résultats, achats publics, simplification (une donnée demandée une fois), évaluation des aides économiques, productivité des TPE et PME, formation liée à un emploi réel, prévention sanitaire et sociale, logement et rénovation, énergie, réemploi, qualité de l'emploi public et associatif, transparence des résultats.</p>
+
+    <h2 class="h4 mt-4">Projet pilote de 100 jours en Normandie</h2>
+    <ol>
+        <li><strong>Jours 1 à 10.</strong> Choisir 3 à 5 structures ESS volontaires, signer une lettre de mission et un accord de confidentialité.</li>
+        <li><strong>Jours 11 à 30.</strong> Collecter contrats, dépenses, actifs, temps administratif et conventions de financement : état initial vérifiable.</li>
+        <li><strong>Jours 31 à 45.</strong> Analyser les coûts complets, classer les leviers par impact, coût, délai et risque.</li>
+        <li><strong>Jours 46 à 60.</strong> Vérifier les règles juridiques, consulter fournisseurs et financeurs, retenir 2 à 3 actions rapides.</li>
+        <li><strong>Jours 61 à 90.</strong> Mettre en œuvre les actions retenues et en garder les preuves.</li>
+        <li><strong>Jours 91 à 100.</strong> Calculer les économies nettes, présenter les limites, faire rédiger un rapport indépendant.</li>
+    </ol>
+    <p>Critère de réussite : produire une mesure crédible, même si l'économie nette est faible ou nulle. Un résultat nul mais fiable vaut mieux qu'une économie annoncée sans preuve.</p>
+
+    <h2 class="h4 mt-4">Gouvernance proposée</h2>
+    <ul>
+        <li>Comité de pilotage avec les structures participantes, un représentant des bénéficiaires, des compétences financières, ESS et juridiques.</li>
+        <li>Charte d'indépendance : aucune rémunération indexée sur des économies non vérifiées.</li>
+        <li>Registre des décisions, des conflits d'intérêts et des hypothèses de calcul.</li>
+        <li>Publication des résultats agrégés, y compris négatifs ; protection des données et durée de conservation définie.</li>
+        <li>Évaluation externe avant toute extension à d'autres territoires.</li>
+        <li>Aucune modification de l'affectation des fonds sans autorisation explicite du financeur.</li>
+    </ul>
+
+    <h2 class="h4 mt-4">Comment faire étudier la proposition</h2>
+    <p>Ne pas envoyer un long programme politique, mais trois documents : une note de deux pages pour décideurs, un dossier technique de 10 à 15 pages et une fiche pilote (budget, partenaires, calendrier, indicateurs). Demander une réunion d'instruction technique, pas une adhésion politique, et faire relire les mesures par des personnes aux avis divergents. Pour les démarches, voyez <a href="{{ path('app_actors') }}">les acteurs publics</a>.</p>
+
+    <div class="limite mt-4"><strong>Ce qui n'est pas promis.</strong>
+        <ul class="mb-0">
+            <li>Une réduction générale des dépenses sans dire lesquelles, à quel coût et avec quels effets.</li>
+            <li>Des économies de dizaines de milliards sans audit contradictoire, calendrier et méthode de calcul.</li>
+            <li>Que toute économie de fonctionnement puisse être réaffectée librement : budgets, conventions et compétences s'appliquent.</li>
+            <li>Que l'IA supprime des tâches sans conséquence sur l'emploi, les données ou la qualité.</li>
+            <li>Qu'un fonds citoyen puisse collecter, investir ou redistribuer sans cadre juridique.</li>
+            <li>Que le plan remplace les services publics, les partenaires sociaux, les élus ou les dispositifs existants.</li>
+        </ul>
+    </div>
+</div>
+<div class="col-lg-4"><div class="carte">
+    <h2 class="h6">Passer à l'action</h2>
+    <p><a class="btn btn-rouge w-100" href="{{ path('app_proposition_new') }}">Déposer une proposition</a></p>
+    <p class="mb-1"><a href="{{ path('app_debats') }}">Débattre des mesures</a></p>
+    <p class="mb-1"><a href="{{ path('app_revendications') }}">Voir les revendications</a></p>
+    <p class="mb-0"><a href="{{ path('app_role_request') }}">Candidater pour aider</a></p>
+</div></div></div></div></section>
+<section class="section section-alt" id="agir">
+<div class="container"><p class="commons-note mb-3"><strong>Missions du plan :</strong> chaque mesure a ses missions, bénévoles ou rémunérées. <a href="{{ path('app_missions') }}">Voir les missions du Plan Marshall citoyen</a>.</p></div><div class="container">
+    <h2 class="h3">Ce que vous pouvez faire dès cette semaine</h2>
+    <p class="measure">Le plan ne reste pas un texte. Voici, selon votre situation, les premières actions précises, avec ce qu'il faut produire comme preuve.</p>
+    <div class="act-grid">
+        <div class="act-card"><h3>Citoyen</h3><ul>
+            <li>Choisir une dépense locale qui vous semble mal ciblée (cantine, transport, aide, équipement).</li>
+            <li>Appliquer les cinq questions de cette page et déposer une proposition : besoin, résultat attendu, solution moins chère, mutualisation possible, usage d'une économie.</li>
+            <li>Joindre une source publique (budget de la commune, rapport, appel d'offres).</li>
+            <li>Preuve : un lien vers votre proposition dans le registre.</li></ul></div>
+        <div class="act-card"><h3>Association ou structure ESS</h3><ul>
+            <li>Lister vos 10 plus gros contrats et achats avec montant, fournisseur et date de fin.</li>
+            <li>Repérer deux catégories achetables en groupe (téléphonie, matériel reconditionné) et contacter une structure voisine.</li>
+            <li>Mesurer le temps administratif passé par semaine, en heures.</li>
+            <li>Preuve : un tableau daté, publié sans données personnelles.</li></ul></div>
+        <div class="act-card"><h3>Élu ou institution</h3><ul>
+            <li>Choisir un service municipal ou intercommunal à comparer avec une commune voisine.</li>
+            <li>Ouvrir un volontariat pour le projet pilote de 100 jours et désigner un référent.</li>
+            <li>Répondre publiquement à la proposition la plus soutenue de votre territoire.</li>
+            <li>Preuve : une lettre de mission signée et une réponse publiée.</li></ul></div>
+        <div class="act-card"><h3>Entreprise, TPE ou PME</h3><ul>
+            <li>Identifier un frein de productivité chiffrable (formalité répétée, formation inadaptée, délai de paiement).</li>
+            <li>Proposer un partenariat avec une structure locale pour un achat ou une formation en commun.</li>
+            <li>Préciser le gain en heures ou en euros, et comment il sera vérifié.</li>
+            <li>Preuve : une fiche d'une page avec l'état avant et la cible.</li></ul></div>
+    </div>
+    <h3 class="h4 mt-4">Le pilote de 100 jours : qui fait quoi, avec quelle preuve</h3>
+    <div class="table-responsive"><table class="table table-sm bg-white">
+        <thead><tr><th scope="col">Étape</th><th scope="col">Responsable</th><th scope="col">Livrable</th><th scope="col">Preuve</th></tr></thead>
+        <tbody>
+            <tr><th scope="row">Jours 1 à 10</th><td>Porteur du pilote</td><td>3 à 5 structures engagées</td><td>Lettres de mission signées</td></tr>
+            <tr><th scope="row">Jours 11 à 30</th><td>Structures</td><td>État initial : contrats, dépenses, actifs, temps</td><td>Tableau de départ daté</td></tr>
+            <tr><th scope="row">Jours 31 à 60</th><td>Équipe d'analyse</td><td>Leviers classés, 2 à 3 actions retenues</td><td>Note de choix et vérification juridique</td></tr>
+            <tr><th scope="row">Jours 61 à 90</th><td>Structures</td><td>Actions mises en œuvre</td><td>Factures, contrats, relevés</td></tr>
+            <tr><th scope="row">Jours 91 à 100</th><td>Évaluateur indépendant</td><td>Économie nette et limites</td><td>Rapport public, même si le résultat est nul</td></tr>
+        </tbody>
+    </table></div>
+    <p class="mb-0"><a class="btn btn-rouge" href="{{ path('app_proposition_new') }}">Déposer mon action ou mon résultat</a> <a class="btn btn-outline-dark" href="{{ path('app_role_request') }}">Rejoindre le pilote comme acteur</a></p>
+</div></section>
+{% endblock %}

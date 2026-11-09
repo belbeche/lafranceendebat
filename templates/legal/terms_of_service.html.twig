@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Conditions d'utilisation{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Conditions d'utilisation</h1></div></header>
+<section class="section"><div class="container measure">
+    <ol>
+        <li>Le service est gratuit à vie : aucun abonnement, aucun paiement pour s'inscrire, voter ou proposer, aucune publicité, aucune revente de données personnelles. Il est réservé aux personnes majeures ou autorisées par leur représentant légal.</li>
+        <li>Vous êtes responsable de ce que vous publiez et vous respectez la <a href="{{ path('app_charter') }}">charte de paix</a>.</li>
+        <li>Sont interdits : insultes, menaces, appels à la violence, harcèlement, données personnelles d'autrui, propos illicites.</li>
+        <li>Les modérateurs peuvent refuser, masquer ou supprimer un contenu qui enfreint la charte, avec un motif communiqué à l'auteur.</li>
+        <li>Les soutiens, consultations et votes de ce site sont consultatifs. Ils ne constituent ni une élection, ni un référendum, ni une pétition officielle.</li>
+        <li>La plateforme est indépendante de tout parti, candidat ou groupement politique. Elle ne collecte aucun don et ne permet pas de rémunérer un service pour un parti, un candidat ou une campagne : voir les <a href="{{ path('app_marketplace_terms') }}">conditions de la place de marché</a> (section 5).</li>
+        <li>Les missions rémunérées sont soumises aux <a href="{{ path('app_marketplace_terms') }}">conditions de la place de marché</a>. Participer, débattre et voter restent gratuits.</li>
+        <li>Les contenus modifiés après publication conservent un historique public des versions précédentes.</li>
+        <li>Vous pouvez supprimer votre compte à tout moment depuis votre profil.</li>
+    </ol>
+</div></section>
+{% endblock %}

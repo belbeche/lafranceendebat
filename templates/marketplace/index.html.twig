@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Services d'acteurs vérifiés{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'services'} only %}
+<header class="page-head"><div class="container">
+    <h1>Services d'acteurs vérifiés</h1>
+    <p class="mb-0">Médiation, formation, accompagnement : des prestations proposées par des acteurs dont l'identité a été vérifiée. Le prix affiché est le prix payé. Les fonds sont conservés jusqu'à la réalisation de la prestation.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: 'services', compact: true} only %}</div>
+<section class="section"><div class="container">
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        <a class="btn btn-sm {{ category is null ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ path('app_services') }}">Toutes</a>
+        {% for k, label in categories %}<a class="btn btn-sm {{ category == k ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ path('app_services', {categorie: k}) }}">{{ label }}</a>{% endfor %}
+    </div>
+    <div class="row g-3">
+    {% for o in offers %}
+        <div class="col-md-6 col-lg-4"><a class="carte-lien" href="{{ path('app_service_show', {id: o.id}) }}"><div class="carte h-100 p-3">
+            <span class="etiquette">{{ o.categoryLabel }}</span>
+            <h2 class="h5 mt-2">{{ tr(o, 'title') }}</h2>
+            <p class="meta mb-1">{{ o.provider.publicName }}{% if o.area %} · {{ o.area }}{% endif %}</p>
+            <p class="mb-0"><strong>{{ (o.priceCents / 100)|number_format(2, ',', ' ') }} €</strong></p>
+        </div></a></div>
+    {% else %}
+        <div class="col-12"><p class="text-muted">Aucune prestation publiée pour le moment. Vous êtes acteur public ou prestataire ? <a href="{{ path('app_role_request') }}">Déposez votre candidature</a>.</p></div>
+    {% endfor %}
+    </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+{% include 'dossier/_head.html.twig' %}
+<section class="section"><div class="container" style="max-width:860px">
+    <p>Des personnes ont fait avancer le monde sans toujours en recevoir le crédit. Rendre leur parcours visible, c'est transmettre le savoir et donner envie d'être utile. Liste non exhaustive : <a href="{{ path('app_contact') }}">proposez d'autres parcours</a>, avec sources.</p>
+    <div class="row g-3">
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Vivien Thomas (1910-1985)</h2><p class="mb-1">Assistant chirurgical d'Alfred Blalock. Il a mis au point en laboratoire la technique de l'opération des « bébés bleus », réalisée pour la première fois en 1944 sous son guidage. Écarté des honneurs par la ségrégation, il reçoit un doctorat honoris causa de Johns Hopkins en 1976.</p><p class="meta mb-0"><a href="https://www.vumc.org/main/person/vivien-thomas-1910-1985" rel="noopener noreferrer nofollow">Vanderbilt University Medical Center</a></p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Susana Trimarco</h2><p class="mb-1">Mère de Marita Verón, disparue en Argentine en 2002, victime présumée d'un réseau de traite. Elle a mené elle-même l'enquête et fondé une fondation d'aide aux victimes. Son combat a pesé sur la loi argentine contre la traite adoptée en 2008. Les chiffres de personnes secourues varient selon les sources.</p><p class="meta mb-0">Source citée : The Guardian (à vérifier sur l'article d'origine).</p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Marie Curie (1867-1934)</h2><p class="mb-0">Pionnière de la radioactivité, première personne récompensée par deux prix Nobel (physique 1903, chimie 1911).</p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Simone Veil (1927-2017)</h2><p class="mb-0">Rescapée de la Shoah, ministre de la Santé, elle fait adopter la loi du 17 janvier 1975 sur l'interruption volontaire de grossesse, puis préside le Parlement européen (1979).</p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Olympe de Gouges (1748-1793)</h2><p class="mb-0">Autrice de la Déclaration des droits de la femme et de la citoyenne (1791), qui revendique l'égalité des droits.</p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Rosalind Franklin (1920-1958)</h2><p class="mb-0">Ses images de diffraction aux rayons X de l'ADN ont été décisives pour la découverte de sa structure en double hélice, en 1953.</p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Rosa Parks (1913-2005)</h2><p class="mb-0">Son refus de céder sa place dans un bus à Montgomery en 1955 a déclenché le boycott qui a marqué le mouvement des droits civiques aux États-Unis.</p></div></div>
+        <div class="col-md-6"><div class="carte h-100"><h2 class="h5">Wangari Maathai (1940-2011)</h2><p class="mb-0">Fondatrice du Green Belt Movement au Kenya, elle a fait planter des millions d'arbres et reçu le prix Nobel de la paix en 2004.</p></div></div>
+    </div>
+    <p class="mt-4"><a class="btn btn-rouge" href="{{ path('app_missions') }}">Transmettre à mon tour : voir les missions</a> <a class="btn btn-outline-dark" href="{{ path('app_tribunes') }}">Journalistes indépendants</a></p>
+</div></section>
+{% endblock %}

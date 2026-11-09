@@ -1,0 +1,24 @@
+{# Fiche normalisée : mêmes rubriques pour toutes les propositions. Une rubrique vide est dite vide, jamais remplie. #}
+{% macro row(label, value) %}
+    <dt>{{ label }}</dt>
+    <dd>{% if value %}{{ value|nl2br }}{% else %}<span class="manque">Non renseigné</span>{% endif %}</dd>
+{% endmacro %}
+{% import _self as f %}
+<dl class="fiche">
+    {{ f.row('Problème visé', proposition.problem) }}
+    {{ f.row('Mesure proposée', proposition.description) }}
+    {{ f.row('Qui peut décider', proposition.competentAuthority) }}
+    {% if proposition.legalVehicle or proposition.legalReference %}
+        {{ f.row('Véhicule juridique', proposition.legalVehicle) }}
+        {{ f.row('Texte ou article concerné', proposition.legalReference) }}
+    {% endif %}
+    {{ f.row('Coût estimé et méthode', proposition.estimatedCost) }}
+    {{ f.row('Financement', proposition.financing) }}
+    {{ f.row('Délai de mise en oeuvre', proposition.timeline) }}
+    {{ f.row('Indicateur de résultat', proposition.indicator) }}
+    {{ f.row('Risques et effets secondaires', proposition.risks) }}
+    {% if proposition.safeguards %}{{ f.row('Garde-fous', proposition.safeguards) }}{% endif %}
+    {{ f.row('Contribution au dialogue et à l\'apaisement', proposition.peaceContribution) }}
+    <dt>Source</dt>
+    <dd>{% if proposition.sourceUrl %}<a href="{{ proposition.sourceUrl }}" rel="noopener nofollow ugc" target="_blank">{{ proposition.sourceUrl|u.truncate(80, '…') }}</a>{% else %}<span class="manque">Aucune source indiquée</span>{% endif %}</dd>
+</dl>

@@ -1,0 +1,38 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Affirmation à situer{% endblock %}
+{% block admin %}
+<h1 class="h4">{{ s.text }}</h1>
+<form method="post" action="{{ path('admin_positions_research', {id: s.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}"><button class="btn btn-outline-primary" {{ aiOn ? '' : 'disabled' }}>Rechercher avec Gemini (6 personnes)</button></form>
+<form method="post" action="{{ path('admin_positions_publish', {id: s.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}"><button class="btn btn-outline-secondary">{{ s.published ? 'Dépublier' : 'Publier' }}</button></form>
+{% if not aiOn %}<p class="text-muted small mt-2">GEMINI_API_KEY absente : la recherche est désactivée.</p>{% endif %}
+
+<h2 class="h5 mt-4">Fiche publique</h2>
+<form method="post" action="{{ path('admin_positions_fiche', {id: s.id}) }}" class="mb-4">
+<input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}">
+<label class="form-label" for="synthesis">En bref (neutre, 1500 caractères maximum)</label>
+<textarea class="form-control mb-3" id="synthesis" name="synthesis" rows="3" maxlength="1500">{{ s.synthesis }}</textarea>
+{% for key, label in axes %}{% set cur = s.viability[key] ?? null %}
+<div class="mb-2"><label class="form-label" for="via_{{ key }}">{{ label }}</label>
+<textarea class="form-control mb-1" id="via_{{ key }}" name="via_{{ key }}" rows="2" maxlength="500">{{ cur ? cur.text : '' }}</textarea>
+<input class="form-control" type="url" name="via_{{ key }}_url" placeholder="Source officielle https://" value="{{ cur ? cur.source_url : '' }}" aria-label="Source de l'axe {{ label }}"></div>
+{% endfor %}
+<p class="small text-muted">Un axe laissé vide s'affiche « non documenté ». Ne rien déduire : seulement ce qu'une source officielle établit.</p>
+<button class="btn btn-primary">Enregistrer la fiche</button>
+</form>
+
+<h2 class="h5">Votes des groupes (scrutins officiels)</h2>
+<form method="post" action="{{ path('admin_positions_scrutins', {id: s.id}) }}" class="row g-2 mb-2">
+<input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}">
+<div class="col-auto"><input class="form-control" name="numeros" placeholder="Numéros de scrutins, ex. 3456 3457" aria-label="Numéros de scrutins"></div>
+<div class="col-auto"><button class="btn btn-outline-primary">Importer les votes</button></div>
+</form>
+<p class="small text-muted">Pour trouver un numéro : <code>php bin/console app:positions:scrutin --chercher "mots du titre"</code></p>
+{% if votes %}<table class="table table-sm"><tbody>{% for v in votes %}<tr><td>Scrutin {{ v.scrutin }}</td><td>{{ v.groupCode }}</td><td>{{ v.pour }} pour, {{ v.contre }} contre, {{ v.abstention }} abst.</td>
+<td><form method="post" action="{{ path('admin_positions_vote_delete', {id: v.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}"><button class="btn btn-sm btn-outline-secondary">Retirer</button></form></td></tr>{% endfor %}</tbody></table>{% endif %}
+
+<h2 class="h5 mt-4">Positions des personnalités</h2>
+<table class="table table-sm mt-3"><thead><tr><th>Personne</th><th>Position</th><th>Résumé et source</th><th>Statut</th><th></th></tr></thead><tbody>
+{% for x in stances %}<tr><td>{{ x.candidat.name }}</td><td>{{ x.stanceLabel }}</td><td>{{ x.summary }}<br><a href="{{ x.sourceUrl }}" rel="nofollow noopener" target="_blank">{{ x.sourceDomain }}</a>{% if x.aiProposed %} <span class="badge text-bg-warning">recherche IA</span>{% endif %}</td><td>{{ x.status }}</td>
+<td class="text-nowrap">{% for a in ['valider','rejeter','supprimer'] %}<form method="post" action="{{ path('admin_positions_stance', {id: x.id, action: a}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}"><button class="btn btn-sm btn-outline-secondary">{{ a|capitalize }}</button></form> {% endfor %}</td></tr>
+{% else %}<tr><td colspan="5">Aucune position pour le moment.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

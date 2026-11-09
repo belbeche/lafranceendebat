@@ -1,0 +1,41 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Sauvegardes{% endblock %}
+{% block admin %}
+<h1 class="h3">Sauvegardes de la base</h1>
+<p class="text-muted">Une copie compressée chaque nuit, contrôlée chaque matin. Alerte par e-mail si une sauvegarde manque, échoue ou rétrécit de plus de 30 %.</p>
+{% if problems %}<div class="alert alert-danger"><strong>À traiter :</strong><ul class="mb-0">{% for p in problems %}<li>{{ p }}</li>{% endfor %}</ul></div>
+{% else %}<div class="alert alert-success">Tout est en ordre.</div>{% endif %}
+<section class="adm-card {{ state and state.ok ? 'ok' : 'bad' }} d-flex flex-wrap gap-3 align-items-center">
+    <div>
+        <div class="small text-muted">Dernière sauvegarde</div>
+        {% if state %}<div class="h4 mb-0">{{ state.at|date('d/m/Y H:i') }}</div><div class="fw-semibold {{ state.ok ? 'text-success' : 'text-danger' }}">{{ state.ok ? 'Réussie' : 'Échec' }}</div>{% else %}<div class="h5 mb-0">Aucune pour le moment</div>{% endif %}
+    </div>
+    {% if state and state.ok %}<div class="small">Taille : {{ (state.size / 1024)|round }} Ko<br>Durée : {{ state.seconds }} s</div>{% endif %}
+    <div class="ms-auto d-flex gap-2 flex-wrap">
+        <form method="post" action="{{ path('admin_backups_run') }}"><input type="hidden" name="_token" value="{{ csrf_token('backup_run') }}"><button class="btn btn-bleu">Sauvegarder maintenant</button></form>
+        {% if files %}<a class="btn btn-outline-primary" href="{{ path('admin_backups_download', {name: files|first.name}) }}">Télécharger la dernière</a>{% endif %}
+    </div>
+</section>
+<div class="row g-3 mb-3">
+  <div class="col-md-6"><section class="adm-card h-100 mb-0"><strong class="d-block mb-2">Planning</strong>
+    <p class="small mb-1">Sauvegarde complète : chaque nuit à 03:00 (cron <code>app:db:backup</code>).</p>
+    <p class="small mb-1">Contrôle : chaque matin à 08:00 (<code>--controle</code>).</p>
+    <p class="small mb-0">Alerte par e-mail si une sauvegarde manque, échoue ou rétrécit de plus de 30 %.</p></section></div>
+  <div class="col-md-6"><section class="adm-card h-100 mb-0"><strong class="d-block mb-2">Où vont les copies</strong>
+    <p class="small mb-1">Serveur de l'hébergeur, dossier privé <code>var/backups</code> (hors du dossier public).</p>
+    <p class="small mb-0">Règle des trois copies : téléchargez une sauvegarde chez vous une fois par mois.</p></section></div>
+</div>
+<h2 class="h6">Historique</h2>
+<div class="table-responsive"><table class="table table-sm align-middle bg-white admin-table">
+    <thead><tr><th>Fichier</th><th>Date</th><th>Taille</th><th></th></tr></thead>
+    <tbody>{% for f in files %}<tr><td>{{ f.name }}</td><td>{{ f.time|date('d/m/Y H:i') }}</td><td>{{ (f.size / 1024)|round }} Ko</td><td class="text-end"><a class="btn btn-sm btn-outline-dark" href="{{ path('admin_backups_download', {name: f.name}) }}">Télécharger</a></td></tr>
+    {% else %}<tr><td colspan="4" class="meta">Aucune sauvegarde.</td></tr>{% endfor %}</tbody>
+</table></div>
+<div class="commons-note mt-4">
+    <h2 class="h6">Mettre en place la sauvegarde quotidienne (une seule fois)</h2>
+    <p class="mb-1">Dans le planificateur de tâches (cron) de l'hébergeur, ajoutez deux lignes :</p>
+    <pre class="mb-2">0 3 * * *  cd /chemin/du/site &amp;&amp; php8.4 bin/console app:db:backup --env=prod
+0 8 * * *  cd /chemin/du/site &amp;&amp; php8.4 bin/console app:db:backup --controle --env=prod</pre>
+    <p class="mb-0">Règle des trois copies : téléchargez une sauvegarde chez vous une fois par mois. Les fichiers sont dans <code>var/backups</code>, hors du dossier public.</p>
+</div>
+{% endblock %}

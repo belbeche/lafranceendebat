@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+{% set loc = app.request.locale %}
+<html lang="{{ loc }}" dir="{{ lang_dir(loc) }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ site_name }}{% endblock %} | {{ site_name }}</title>
+    <meta name="description" content="{% block meta_description %}La France en Débat : {{ site_signature }} Un espace citoyen pour comprendre, comparer et proposer, sans haine ni violence.{% endblock %}">
+    <meta name="theme-color" content="#00164f">
+    {% set _route = app.request.attributes.get('_route') ?: 'app_home' %}
+    {% set _forced = app.request.attributes.get('_lang_forced') %}
+    {% set _selfUrl = url(_route, app.request.attributes.get('_route_params') ?: {}) %}
+    <link rel="canonical" href="{{ _selfUrl }}{{ _forced ? '?lang=' ~ _forced : '' }}">
+    {% set _noindex = app.request.pathInfo starts with '/admin' or app.request.pathInfo starts with '/profil' or app.request.pathInfo starts with '/messages' or app.request.pathInfo starts with '/connexion' or app.request.pathInfo starts with '/login' %}
+    {% if not _noindex and app.request.method == 'GET' and not app.request.query.all|filter((v, k) => k != 'lang' and k != 'page')|length %}
+    {% for code, l in languages() %}{% if l.ui %}<link rel="alternate" hreflang="{{ code }}" href="{{ _selfUrl }}?lang={{ code }}">
+    {% endif %}{% endfor %}<link rel="alternate" hreflang="x-default" href="{{ _selfUrl }}">
+    {% endif %}
+    {% if app.request.pathInfo starts with '/admin' or app.request.pathInfo starts with '/profil' or app.request.pathInfo starts with '/messages' or app.request.pathInfo starts with '/connexion' or app.request.pathInfo starts with '/login' %}<meta name="robots" content="noindex, nofollow">{% endif %}
+    <script type="application/ld+json" nonce="{{ csp_nonce() }}">{{ {'@context': 'https://schema.org', '@type': 'Organization', 'name': site_name, 'url': url('app_home'), 'description': 'Plateforme citoyenne gratuite de débat apaisé, de propositions sourcées et de suivi des engagements.'}|json_encode(constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}</script>
+    {% block meta_og %}
+    <meta property="og:site_name" content="{{ site_name }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ block('title') }}">
+    <meta property="og:url" content="{{ url(app.request.attributes.get('_route') ?: 'app_home', app.request.attributes.get('_route_params') ?: {}) }}">
+    <meta property="og:image" content="{{ absolute_url(asset('img/lfed-banner.jpg')) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    {% endblock %}
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa/icon-192.png">
+    <link rel="apple-touch-icon" href="/pwa/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="France en Débat">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link href="{{ local_or_cdn('vendor/bootstrap/css/bootstrap' ~ (lang_dir(loc) == 'rtl' ? '.rtl' : '') ~ '.min.css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap' ~ (lang_dir(loc) == 'rtl' ? '.rtl' : '') ~ '.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ local_or_cdn('vendor/bootstrap-icons/bootstrap-icons.min.css', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/lfed.css') }}?v={{ asset_version() }}">
+    <link rel="stylesheet" href="{{ asset('css/lfed-home.css') }}?v={{ asset_version() }}">
+    <link rel="stylesheet" href="{{ asset('css/lfed-community.css') }}?v={{ asset_version() }}">
+    <link rel="stylesheet" href="{{ asset('css/lfed-i18n.css') }}?v={{ asset_version() }}">
+    <link rel="stylesheet" href="{{ asset('css/lfed-republic.css') }}?v={{ asset_version() }}">
+    <link rel="stylesheet" href="{{ asset('css/lfed-space.css') }}?v={{ asset_version() }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %} data-live-url="{{ path('app_live') }}"{% endif %}>
+    <a class="skip-link" href="#contenu">{{ 'nav.skip'|trans }}</a>
+
+    <aside class="charte-banner" aria-label="Charte de paix">
+        {{ 'banner.text'|trans }} <a href="{{ path('app_charter') }}">{{ 'banner.link'|trans }}</a> <strong class="free-pill">{{ 'free.badge'|trans }}</strong>
+    </aside>
+
+    <nav class="navbar navbar-expand-lg navbar-master" aria-label="Navigation principale">
+        {% set route = app.request.get('_route') ?? '' %}
+        <div class="container">
+            <a class="navbar-brand" href="{{ path('app_home') }}">La France en <span>Débat</span></a>
+            {# Menu en 4 rubriques : tout est a 2 clics au plus (rubrique, puis page). Meme liste pour le bureau et le mobile. #}
+            {% set menu = [
+                {label: 'Débattre', route: 'app_debat', items: [['app_debats', 'nav.debates'|trans], ['app_propositions', 'nav.propositions'|trans], ['app_community', 'Agora de la diplomatie'], ['app_scrutins', 'Scrutins consultatifs']]},
+                {label: 'Comprendre', route: 'app_positions', items: [['app_positions', 'Positions et votes'], ['app_revendications', 'nav.forgotten'|trans], ['app_programmes', 'Propositions des groupes'], ['app_candidats', 'nav.candidates'|trans], ['app_parties', 'Partis et groupes'], ['app_dossiers', 'Dossiers'], ['app_agenda', 'nav.agenda'|trans]]},
+                {label: 'Agir', route: 'app_missions', items: [['app_missions', 'Missions'], ['app_support', 'Soutenir l\'initiative'], ['app_taxpayers', 'Contribuables'], ['app_actors', 'Acteurs publics'], ['app_inspirations', 'Ils ont contribué'], ['app_tribunes', 'Journalistes']]},
+                {label: 'À propos', route: 'app_about', items: [['app_charter', 'nav.charter'|trans], ['app_guide', 'nav.guide'|trans], ['app_method', 'nav.method'|trans], ['app_about', 'nav.about'|trans], ['app_ranking', 'Classement des artisans de paix']]},
+            ] %}
+            <ul class="navbar-nav flex-row d-none d-lg-flex me-auto ms-3 gap-1">
+                {% for g in menu %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link nav-link-custom dropdown-toggle {{ route starts with g.route ? 'active' }}" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ g.label }}</a>
+                    <ul class="dropdown-menu">{% for i in g['items'] %}<li><a class="dropdown-item" href="{{ path(i[0]) }}"{% if route == i[0] %} aria-current="page"{% endif %}>{{ i[1] }}</a></li>{% endfor %}</ul>
+                </li>
+                {% endfor %}
+            </ul>
+            <button class="btn btn-outline-blanc d-lg-none order-first ms-auto me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMobile" aria-controls="menuMobile" style="min-height:44px"><i class="bi bi-list" aria-hidden="true"></i> Menu</button>
+            <div class="d-flex align-items-center gap-2 ms-auto">
+                <button type="button" class="btn btn-outline-blanc btn-sm" data-pwa-install hidden><i class="bi bi-download" aria-hidden="true"></i> {{ 'nav.install'|trans }}</button>
+                {% include '_language_switcher.html.twig' %}
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <a class="live-ico" href="{{ path('app_inbox') }}" aria-label="Mes messages"><i class="bi bi-chat-dots" aria-hidden="true"></i><span class="live-badge" data-live-badge="messages" hidden>0</span></a>
+                    <div class="dropdown notif-dd" data-notif data-list-url="{{ path('app_api_notifications') }}" data-read-url="{{ path('app_api_notifications_read') }}" data-csrf="{{ csrf_token('notif') }}">
+                        <button class="live-ico border-0 bg-transparent" type="button" id="notifBtn" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" aria-label="Notifications"><i class="bi bi-bell" aria-hidden="true"></i><span class="live-badge" data-live-badge="notifications" hidden>0</span></button>
+                        <div class="dropdown-menu dropdown-menu-end notif-panel" aria-labelledby="notifBtn">
+                            <div class="notif-head"><strong>Notifications</strong><button type="button" class="btn btn-link btn-sm p-0" data-notif-all>Tout marquer comme lu</button></div>
+                            <ul class="notif-list list-unstyled mb-0" data-notif-list><li class="notif-empty">Chargement…</li></ul>
+                            <div class="notif-foot"><a href="{{ path('app_notifications') }}">Voir toutes les notifications</a><button type="button" class="btn btn-sm btn-outline-primary" data-notif-push hidden>Activer les alertes sur cet appareil</button></div>
+                        </div>
+                    </div>
+                    <a class="btn btn-rouge btn-sm d-none d-lg-inline-block" href="{{ path('app_proposition_new') }}" title="{{ 'nav.submit'|trans }}">{{ 'nav.submit.short'|trans }}</a>
+                    <div class="dropdown d-none d-lg-block">
+                        <a class="nav-link nav-link-custom dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ 'nav.account'|trans }}</a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{{ path('app_hub') }}">Mon espace</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_inbox') }}">Mes messages</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_my_requests') }}">Mes demandes</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_my_applications') }}">Mes candidatures</a></li>
+                            {% if is_granted('ROLE_ACTOR') or is_granted('ROLE_ELU') or is_granted('ROLE_ASSOCIATION') or is_granted('ROLE_JOURNALIST') or is_granted('ROLE_MODERATOR') %}<li><a class="dropdown-item" href="{{ path('app_received_applications') }}">Candidatures reçues</a></li>{% endif %}
+                            <li><a class="dropdown-item" href="{{ path('app_notifications') }}">Notifications</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_profile') }}">{{ 'nav.profile'|trans }}</a></li>
+                            <li><a class="dropdown-item" href="{{ path('app_my_propositions') }}">{{ 'nav.my_propositions'|trans }}</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ path('admin_dashboard') }}">{{ 'nav.admin'|trans }}</a></li>
+                            {% endif %}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{{ logout_path() }}">{{ 'nav.logout'|trans }}</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-blanc btn-sm d-none d-sm-inline-block">{{ 'nav.login'|trans }}</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-rouge btn-sm">{{ 'nav.register'|trans }}</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="menuMobile" aria-labelledby="menuMobileTitre">
+        <div class="offcanvas-header"><h2 class="offcanvas-title h5" id="menuMobileTitre">Menu</h2><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer le menu"></button></div>
+        <div class="offcanvas-body">
+            <a class="btn btn-rouge w-100 mb-3" style="min-height:44px" href="{{ path('app_proposition_new') }}">{{ 'nav.submit'|trans }}</a>
+            {% for g in menu %}<h3 class="h6 mt-3 text-uppercase text-muted">{{ g.label }}</h3><ul class="list-unstyled mb-0">{% for i in g['items'] %}<li><a class="d-block py-2" style="min-height:44px" href="{{ path(i[0]) }}"{% if route == i[0] %} aria-current="page"{% endif %}>{{ i[1] }}</a></li>{% endfor %}</ul>{% endfor %}
+            {% if app.user %}<h3 class="h6 mt-3 text-uppercase text-muted">Mon compte</h3><ul class="list-unstyled"><li><a class="d-block py-2" href="{{ path('app_hub') }}">Mon espace</a></li><li><a class="d-block py-2" href="{{ path('app_my_propositions') }}">{{ 'nav.my_propositions'|trans }}</a></li><li><a class="d-block py-2" href="{{ path('app_profile') }}">{{ 'nav.profile'|trans }}</a></li><li><a class="d-block py-2" href="{{ logout_path() }}">{{ 'nav.logout'|trans }}</a></li></ul>{% endif %}
+        </div>
+    </div>
+
+    {% include '_flash_messages.html.twig' %}
+    {% if lang_prompt() and route != 'app_language' %}{% include '_language_chooser.html.twig' %}{% endif %}
+
+    {% if app.request.cookies.get('lfed_welcome') is null and app.request.attributes.get('_route') not in ['app_welcome','app_welcome_profile','app_welcome_later','app_login','app_register'] %}
+    <div class="welcome-banner" role="region" aria-label="{{ 'welcome.banner.cta'|trans }}">
+        <div class="container d-flex flex-wrap align-items-center gap-2 justify-content-between">
+            <span>{{ 'welcome.banner'|trans }}</span>
+            <span><a class="btn btn-sm btn-light" href="{{ path('app_welcome') }}">{{ 'welcome.banner.cta'|trans }}</a> <a class="btn btn-sm btn-link text-white" href="{{ path('app_welcome_later') }}">{{ 'welcome.banner.later'|trans }}</a></span>
+        </div>
+    </div>
+    {% endif %}
+    {% if consent_current() is null and app.request.attributes.get('_route') != 'cookie_preferences' %}
+    <div class="consent-banner" role="dialog" aria-labelledby="consent-t" aria-live="polite">
+        <div class="container">
+            <p id="consent-t" class="mb-1"><strong>Votre vie privée</strong></p>
+            <p class="mb-2">Ce site n'utilise aucun traceur publicitaire ni service tiers. Nous aimerions mesurer, avec votre accord, le temps de lecture des débats et propositions, pour montrer publiquement ce qui intéresse (ou non). Rien n'est lié à votre identité. <a href="{{ path('cookie_preferences') }}">En savoir plus</a></p>
+            <form method="post" action="{{ path('app_consent_choice') }}" class="d-flex flex-wrap gap-2">
+                <input type="hidden" value="{{ csrf_token('consent') }}" name="_token"><input type="hidden" name="back" value="{{ app.request.requestUri }}">
+                <button class="btn btn-sm btn-light" name="choice" value="accept">Accepter</button>
+                <button class="btn btn-sm btn-light" name="choice" value="refuse">Refuser</button>
+                <a class="btn btn-sm btn-outline-light" href="{{ path('cookie_preferences') }}">Personnaliser</a>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    {% set _nav = persistent_nav() %}
+    {% set _wrap = _nav and not (space_native|default(false)) and not (admin_native|default(false)) %}
+    <main id="contenu" tabindex="-1">
+        {% if _wrap and _nav.kind == 'space' %}<div class="sp-shell">{% include 'space/_nav.html.twig' with {nav_mode: _nav.mode, nav_active: _nav.active} only %}<div class="sp-main sp-embedded">
+        {% elseif _wrap %}<div class="adm-shell"><aside class="adm-side">{% include 'admin/_nav.html.twig' only %}</aside><div class="adm-main">{% endif %}
+        {% block body %}{% endblock %}
+        {% if _wrap %}</div></div>{% endif %}
+    </main>
+
+    <section class="devise-band" aria-label="Les valeurs de la République">
+        <div class="container">
+            <div class="liberte"><h2>Liberté</h2><p>Chacun peut proposer, argumenter et critiquer, dans le respect de la loi et des personnes.</p></div>
+            <div class="egalite"><h2>Égalité</h2><p>Toutes les voix comptent de la même façon : mêmes règles de modération, mêmes sources exigées pour tous.</p></div>
+            <div class="fraternite"><h2>Fraternité</h2><p>Débattre sans haine ni violence, s'entraider, se parler avant de s'opposer. <a href="{{ path('app_charter') }}">Lire la charte</a></p></div>
+        </div>
+    </section>
+    <div class="devise-flag" aria-hidden="true"></div>
+    <footer class="footer-debat">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <p class="serif h5 text-white">La France en Débat</p>
+                    <p class="small">{{ site_signature }}<br>Parlons-nous avant de nous opposer.</p>
+                    <p class="small">{{ 'footer.independent'|trans }}</p>
+                    <p class="small fw-bold">{{ 'free.text'|trans }}</p>
+                    <p class="small">{{ 'commons.notice'|trans }}</p>
+                </div>
+                <div class="col-6 col-md-4 mb-4">
+                    <p class="fw-bold text-white">{{ 'footer.project'|trans }}</p>
+                    <ul class="list-unstyled small">
+                        <li><a href="{{ path('app_charter') }}">{{ 'nav.charter'|trans }}</a></li>
+                        <li><a href="{{ path('app_guide') }}">{{ 'nav.guide'|trans }}</a></li>
+                        <li><a href="{{ path('app_tutorials') }}">Tutoriels</a></li>
+                        <li><a href="{{ path('app_install') }}">Installer l'application</a></li>
+                        <li><a href="{{ path('app_taxpayers') }}">Contribuables : déposer une demande</a></li>
+                        <li><a href="{{ path('app_missions') }}">Missions et rémunération</a></li>
+                        <li><a href="{{ path('app_useful_contacts') }}">{{ 'nav.contacts'|trans }}</a></li>
+                        <li><a href="{{ path('app_method') }}">{{ 'nav.method'|trans }}</a></li>
+                        <li><a href="{{ path('app_consultations') }}">Consultations et votes</a></li>
+                        <li><a href="{{ path('app_institutional_routes') }}">Voies institutionnelles</a></li>
+                        <li><a href="{{ path('app_plan_marshall') }}">Plan Marshall citoyen</a></li>
+                        <li><a href="{{ path('app_services') }}">Services d'acteurs vérifiés</a></li>
+                        <li><a href="{{ path('app_lettre') }}">La lettre</a></li>
+                        <li><a href="{{ path('app_about') }}">{{ 'nav.about'|trans }}</a></li>
+                        <li><a href="{{ path('app_paths') }}">{{ 'path.nav'|trans }}</a></li>
+                        <li><a href="{{ path('app_community') }}">Agora de la diplomatie</a></li>
+                        <li><a href="{{ path('app_ranking') }}">Classement des artisans de paix</a></li>
+                        <li><a href="{{ path('app_role_request') }}">Candidater pour aider</a></li>
+                        <li><a href="{{ path('app_scrutins') }}">Scrutins consultatifs</a></li>
+                        <li><a href="{{ path('app_surveys') }}">Enquêtes</a></li>
+                        <li><a href="{{ path('app_actors') }}">Acteurs publics</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-4 mb-4">
+                    <p class="fw-bold text-white">{{ 'footer.legal'|trans }}</p>
+                    <ul class="list-unstyled small">
+                        <li><a href="{{ path('app_legal_notice') }}">{{ 'legal.notice'|trans }}</a></li>
+                        <li><a href="{{ path('app_privacy_policy') }}">{{ 'legal.privacy'|trans }}</a></li>
+                        <li><a href="{{ path('cookie_preferences') }}">Cookies</a></li>
+                        <li><a href="{{ path('app_how_it_works') }}">Comment ça marche</a></li>
+                        <li><a href="{{ path('app_open_source') }}">Code source (AGPL-3.0)</a></li>
+                        <li><a href="{{ path('app_parties') }}">Partis et groupes</a></li>
+                        <li><a href="{{ path('app_programmes') }}">Propositions des groupes</a></li>
+                        <li><a href="{{ path('app_budget_calculator') }}">Calculateur de budget</a></li>
+                        <li><a href="{{ path('app_anonymous_contribution') }}">Participer sans compte</a></li>
+                        <li><a href="{{ path('app_terms_of_service') }}">{{ 'legal.terms'|trans }}</a></li>
+                        <li><a href="{{ path('app_identity_notice') }}">Identité réelle et sécurité</a></li>
+                        <li><a href="{{ path('app_contact') }}">{{ 'legal.contact'|trans }}</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center small">&copy; {{ "now"|date("Y") }} La France en Débat. {{ 'footer.disclaimer'|trans }}</div>
+        </div>
+        <div class="footer-tricolore mt-4"></div>
+    </footer>
+
+
+    <nav class="tabbar d-lg-none" aria-label="Menu rapide">
+        {% set route = app.request.get('_route') ?? '' %}
+        <a href="{{ path('app_home') }}" class="{{ route == 'app_home' ? 'active' }}"><i class="bi bi-house-door" aria-hidden="true"></i><span>{{ 'tab.home'|trans }}</span></a>
+        <a href="{{ path('app_debats') }}" class="{{ route starts with 'app_debat' ? 'active' }}"><i class="bi bi-chat-square-text" aria-hidden="true"></i><span>{{ 'nav.debates'|trans }}</span></a>
+        <a href="{{ path('app_proposition_new') }}" class="tab-main" aria-label="{{ 'tab.submit'|trans }}"><i class="bi bi-plus-lg" aria-hidden="true"></i></a>
+        <a href="{{ path('app_propositions') }}" class="{{ route starts with 'app_proposition' and route != 'app_proposition_new' ? 'active' }}"><i class="bi bi-list-check" aria-hidden="true"></i><span>{{ 'nav.propositions'|trans }}</span></a>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+            <a href="{{ path('app_hub') }}" class="{{ route starts with 'app_profile' or route == 'app_hub' or route starts with 'app_role_space' or route == 'app_actor_space' ? 'active' }}"><i class="bi bi-person-circle" aria-hidden="true"></i><span class="live-badge live-badge-tab" data-live-badge="notifications" hidden>0</span><span>Mon espace</span></a>
+        {% else %}
+            <a href="{{ path('app_login') }}"><i class="bi bi-box-arrow-in-right" aria-hidden="true"></i><span>{{ 'tab.login'|trans }}</span></a>
+        {% endif %}
+    </nav>
+
+    <div class="pwa-invite" data-pwa-banner hidden role="region" aria-label="Installer l'application">
+        <img src="{{ asset('pwa/icon-192.png') }}" alt="" width="44" height="44">
+        <div class="pwa-text"><strong>Installer l'application</strong><span data-pwa-msg>Accès en un geste, notifications en direct.</span></div>
+        <div class="pwa-actions"><button type="button" class="btn btn-sm btn-primary" data-pwa-install-banner hidden>Installer</button><a class="btn btn-sm btn-primary" data-pwa-how href="{{ path('app_install') }}" hidden>Comment faire</a><button type="button" class="btn btn-sm btn-link" data-pwa-dismiss aria-label="Plus tard">Plus tard</button></div>
+    </div>
+    {% include '_need_finder.html.twig' %}
+
+    <script src="{{ local_or_cdn('vendor/bootstrap/js/bootstrap.bundle.min.js', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('js/pwa.js') }}" defer></script>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}<script src="{{ asset('js/live.js') }}" defer></script>{% endif %}
+    <script src="{{ asset('js/ui.js') }}" defer></script>
+    {% block javascripts %}{% endblock %}
+</body>
+</html>

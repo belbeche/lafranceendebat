@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes e-mails{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes préférences e-mail</h1><p class="lede mb-0">Vous décidez de ce que vous recevez. Les e-mails de sécurité (mot de passe, confirmation de compte) restent toujours envoyés.</p></div></header>
+<section class="section"><div class="container" style="max-width:720px">
+<form method="post" class="form-card">
+    <input type="hidden" name="_token" value="{{ csrf_token('notif_prefs') }}">
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="own" name="own" value="1" {{ user.notifyOwnActivity ? 'checked' }}><label class="form-check-label" for="own"><strong>Activité sur mes contributions</strong><br><span class="meta">Réponse à mon argument, nouvel argument dans un débat où je suis intervenu, décision de modération, réponse à mon message. Au plus un e-mail toutes les 6 heures par débat.</span></label></div>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="debates" name="debates" value="1" {{ user.notifyNewDebates ? 'checked' }}><label class="form-check-label" for="debates"><strong>Nouveaux débats</strong><br><span class="meta">Un e-mail quand un nouveau débat est publié. Désactivé par défaut : je le choisis moi-même.</span></label></div>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="lettre" name="lettre" value="1" {{ lettre != 'none' ? 'checked' }}><label class="form-check-label" for="lettre"><strong>La lettre de La France en Débat</strong><br><span class="meta">Des nouvelles du débat public, sans publicité. {% if lettre == 'confirmed' %}Vous êtes abonné.{% elseif lettre == 'pending' %}En attente de votre confirmation : cliquez sur le lien reçu par e-mail.{% else %}Un e-mail de confirmation vous sera envoyé.{% endif %}</span></label></div>
+    <p class="meta">Chaque e-mail contient un lien pour tout arrêter en un clic. Les notifications dans la cloche du site ne sont pas concernées. Responsable du traitement : La France en Débat (voir la page mentions légales).</p>
+    <button class="btn btn-bleu" type="submit">Enregistrer</button>
+    <a class="btn btn-link" href="{{ path('app_profile') }}">Retour au profil</a>
+</form>
+</div></section>
+{% endblock %}

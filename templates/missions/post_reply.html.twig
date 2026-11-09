@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Répondre à l'annonce | La France en Débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Répondre à l'annonce</h1><p class="lede mb-0">{{ post.title }}</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+    <div class="carte mb-3"><span class="etiquette {{ post.demande ? 'rouge' : 'bleu' }}">{{ post.kindLabel }}</span> <span class="etiquette">{{ post.payLabel }}</span><p class="mt-2 mb-0">{{ post.description|e|nl2br }}</p></div>
+    {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+    <form method="post" class="form-card">
+        <input type="hidden" name="_token" value="{{ csrf_token('mission_reply' ~ post.id) }}">
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><label class="form-label" for="email">Votre e-mail</label><input class="form-control" id="email" name="email" type="email" value="{{ email }}" required autocomplete="email"></div>
+            <div class="col-md-6"><label class="form-label" for="phone">Votre téléphone</label><input class="form-control" id="phone" name="phone" type="tel" value="{{ phone }}" required autocomplete="tel"></div>
+        </div>
+        <label class="form-label" for="message">Votre message</label>
+        <textarea class="form-control mb-2" id="message" name="message" rows="5" minlength="40" maxlength="1500" required>{{ message }}</textarea>
+        <p class="meta">Vos coordonnées ne sont transmises qu'à {{ post.author.publicName }}, qui accepte ou décline.</p>
+        <button class="btn btn-rouge" type="submit">Envoyer ma réponse</button>
+    </form>
+</div></section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Dossiers sourcés{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Dossiers sourcés</h1><p class="lead mb-0">Des fiches claires, avec leurs sources publiques, pour comprendre avant de débattre.</p></div></header>
+<section class="section"><div class="container"><div class="row g-3">
+{% for slug, d in dossiers %}<div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_dossier', {slug: slug}) }}"><h2 class="h5">{{ d[0] }}</h2><p class="mb-0 text-muted">{{ d[1] }}</p></a></div>{% endfor %}
+{% for d in citizen %}<div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_dossier_page', {slug: d.slug}) }}"><h2 class="h5">{{ d.title }}</h2><p class="mb-1 text-muted">{{ d.intro }}</p><p class="meta mb-0">Dossier citoyen, proposé par {{ d.authorDisplayName }}</p></a></div>{% endfor %}
+<div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_tribunes') }}"><h2 class="h5">Tribunes de journalistes indépendants</h2><p class="mb-0 text-muted">Des textes signés et sourcés, relus avant publication.</p></a></div>
+</div>
+<h2 class="h4 mt-5">Un dossier de départ par thème</h2>
+<p class="meta">Chaque débat et chaque proposition se rattache à un dossier. Ceux-ci donnent les sources officielles de chaque thème ; la communauté peut les compléter.</p>
+<div class="row g-3">{% for slug, s in starters %}<div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_dossier_page', {slug: slug}) }}"><span class="etiquette bleu">{{ s[3] }}</span><h3 class="h6 mt-2">{{ s[0] }}</h3><p class="mb-0 text-muted">{{ s[1] }}</p></a></div>{% endfor %}</div>
+<div class="limite mt-4"><strong>Aucun dossier ne convient ?</strong> Proposez le vôtre : il est relu par la modération avant publication, avec votre nom (prénom et initiale) et vos sources. <a class="btn btn-rouge btn-sm ms-2" href="{{ path('app_dossier_new') }}">Proposer un dossier</a></div>
+</div></section>
+{% endblock %}

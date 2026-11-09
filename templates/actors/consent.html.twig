@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Recevoir des informations{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:640px">
+    <h1 class="h3">Recevoir des informations de La France en Débat</h1>
+    <p>En confirmant, {{ actor.organisation }} ({{ actor.email }}) accepte de recevoir des informations sur la plateforme, au plus une fois par semaine. Vous pourrez vous retirer en un clic depuis chaque message. Sans confirmation de votre part, nous ne vous écrirons plus.</p>
+    <form method="post" action="{{ path('app_actor_consent', {id: id, token: token}) }}"><button class="btn btn-bleu">Oui, je souhaite recevoir ces informations</button></form>
+</div></section>
+{% endblock %}

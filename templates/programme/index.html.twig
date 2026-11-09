@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Propositions des groupes politiques{% endblock %}
+{% block meta_description %}Les propositions de loi déposées par chaque groupe politique à l'Assemblée nationale, avec leur source officielle, classées par thème, sans jugement.{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Ce que proposent les groupes politiques</h1>
+    <p class="lead mb-2">{{ total }} proposition{{ total > 1 ? 's' }} issue{{ total > 1 ? 's' }} de sources officielles. Lisez, comparez, puis donnez votre avis dans le respect de la <a class="text-white" href="{{ path('app_charter') }}">charte de la paix</a>.</p>
+    <a class="btn btn-rouge" href="{{ path('app_budget_calculator') }}">Calculateur de budget</a>
+</div></header>
+<section class="section"><div class="container">
+    {% include 'programme/_coverage_notice.html.twig' %}
+    <form method="get" class="row g-2 mb-3" role="search">
+        <div class="col-md-3"><label class="form-label" for="groupe">Groupe</label><select id="groupe" name="groupe" class="form-select"><option value="">Tous les groupes</option>{% for g in groups %}<option value="{{ g.code }}" {{ f.groupe == g.code ? 'selected' }}>{{ g.name }} ({{ g.n }})</option>{% endfor %}</select></div>
+        <div class="col-md-3"><label class="form-label" for="theme">Thème indicatif</label><select id="theme" name="theme" class="form-select"><option value="">Tous les thèmes</option>{% for t in themes %}<option value="{{ t }}" {{ f.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+        <div class="col-md-3"><label class="form-label" for="q">Mot-clé</label><input id="q" name="q" class="form-control" maxlength="80" value="{{ f.q }}"></div>
+        <div class="col-md-3 d-flex align-items-end gap-2"><div class="form-check"><input class="form-check-input" type="checkbox" id="chiffrees" name="chiffrees" value="1" {{ f.chiffrees ? 'checked' }}><label class="form-check-label" for="chiffrees">Chiffrées</label></div><button class="btn btn-bleu">Filtrer</button></div>
+    </form>
+    {% for p in items %}
+    <article class="carte mb-2">
+        <p class="mb-1"><span class="etiquette" {% if p.groupColor %}style="border-left:6px solid {{ p.groupColor }}"{% endif %}>{{ p.groupName }}</span> {% if p.theme %}<span class="etiquette bleu">{{ p.theme }}</span>{% endif %} {% if p.costed %}<span class="etiquette rouge">Chiffrée, niveau {{ p.costCredibility }}</span>{% endif %}</p>
+        <h2 class="h6 mb-1"><a href="{{ path('app_programme_show', {id: p.id}) }}">{{ p.title }}</a></h2>
+        <p class="meta mb-0">{{ p.source == 'AN' ? 'Proposition de loi, Assemblée nationale' : (p.source == 'SENAT' ? 'Proposition de loi, Sénat' : 'Programme publié par la formation') }}{% if p.depositedAt %}, déposée le {{ p.depositedAt|date('d/m/Y') }}{% endif %} · <a href="{{ p.sourceUrl }}" rel="noopener nofollow" target="_blank">source officielle</a></p>
+    </article>
+    {% else %}<p>Aucune proposition ne correspond à ces filtres.</p>{% endfor %}
+    {% if pages > 1 %}<nav class="d-flex gap-2 mt-3" aria-label="Pages">
+        {% if page > 1 %}<a class="btn btn-outline-dark" href="{{ path('app_programmes', f|merge({page: page - 1})) }}">Précédent</a>{% endif %}
+        <span class="align-self-center">Page {{ page }} sur {{ pages }}</span>
+        {% if page < pages %}<a class="btn btn-outline-dark" href="{{ path('app_programmes', f|merge({page: page + 1})) }}">Suivant</a>{% endif %}
+    </nav>{% endif %}
+    <div class="mt-4">{% include 'programme/_source_note.html.twig' %}</div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% import '_macros.html.twig' as ui %}
+{% block title %}Ce qui a été dénoncé et ne doit pas être oublié{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Ce qui a été dénoncé et ne doit pas être oublié</h1>
+    <p class="lede">Revendications portées par la jeunesse, les travailleurs, les agriculteurs, les soignants, les retraités et d'autres. Chacune est suivie jusqu'à une réponse publique, ou jusqu'à l'absence de réponse.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: '', compact: true} only %}</div>
+<div class="container"><p class="meta mt-3 mb-0">{% if allLangs %}Toutes les langues. <a href="{{ path('app_revendications') }}">Seulement ma langue</a>{% else %}Dans votre langue d'abord. <a href="{{ path('app_revendications', {langue: 'toutes'}) }}">Voir toutes les langues</a>{% endif %}</p></div>
+{% for f in featured %}<div class="container mt-3"><div class="carte" style="border-left:4px solid #002395"><p class="mb-1"><span class="etiquette bleu">En évidence</span> <span class="etiquette">{{ {lyceens: 'Lycéens et étudiants', vss: 'Violences sexistes et sexuelles'}[f.tag] ?? 'Analyse sourcée' }}</span></p><h2 class="h5"><a href="{{ path('app_thesis', {slug: f.slug}) }}">{{ f.title }}</a></h2><p class="mb-1">{{ (f.data.summary ?? '')|u.truncate(260, '…', false) }}</p><p class="meta mb-0">Budget, sources, évolution du texte et ce qu'il faut pour l'appliquer, avec les critiques attribuées à leurs auteurs.</p></div></div>{% endfor %}
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        {% if awaiting > 0 %}<p class="limite">{{ awaiting }} revendication{{ awaiting > 1 ? 's' }} sans réponse publique. Les plus anciennes sont en tête.</p>{% endif %}
+        {% for r in revendications %}
+            <article class="rangee {{ r.awaitingAnswer ? 'sans-reponse' }}">
+                <p class="mb-1"><span class="etiquette bleu">{{ r.groupLabel }}</span> <span class="etiquette {{ ui.revendication_status_class(r.status) }}">{{ r.statusLabel }}</span> <span class="etiquette">{{ r.theme }}</span></p>
+                <h3><a href="{{ path('app_revendication_show', {slug: r.slug}) }}">{{ tr(r, 'title') }}</a></h3>
+                <p class="mb-1">{{ tr(r, 'summary')|u.truncate(220, '…', false) }}</p>
+                <p class="meta mb-1">Source : {% if r.sourceUrl and r.sourceUrl starts with 'https://' %}<a href="{{ r.sourceUrl }}" rel="noopener nofollow" target="_blank">{{ r.sourceLabel ?: r.sourceUrl|replace({'https://': ''})|u.truncate(50, '…', false) }}</a>{% elseif r.sourceLabel %}{{ r.sourceLabel }}{% else %}<span class="manque">aucune source indiquée</span>{% endif %}</p>
+                <p class="meta mb-0">{% if r.awaitingAnswer %}Sans réponse publique depuis {{ r.daysSinceUpdate }} jour{{ r.daysSinceUpdate > 1 ? 's' }}{% else %}Dernière mise à jour le {{ r.updatedAt|date('d/m/Y') }}{% endif %}</p>
+            </article>
+        {% else %}
+            <div class="carte">Aucune revendication ne correspond à ce filtre.</div>
+        {% endfor %}
+    </div>
+    <div class="col-lg-4"><div class="carte">
+        <h2 class="h6">Porteur</h2>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+            <a class="etiquette {{ not group ? 'bleu' }}" href="{{ path('app_revendications', {status: status}) }}">Tous</a>
+            {% for g in groups %}<a class="etiquette {{ g == group ? 'bleu' }}" href="{{ path('app_revendications', {group: g, status: status}) }}">{{ g }}</a>{% endfor %}
+        </div>
+        <h2 class="h6">Suite donnée</h2>
+        <div class="d-flex flex-wrap gap-2">
+            <a class="etiquette {{ not status ? 'bleu' }}" href="{{ path('app_revendications', {group: group}) }}">Toutes</a>
+            {% for key, label in statuses %}<a class="etiquette {{ key == status ? 'bleu' }}" href="{{ path('app_revendications', {group: group, status: key}) }}">{{ label }}</a>{% endfor %}
+        </div>
+    </div></div>
+</div></div></section>
+{% endblock %}

@@ -1,0 +1,103 @@
+{# templates/newsletter/unsubscribe.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Désinscription Newsletter</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 500px;
+            text-align: center;
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .success .icon { color: #28a745; }
+        .error .icon { color: #dc3545; }
+        h1 {
+            margin: 0 0 20px 0;
+            color: #2c3e50;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .email {
+            background: #f1f8ff;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 15px 0;
+            word-break: break-all;
+        }
+        .btn {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .contact {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+            font-size: 14px;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container {% if success %}success{% else %}error{% endif %}">
+        <div class="icon">
+            {% if success %}✓{% else %}✗{% endif %}
+        </div>
+        
+        {% if success %}
+            <h1>Désinscription confirmée</h1>
+            {% if email is defined %}
+                <p>L'adresse email suivante a été désinscrite de notre newsletter :</p>
+                <div class="email">{{ email }}</div>
+            {% else %}
+                <p>Vous avez été désinscrit de notre newsletter.</p>
+            {% endif %}
+            <p>Nous regrettons de vous voir partir. Vous pourrez vous réinscrire à tout moment depuis notre site.</p>
+        {% else %}
+            <h1>Désinscription impossible</h1>
+            <p>{{ error|default('Le lien de désinscription est invalide ou a expiré.') }}</p>
+            <p>Veuillez nous contacter directement si vous souhaitez vous désinscrire.</p>
+        {% endif %}
+        
+        <a href="{{ path('app_home') }}" class="btn">
+            Retour à l'accueil
+        </a>
+        
+        <div class="contact">
+            <p>{{ organization_name|default('SUSPENSION') }}</p>
+            <p>{{ publisher.email }}</p>
+        </div>
+    </div>
+</body>
+</html>

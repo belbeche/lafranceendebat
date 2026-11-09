@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription bloquée{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:720px">
+    <h1 class="h3">Inscription bloquée depuis cette connexion</h1>
+    <p>Plusieurs tentatives avec une adresse e-mail temporaire ou suspecte ont été enregistrées. Pour protéger la communauté, l'inscription est suspendue pendant 24 heures et la tentative a été signalée à la modération.</p>
+    <p>Si vous êtes de bonne foi, revenez demain avec une adresse e-mail durable, ou écrivez-nous.</p>
+    <p><a class="btn btn-bleu" href="{{ path('app_identity_notice') }}">Lire la notice : utiliser une identité réelle</a> <a class="btn btn-outline-dark" href="{{ path('app_contact') }}">Nous écrire</a></p>
+</div></section>
+{% endblock %}

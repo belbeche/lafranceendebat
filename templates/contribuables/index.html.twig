@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block title %}Contribuables : déposer une demande{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Contribuables : vous financez, vous avez le droit de comprendre et de demander</h1>
+    <p class="lead mb-3">Déposez une demande claire, sourcée et calme. Elle est relue, publiée avec un droit de réponse, soutenue par d'autres citoyens, puis portée aux acteurs concernés. Vous suivez tout depuis votre compte, et vous échangez par la messagerie de la plateforme.</p>
+    <a class="btn btn-lg btn-rouge" href="{{ path('app_revendication_new') }}">Déposer ma demande</a>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}<a class="btn btn-lg btn-outline-light" href="{{ path('app_my_requests') }}">Suivre mes demandes</a>{% else %}<a class="btn btn-lg btn-outline-light" href="{{ path('app_register') }}">Créer mon compte gratuit</a>{% endif %}
+</div></header>
+<section class="section"><div class="container">
+    <h2 class="serif">En trois étapes simples</h2>
+    <div class="row g-3">
+        <div class="col-md-4"><div class="carte h-100"><h3 class="h5">1. Je dépose</h3><p class="mb-0">Un titre, ce que vous constatez, un lien vers une source publique (rapport, décision, article). Cinq minutes.</p></div></div>
+        <div class="col-md-4"><div class="carte h-100"><h3 class="h5">2. C'est relu et publié</h3><p class="mb-0">Les faits et la source sont vérifiés, les personnes ou institutions citées peuvent répondre. Vous êtes prévenu par notification et par e-mail.</p></div></div>
+        <div class="col-md-4"><div class="carte h-100"><h3 class="h5">3. Les acteurs répondent</h3><p class="mb-0">Élus, associations et prestataires donnent un avis motivé et vous écrivent par la messagerie. Rien ne sort de la plateforme.</p></div></div>
+    </div>
+</div></section>
+<section class="section"><div class="container">
+    <h2 class="serif">Demandes de contribuables publiées</h2>
+    <div class="row g-3">
+    {% for c in claims %}
+        <div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_revendication_show', {slug: c.slug}) }}"><span class="etiquette bleu">{{ c.theme }}</span><h3 class="h5 mt-2">{{ tr(c, 'title') }}</h3><p class="mb-0 text-muted">{{ tr(c, 'summary')|u.truncate(140, '…') }}</p></a></div>
+    {% else %}
+        <div class="col-12"><div class="carte"><p class="mb-2"><strong>Aucune demande de contribuable publiée pour l'instant.</strong></p><p class="mb-0">Soyez la première ou le premier : <a href="{{ path('app_revendication_new') }}">déposer une demande</a>. Voici en attendant des demandes déjà publiées :</p></div></div>
+        {% for c in others %}<div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_revendication_show', {slug: c.slug}) }}"><h3 class="h6">{{ tr(c, 'title') }}</h3></a></div>{% endfor %}
+    {% endfor %}
+    </div>
+</div></section>
+<section class="section"><div class="container">
+    <h2 class="serif">Vos outils de contribuable</h2>
+    <div class="row g-3 text-center">
+        <div class="col-md-3"><a class="need-link h-100" href="{{ path('app_plan_marshall') }}"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i><span>Comprendre le Plan Marshall citoyen</span></a></div>
+        <div class="col-md-3"><a class="need-link h-100" href="{{ path('app_useful_contacts') }}"><i class="bi bi-envelope" aria-hidden="true"></i><span>À qui écrire ? Contacts utiles</span></a></div>
+        <div class="col-md-3"><a class="need-link h-100" href="{{ path('app_propositions') }}"><i class="bi bi-list-check" aria-hidden="true"></i><span>Soutenir des propositions d'économies</span></a></div>
+        <div class="col-md-3"><a class="need-link h-100" href="{{ path('app_missions') }}"><i class="bi bi-briefcase" aria-hidden="true"></i><span>Missions du Plan Marshall</span></a></div>
+    </div>
+</div></section>
+{% endblock %}

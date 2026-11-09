@@ -1,0 +1,261 @@
+nav.debates: Débats
+nav.propositions: Propositions
+nav.forgotten: À ne pas oublier
+nav.more: Plus
+nav.candidates: Candidats
+nav.monitoring: Suivi des institutions
+nav.agenda: Agenda
+nav.charter: Charte de paix
+nav.method: Méthode de débat
+nav.about: À propos
+nav.install: Installer
+nav.submit: Déposer une proposition
+nav.account: Mon compte
+nav.profile: Mon profil
+nav.my_propositions: Mes propositions
+nav.admin: Administration
+nav.logout: Se déconnecter
+nav.login: Se connecter
+nav.register: Créer mon compte (gratuit)
+nav.language: Langue
+nav.skip: Aller au contenu
+tab.home: Accueil
+tab.account: Compte
+tab.login: Connexion
+tab.submit: Déposer une proposition
+banner.text: Ici, on distingue les faits des opinions. Pas de haine, pas de violence.
+banner.link: Lire la charte de paix
+free.badge: Gratuit à vie
+free.text: Gratuit pour tous, pour toujours. Sans abonnement, sans publicité, sans revente de données.
+free.title: Gratuit, pour toujours
+free.body: 'La France en Débat est et restera gratuite pour tous les citoyens : aucun abonnement, aucun paiement pour s''inscrire, voter ou proposer, aucune publicité et aucune revente de données personnelles. Les fonctions de base ne seront jamais mises derrière un paiement.'
+free.faq_q: Est-ce vraiment gratuit ?
+lang.title: Choisissez votre langue
+lang.subtitle: Vous pourrez la changer à tout moment depuis le menu.
+lang.continue: Continuer en %language%
+lang.other_note: 'Cette langue n''a pas encore d''interface complète : le menu s''affiche en anglais. Utilisez la traduction automatique de votre navigateur pour le reste du site.'
+hero.title: Parlons-nous avant de nous opposer.
+hero.cta_propose: Déposer une proposition
+hero.cta_debate: Rejoindre un débat
+hero.cta_paths: Que voulez-vous faire ?
+footer.project: Le projet
+footer.legal: Légal
+footer.independent: Espace citoyen indépendant et pluraliste. Il n'est rattaché à aucun parti, aucun candidat ni aucune institution.
+footer.disclaimer: Les consultations de ce site n'ont aucune valeur d'élection officielle.
+legal.notice: Mentions légales
+legal.privacy: Confidentialité (RGPD)
+legal.terms: Conditions d'utilisation
+legal.contact: Contact
+path.nav: Parcours guidés
+path.title: Que voulez-vous faire ?
+path.subtitle: 'Choisissez votre situation : on vous guide pas à pas. Lire ne demande aucun compte.'
+path.no_account: Sans compte
+path.account: Compte gratuit requis
+path.start: Commencer
+path.step: Étape
+path.all: Tous les parcours
+path.go: Y aller
+path.discover.title: Je découvre
+path.discover.desc: Comprendre le site en trois minutes, sans compte.
+path.discover.s1: 'Lire la charte de paix : les règles du jeu.'
+path.discover.s2: Parcourir les propositions les plus soutenues.
+path.discover.s3: Voir ce qui a été dénoncé et ne doit pas être oublié.
+path.debate.title: Je veux débattre
+path.debate.desc: Donner mon avis et répondre calmement aux autres.
+path.debate.s1: Choisir un débat ouvert et lire les arguments.
+path.debate.s2: Créer un compte gratuit (une minute).
+path.debate.s3: Publier un argument, avec une source si possible.
+path.propose.title: Je veux proposer
+path.propose.desc: Déposer une idée concrète, relue avant publication.
+path.propose.s1: Vérifier que l'idée n'existe pas déjà.
+path.propose.s2: Créer un compte gratuit.
+path.propose.s3: Déposer la proposition avec une source.
+path.forgotten.title: Je veux que ça ne soit pas oublié
+path.forgotten.desc: Faire vivre une revendication déjà dénoncée.
+path.forgotten.s1: Lire les revendications à ne pas oublier.
+path.forgotten.s2: Soutenir ou amender une proposition liée.
+path.forgotten.s3: 'Voir les voies institutionnelles : pétition, RIP, élus.'
+path.follow.title: Je veux suivre les institutions
+path.follow.desc: Savoir qui a répondu, et qui est resté silencieux.
+path.follow.s1: Ouvrir le suivi des institutions.
+path.follow.s2: Consulter les candidats et leurs engagements.
+path.follow.s3: 'Ne pas manquer les rendez-vous : l''agenda.'
+
+guide.label: 'Marche à suivre'
+guide.steps: 'étapes'
+guide.page_title: 'Marche à suivre'
+guide.page_lede: 'Chaque fonction du site, expliquée en quelques étapes. Aucune connaissance technique requise.'
+guide.home.t: 'Bien commencer'
+guide.home.cta: 'Créer mon compte'
+guide.home.s1: 'Créez un compte gratuit (une minute, un e-mail suffit).'
+guide.home.s2: 'Choisissez votre porte d''entrée : débattre, proposer, donner votre avis ou agir auprès des institutions.'
+guide.home.s3: 'Revenez sur « Mon espace » : vous y voyez où en sont vos idées et ce qu''il vous reste à faire.'
+guide.communaute.t: 'Prendre part à la conversation'
+guide.communaute.cta: 'Ouvrir un fil'
+guide.communaute.s1: 'Lisez les règles à droite, elles tiennent en quatre lignes.'
+guide.communaute.s2: 'Cliquez sur « Ouvrez un fil » et écrivez votre sujet calmement, avec un titre précis.'
+guide.communaute.s3: 'Répondez aux autres en reformulant d''abord leur idée : c''est valorisé au classement.'
+guide.communaute.s4: 'Un message gênant ? Utilisez « Signaler », l''équipe répond avec un motif.'
+guide.debats.t: 'Participer à un débat'
+guide.debats.cta: 'Voir les débats'
+guide.debats.s1: 'Ouvrez un débat et lisez d''abord les faits sourcés.'
+guide.debats.s2: 'Ajoutez un argument pour, contre ou nuancé, avec une source si possible.'
+guide.debats.s3: 'Soutenez les arguments les plus solides, même s''ils vont contre votre avis.'
+guide.propositions.t: 'Déposer et faire avancer une proposition'
+guide.propositions.cta: 'Déposer une proposition'
+guide.propositions.s1: 'Cliquez sur « Déposer une proposition » : problème, mesure, coût estimé, qui peut agir.'
+guide.propositions.s2: 'Elle est relue puis publiée au registre (sous 48 h en général).'
+guide.propositions.s3: 'Partagez-la : chaque soutien la fait monter dans le classement.'
+guide.propositions.s4: 'Suivez-la dans « Mon espace » jusqu''à sa transmission aux élus.'
+guide.scrutins.t: 'Donner votre avis'
+guide.scrutins.cta: 'Voir les scrutins'
+guide.scrutins.s1: 'Choisissez un scrutin ouvert.'
+guide.scrutins.s2: 'Lisez les options et les arguments.'
+guide.scrutins.s3: 'Votez : une voix par personne, résultat consultatif et public.'
+guide.services.t: 'Trouver ou proposer un service'
+guide.services.cta: 'Voir les services'
+guide.services.s1: 'Parcourez les prestations (médiation, formation, accompagnement) et ouvrez celle qui convient.'
+guide.services.s2: 'Commandez : le paiement est sécurisé et gardé en attente.'
+guide.services.s3: 'Échangez avec le prestataire par la messagerie de la commande (pas de coordonnées à donner).'
+guide.services.s4: 'Confirmez quand la prestation est faite : le prestataire est alors payé. Un souci ? Demandez un remboursement.'
+guide.candidater.t: 'Obtenir un rôle'
+guide.candidater.cta: 'Candidater'
+guide.candidater.s1: 'Choisissez le droit : médiateur, acteur, élu ou association.'
+guide.candidater.s2: 'Expliquez en quelques lignes ce que vous apporterez.'
+guide.candidater.s3: 'L''équipe répond. Aucune ancienneté de compte n''est exigée.'
+guide.candidater.s4: 'Votre espace dédié apparaît dans « Mon espace ».'
+guide.acteurs.t: 'Agir auprès des institutions'
+guide.acteurs.cta: 'Voies institutionnelles'
+guide.acteurs.s1: 'Trouvez l''élu, l''institution ou le médiateur concerné.'
+guide.acteurs.s2: 'Utilisez la voie légale adaptée (pétition, saisine, courrier).'
+guide.acteurs.s3: 'Déposez ensuite le suivi sur la plateforme pour que tout le monde voie la réponse.'
+guide.plan.t: 'Appliquer le plan près de chez vous'
+guide.plan.cta: 'Déposer un résultat'
+guide.plan.s1: 'Repérez dans la page l''action qui correspond à votre situation (citoyen, association, élu, entreprise).'
+guide.plan.s2: 'Faites la première action de la liste « cette semaine ».'
+guide.plan.s3: 'Déposez le résultat comme proposition pour qu''il soit comparé et repris ailleurs.'
+home.live.title: 'En ce moment dans la communauté'
+home.live.join: 'Rejoindre l''Agora'
+home.live.members: 'citoyens inscrits'
+home.live.props: 'propositions publiées'
+home.live.threads: 'fils de discussion'
+home.live.ballots: 'scrutins ouverts'
+home.live.empty: 'L''Agora attend son premier fil. Ouvrez-le : un désaccord, une idée, une colère à transformer.'
+home.how.title: 'Comment ça marche, en trois pas'
+home.how.1t: '1. Je m''inscris'
+home.how.1d: 'Gratuit pour toujours, un e-mail suffit.'
+home.how.2t: '2. Je participe'
+home.how.2d: 'Débat, proposition, scrutin, pétition ou message à un élu.'
+home.how.2l: 'Choisir comment'
+home.how.3t: '3. Je suis le résultat'
+home.how.3d: '« Mon espace » montre où en est chaque idée.'
+home.how.3l: 'Voir toutes les marches à suivre'
+door.how: 'Comment :'
+door.debate: 'Lire les faits, puis ajouter un argument.'
+door.propose: 'Remplir 4 champs, relecture sous 48 h.'
+door.opinion: 'Choisir un scrutin, voter une fois.'
+door.petition: 'Ouvrir, lire, cliquer sur soutenir.'
+door.institutions: 'Choisir la voie légale et suivre la réponse.'
+door.candidates: 'Ouvrir deux fiches côte à côte.'
+eco.title: 'Relancer l''économie française : le Plan Marshall citoyen'
+eco.lede: 'Redresser sans casser : mesurer chaque dépense, mutualiser ce qui peut l''être, réinvestir les économies prouvées dans l''emploi, la production et les services essentiels.'
+eco.l1t: 'Mesurer'
+eco.l1d: 'Un diagnostic de coûts dans 3 à 5 structures volontaires.'
+eco.l2t: 'Mutualiser'
+eco.l2d: 'Achats groupés et fonctions support partagées, sans monopole.'
+eco.l3t: 'Réinvestir'
+eco.l3d: 'Chaque économie prouvée est réaffectée à l''emploi et aux missions utiles.'
+eco.cta: 'Lire le plan'
+eco.cta2: 'Agir cette semaine'
+nav.guide: 'Marche à suivre'
+contacts.title: 'Contacts utiles'
+contacts.lede: 'Qui contacter, pour quoi faire. Liens et numéros officiels, à vérifier sur le site de chaque organisme avant d''appeler.'
+nav.contacts: 'Contacts utiles'
+
+peace.title: 'Appel au calme et à la paix'
+peace.text: 'Dans un pays sous tension, la colère est légitime, la violence ne l''est jamais. Ici, on s''écoute, on source, on propose du concret, et on laisse à chacun un droit de réponse.'
+peace.cta: 'Lire l''appel et la charte'
+why.title: 'Pourquoi maintenant ?'
+why.lede: 'Des constats officiels et sourcés, pas des slogans. Chacun peut les vérifier puis en débattre.'
+why.f1: 'Déficit public 2025 : 5,0 % du PIB, objectif 2026 jugé menacé'
+why.f2: 'Dette publique : 3 460 milliards d''euros fin 2025'
+why.f3: 'Charge de la dette 2026 : environ 77 milliards d''euros, en hausse d''environ 12 milliards'
+why.src: 'Source : Cour des comptes, constat du 25 juin 2026, relayé par Public Sénat. À vérifier et actualiser avant citation.'
+why.more: 'Autres défis cités par les citoyens : pouvoir d''achat, emploi, services publics sous pression, confiance, transition énergétique, souveraineté.'
+tax.title: 'Contribuables : vous financez, vous avez le droit de comprendre'
+tax.lede: 'Chaque proposition doit dire combien elle coûte, qui paie et comment on mesure le résultat. Voici comment agir concrètement.'
+tax.c1t: 'Comprendre'
+tax.c1d: 'Les rapports de la Cour des comptes et les données ouvertes sur les dépenses publiques, en accès libre.'
+tax.c2t: 'Proposer une économie utile'
+tax.c2d: 'Appliquez la règle des cinq questions du Plan Marshall et déposez une proposition chiffrée avec sa source.'
+tax.c3t: 'Soutenir ce qui est mesuré'
+tax.c3d: 'Les propositions les mieux sourcées et chiffrées montent dans le classement.'
+tax.c4t: 'Demander des comptes'
+tax.c4d: 'Déposez une revendication sourcée : elle est suivie jusqu''à une réponse publique.'
+tax.cta1: 'Rapports de la Cour des comptes'
+tax.cta2: 'Données ouvertes (data.gouv.fr)'
+themes.title: 'Des solutions concrètes, par sujet'
+themes.lede: 'Choisissez un sujet : vous y trouvez les propositions publiées, classées par soutiens.'
+steps.title: 'Le parcours d''une proposition, en cinq étapes'
+steps.1: 'Le citoyen s''exprime : il propose une idée et vote sur les priorités.'
+steps.2: 'Les propositions sont relues et analysées, avec des experts et acteurs de terrain.'
+steps.3: 'Les solutions sont regroupées en projets concrets, chiffrés, avec un calendrier.'
+steps.4: 'Elles sont portées aux élus et institutions compétents.'
+steps.5: 'Les citoyens suivent les décisions et la suite donnée.'
+actors.title: 'Le rôle des acteurs publics et des contributeurs'
+actors.lede: 'Tous peuvent contribuer, avec les mêmes règles : source publique, faits vérifiables, droit de réponse.'
+actors.a1: 'Parlement (Assemblée nationale et Sénat)'
+actors.a1d: 'Examiner les propositions, débattre, voter les lois, contrôler leur mise en œuvre.'
+actors.a2: 'Collectivités territoriales'
+actors.a2d: 'Organiser les débats locaux, relayer les propositions, mettre en œuvre les actions.'
+actors.a3: 'Services de l''État'
+actors.a3d: 'Analyser la faisabilité, mobiliser les moyens, assurer la coordination.'
+actors.a4: 'Institutions européennes'
+actors.a4d: 'Intégrer les propositions, soutenir les financements, renforcer la coopération.'
+actors.a5: 'Associations, entreprises, citoyens'
+actors.a5d: 'Apporter l''expertise de terrain, tester, mesurer, partager les résultats.'
+actors.cta: 'Devenir acteur'
+claims.cta: 'Déposer une revendication sourcée'
+claims.rules: 'Règle commune à tous les acteurs, institutions et partis : source publique, faits vérifiables, aucune insulte, droit de réponse, relecture avant publication.'
+forces.title: 'Comprendre pour mieux choisir'
+forces.lede: 'Les grands courants politiques présentés avec la même structure, sans note ni classement. À vous de comparer.'
+forces.cta: 'Voir les forces politiques'
+run.title: 'Se présenter à la présidentielle de 2027 : les règles'
+run.c1: 'Être de nationalité française, avoir au moins 18 ans, être inscrit sur une liste électorale.'
+run.c2: 'Ne pas être déclaré inéligible, ni sous tutelle ou curatelle, avoir satisfait aux obligations du service national.'
+run.c3: 'Obtenir 500 parrainages d''élus, venant d''au moins 30 départements ou collectivités d''outre-mer, avec au plus un dixième dans un même département.'
+run.c4: 'Déposer auprès du Conseil constitutionnel une déclaration d''intérêts et une déclaration de patrimoine.'
+run.src: 'Source : LCP, conditions de candidature. Les dates officielles sont publiées par le Conseil constitutionnel.'
+run.cta: 'Conseil constitutionnel'
+final.title: 'Ensemble, faisons entendre notre voix'
+final.lede: 'La France en Débat, c''est vous, c''est nous, c''est maintenant.'
+final.w1: 'S''exprimer'
+final.w2: 'Débattre'
+final.w3: 'Voter'
+final.w4: 'Agir'
+final.w5: 'Construire demain'
+
+welcome.title: 'Bienvenue. Qui êtes-vous ?'
+welcome.lede: 'Choisissez votre profil : nous vous montrons vos premiers pas, en trois actions simples.'
+welcome.later: 'Plus tard, je veux d''abord visiter'
+welcome.next: 'Vos premiers pas'
+welcome.back: 'Changer de profil'
+welcome.banner: 'Nouveau ici ? Faites le tour en une minute et trouvez votre première action.'
+welcome.banner.cta: 'Me guider'
+welcome.banner.later: 'Plus tard'
+welcome.citoyen.t: 'Citoyen'
+welcome.citoyen.d: 'Je veux m''exprimer, comprendre et voter.'
+welcome.contribuable.t: 'Contribuable'
+welcome.contribuable.d: 'Je veux comprendre où va l''argent et proposer des économies utiles.'
+welcome.association.t: 'Association ou collectif'
+welcome.association.d: 'Je porte des initiatives et je cherche du soutien.'
+welcome.entreprise.t: 'Entreprise ou indépendant'
+welcome.entreprise.d: 'Je veux contribuer à la relance économique et trouver des partenaires.'
+welcome.elu.t: 'Élu ou institution'
+welcome.elu.d: 'Je veux écouter les citoyens et répondre.'
+welcome.expert.t: 'Prestataire ou expert'
+welcome.expert.d: 'Je propose un service (médiation, formation, accompagnement).'
+commons.notice: 'Ce travail n''appartient à personne : il est le fruit de la contribution de citoyens du monde entier. Il ne revient en droit à aucune personne en particulier, et la démarche doit continuer, portée par toutes et tous.'
+commons.title: 'Un bien commun'
+commons.text: 'Ce projet n''appartient pas à son initiateur. Chaque citoyen du monde qui propose, relit, traduit, vérifie ou débat en est co-auteur. Aucune personne ne peut s''en réclamer propriétaire par droit. Pour qu''il dure, la démarche doit continuer : contribuez, transmettez, invitez.'
+nav.submit.short: 'Proposer'

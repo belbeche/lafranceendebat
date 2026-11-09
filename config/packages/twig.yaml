@@ -1,0 +1,32 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_5_layout.html.twig']
+    globals:
+        site_name: 'La France en Débat'
+        site_signature: 'Dialogue. Paix. Démocratie.'
+        # Informations d'edition (mentions legales obligatoires). Elles viennent de l'environnement : ne jamais les ecrire en dur dans un depot public.
+        # Renseignez PUBLISHER_* dans .env.local (voir .env.example). Sans ces valeurs, la page mentions legales reste incomplete.
+        publisher:
+            name: '%env(default::PUBLISHER_NAME)%'
+            trade: '%env(default::PUBLISHER_TRADE)%'
+            legal_form: 'Entrepreneur individuel'
+            address: '%env(default::PUBLISHER_ADDRESS)%'
+            siret: '%env(default::PUBLISHER_SIRET)%'
+            vat: ''
+            vat_note: 'TVA non applicable, article 293 B du CGI'
+            mediator: ''
+            mediator_url: ''
+            ape: '6201Z'
+            phone: '%env(default::PUBLISHER_PHONE)%'
+            director: '%env(default::PUBLISHER_DIRECTOR)%'
+            rna: ''
+            email: '%env(PUBLISHER_EMAIL)%'
+            host_name: '%env(HOST_NAME)%'
+            host_address: '%env(HOST_ADDRESS)%'
+    date:
+        format: 'd/m/Y'
+        interval_format: '%%d jours'
+    number_format:
+        decimals: 0
+        decimal_point: ','
+        thousands_separator: ' '

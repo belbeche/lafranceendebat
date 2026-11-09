@@ -1,0 +1,6 @@
+{# Variables : mine (bool), editUrl, withdrawUrl (facultatif), token (facultatif), edited (date ou null), count #}
+{% if edited %}<span class="meta" title="Modifié {{ count }} fois">modifié le {{ edited|date('d/m/Y H:i') }}{{ count > 1 ? ' (' ~ count ~ ' fois)' : '' }}{% if historyUrl|default %} · <a href="{{ historyUrl }}">historique</a>{% endif %}</span>{% endif %}
+{% if (mine or is_granted('ROLE_MODERATOR')) and editUrl %}
+    <a class="act" href="{{ editUrl }}">Modifier</a>
+    {% if mine and withdrawUrl|default %}<details class="d-inline"><summary class="act d-inline" style="cursor:pointer">Retirer</summary><form method="post" action="{{ withdrawUrl }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token(token) }}"> <button class="btn btn-sm btn-outline-danger" type="submit">Confirmer le retrait</button></form></details>{% endif %}
+{% endif %}

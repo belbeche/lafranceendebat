@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ne plus être contacté{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:640px">
+    <h1 class="h3">Ne plus être contacté</h1>
+    <p>Votre adresse sera exclue définitivement de nos envois à destination des acteurs publics.</p>
+    <form method="post" action="{{ path('app_actor_unsubscribe', {id: id, token: token}) }}"><button class="btn btn-bleu">Confirmer</button></form>
+</div></section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Propositions des groupes{% endblock %}
+{% block admin %}
+<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="h3 mb-0">Propositions des groupes ({{ total }})</h1><a class="btn btn-bleu" href="{{ path('admin_programme_new') }}">Ajouter une mesure de programme</a></div>
+<p class="text-muted">Import officiel : <code>php bin/console app:programmes:import --legislature=17</code> (Assemblée nationale, licence ouverte). Hypothèses IA par lots : <code>php bin/console app:programmes:analyser --limit=10</code> (à valider ici avant publication). Les mêmes règles s'appliquent à tous les groupes.</p>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3"><select name="groupe" class="form-select"><option value="">Tous les groupes</option>{% for g in groups %}<option value="{{ g.code }}" {{ f.groupe|default('') == g.code ? 'selected' }}>{{ g.code }} ({{ g.n }})</option>{% endfor %}</select>{% if f.groupe|default('') %}<a class="small" href="{{ path('admin_programme_party', {code: f.groupe}) }}">Liens officiels de ce groupe</a>{% endif %}</div>
+    <div class="col-md-4"><input name="q" class="form-control" placeholder="Mot du titre" value="{{ f.q|default('') }}"></div>
+    <div class="col-md-3 d-flex align-items-center"><div class="form-check"><input class="form-check-input" type="checkbox" id="sc" name="sans_chiffrage" value="1" {{ f.sans_chiffrage|default(false) ? 'checked' }}><label class="form-check-label" for="sc">Sans chiffrage</label></div></div>
+    <div class="col-md-2"><button class="btn btn-outline-dark w-100">Filtrer</button></div>
+</form>
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>Groupe</th><th>Titre</th><th>Thème</th><th>Chiffrage</th><th>Hypothèse IA</th><th>Publié</th><th></th></tr></thead><tbody>
+{% for p in items %}<tr><td>{{ p.groupCode }}</td><td>{{ p.title|slice(0, 90) }}</td><td>{{ p.theme ?: '-' }}</td>
+<td>{{ p.costed ? p.costMillions ~ ' M€ (' ~ p.costCredibility ~ ')' : '-' }}</td><td>{{ p.aiAnalysis ? (p.aiApproved ? 'publiée' : 'à valider') : '-' }}</td><td>{{ p.published ? 'oui' : 'non' }}</td><td><a class="btn btn-sm btn-outline-dark" href="{{ path('admin_programme_edit', {id: p.id}) }}">Modifier</a></td></tr>
+{% else %}<tr><td colspan="7" class="text-muted">Aucune proposition. Lancez l'import ou ajoutez une mesure.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

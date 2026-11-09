@@ -1,0 +1,45 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Tableau de bord{% endblock %}
+{% block admin %}
+<header class="d-flex flex-wrap gap-3 justify-content-between align-items-center mb-3">
+  <div><h1 class="h3 mb-0">Tableau de bord</h1><p class="text-muted mb-0">Tout ce qui demande une décision aujourd'hui, au même endroit.</p></div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-bleu" href="{{ path('admin_approvals') }}">Ouvrir la file « À valider »</a>
+    <form method="post" action="{{ path('admin_backups_run') }}"><input type="hidden" name="_token" value="{{ csrf_token('backup_run') }}"><button class="btn btn-outline-primary">Sauvegarder maintenant</button></form>
+  </div>
+</header>
+
+<section class="adm-status" aria-label="État du système">
+  <strong class="w-100">État du système</strong>
+  <span><span class="adm-dot"></span>Site en ligne</span>
+  <span><span class="adm-dot {{ backupState and backupState.ok and not backupProblems ? '' : 'bad' }}"></span>{% if backupState %}Sauvegarde du {{ backupState.at|date('d/m H:i') }} : {{ backupState.ok ? 'réussie' : 'échec' }}{% else %}Aucune sauvegarde{% endif %}</span>
+  <span><span class="adm-dot {{ openReportsCount > 0 ? 'warn' : '' }}"></span>{{ openReportsCount }} signalement{{ openReportsCount > 1 ? 's' }} ouvert{{ openReportsCount > 1 ? 's' }}</span>
+  {% if backupProblems %}<span class="w-100 small text-danger">{{ backupProblems|join(' / ') }}</span>{% endif %}
+</section>
+
+<section class="adm-todo" aria-label="À traiter">
+  <a class="hot" href="{{ path('admin_approvals') }}"><b>{{ approvalsTotal }}</b>à valider<br><small class="text-muted">positions, analyses, mesures, hypothèses IA</small></a>
+  <a class="hot" href="{{ path('admin_moderation') }}"><b>{{ pendingArgumentsCount + pendingPropositionsCount }}</b>contenus à relire<br><small class="text-muted">dont {{ openReportsCount }} signalement{{ openReportsCount > 1 ? 's' }}</small></a>
+  <a href="{{ path('admin_role_requests') }}"><b>{{ pendingRolesCount }}</b>demandes de rôle</a>
+  <a href="{{ path('admin_actors') }}"><b>{{ actorsPending }}</b>acteurs publics actifs<br><small class="text-muted">avant tout envoi</small></a>
+  <a href="{{ path('admin_rubriques') }}"><b>{{ missionsPending + pendingTribunesCount + draftDebatsCount }}</b>annonces, tribunes et débats à relire</a>
+</section>
+
+<div class="row g-3 mb-3">
+  {% for label, value in {'Débats ouverts': openDebatsCount, 'Propositions publiées': validatedCount, 'Comptes': totalUsers, 'Visiteurs aujourd\'hui': todayVisitors, 'Visiteurs 7 jours': lastWeekVisitors, 'Visiteurs 30 jours': lastMonthVisitors} %}
+    <div class="col-6 col-md-2"><div class="adm-card mb-0"><p class="h4 mb-0">{{ value }}</p><p class="small text-muted mb-0">{{ label }}</p></div></div>
+  {% endfor %}
+</div>
+
+<section class="adm-card" aria-label="Raccourcis">
+  <strong class="d-block mb-2">Contrôle en un clic</strong>
+  <div class="adm-quick">
+    <a href="{{ path('admin_users') }}">Comptes : suspendre, envoyer un lien de mot de passe</a>
+    <a href="{{ path('admin_security') }}">Bloquer une IP, journal de sécurité</a>
+    <a href="{{ path('admin_rubriques') }}">Mode maintenance et vider les caches</a>
+    <a href="{{ path('admin_debat_index') }}">Mettre un débat en pause</a>
+    <a href="{{ path('admin_moderation_incidents') }}">Propos bloqués</a>
+    <a href="{{ path('admin_statistics') }}">Statistiques</a>
+  </div>
+</section>
+{% endblock %}

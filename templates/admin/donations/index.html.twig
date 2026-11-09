@@ -1,0 +1,30 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Contributions de soutien{% endblock %}
+{% block admin %}
+<div class="d-flex justify-content-between align-items-center mb-3"><h1 class="h3 mb-0">Contributions de soutien</h1><a class="btn btn-outline-dark" href="{{ path('admin_donations_export') }}">Export CSV</a></div>
+<div class="row g-3 mb-3">
+    {% for s, label in labels %}
+    <div class="col-md-4"><a class="carte d-block text-decoration-none text-reset h-100" href="{{ path('admin_donations', {statut: s}) }}">
+        <div class="small text-muted">{{ label }}</div>
+        <div class="h4 mb-0">{{ stats[s].count }} · {{ (stats[s].cents / 100)|number_format(2, ',', ' ') }} €</div>
+        {% if s == 'attente_paiement' %}<div class="small text-muted">Pas du chiffre d'affaires : paiement non terminé.</div>{% endif %}
+        {% if s == 'payee' %}<div class="small text-muted">Seul total à compter en recettes.</div>{% endif %}
+    </a></div>
+    {% endfor %}
+</div>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3"><select name="statut" class="form-select"><option value="">Tous les statuts</option>{% for s, label in labels %}<option value="{{ s }}" {{ f.statut == s ? 'selected' }}>{{ label }}</option>{% endfor %}</select></div>
+    <div class="col-md-5"><input name="q" class="form-control" placeholder="Nom ou e-mail" value="{{ f.q }}"></div>
+    <div class="col-md-2"><button class="btn btn-outline-dark w-100">Filtrer</button></div>
+</form>
+<div class="table-responsive"><table class="table align-middle"><thead><tr><th>N°</th><th>Date</th><th>Contributeur</th><th>Montant</th><th>Statut</th><th></th></tr></thead><tbody>
+{% for d in items %}<tr><td>{{ d.id }}</td><td>{{ d.createdAt|date('d/m/Y H:i') }}</td><td>{{ d.donorName }}<br><small class="text-muted">{{ d.donorEmail }}</small></td>
+<td class="text-nowrap">{{ (d.amountCents / 100)|number_format(2, ',', ' ') }} €</td><td>{{ labels[d.status]|default(d.status) }}</td>
+<td class="text-nowrap"><a class="btn btn-sm btn-outline-dark" href="{{ path('admin_donation_show', {id: d.id}) }}">Voir</a>
+{% if d.status != 'payee' %}<form method="post" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('donation' ~ d.id) }}">
+{% if d.status == 'attente_paiement' %}<button class="btn btn-sm btn-outline-secondary" formaction="{{ path('admin_donation_cancel', {id: d.id}) }}">Annuler</button>{% endif %}
+<button class="btn btn-sm btn-outline-danger" formaction="{{ path('admin_donation_delete', {id: d.id}) }}" onclick="return confirm('Supprimer définitivement cette contribution non payée ?')">Supprimer</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6" class="text-muted">Aucune contribution.</td></tr>{% endfor %}
+</tbody></table></div>
+<p class="small text-muted">Une contribution en attente reste ainsi tant que Stripe n'a pas confirmé le paiement (webhook). Annulez ou supprimez les anciennes tentatives abandonnées. Une contribution payée est une pièce comptable conservée 10 ans : elle ne peut pas être supprimée ici.</p>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Analyses sourcées{% endblock %}
+{% block admin %}
+<h1 class="h3">Analyses sourcées</h1>
+<table class="table"><tbody>{% for t in items %}<tr><td>{{ t.title }}<br><span class="small text-muted">{{ t.aiGenerated ? 'rédigée par l\'IA' : 'rédigée par l\'éditeur' }} · mise à jour le {{ t.updatedAt|date('d/m/Y') }}</span></td>
+<td>{% if t.approved %}<a href="{{ path('app_thesis', {slug: t.slug}) }}">Voir</a>{% endif %}</td>
+<td><form method="post" action="{{ path('admin_thesis_toggle', {id: t.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('thesis_admin') }}"><button class="btn btn-sm btn-outline-primary">{{ t.approved ? 'Retirer de la publication' : 'Approuver et publier' }}</button></form></td></tr>{% else %}<tr><td>Aucune analyse. Lancer <code>php bin/console app:theses:rediger docs-publics/theses/lyceens-feuille-de-route-2026.json</code>.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

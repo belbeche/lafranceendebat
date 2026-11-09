@@ -1,0 +1,47 @@
+/* Accueil : mise en page de l'en-tete et des portes d'entree. */
+.hx { padding-top: 3.5rem; padding-bottom: 2rem; }
+.hx-grid { display: grid; gap: 2.5rem; grid-template-columns: 1fr; align-items: center; }
+@media (min-width: 992px) { .hx-grid { grid-template-columns: 1.6fr 1fr; } }
+.hx .hero-title { font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.05; max-width: 16ch; }
+.hx-lede { font-size: 1.2rem; max-width: 52ch; margin-top: 1rem; color: #1b1f33; }
+.hx-panel { background: #002395; color: #fff; padding: 1.75rem; border-radius: 4px; border-bottom: 6px solid #ED2939; }
+.hx-panel-title { font-weight: 700; margin: 0 0 1rem; }
+.hx-stats { margin: 0 0 1rem; }
+.hx-stats dd { font-size: 3rem; font-weight: 700; line-height: 1; margin: 0; }
+.hx-stats dt { font-weight: 400; opacity: .9; }
+.hx-note { margin: 0; font-size: .95rem; opacity: .92; }
+.hx-doors { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .hx-doors { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 992px) { .hx-doors { grid-template-columns: repeat(3, 1fr); } }
+.hx-door { display: block; padding: 1.25rem 1.25rem 1.25rem 1.5rem; background: #fff; border: 1px solid #d5d9e6; border-left: 5px solid #002395; text-decoration: none; color: inherit; border-radius: 3px; }
+.hx-door strong { display: block; font-size: 1.15rem; color: #002395; margin-bottom: .25rem; }
+.hx-door span { display: block; color: #3a3f55; }
+.hx-door:hover, .hx-door:focus-visible { border-left-color: #ED2939; box-shadow: 0 2px 10px rgba(0,35,149,.12); }
+.hx-door:focus-visible { outline: 3px solid #ED2939; outline-offset: 2px; }
+
+/* Contact */
+.contact-carte { border-top: 6px solid #002395; border-bottom: 3px solid #ED2939; }
+.contact-carte .form-label { font-weight: 700; }
+.contact-carte .form-control, .contact-carte .form-select { border-radius: 3px; border-color: #b9bfd3; padding: .7rem .85rem; }
+.contact-carte .form-control:focus, .contact-carte .form-select:focus { border-color: #002395; box-shadow: 0 0 0 .2rem rgba(0,35,149,.2); }
+.contact-aside dt { font-weight: 700; color: #002395; margin-top: .75rem; }
+.contact-aside dd { margin: 0; }
+
+/* Banniere d'accueil */
+.hx { padding: 0; }
+.hx-banner-wrap { background: #f4f3ef; border-bottom: 1px solid #e3e1d9; }
+.hx-banner { display: block; width: 100%; height: auto; max-height: 62vh; object-fit: cover; object-position: center; }
+.hx-actions { max-width: 760px; margin: 0 auto; padding: 1.75rem 0 2rem; text-align: center; }
+.hx-actions .hx-lede { margin: 0 auto 1.25rem; font-size: 1.15rem; }
+.hx-actions .d-flex { justify-content: center; }
+.hx-meta { margin-top: 1rem; color: #4a4f66; font-size: .95rem; }
+
+/* Fil de conversation : composeur rapide */
+.compose { display: flex; gap: .75rem; align-items: flex-start; background: #fff; border: 1px solid #d5d9e6; border-radius: 6px; padding: .9rem; }
+.compose-avatar { flex: 0 0 auto; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: #002395; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.compose-body { flex: 1 1 auto; min-width: 0; }
+.compose textarea { border: 0; background: #f4f6fb; border-radius: 6px; resize: vertical; min-height: 4.5rem; }
+.compose textarea:focus { outline: 3px solid rgba(0,35,149,.3); background: #fff; }
+.compose details { margin-top: .5rem; }
+.compose summary { cursor: pointer; color: #002395; font-weight: 600; }
+.compose-actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: .6rem; flex-wrap: wrap; }

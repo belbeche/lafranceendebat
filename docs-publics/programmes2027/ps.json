@@ -1,0 +1,297 @@
+{
+ "edition": "2027",
+ "group_code": "PS",
+ "group_name": "Parti socialiste (Projet socialiste adopté en juin 2026, projet de parti et non programme de candidat)",
+ "group_color": "#E4003B",
+ "source_url": "https://projet-socialiste.fr/",
+ "measures": [
+  {
+   "title": "Réhausser le SMIC à 1 690 € net et ouvrir une conférence sociale pour augmenter les salaires au-dessus du SMIC",
+   "summary": "Réhausser le SMIC à 1 690 € net et ouvrir une conférence sociale pour augmenter les salaires au-dessus du SMIC. (Projet socialiste, section « Redonner du sens et de la valeur au travail »)",
+   "theme": "Emploi et formation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#redonner-du-sens-et-de-la-valeur-au-travail"
+  },
+  {
+   "title": "Rendre aux salariés et aux travailleurs indépendants la maîtrise de leur temps",
+   "summary": "Rendre aux salariés et aux travailleurs indépendants la maîtrise de leur temps . Favoriser, par la négociation sociale, les innovations organisationnelles permettant une meilleure articulation entre vie professionnelle et vie personnelle, notamment l’expérimentation de la semaine de quatre jours et la réduction progressive du temps de travail lorsque les conditions économiques et sociales le permettent. (Projet socialiste, section « Avoir du temps libre »)",
+   "theme": "Emploi et formation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#avoir-du-temps-libre"
+  },
+  {
+   "title": "Après l’abrogation de la réforme Borne, convoquer une conférence sociale pour définir un nouveau système de retraite par répartition qui permette à chacun de profiter d’une retraite en bonne santé",
+   "summary": "Après l’abrogation de la réforme Borne, convoquer une conférence sociale pour définir un nouveau système de retraite par répartition qui permette à chacun de profiter d’une retraite en bonne santé: proposer de construire un droit à la retraite calculé en fonction d’une durée de cotisation fixée à 43 annuités, réductible en fonction de la pénibilité des métiers exercés tout au long de sa vie. Les critères de pénibilité seront les 10 répertoriés dans la réforme Touraine de… (Projet socialiste, section « Pouvoir profiter de sa retraite »)",
+   "theme": "Emploi et formation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#pouvoir-profiter-de-sa-retraite"
+  },
+  {
+   "title": "Faire baisser les dépenses des artisans-commerçants en encadrant les prix de l’énergie et celui des loyers, comme nous l’avons fait pour le logement avec succès",
+   "summary": "Faire baisser les dépenses des artisans-commerçants en encadrant les prix de l’énergie et celui des loyers, comme nous l’avons fait pour le logement avec succès. (Projet socialiste, section « Défendre les artisans et commerçants »)",
+   "theme": "Emploi et formation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#d-fendre-les-artisans-et-commer-ants"
+  },
+  {
+   "title": "Face à la crise du logement, renouer avec une politique ambitieuse de construction de nouveaux logements, dont un tiers de logements sociaux, en mobilisant le foncier disponible, les logements…",
+   "summary": "Face à la crise du logement, renouer avec une politique ambitieuse de construction de nouveaux logements, dont un tiers de logements sociaux, en mobilisant le foncier disponible, les logements vacants, la rénovation du parc existant et la reconversion des bureaux. Soutenir les innovations favorisant les nouvelles façons de se loger (colocation, résidences intergénérationnelles, foyers, etc.). (Projet socialiste, section « Se loger »)",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#se-loger"
+  },
+  {
+   "title": "Réduire la facture d’électricité des Français et les protéger contre la précarité énergétique",
+   "summary": "Réduire la facture d’électricité des Français et les protéger contre la précarité énergétique en investissant massivement dans la production d’énergie propre, sûre et bon marché. (Projet socialiste, section « Se chauffer et se rafraîchir »)",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#se-chauffer-et-se-rafra-chir"
+  },
+  {
+   "title": "Permettre à chacun de se nourrir sainement, à travers une fiscalité favorable (TVA réduite) aux produits alimentaires de base, non transformés pour en diminuer le coût",
+   "summary": "Permettre à chacun de se nourrir sainement, à travers une fiscalité favorable (TVA réduite) aux produits alimentaires de base, non transformés pour en diminuer le coût. Soutenir massivement les acteurs de proximité et l’aide alimentaire solidaire. (Projet socialiste, section « Se nourrir »)",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#se-nourrir"
+  },
+  {
+   "title": "Opérer une nationalisation des autoroutes à travers la création d’un établissement public national (de type EPIC) –",
+   "summary": "Opérer une nationalisation des autoroutes à travers la création d’un établissement public national (de type EPIC) – « Routes de France » – pour gérer les autoroutes et les routes nationales qui reprendrait progressivement les 9 000 km d’autoroutes concédées, à l’expiration des contrats actuels. Stopper les concessions privées coûteuses, baisser les péages et réinvestir les bénéfices dans l’entretien du réseau et la mobilité durable. (Projet socialiste, section « Se déplacer »)",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#se-d-placer"
+  },
+  {
+   "title": "Planifier la réindustrialisation, avec une loi de programmation 2027-2032 sur la réindustrialisation et la souveraineté, définie par l’État en partenariat avec les Régions et les partenaires sociaux",
+   "summary": "Planifier la réindustrialisation, avec une loi de programmation 2027-2032 sur la réindustrialisation et la souveraineté, définie par l’État en partenariat avec les Régions et les partenaires sociaux. Fixer sur cinq ans des objectifs quantifiés d’investissement et de production sur une liste ciblée de secteurs stratégiques associés à des moyens budgétaires et des prévisions énergétiques. Définir les technologies stratégiques pour l’avenir, suivant une logique fondée sur… (Projet socialiste, section « Investir dans les secteurs stratégiques »)",
+   "theme": "Industrie et recherche",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#investir-dans-les-secteurs-strat-giques"
+  },
+  {
+   "title": "Doubler la part de l’ESS dans l’économie et l’emploi d’ici 2050",
+   "summary": "Doubler la part de l’ESS dans l’économie et l’emploi d’ici 2050, en réservant certains secteurs aux acteurs de l’ESS (grand âge, petite enfance) en collaboration avec le secteur public, et en renforçant sa place dans les secteurs d’avenir (numérique, énergies renouvelables, construction, mobilités) et non délocalisables (économie circulaire, valorisation des déchets). Créer un réseau national d’incubateurs et de conseil pour les entreprises de l’ESS. Favoriser la reprise… (Projet socialiste, section « Faire de l’économie sociale et solidaire un moteur de l’économie de demain »)",
+   "theme": "Industrie et recherche",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#faire-de-l-conomie-sociale-et-solidaire-un-moteur-de-l-conomie-de-demain"
+  },
+  {
+   "title": "Faire évoluer les traités européens pour renoncer au modèle néolibéral. Refuser la marchandisation des services publics. Réformer les règles budgétaires européennes pour qu’elles favorisent les…",
+   "summary": "Faire évoluer les traités européens pour renoncer au modèle néolibéral. Refuser la marchandisation des services publics. Réformer les règles budgétaires européennes pour qu’elles favorisent les investissements d’avenir et la qualité des services publics plutôt que l’austérité comptable. En particulier, les nouvelles règles budgétaires ne se fonderont plus sur des cibles chiffrées sans fondement économique. Elles se concentreront sur la trajectoire de soutenabilité de la… (Projet socialiste, section « Défendre un modèle social, écologique et démocratique européen »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#d-fendre-un-mod-le-social-cologique-et-d-mocratique-europ-en"
+  },
+  {
+   "title": "Construire une défense européenne autonome",
+   "summary": "Construire une défense européenne autonome (Projet socialiste, section « Construire la défense de demain, pour l’Europe et ses nations »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#construire-la-d-fense-de-demain-pour-l-europe-et-ses-nations"
+  },
+  {
+   "title": "Donner à l’Europe les moyens de ses ambitions en multipliant le budget européen par trois, à hauteur de 3 % du PIB européen, via de nouvelles ressources propres",
+   "summary": "Donner à l’Europe les moyens de ses ambitions en multipliant le budget européen par trois, à hauteur de 3 % du PIB européen, via de nouvelles ressources propres sans augmenter les impôts des classes moyennes et populaires. Pour parvenir à cet objectif, augmenter les ressources propres de l’Europe grâce au rehaussement des droits de douane sur les filières stratégiques, à une imposition minimale sur le patrimoine des grandes fortunes, à une taxe sur les produits financiers… (Projet socialiste, section « Donner à l’Europe les moyens de ses ambitions »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#donner-l-europe-les-moyens-de-ses-ambitions"
+  },
+  {
+   "title": "Encadrer « l’économie de l’attention » et la marchandisation des comportements en ligne pour défendre l’autodétermination cognitive et le libre arbitre à l’ère du numérique",
+   "summary": "Encadrer « l’économie de l’attention » et la marchandisation des comportements en ligne pour défendre l’autodétermination cognitive et le libre arbitre à l’ère du numérique en interdisant les techniques visant à fabriquer une dépendance aux réseaux sociaux et les dispositifs conçus pour empêcher la déconnexion. Strictement limiter la publicité ciblée, afin de réduire le profilage massif et les manipulations politiques. Rendre les algorithmes transparents et réellement… (Projet socialiste, section « Échapper aux nouvelles servitudes numériques »)",
+   "theme": "Industrie et recherche",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#-chapper-aux-nouvelles-servitudes-num-riques"
+  },
+  {
+   "title": "Bâtir une Intelligence Artificielle éthique, souveraine et transparente",
+   "summary": "Bâtir une Intelligence Artificielle éthique, souveraine et transparente, en créant un pôle public de l’intelligence artificielle autour de l’INRIA, associant les grands organismes de recherche (CNRS, Max Planck, CNR, etc.), les universités et des entreprises chargé de mettre en œuvre la stratégie nationale en matière d’IA, sur le modèle du CERN. Prioriser les outils d’IA open source et souverains dans les services publics et les entreprises stratégiques, avec une sortie… (Projet socialiste, section « Mettre l’intelligence artificielle au service du bien commun »)",
+   "theme": "Industrie et recherche",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-libres/#mettre-l-intelligence-artificielle-au-service-du-bien-commun"
+  },
+  {
+   "title": "Faire de la prévention une priorité de notre politique de santé, avec un pilotage interministériel et des moyens à la hauteur",
+   "summary": "Faire de la prévention une priorité de notre politique de santé, avec un pilotage interministériel et des moyens à la hauteur. Faire passer les dépenses consacrées à la prévention de 4 % à 8 % des dépenses globales de santé, pour déployer des actions de prévention autour de grandes priorités comme la prévention des cancers et leur dépistage précoce, la prévention des maladies cardiovasculaires et la politique vaccinale. Investir massivement dans la recherche fondamentale… (Projet socialiste, section « Prévenir plutôt que guérir »)",
+   "theme": "Santé",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#pr-venir-plut-t-que-gu-rir"
+  },
+  {
+   "title": "Lutter contre les déserts médicaux en régulant l’installation des médecins libéraux",
+   "summary": "Lutter contre les déserts médicaux en régulant l’installation des médecins libéraux– flécher leur installation dans les zones sous-dotées, la rendre impossible dans les zones déjà bien pourvues, sauf en cas de remplacement et de départ à la retraite – en renforçant les formations en santé pour mettre fin aux pénuries de médecins, infirmiers, kinésithérapeutes, manipulateurs radio, dentiste, etc. et en réformant le numerus apertus pour les voies médicales et en facilitant… (Projet socialiste, section « Se faire soigner : un droit fondamental à garantir »)",
+   "theme": "Santé",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#se-faire-soigner-un-droit-fondamental-garantir"
+  },
+  {
+   "title": "Nous avons besoin d’un plan national prioritaire sur la santé mentale",
+   "summary": "Nous avons besoin d’un plan national prioritaire sur la santé mentale. (Projet socialiste, section « Le combat pour la santé mentale »)",
+   "theme": "Santé",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#le-combat-pour-la-sant-mentale"
+  },
+  {
+   "title": "Renforcer les moyens alloués aux soins palliatifs en France",
+   "summary": "Renforcer les moyens alloués aux soins palliatifs en France : (Projet socialiste, section « Développer l’accès aux soins palliatifs et libérer la fin de vie »)",
+   "theme": "Santé",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#d-velopper-l-acc-s-aux-soins-palliatifs-et-lib-rer-la-fin-de-vie"
+  },
+  {
+   "title": "Nettoyer l’air que nous respirons",
+   "summary": "Nettoyer l’air que nous respirons. (Projet socialiste, section « Tous contaminés : éradiquer les pollutions et les perturbateurs endocriniens »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#tous-contamin-s-radiquer-les-pollutions-et-les-perturbateurs-endocriniens"
+  },
+  {
+   "title": "Créer un fonds de sécurité climatique dédié aux risques environnementaux et climatiques",
+   "summary": "Créer un fonds de sécurité climatique dédié aux risques environnementaux et climatiques. Financé par l’impôt, il assurera la prise en charge des dommages corporels et des impacts sanitaires liés au changement climatique, à la perte de biodiversité et aux pollutions. Il indemnisera les dommages matériels et les pertes d’activité non assurables, contribuera au financement des politiques d’adaptation et des actions préventives face aux risques climatiques. Sa gouvernance… (Projet socialiste, section « Construire un fonds de sécurité climatique et environnemental »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#construire-un-fonds-de-s-curit-climatique-et-environnemental"
+  },
+  {
+   "title": "Faire de l’adaptation au changement climatique une mission régalienne planifiée",
+   "summary": "Faire de l’adaptation au changement climatique une mission régalienne planifiée, qui sera déclinée par territoires, avec une distribution juste des ressources et des moyens aux territoires les plus touchés. (Projet socialiste, section « S’adapter au réchauffement climatique »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#s-adapter-au-r-chauffement-climatique"
+  },
+  {
+   "title": "Renforcer la prévention et la détection précoce des vulnérabilités physiques et mentales, ou des situations d’isolement",
+   "summary": "Renforcer la prévention et la détection précoce des vulnérabilités physiques et mentales, ou des situations d’isolement. Créer un rendez-vous de prévention à 55 ans puis à 75 ans. Financer et structurer le repérage par les acteurs du quotidien (postiers, gardiens d’immeubles, CCAS) ; inclure l’aide aux personnes âgées dans les missions de service public de la poste. Permettre aux CCAS de disposer des moyens pour développer des espaces autogérés d’entraide/atelier… (Projet socialiste, section « Prévenir la perte d’autonomie »)",
+   "theme": "Retraites et solidarités",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#pr-venir-la-perte-d-autonomie"
+  },
+  {
+   "title": "Sortir le grand-âge de la marchandisation pour développer une offre de qualité, non lucrative et de proximité",
+   "summary": "Sortir le grand-âge de la marchandisation pour développer une offre de qualité, non lucrative et de proximité. Mettre en place un taux d’encadrement adéquat afin de prévenir la maltraitance institutionnelle, investir dans les EHPAD publics et aligner les établissements commerciaux sur un modèle privé non-lucratif. Faire face à la crise du personnel par la revalorisation des rémunérations et l’amélioration des conditions de travail (reconnaissance de la pénibilité, etc.). (Projet socialiste, section « Repenser le modèle de l’accueil de la personne âgée en établissement »)",
+   "theme": "Retraites et solidarités",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#repenser-le-mod-le-de-l-accueil-de-la-personne-g-e-en-tablissement"
+  },
+  {
+   "title": "Transformer l’accompagnement du grand âge en un service public universel de l’autonomie",
+   "summary": "Transformer l’accompagnement du grand âge en un service public universel de l’autonomie : fusionner l’APA et les soins en une prestation unique de Sécurité sociale, sans barrière d’âge ni de ressources pour le volet dépendance. (Projet socialiste, section « Réduire le reste à charge des familles »)",
+   "theme": "Retraites et solidarités",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#r-duire-le-reste-charge-des-familles"
+  },
+  {
+   "title": "Renforcer les moyens matériels et humains du service public de la sécurité",
+   "summary": "Renforcer les moyens matériels et humains du service public de la sécurité, en améliorant leurs conditions de travail, notamment par la fourniture d’équipements modernes, et renforcer l’accompagnement psychologique face au stress et aux situations traumatisantes. (Projet socialiste, section « Garantir le droit de chacun à la sûreté, partout »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#garantir-le-droit-de-chacun-la-s-ret-partout"
+  },
+  {
+   "title": "Réformer la doctrine d’emploi de la police nationale",
+   "summary": "Réformer la doctrine d’emploi de la police nationale, ses missions, ses priorités et ses modes d’action pour en faire une police de contact, agissant en proximité pour favoriser la coopération, la dissuasion et le dialogue. Refonder une doctrine du maintien de l’ordre respectueuse des libertés fondamentales qui renonce aux équipements mutilants et qui favorise le recueil des preuves plus que l’interpellation. S’inspirer des doctrines mises en place dans d’autres pays… (Projet socialiste, section « Restaurer la confiance des Français dans leur police »)",
+   "theme": "Justice",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#restaurer-la-confiance-des-fran-ais-dans-leur-police"
+  },
+  {
+   "title": "Créer un plan national de prévention de la délinquance",
+   "summary": "Créer un plan national de prévention de la délinquance articulant écoles, justice, collectivités et associations et financer durablement les politiques locales de prévention par un fonds national dédié, sous pilotage interministériel. Intégrer les départements dans les politiques de prévention de la délinquance, pour en faire les coordonnateurs des politiques d’éducation spécialisée impliquant les acteurs de la justice, de la sécurité publique, de l’accompagnement des… (Projet socialiste, section « Prévenir la délinquance »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#pr-venir-la-d-linquance"
+  },
+  {
+   "title": "Lancer une convention citoyenne sur l’usage des drogues et la légalisation du cannabis",
+   "summary": "Lancer une convention citoyenne sur l’usage des drogues et la légalisation du cannabis. La légalisation devra aller de pair avec un contrôle étatique strict sur la production et la commercialisation de cannabis, et le renforcement de la prévention des addictions. (Projet socialiste, section « Mettre fin au narcotrafic et lutter contre la criminalité organisée »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#mettre-fin-au-narcotrafic-et-lutter-contre-la-criminalit-organis-e"
+  },
+  {
+   "title": "Proposer un service public de cybersécurité, à travers l’ANSSI",
+   "summary": "Proposer un service public de cybersécurité, à travers l’ANSSI, pour accompagner les collectivités locales, les administrations des petites et moyennes entreprises et les particuliers face aux cyberattaques. Cette agence développera une plateforme publique unique d’alerte et d’assistance aux victimes de cyberattaques. Elle anticipera les besoins de demain tels que la lutte contre les deepfakes, la cryptographie post-quantique, la lutte contre les IA malveillantes et la… (Projet socialiste, section « Cybersécurité : une nouvelle frontière »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#cybers-curit-une-nouvelle-fronti-re"
+  },
+  {
+   "title": "Lancer les états généraux des professions judiciaires afin de permettre à tous les acteurs de participer à la refondation de notre système judiciaire. Faire du ministère de la Justice le ministère…",
+   "summary": "Lancer les états généraux des professions judiciaires afin de permettre à tous les acteurs de participer à la refondation de notre système judiciaire. Faire du ministère de la Justice le ministère des libertés publiques, conseil de l’ensemble de l’action gouvernementale. (Projet socialiste, section « Réparer la Justice »)",
+   "theme": "Services publics",
+   "source_url": "https://projet-socialiste.fr/projet/etre-en-securites/#r-parer-la-justice"
+  },
+  {
+   "title": "Cibler les aides de la PAC pour qu’elle favorise l’emploi agricole plutôt que la surface d’exploitation",
+   "summary": "Cibler les aides de la PAC pour qu’elle favorise l’emploi agricole plutôt que la surface d’exploitation en plafonnant les aides à l’hectare à 100 000 euros et en incluant une dégressivité de ces aides, afin d’orienter ces aides vers les petites exploitations, les jeunes agriculteurs, les territoires à handicap naturel, les productions en recul, et la polyculture-élevage, ainsi qu’un renforcement de la structuration des filières. (Projet socialiste, section « Un revenu digne pour tous les paysans »)",
+   "theme": "Agriculture et alimentation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#un-revenu-digne-pour-tous-les-paysans"
+  },
+  {
+   "title": "Développer l’agriculture biologique, agroécologique",
+   "summary": "Développer l’agriculture biologique, agroécologique. (Projet socialiste, section « Une agriculture durable »)",
+   "theme": "Agriculture et alimentation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#une-agriculture-durable"
+  },
+  {
+   "title": "Reconnaître la pêche et l’aquaculture comme piliers essentiels de la souveraineté alimentaire européenne, en luttant contre l’importation de produits de pêche ne respectant pas les normes de…",
+   "summary": "Reconnaître la pêche et l’aquaculture comme piliers essentiels de la souveraineté alimentaire européenne, en luttant contre l’importation de produits de pêche ne respectant pas les normes de qualité et de conditions de travail de l’Union européenne. (Projet socialiste, section « Une pêche durable : protéger la mer et son économie »)",
+   "theme": "Agriculture et alimentation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#une-p-che-durable-prot-ger-la-mer-et-son-conomie"
+  },
+  {
+   "title": "Défendre le juste échange en refusant tout nouvel accord de libre-échange qui ne respecte pas la réciprocité effective des normes sociales, sanitaires, environnementales et de conditions de…",
+   "summary": "Défendre le juste échange en refusant tout nouvel accord de libre-échange qui ne respecte pas la réciprocité effective des normes sociales, sanitaires, environnementales et de conditions de production. Inverser la charge de la preuve : les pays exportateurs devront démontrer que leurs produits respectent nos règles de production. Renforcer les contrôles aux frontières et prévoir l’exclusion du marché européen des opérateurs qui ne respectent pas ces règles. Refuser… (Projet socialiste, section « Contre la concurrence déloyale et pour le juste échange »)",
+   "theme": "Agriculture et alimentation",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#contre-la-concurrence-d-loyale-et-pour-le-juste-change"
+  },
+  {
+   "title": "Remettre de l’ordre dans l’administration de la planification écologique",
+   "summary": "Remettre de l’ordre dans l’administration de la planification écologique. Fusionner le Secrétariat général à la planification écologique avec le Haut-commissariat à la Stratégie et au Plan pour constituer un pôle stratégique unique. (Projet socialiste, section « Planifier la bifurcation écologique »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#planifier-la-bifurcation-cologique"
+  },
+  {
+   "title": "Exiger de chaque ville de plus de 100 000 habitants qu’elle fasse connaître sa stratégie de réduction des émissions de gaz à effet de serre à l’horizon 2030",
+   "summary": "Exiger de chaque ville de plus de 100 000 habitants qu’elle fasse connaître sa stratégie de réduction des émissions de gaz à effet de serre à l’horizon 2030 (l’Europe l’a fixé à -40 % en 2030 et -55 % en 2040) et informer annuellement du niveau effectif de baisse de GES. Inciter les villes de plus de 500 000 habitants à adopter un budget climat aligné sur l’Accord de Paris. (Projet socialiste, section « Mieux vivre en ville, petites ou grandes »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#mieux-vivre-en-ville-petites-ou-grandes"
+  },
+  {
+   "title": "Rénover massivement le parc de logements existants",
+   "summary": "Rénover massivement le parc de logements existants, pour viser à la disparition des passoires thermiques en 2050. (Projet socialiste, section « Adapter nos logements »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#adapter-nos-logements"
+  },
+  {
+   "title": "Garantir à chacune et chacun un accès à la nature à moins d’un quart d’heure à pied ou en vélo de chez soi",
+   "summary": "Garantir à chacune et chacun un accès à la nature à moins d’un quart d’heure à pied ou en vélo de chez soi. Démultiplier le nombre de parcs, jardins partagés, corridors écologiques, cours d’école végétalisées en ville, etc. Créer des chemins pédestres et des voies cyclables dans les zones périurbaines où l‘accès sans voiture à la nature est souvent empêché. Intégrer des quotas d’espaces verts par habitant dans les documents de planification urbaine. Toute nouvelle… (Projet socialiste, section « Être(s) sensibles : pour un droit au beau, au calme, au vert »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#-tre-s-sensibles-pour-un-droit-au-beau-au-calme-au-vert"
+  },
+  {
+   "title": "Réparer la nature",
+   "summary": "Réparer la nature. Lancer des programmes de restauration écologique ciblés : forêts dégradées, milieux aquatiques et zones humides, sols. Créer des « chantiers de réparation » participatifs pour la restauration des écosystèmes. Intégrer la réparation de la nature dans les outils de planification territoriale. (Projet socialiste, section « Protéger et partager la nature »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#prot-ger-et-partager-la-nature"
+  },
+  {
+   "title": "Assurer une gouvernance démocratique et une gestion publique de l’eau",
+   "summary": "Assurer une gouvernance démocratique et une gestion publique de l’eau. (Projet socialiste, section « Partager et protéger l’eau »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#partager-et-prot-ger-l-eau"
+  },
+  {
+   "title": "Améliorer les soins liés aux animaux de compagnie et aux chiens d’assistance avec des services vétérinaires de base",
+   "summary": "Améliorer les soins liés aux animaux de compagnie et aux chiens d’assistance avec des services vétérinaires de base(identification, stérilisation) accessibles aux personnes à faibles revenus(bâtiment public, vétérinaire bénévole). Autoriser la présence des animaux de compagnie dans les EHPAD, hébergements d’urgence et transports publics. Prévenir les abandons liés à la précarité par le déploiement de pensions publiques ou conventionnées pour les personnes sans domicile. (Projet socialiste, section « Bien-être animal : protéger le vivant, protéger les humains »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/vivre-avec-la-nature/#bien-tre-animal-prot-ger-le-vivant-prot-ger-les-humains"
+  },
+  {
+   "title": "Soutenir la résistance ukrainienne et chercher une paix juste et durable en Ukraine",
+   "summary": "Soutenir la résistance ukrainienne, financer le soutien et la reconstruction par la saisie des avoirs publics russes immobilisés dans l'Union européenne, et soutenir l'adhésion de l'Ukraine à l'Union européenne. (Projet socialiste, section « Agir pour le respect du droit international »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/pacifier-le-monde/"
+  },
+  {
+   "title": "Reconnaître la Nature comme sujet de droit international",
+   "summary": "Octroyer un statut juridique à certains communs planétaires et protéger les défenseurs de l'environnement dans le droit international. (Projet socialiste, section « Protéger les biens communs mondiaux »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/pacifier-le-monde/"
+  },
+  {
+   "title": "Sauver les Nations unies par la démocratie",
+   "summary": "Élargir les membres permanents du Conseil de sécurité et suspendre le droit de veto pour les crimes de guerre, crimes contre l'humanité et génocides. (Projet socialiste, section « Réformer les institutions internationales »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/pacifier-le-monde/"
+  },
+  {
+   "title": "Atteindre 0,7 % du revenu national brut en aide publique au développement",
+   "summary": "Augmenter l'aide publique au développement à 0,7 % du RNB, privilégier les dons aux pays les plus pauvres et l'égalité de genre. (Projet socialiste, section « Investir dans le développement et l'éducation »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/pacifier-le-monde/"
+  },
+  {
+   "title": "Faire reconnaître l'apartheid de genre comme crime contre l'humanité",
+   "summary": "Mesure de diplomatie féministe proposée en droit international. (Projet socialiste, section « Construire une diplomatie féministe »)",
+   "theme": "Europe et international",
+   "source_url": "https://projet-socialiste.fr/projet/pacifier-le-monde/"
+  },
+  {
+   "title": "Créer un Conseil de sécurité climatique à l'ONU",
+   "summary": "Doté d'un mandat contraignant pour prévenir et sanctionner les atteintes graves au climat et à l'environnement. (Projet socialiste, section « Réinventer la diplomatie environnementale »)",
+   "theme": "Écologie et énergie",
+   "source_url": "https://projet-socialiste.fr/projet/pacifier-le-monde/"
+  }
+ ]
+}

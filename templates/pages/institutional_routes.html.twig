@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}Voies institutionnelles{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Voies institutionnelles</h1>
+    <p class="lede">Ce que chaque voie permet, ce qu'elle exige, et surtout ce qu'elle ne garantit pas. Seuils vérifiés en octobre 2026 : à confirmer sur les sites officiels avant toute démarche.</p></div></header>
+<section class="section"><div class="container"><div class="row g-3">
+    <div class="col-lg-6"><div class="carte">
+        <h2 class="h5">Pétition au Sénat</h2>
+        <p>Une pétition qui réunit 100 000 signatures en six mois peut être examinée. C'est la Conférence des présidents qui décide des suites ; elle n'y est pas obligée.</p>
+        <a href="https://petitions.senat.fr" rel="noopener" target="_blank">petitions.senat.fr</a>
+    </div></div>
+    <div class="col-lg-6"><div class="carte">
+        <h2 class="h5">Pétition à l'Assemblée nationale</h2>
+        <p>Il faut 500 000 signataires issus d'au moins 30 départements. La Conférence des présidents « peut » alors inscrire le sujet à l'ordre du jour : rien n'est automatique.</p>
+        <a href="https://petitions.assemblee-nationale.fr" rel="noopener" target="_blank">petitions.assemblee-nationale.fr</a>
+    </div></div>
+    <div class="col-lg-6"><div class="carte">
+        <h2 class="h5">Référendum d'initiative partagée (RIP)</h2>
+        <p>Il faut le soutien de 185 parlementaires puis celui d'environ un dixième des électeurs inscrits (de l'ordre de 4,5 à 4,9 millions de personnes). Si le Parlement examine le texte dans les six mois, le référendum n'a pas lieu. La procédure est lourde et aboutit rarement.</p>
+        <a href="https://www.referendum.interieur.gouv.fr" rel="noopener" target="_blank">referendum.interieur.gouv.fr</a>
+    </div></div>
+    <div class="col-lg-6"><div class="carte">
+        <h2 class="h5">Écrire aux parlementaires et aux élus locaux</h2>
+        <p>Une proposition précise, chiffrée, avec l'autorité compétente identifiée, peut être reprise par un élu sous forme de question, d'amendement ou de proposition de loi. C'est la voie la plus rapide et la plus modeste.</p>
+        <p class="meta mb-0">Utilisez la <em>fiche imprimable</em> de chaque proposition publiée.</p>
+    </div></div>
+</div>
+<div class="limite mt-4 measure"><strong>Honnêteté sur les limites.</strong> Aucune de ces voies n'oblige le gouvernement ou le Parlement à adopter une mesure. Le suivi public des saisines, avec les réponses ou l'absence de réponse, est tenu sur la page <a href="{{ path('app_suivi') }}">Suivi des institutions</a>.</div>
+<p class="mt-3 meta">Types de transmission suivies ici : {% for key, label in routes %}{{ label }}{{ not loop.last ? ', ' }}{% endfor %}.</p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Corriger le dossier{% endblock %}
+{% block admin %}
+<h1 class="h3">Corriger le dossier</h1>
+{% for e in errors %}<div class="alert alert-danger" role="alert">{{ e }}</div>{% endfor %}
+<form method="post" class="bg-white border rounded p-3" style="max-width:760px">
+<input type="hidden" name="_token" value="{{ csrf_token('rubedit' ~ d.id) }}">
+<div class="mb-3"><label class="form-label" for="title">Titre</label><input id="title" name="title" class="form-control" value="{{ app.request.request.get('title', d.title) }}" maxlength="160" required></div>
+<div class="mb-3"><label class="form-label" for="theme">Thème</label><select id="theme" name="theme" class="form-select"><option value="">Aucun</option>{% set cur = app.request.request.get('theme', d.theme) %}{% for t in themes %}<option {{ cur == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+<div class="mb-3"><label class="form-label" for="intro">Introduction (400 caractères max)</label><textarea id="intro" name="intro" class="form-control" rows="2" maxlength="400" required>{{ app.request.request.get('intro', d.intro) }}</textarea></div>
+<div class="mb-3"><label class="form-label" for="body">Texte</label><textarea id="body" name="body" class="form-control" rows="10" required>{{ app.request.request.get('body', d.body) }}</textarea></div>
+<div class="mb-3"><label class="form-label" for="sources">Sources (une adresse https par ligne)</label><textarea id="sources" name="sources" class="form-control" rows="4" required>{{ app.request.request.get('sources', d.sources) }}</textarea></div>
+<button class="btn btn-bleu">Enregistrer</button> <a class="btn btn-link" href="{{ path('admin_rubrique', {kind: 'dossiers'}) }}">Annuler</a></form>
+{% endblock %}

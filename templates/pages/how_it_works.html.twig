@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title %}Comment ça marche{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Comment ça marche</h1><p class="lede mb-0">Tout ce que fait la plateforme, ce qu'elle mesure et ce qu'elle ne fait pas. En clair.</p></div></header>
+<section class="section"><div class="container measure">
+    <h2 class="h4" id="debattre">Débattre</h2>
+    <ol>
+        <li>Quelqu'un <a href="{{ path('app_debat_new') }}">ouvre un débat</a> : une question neutre, un exposé sans parti pris, des faits datés avec <strong>au moins une source officielle</strong>.</li>
+        <li>Une liste de contrôle affiche en direct chaque obligation : <em>Respecté</em>, <em>En cours</em> ou <em>Pas encore</em>. Le débat n'est relu que lorsque les points obligatoires sont respectés.</li>
+        <li>Une personne de l'équipe relit, puis le débat s'ouvre. Chacun dépose des arguments pour, contre ou nuancés, et reformule la position de l'autre avant de répondre.</li>
+        <li>À la clôture, un compte rendu publie les suites données.</li>
+    </ol>
+    <h2 class="h4" id="proposer">Proposer</h2>
+    <p><a href="{{ path('app_proposition_new') }}">Déposer une proposition</a> prend trois étapes : le thème, votre idée en deux champs, puis les compléments facultatifs. Pendant la saisie, la plateforme vous montre les propositions proches déjà déposées (comparaison de mots, sans intelligence artificielle externe) pour que les soutiens se regroupent au lieu de se disperser. Une personne relit avant publication ; tout texte insultant est bloqué dès l'envoi.</p>
+    <h2 class="h4" id="soutenir">Soutenir</h2>
+    <p>Un soutien par personne et par proposition, réservé aux membres connectés. Le soutien est consultatif : il mesure l'adhésion, il ne remplace pas un vote officiel.</p>
+    <h2 class="h4" id="classement">Ce qui est mis en avant, et pourquoi</h2>
+    <ul>
+        <li><strong>Débats « tendance »</strong> : plus un sujet est lu, lu en profondeur et discuté récemment, plus il remonte. Une activité ancienne pèse de moins en moins (moitié moins tous les 3 jours). Un sujet ouvert puis quitté aussitôt descend.</li>
+        <li><strong>Intérêt public</strong> : sur chaque débat et proposition, vous voyez le nombre de lectures, le temps de lecture moyen, la part de lectures approfondies et la part de départs rapides. C'est la preuve visible de l'intérêt, ou du désintérêt.</li>
+        <li><strong>Propositions</strong> : classées par soutiens ; la tendance suit les soutiens récents.</li>
+        <li><strong>Artisans de paix</strong> : on récompense la qualité du dialogue (remerciements, reformulations), jamais la popularité. Niveaux : {% for p, n in tiers %}{{ n }}{{ not loop.last ? ', ' }}{% endfor %}.</li>
+        <li>Aucune opinion, aucun parti, aucun paiement ne fait monter un contenu.</li>
+    </ul>
+    <h2 class="h4" id="mesure">Ce qui est mesuré sur vous</h2>
+    <ul>
+        <li>Une lecture est comptée, sans cookie, avec une empreinte qui change chaque jour.</li>
+        <li>Le temps de lecture n'est mesuré que si vous l'acceptez. Refus ou retrait en un clic : <a href="{{ path('cookie_preferences') }}">page Cookies</a>.</li>
+        <li>Si vous avez un compte, un journal de sécurité (adresse IP, pays, pages) est gardé 12 mois pour protéger la plateforme.</li>
+        <li>Aucun e-mail ne contient de pixel de suivi. Nous ne savons pas si vous ouvrez nos messages.</li>
+        <li>Détail complet : <a href="{{ path('app_privacy_policy') }}">politique de confidentialité</a>.</li>
+    </ul>
+    <h2 class="h4" id="paiements">Payer en confiance</h2>
+    <p>Les dons et les paiements de services passent par la page sécurisée de Stripe. <strong>La plateforme ne voit jamais votre numéro de carte.</strong> Vous revenez ensuite sur le site avec la confirmation. Pour une commande de service, l'argent est confié au prestataire une fois la prestation confirmée ; un remboursement est possible tant que la commande n'est pas confirmée. Les comptes à identité douteuse voient leurs paiements bloqués. Voir les <a href="{{ path('app_marketplace_terms') }}">conditions de la place de marché</a>.</p>
+    <h2 class="h4" id="compte">Votre compte</h2>
+    <ul>
+        <li><a href="{{ path('app_identity_notice') }}">Utilisez votre identité réelle</a> : les adresses jetables sont refusées.</li>
+        <li>Après 24 mois sans connexion, vous recevez un e-mail : garder ou supprimer. Sans réponse sous 30 jours, le compte est supprimé.</li>
+        <li>Vous pouvez supprimer votre compte à tout moment depuis votre profil ; vos contributions publiées restent affichées sans votre nom.</li>
+    </ul>
+</div></section>
+{% endblock %}

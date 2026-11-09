@@ -1,0 +1,99 @@
+{
+  "edition": "2027",
+  "group_code": "LFI",
+  "group_name": "La France insoumise (Mélenchon 2027)",
+  "group_color": "#CC2443",
+  "source_url": "https://melenchon2027.fr/programme/decouvrir/",
+  "measures": [
+    {
+      "title": "Augmenter de 10 % le point d'indice des fonctionnaires",
+      "summary": "Hausse de 10 % du point d'indice, chiffrée par LFI à 17 milliards d'euros.",
+      "theme": "Fonction publique",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Indexer et rehausser de 10 % pensions, allocations familiales et APL",
+      "summary": "Indexation sur l'inflation puis hausse de 10 %, chiffrée par LFI à 8 milliards d'euros.",
+      "theme": "Pouvoir d'achat",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Garantie d'autonomie pour les jeunes",
+      "summary": "Aucun jeune sous le seuil de pauvreté, fixé par LFI à 1 337 euros par mois, pour un coût annoncé de 9,5 milliards d'euros.",
+      "theme": "Jeunesse",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Porter le SMIC à 1 700 euros net",
+      "summary": "Hausse du SMIC, avec une conférence exceptionnelle sur les salaires et une indexation générale des salaires sur l'inflation.",
+      "theme": "Travail",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Bloquer le prix du carburant à 1,70 euro le litre",
+      "summary": "Décret de blocage des prix à la pompe dans le cadre d'un état d'urgence sociale.",
+      "theme": "Pouvoir d'achat",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Ouvrir 10 000 postes dans l'éducation",
+      "summary": "10 000 postes dès l'année prochaine, coût annoncé de 500 millions d'euros, pour se rapprocher de 19 élèves par classe.",
+      "theme": "École",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Gratuité de la cantine scolaire",
+      "summary": "Cantine gratuite, coût annoncé par LFI de 3,6 milliards d'euros.",
+      "theme": "École",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Créer 250 000 places à l'université",
+      "summary": "Adapter l'université aux besoins des étudiants, avec l'abolition de Parcoursup et MonMaster, pour 3,5 milliards d'euros selon LFI.",
+      "theme": "Enseignement supérieur",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Hôpital : 3 milliards d'euros et 10 000 postes de soignants",
+      "summary": "Hausse du budget des hôpitaux et au moins 10 000 créations de postes de personnel soignant.",
+      "theme": "Santé",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Plan d'urgence contre les violences sexistes et sexuelles",
+      "summary": "Atteindre 3 milliards d'euros de budget (2,6 milliards supplémentaires selon LFI), plus 2 milliards d'euros contre les violences faites aux enfants.",
+      "theme": "Égalité et droits",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Abroger la réforme des retraites de 2023",
+      "summary": "Retour sur le départ à 64 ans, coût annoncé de 9 milliards d'euros, comme étape vers 60 ans avec 40 annuités sur un mandat.",
+      "theme": "Retraites",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Abroger les réformes de l'assurance chômage",
+      "summary": "Retour sur les conditions d'accès, le montant et la durée d'indemnisation, coût annoncé de 3 milliards d'euros.",
+      "theme": "Travail",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Rétablir un impôt sur la fortune renforcé et créer la taxe Zucman",
+      "summary": "Impôt sur la fortune renforcé (10 milliards d'euros de recettes selon LFI) et taxe sur les patrimoines de plus de 100 millions d'euros (15 milliards).",
+      "theme": "Fiscalité",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Supprimer la flat tax et réformer les successions",
+      "summary": "Fin de la flat tax (9 milliards d'euros de recettes annoncées) et réforme des droits de succession (20 milliards la première année).",
+      "theme": "Fiscalité",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/Comment-nous-allons-remettre-de-l-ordre-dans-les-comptes-publics.pdf"
+    },
+    {
+      "title": "Créer un pôle public bancaire",
+      "summary": "Réunir Caisse des dépôts, Banque publique d'investissement et Banque postale pour investir 100 milliards d'euros de plus par an dans la planification écologique.",
+      "theme": "Économie",
+      "source_url": "https://melenchon2027.fr/wp-content/uploads/2026/10/DP-POLE-PUBLIC-BANCAIRE_ST.pdf"
+    }
+  ]
+}

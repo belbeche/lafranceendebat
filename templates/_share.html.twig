@@ -1,0 +1,14 @@
+{# Barre de partage sans script tiers : liens simples + API de partage native + copie du lien. Variables : url, title #}
+{% set enc_url = url|url_encode %}
+{% set enc_title = title|url_encode %}
+<div class="share-bar no-print" role="group" aria-label="Partager">
+    <button type="button" class="btn btn-bleu btn-sm" data-share data-share-url="{{ url }}" data-share-title="{{ title }}" hidden><i class="bi bi-box-arrow-up"></i> Partager</button>
+    <button type="button" class="btn btn-outline-dark btn-sm" data-copy="{{ url }}"><i class="bi bi-link-45deg"></i> Copier le lien</button>
+    <a class="btn btn-outline-dark btn-sm" rel="noopener noreferrer" target="_blank" href="https://wa.me/?text={{ enc_title }}%20{{ enc_url }}"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+    <a class="btn btn-outline-dark btn-sm" rel="noopener noreferrer" target="_blank" href="https://t.me/share/url?url={{ enc_url }}&text={{ enc_title }}"><i class="bi bi-telegram"></i> Telegram</a>
+    <a class="btn btn-outline-dark btn-sm" rel="noopener noreferrer" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u={{ enc_url }}"><i class="bi bi-facebook"></i> Facebook</a>
+    <a class="btn btn-outline-dark btn-sm" rel="noopener noreferrer" target="_blank" href="https://twitter.com/intent/tweet?url={{ enc_url }}&text={{ enc_title }}"><i class="bi bi-twitter-x"></i> X</a>
+    <a class="btn btn-outline-dark btn-sm" rel="noopener noreferrer" target="_blank" href="https://www.linkedin.com/sharing/share-offsite/?url={{ enc_url }}"><i class="bi bi-linkedin"></i> LinkedIn</a>
+    <a class="btn btn-outline-dark btn-sm" href="mailto:?subject={{ enc_title }}&body={{ enc_url }}"><i class="bi bi-envelope"></i> E-mail</a>
+</div>
+<p class="meta mt-2 mb-0 no-print">Aucun pistage : ces boutons sont de simples liens, le réseau social n'est contacté que si vous cliquez.</p>

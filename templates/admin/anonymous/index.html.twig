@@ -1,0 +1,20 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Contributions anonymes{% endblock %}
+{% block admin %}
+<h1 class="h3">Contributions anonymes</h1>
+<p class="text-muted">Aucune IP ni aucun e-mail n'est conservé. Le contact éventuel est celui que la personne a choisi de laisser : ne le publiez jamais.</p>
+{% for c in items %}
+<div class="carte mb-3">
+    <div class="small text-muted">{{ c.createdAt|date('d/m/Y H:i') }} · {{ c.category == 'citoyen' ? 'Citoyen' : constant('App\\Entity\\ActorContact::CATEGORIES')[c.category] }} · <strong>{{ c.status }}</strong></div>
+    <h2 class="h5">{{ c.subject }}</h2>
+    <p style="white-space:pre-line">{{ c.message }}</p>
+    {% if c.sourceUrl %}<p class="small">Source : <a href="{{ c.sourceUrl }}" rel="noopener nofollow">{{ c.sourceUrl }}</a></p>{% endif %}
+    {% if c.contact %}<p class="small">Contact laissé : {{ c.contact }}</p>{% endif %}
+    <form method="post" action="{{ path('admin_anon_status', {id: c.id}) }}" class="d-flex gap-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('anon_status' ~ c.id) }}">
+        <button name="status" value="publiee" class="btn btn-sm btn-outline-success">Valider</button>
+        <button name="status" value="refusee" class="btn btn-sm btn-outline-danger">Refuser</button>
+    </form>
+</div>
+{% else %}<p>Aucune contribution pour le moment.</p>{% endfor %}
+{% endblock %}

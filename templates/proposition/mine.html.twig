@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% import '_macros.html.twig' as ui %}
+{% block title %}Mes propositions{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes propositions</h1></div></header>
+<section class="section"><div class="container"><div class="row"><div class="col-lg-8">
+    {% for p in propositions %}
+        <article class="rangee">
+            <p class="mb-1">{{ ui.status_label(p) }} <span class="etiquette bleu">{{ p.theme }}</span></p>
+            <h3><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a></h3>
+            <p class="meta mb-0">Déposée le {{ p.createdAt|date('d/m/Y') }} · {{ p.supportCount }} soutien{{ p.supportCount > 1 ? 's' }}</p>
+            {% if p.status == 'Rejetée' and p.moderationNote %}<p class="mt-2 mb-0"><strong>Motif :</strong> {{ p.moderationNote }}</p>{% endif %}
+        </article>
+    {% else %}
+        <div class="carte"><p class="mb-0">Vous n'avez pas encore déposé de proposition. <a href="{{ path('app_proposition_new') }}">Commencer</a></p></div>
+    {% endfor %}
+</div></div></div></section>
+{% endblock %}

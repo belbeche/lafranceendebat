@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ ('path.' ~ slug ~ '.title')|trans }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <p class="mb-2"><a href="{{ path('app_paths') }}">{{ 'path.all'|trans }}</a></p>
+    <h1><i class="bi {{ icon }}" aria-hidden="true"></i> {{ ('path.' ~ slug ~ '.title')|trans }}</h1>
+    <p class="lede">{{ ('path.' ~ slug ~ '.desc')|trans }}</p>
+</div></header>
+<section class="section"><div class="container"><div class="measure">
+    <ol class="path-steps">
+        {% for step in steps %}
+        {% set needs = step[1] %}
+        <li>
+            <span class="n">{{ loop.index }}</span>
+            <div class="flex-grow-1">
+                <div>{{ ('path.' ~ slug ~ '.s' ~ loop.index)|trans }}</div>
+                <small class="text-muted"><i class="bi {{ needs ? 'bi-person-check' : 'bi-eye' }}" aria-hidden="true"></i> {{ (needs ? 'path.account' : 'path.no_account')|trans }}</small>
+            </div>
+            <a class="btn btn-sm btn-bleu" href="{{ path(step[0]) }}">{{ 'path.go'|trans }}</a>
+        </li>
+        {% endfor %}
+    </ol>
+    {% include '_free_promise.html.twig' %}
+</div></div></section>
+{% endblock %}

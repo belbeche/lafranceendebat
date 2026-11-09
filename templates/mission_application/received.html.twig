@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Candidatures reçues{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Candidatures reçues</h1><p class="lede mb-0">Des citoyens proposent leur aide pour vos missions. Contactez-les directement.</p></div></header>
+<section class="section"><div class="container" style="max-width:860px">
+    {% for a in apps %}<div class="carte mb-3">
+        <p class="mb-1"><span class="etiquette {{ a.status == 'nouvelle' ? 'rouge' : 'bleu' }}">{{ a.status == 'nouvelle' ? 'À traiter' : (a.status == 'acceptee' ? 'Acceptée' : 'Déclinée') }}</span> <span class="meta">{{ a.createdAt|date('d/m/Y H:i') }}</span></p>
+        <h2 class="h6">{{ a.mission }}</h2>
+        <p class="mb-1"><strong>{{ a.applicant.publicName }}</strong>{% set b = badges[a.applicant.id] ?? null %}{% if b %} <span class="etiquette bleu" title="Classement des artisans de paix">{{ b.tier }}, {{ b.score }} pts</span>{% endif %} : <a href="mailto:{{ a.email }}">{{ a.email }}</a>, <a href="tel:{{ a.phone|replace({' ': ''}) }}">{{ a.phone }}</a></p>
+        <p style="white-space:pre-line">{{ a.message }}</p>
+        {% if a.status == 'nouvelle' %}
+        <form method="post" action="{{ path('app_application_respond', {id: a.id}) }}" class="d-grid gap-2">
+            <input type="hidden" name="_token" value="{{ csrf_token('app_respond' ~ a.id) }}">
+            <input class="form-control" name="note" maxlength="600" placeholder="Un mot pour le candidat (facultatif)" aria-label="Un mot pour le candidat">
+            <div><button class="btn btn-sm btn-bleu" name="decision" value="accept">Accepter</button> <button class="btn btn-sm btn-outline-dark" name="decision" value="decline">Décliner</button> <a class="btn btn-sm btn-outline-dark" href="{{ path('app_inbox_thread', {id: a.applicant.id}) }}">Écrire</a></div>
+        </form>{% endif %}
+    </div>{% else %}<p class="meta">Aucune candidature pour l'instant.</p>{% endfor %}
+</div></section>
+{% endblock %}

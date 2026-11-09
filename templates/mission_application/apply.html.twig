@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Candidater : {{ mission[0] }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Candidater</h1><p class="lede mb-0">{{ mission[0] }}</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+    <p>{{ mission[1] }}</p>
+    {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+    {% if noOne %}<div class="alert alert-warning">Aucun acteur n'est encore inscrit pour ce besoin et l'équipe n'est pas joignable ici. <a href="{{ path('app_register', {profil: 'association'}) }}">Inscrivez une association ou un élu</a> pour ouvrir ce besoin.</div>{% elseif fallback %}<div class="alert alert-info">Aucun acteur concerné n'est encore inscrit pour cette mission. Votre candidature sera lue par l'équipe de la plateforme, qui la transmettra dès qu'un acteur la rejoint.</div>{% endif %}
+    <form method="post" class="carte">
+        <input type="hidden" name="_token" value="{{ csrf_token('mission_apply') }}">
+        {% if not fallback %}
+        <fieldset class="mb-3"><legend class="h6">Les acteurs concernés par ce besoin</legend>
+            <div class="row g-2">
+            {% for c in cards %}<div class="col-sm-6"><label class="actor-pick" for="to{{ c.user.id }}"><input class="form-check-input" type="checkbox" name="to[]" value="{{ c.user.id }}" id="to{{ c.user.id }}" {{ (not chosen or c.user.id in chosen) ? 'checked' }}><span><strong>{{ c.user.publicName }}</strong><small>{{ c.label }}{% if c.organisation %} : {{ c.organisation }}{% endif %}{% if c.territory %}, {{ c.territory }}{% endif %}</small></span></label></div>{% endfor %}
+            </div>
+        </fieldset>{% endif %}
+        {% if contactCandidates %}<fieldset class="mb-3"><legend class="h6">Contacts publics concernés (e-mail)</legend>
+            <p class="meta">Adresses professionnelles publiées par des institutions. Le message part avec l'origine de l'adresse et un lien pour ne plus être contacté. Trois contacts au maximum.</p>
+            <div class="row g-2">{% for c in contactCandidates %}<div class="col-sm-6"><label class="actor-pick" for="ct{{ c.id }}"><input class="form-check-input" type="checkbox" name="contacts[]" value="{{ c.id }}" id="ct{{ c.id }}" {{ c.id in chosenContacts ? 'checked' }}> <span><strong>{{ c.organisation }}</strong><br><span class="meta">{{ c.categoryLabel }}{{ c.role ? ' · ' ~ c.role }}</span></span></label></div>{% endfor %}</div>
+            <div class="form-check mt-2"><input class="form-check-input" type="checkbox" name="share_email" value="1" id="share_email"><label class="form-check-label" for="share_email">J'accepte que mon e-mail soit transmis à ces contacts pour qu'ils me répondent (mon téléphone ne l'est pas).</label></div>
+        </fieldset>{% endif %}
+        <div class="row g-3 mb-3">
+            <div class="col-md-6"><label class="form-label" for="email">Votre e-mail</label><input class="form-control" id="email" name="email" type="email" value="{{ email }}" required autocomplete="email"></div>
+            <div class="col-md-6"><label class="form-label" for="phone">Votre téléphone</label><input class="form-control" id="phone" name="phone" type="tel" value="{{ phone }}" required autocomplete="tel"></div>
+        </div>
+        <label class="form-label" for="message">Ce que vous apportez</label>
+        <textarea class="form-control mb-2" id="message" name="message" rows="6" minlength="40" maxlength="1500" required>{{ message }}</textarea>
+        <p class="meta">Vos coordonnées sont transmises uniquement aux acteurs choisis, pour qu'ils vous répondent. Aucune rémunération n'est promise par la plateforme : elle se convient entre vous.</p>
+        <button class="btn btn-rouge" type="submit">Envoyer ma candidature</button>
+    </form>
+</div></section>
+{% endblock %}

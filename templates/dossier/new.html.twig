@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Proposer un dossier{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Proposer un dossier</h1><p class="lede mb-0">Un dossier explique un sujet avec des faits et des sources publiques, sans prendre parti. Il est relu par la modération avant publication et signé de votre prénom et de l'initiale de votre nom.</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if errors %}<div class="alert alert-danger"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<form method="post" class="form-card">
+<input type="hidden" name="_token" value="{{ csrf_token('dossier_new') }}">
+<div class="mb-3"><label class="form-label" for="title">Titre du dossier</label><input class="form-control" id="title" name="title" value="{{ d.title }}" maxlength="160" required></div>
+<div class="mb-3"><label class="form-label" for="theme">Thème (facultatif)</label><select class="form-select" id="theme" name="theme"><option value="">Aucun</option>{% for t in themes %}<option {{ d.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+<div class="mb-3"><label class="form-label" for="intro">Résumé en une ou deux phrases</label><textarea class="form-control" id="intro" name="intro" rows="2" maxlength="400" required>{{ d.intro }}</textarea></div>
+<div class="mb-3"><label class="form-label" for="body">Le dossier (200 caractères minimum)</label><textarea class="form-control" id="body" name="body" rows="12" maxlength="20000" required>{{ d.body }}</textarea><div class="form-text">Faits, dates, chiffres, contexte. Parlez des sujets, pas des personnes.</div></div>
+<div class="mb-3"><label class="form-label" for="sources">Sources publiques (un lien https par ligne, deux au minimum)</label><textarea class="form-control" id="sources" name="sources" rows="4" required>{{ d.sources }}</textarea></div>
+<button class="btn btn-rouge" type="submit">Envoyer pour validation</button> <a class="btn btn-link" href="{{ path('app_dossiers') }}">Annuler</a>
+</form></div></section>
+{% endblock %}

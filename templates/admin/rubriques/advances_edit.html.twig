@@ -1,0 +1,12 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Avancées de {{ i.name }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_rubrique', {kind: 'contributeurs'}) }}">&larr; Contributeurs</a></p>
+<h1 class="h3">Avancées : {{ i.name }}</h1>
+<p class="meta">Une avancée par ligne, courte et vérifiable dans la source ({{ i.sourceHost }}). Elles s'affichent sur la fiche publique.</p>
+<form method="post" style="max-width:760px">
+    <input type="hidden" name="_token" value="{{ csrf_token('adv' ~ i.id) }}">
+    <textarea class="form-control mb-3" name="advances" rows="10" maxlength="3000">{{ i.advancesText }}</textarea>
+    <button class="btn btn-bleu">Enregistrer</button>
+</form>
+{% endblock %}

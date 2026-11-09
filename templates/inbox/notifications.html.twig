@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Notifications{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Notifications</h1><p class="lede mb-0">Ce qui s'est passé sur vos demandes, propositions, candidatures et commandes.</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% for n in items %}
+    <a class="need-link mb-2 {{ n.read ? '' : 'need-unread' }}" href="{{ n.url }}"><i class="bi bi-bell" aria-hidden="true"></i><span class="flex-grow-1">{{ n.text }}<br><span class="meta">{{ n.createdAt|date('d/m/Y H:i') }}</span></span></a>
+{% else %}<div class="carte">Aucune notification. Elles apparaissent ici dès qu'il se passe quelque chose, et par e-mail pour les événements importants.</div>{% endfor %}
+</div></section>
+{% endblock %}

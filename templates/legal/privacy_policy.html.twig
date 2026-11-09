@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% block title %}Confidentialité et RGPD{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Politique de confidentialité</h1></div></header>
+<section class="section"><div class="container measure">
+    <h2 class="h5">Responsable du traitement</h2>
+    <p>{{ publisher.name ?: 'À compléter' }}, contact : <a href="mailto:{{ publisher.email }}">{{ publisher.email }}</a>.</p>
+    <h2 class="h5">Données collectées et finalités</h2>
+    <ul>
+        <li><strong>Compte</strong> : adresse email, prénom, nom, mot de passe (stocké chiffré), code postal et ville facultatifs. Finalité : gérer votre compte et vos contributions. Base légale : exécution du service.</li>
+        <li><strong>Contributions</strong> : propositions, arguments, amendements, soutiens, signalements. Finalité : faire fonctionner le débat et la modération. Seuls votre prénom et l'initiale de votre nom sont affichés.</li>
+        <li><strong>Acceptation de la charte</strong> : date d'acceptation, conservée comme preuve de votre engagement.</li>
+        <li><strong>Modifications</strong> : l'ancienne version d'un contenu modifié après publication est conservée et affichée publiquement dans son historique (sans donnée personnelle en plus de l'auteur déjà affiché).</li>
+        <li><strong>Place de marché</strong> (uniquement si vous vendez ou achetez) : commandes, montants, message au prestataire, déclaration d'absence d'usage politique, identifiants Stripe. Les données bancaires et d'identité sont collectées et conservées par Stripe, pas par la plateforme. Base légale : exécution du contrat et obligations légales (comptabilité, déclaration fiscale des revenus des vendeurs). Conservation des pièces comptables : 10 ans.</li>
+        <li><strong>Contributions de soutien</strong> (lorsqu'elles sont ouvertes) : nom, e-mail, montant, date, pour confirmer la contribution et tenir la comptabilité de l'éditeur. L'éditeur est une micro-entreprise : une contribution ne donne droit ni à un reçu fiscal ni à une réduction d'impôt. Le paiement par carte est traité par Stripe. Conservation : 10 ans (obligations comptables).</li>
+        <li><strong>Candidatures et missions</strong> : votre message, e-mail et téléphone sont transmis aux seuls acteurs que vous choisissez.</li>
+        <li><strong>Newsletter et lettre</strong> : adresse email, uniquement avec votre accord, désinscription à chaque envoi.</li>
+        <li><strong>Journal de sécurité</strong> (membres connectés) : voir la section dédiée ci-dessous.</li>
+        <li><strong>Lectures et temps de lecture</strong> : voir la section « Lectures ».</li>
+        <li><strong>Enquêtes</strong> : vos réponses, avec ou sans identité selon ce qui est annoncé avant l'envoi de l'enquête (aperçu obligatoire).</li>
+    </ul>
+    <p>Aucune donnée n'est vendue. Aucune décision n'est prise par un traitement automatisé seul : le filtre de modération bloque l'envoi d'un texte, et toute sanction est décidée par un humain.</p>
+    <h2 class="h5" id="moderation-filtre">Propos bloqués par le filtre de modération</h2>
+    <p>Quand un texte soumis par un membre connecté est refusé (insulte, menace, haine, données personnelles d'un tiers), nous enregistrons : le membre, la page concernée, le motif et un <strong>extrait de 300 caractères maximum</strong> (le texte n'est jamais publié). L'équipe de modération reçoit un e-mail, et vous recevez un rappel courtois (1 par jour au maximum). Base légale : intérêt légitime (faire respecter la charte de paix et la loi). Accès : modérateurs et administrateurs. Conservation : <strong>12 mois</strong>. Trois blocages en 30 jours constituent une récidive et peuvent mener à une suspension, avec possibilité de répondre. Le filtre est automatique et ne juge jamais une opinion ; un humain décide de toute sanction. <strong>Deuxième avis par IA (facultatif, si activé par l'éditeur)</strong> : le texte seul (sans votre nom, e-mail ni identifiant) peut être envoyé à Gemini (Google) au moment de la soumission pour détecter une insulte, une menace ou une haine que la liste ne voit pas. L'IA peut seulement ajouter un blocage avec une forte confiance, jamais en retirer ; en cas de doute, un modérateur relit. Si le service est indisponible, le filtre local décide seul.</p>
+    <h2 class="h5" id="journal">Journal de sécurité : ce qui est enregistré sur votre compte</h2>
+    <p>Pour protéger la plateforme (comptes suspects, adresses jetables, usurpation d'identité), chaque membre connecté a un journal : date et heure, type d'événement (inscription, connexion réussie ou échouée, déconnexion, changement de mot de passe, restriction, suppression), <strong>adresse IP complète</strong>, pays (déduit de l'adresse par l'hébergeur, sans service tiers) et chemin des pages visitées (sans paramètres ni jetons, une fois par page toutes les 10 minutes). Base légale : intérêt légitime (sécurité du service). Accès : administrateurs uniquement. Conservation : <strong>12 mois</strong>, puis suppression automatique. Vous êtes prévenu par e-mail avant tout signalement ou désactivation. Les visiteurs non connectés ne sont pas suivis individuellement : ils sont seulement comptés de façon anonyme (voir « Mesure d'audience interne » ci-dessous).</p>
+    <h2 class="h5" id="mesure-audience">Mesure d'audience interne : fonctionnement précis et droit d'opposition</h2>
+    <p><strong>Finalité unique :</strong> savoir combien de personnes visitent quelles pages, pour améliorer le site. Les résultats sont des totaux ; ils ne servent ni à la publicité, ni au profilage, ni à suivre une personne d'un site à l'autre, et ne sont transmis à personne. <strong>Aucun outil tiers</strong> (ni Google Analytics, ni pixel, ni script externe) : tout se passe sur nos serveurs, hébergés en France.</p>
+    <p><strong>Ce que fait le serveur à chaque page vue (visiteur non connecté ou connecté) :</strong></p>
+    <ul>
+        <li>Il enregistre : la <strong>date</strong>, le <strong>nom interne de la page</strong> (par exemple « liste des débats », sans paramètres ni identifiant personnel), le <strong>navigateur déclaré</strong> (User-Agent) et l'<strong>adresse IP rendue anonyme</strong> : le dernier nombre d'une adresse IPv4 est remplacé par zéro, et pour l'IPv6 seuls les 48 premiers bits sont conservés. L'adresse complète n'est jamais écrite dans cette table.</li>
+        <li>Il <strong>ne dépose aucun cookie</strong> et n'utilise <strong>aucun localStorage ni identifiant persistant</strong> pour cette mesure. Il ne relie pas ces visites à votre compte.</li>
+        <li>Il ignore les robots connus, les adresses privées, et ne recompte pas la même page pour la même connexion pendant 10 minutes (anti-doublon gardé en mémoire temporaire, 10 minutes, sous forme d'empreinte calculée avec un secret du serveur).</li>
+        <li>Pour les compteurs de lectures des débats et propositions : une empreinte calculée avec l'IP, le navigateur, un secret du serveur et la <strong>date du jour</strong>, qui change chaque jour et ne permet pas de retrouver une personne.</li>
+        <li><strong>Conservation :</strong> 90 jours pour les visites, 13 mois au plus pour les lectures, puis suppression automatique.</li>
+    </ul>
+    <p><strong>Base légale :</strong> intérêt légitime (connaître la fréquentation). Cette mesure strictement limitée à des statistiques anonymes entre dans les traceurs exemptés de consentement selon la CNIL ; nous vous laissons malgré tout vous y opposer en un clic. La mesure du <em>temps de lecture</em>, elle, n'a lieu qu'avec votre accord (<a href="{{ path('cookie_preferences') }}">page Cookies</a>).</p>
+    {% set oo = optout_state() %}
+    <div class="carte mb-3" id="opposition">
+        <h3 class="h6">Votre droit d'opposition</h3>
+        {% if oo.signal %}<p class="mb-2"><strong>Votre navigateur envoie déjà un signal « Ne pas me suivre » (Global Privacy Control ou Do Not Track) : nous le respectons, votre navigation n'est pas mesurée.</strong></p>{% endif %}
+        <p class="mb-2">État actuel : {% if oo.cookie %}<strong>suivi désactivé</strong> (votre navigation n'est pas mesurée){% elseif oo.signal %}<strong>suivi désactivé par votre navigateur</strong>{% else %}mesure anonyme active{% endif %}.</p>
+        <form method="post" action="{{ path('app_audience_optout') }}" class="d-flex flex-wrap gap-2">
+            <input type="hidden" name="_token" value="{{ csrf_token('audience_optout') }}">
+            {% if oo.cookie %}<button class="btn btn-outline-primary" name="action" value="reactiver">Réactiver la mesure anonyme</button>
+            {% else %}<button class="btn btn-primary" name="action" value="desactiver">Désactiver le suivi</button>{% endif %}
+        </form>
+        <p class="small text-muted mt-2 mb-0">Cliquer dépose un seul petit cookie « lfed_notrack » (valeur 1, 13 mois) dont l'unique rôle est de mémoriser ce refus. Il ne contient aucune information sur vous. Si vous supprimez les cookies de votre navigateur, il faut cliquer à nouveau, ou activer le signal « Ne pas me suivre » dans votre navigateur, que nous respectons sans cookie.</p>
+    </div>
+    <h2 class="h5" id="stockage-navigateur">Ce que le site stocke dans votre navigateur</h2>
+    <div class="table-responsive"><table class="table table-sm">
+        <thead><tr><th>Nom</th><th>Rôle</th><th>Durée</th><th>Consentement</th></tr></thead>
+        <tbody>
+            <tr><td>Cookie de session</td><td>Garder votre connexion, protéger les formulaires (jeton CSRF)</td><td>Session</td><td>Non requis (strictement nécessaire)</td></tr>
+            <tr><td>Se souvenir de moi</td><td>Rester connecté, uniquement si vous cochez la case</td><td>7 jours</td><td>Non requis (choix de votre part)</td></tr>
+            <tr><td>lfed_lang</td><td>Mémoriser votre langue</td><td>1 an</td><td>Non requis</td></tr>
+            <tr><td>lfed_consent</td><td>Mémoriser votre choix sur la mesure du temps de lecture</td><td>6 mois</td><td>Non requis (preuve du choix)</td></tr>
+            <tr><td>lfed_notrack</td><td>Mémoriser votre opposition à la mesure d'audience</td><td>13 mois</td><td>Non requis (respect de votre refus)</td></tr>
+            <tr><td>lfed_welcome</td><td>Ne pas réafficher le message d'accueil</td><td>1 an</td><td>Non requis</td></tr>
+            <tr><td>lfed_sv</td><td>Une seule réponse par enquête, sans compte (identifiant aléatoire, haché côté serveur)</td><td>1 an</td><td>Non requis, déposé seulement si vous ouvrez une enquête</td></tr>
+            <tr><td>localStorage « lfed_pwa_dismiss »</td><td>Ne pas vous reproposer l'installation de l'application pendant 14 jours</td><td>Reste dans votre navigateur</td><td>Non requis (préférence d'interface, jamais envoyée au serveur)</td></tr>
+            <tr><td>sessionStorage (membres connectés)</td><td>Éviter de répéter les notifications en temps réel dans l'onglet ouvert</td><td>Fermeture de l'onglet</td><td>Non requis, jamais envoyé au serveur</td></tr>
+        </tbody>
+    </table></div>
+    <p>Résumé : la mesure d'audience <strong>ne repose ni sur un cookie, ni sur un localStorage</strong> ; elle est faite côté serveur à partir des requêtes reçues, avec une IP rendue anonyme. Le seul cookie lié à la mesure est celui qui mémorise votre refus.</p>
+    <h2 class="h5" id="lecture">Lectures, temps de lecture et classement</h2>
+    <p>Chaque débat et proposition affiche publiquement son nombre de lectures et, pour les lecteurs qui l'acceptent, le temps de lecture moyen. <strong>Lectures</strong> : comptées par le serveur, une fois par lecteur et par jour, sans cookie, avec une empreinte (IP + navigateur + secret + date) qui change chaque jour et ne permet pas de retrouver une personne. <strong>Temps de lecture et défilement</strong> : mesurés uniquement avec votre consentement (<a href="{{ path('cookie_preferences') }}">page Cookies</a>, refus et retrait possibles à tout moment), rattachés à l'empreinte du jour et jamais à votre compte. Conservation : 13 mois. Ces chiffres alimentent le classement « tendance » des débats : une lecture récente compte plus qu'une ancienne (demi-vie de 3 jours), lire en profondeur compte plus qu'ouvrir la page, déposer un argument compte davantage encore, et la qualité de lecture ajuste le score avec une méthode statistique prudente (borne de Wilson). Aucune opinion, aucun vote pour ou contre n'entre dans ce calcul, et personne ne peut acheter sa place.</p>
+    <h2 class="h5" id="emails">E-mails et pixels de suivi</h2>
+    <p><strong>Aucun e-mail envoyé par la plateforme ne contient de pixel de suivi</strong> (image invisible qui signale que vous avez ouvert le message), ni de lien redirigé qui enregistre vos clics. Cela vaut pour les e-mails de service (confirmation, sécurité, inactivité, reçus), la lettre, les candidatures transmises et les newsletters. Nous ne savons donc pas si vous ouvrez nos messages. Les seules statistiques d'envoi sont techniques et viennent de notre prestataire d'envoi (Amazon SES) : message remis, rejeté ou signalé comme indésirable, afin de retirer les adresses invalides. Chaque message de prospection ou d'information contient un lien de désinscription en un clic.</p>
+    <h2 class="h5" id="inactivite">Durée de conservation et comptes inactifs</h2>
+    <p>Les données du compte sont conservées tant que le compte est actif. <strong>Après 24 mois sans connexion ni visite</strong>, nous vous envoyons un e-mail pour vous demander de garder ou de supprimer votre compte, avec un lien sécurisé à deux boutons. Sans réponse sous <strong>30 jours</strong>, le compte est supprimé automatiquement (e-mail, mot de passe, soutiens effacés ; contributions publiées anonymisées). Se reconnecter suffit aussi à garder le compte. À la suppression demandée par vous, mêmes effets, immédiatement. Autres durées : journal de sécurité 12 mois, lectures et preuves de consentement 13 mois, propos bloqués 12 mois, pièces comptables 10 ans.</p>
+    <h2 class="h5">Paiements : ce que fait Stripe et ce que nous gardons</h2>
+    <p>Les paiements (dons, place de marché) passent par la page de paiement hébergée par Stripe Payments Europe : <strong>nous ne voyons jamais votre numéro de carte</strong>. Nous conservons le montant, la date, l'état du paiement et les identifiants Stripe pour la comptabilité. Stripe est responsable de ses propres traitements (lutte contre la fraude, vérification d'identité des vendeurs) selon sa politique de confidentialité. Un compte restreint pour identité douteuse peut voir ses paiements bloqués.</p>
+    <h2 class="h5">Ce qui n'est PAS fait</h2>
+    <ul>
+        <li>Aucune revente ni cession de données ; aucun profilage publicitaire.</li>
+        <li>Aucun outil d'analyse ou de suivi d'un tiers (pas de Google Analytics, pas de pixel de réseau social).</li>
+        <li>Aucune décision automatique seule : une machine peut bloquer l'envoi d'un texte ou restreindre un compte à adresse jetable ; toute sanction durable est décidée par un humain.</li>
+        <li>Aucune géolocalisation précise.</li>
+    </ul>
+    <h2 class="h5">Vos droits</h2>
+    <p>Accès, rectification, effacement (bouton « Supprimer mon compte » dans votre profil), opposition, limitation, portabilité, et retrait du consentement à tout moment (page Cookies) : écrivez à l'adresse de contact, réponse sous un mois. Vous pouvez saisir la CNIL (cnil.fr).</p>
+    <h2 class="h5">Contacts institutionnels</h2>
+    <p>Pour inviter des acteurs publics, la plateforme importe des adresses professionnelles publiées sur des sources ouvertes (par exemple l'Annuaire de l'administration, sous Licence Ouverte 2.0). Chaque contact reçoit une seule invitation, avec un lien de désinscription immédiat et définitif. Si vous êtes concerné, écrivez à l'adresse de contact pour être retiré.</p>
+    <h2 class="h5">Destinataires et transferts</h2>
+    <p>Prestataires techniques : hébergeur (Shiftek IT, France), envoi d'e-mails (Amazon SES), paiement (Stripe), analyse de fiabilité des sources par IA (Google, uniquement sur les textes soumis à la modération, sans identité). Certains peuvent traiter des données hors de l'Union européenne avec des garanties contractuelles. Les styles de la page sont chargés depuis un réseau de diffusion tiers (jsDelivr) lorsque la copie locale est absente : il reçoit alors votre adresse IP.</p>
+    <h2 class="h5">Cookies</h2>
+    <p>Cookies nécessaires (session, jeton de formulaire, « se souvenir de moi » à votre demande, langue, bandeau de bienvenue, réponse à une enquête) et un cookie de mémorisation de votre choix de consentement. Liste complète, durées et choix : <a href="{{ path('cookie_preferences') }}">page Cookies</a>.</p>
+    <p class="meta">Dernière mise à jour : 08/11/2026.</p>
+</div></section>
+{% endblock %}

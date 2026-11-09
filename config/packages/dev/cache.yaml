@@ -1,0 +1,11 @@
+# config/packages/dev/cache.yaml
+# En local, on utilise le cache fichier (aucun serveur Redis requis).
+# La configuration Redis de config/packages/cache.yaml reste active en production.
+framework:
+    cache:
+        app: cache.adapter.filesystem
+        system: cache.adapter.filesystem
+        pools:
+            cache.sessions:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 7200

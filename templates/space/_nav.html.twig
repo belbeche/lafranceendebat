@@ -1,0 +1,26 @@
+{# Menu latéral de l'espace utilisateur / acteur. Variables : nav_mode (citizen|actor), nav_active, nav_title. #}
+{% set nav_active = nav_active|default('home') %}
+{% macro item(key, active, url, label, icon) %}<a class="sp-link{{ key == active ? ' is-active' : '' }}" href="{{ url }}"{% if key == active %} aria-current="page"{% endif %}><i class="bi bi-{{ icon }}" aria-hidden="true"></i> {{ label }}</a>{% endmacro %}
+{% import _self as n %}
+    <nav class="sp-nav" aria-label="{{ nav_title|default('Mon espace') }}">
+    <div class="sp-nav-title">{{ nav_title|default('Mon espace') }}</div>
+    {% if nav_mode|default('citizen') == 'actor' %}
+        {{ n.item('home', nav_active, path('app_actor_space'), "Vue d'ensemble", 'speedometer2') }}
+        {{ n.item('orders', nav_active, path('app_actor_space') ~ '#commandes', 'Commandes et paiements', 'receipt') }}
+        {{ n.item('apps', nav_active, path('app_my_requests'), 'Candidatures et demandes', 'card-checklist') }}
+        {{ n.item('inbox', nav_active, path('app_inbox'), 'Messages', 'chat-dots') }}
+        <a class="sp-link sp-sep" href="{{ path('app_hub') }}"><i class="bi bi-person-circle" aria-hidden="true"></i> Espace citoyen</a>
+    {% else %}
+        {{ n.item('home', nav_active, path('app_hub'), 'Accueil', 'house') }}
+        {{ n.item('props', nav_active, path('app_my_propositions'), 'Mes propositions', 'lightbulb') }}
+        {{ n.item('debats', nav_active, path('app_community'), 'Débats et communauté', 'people') }}
+        {{ n.item('missions', nav_active, path('app_mission_posts'), 'Missions et annonces', 'briefcase') }}
+        {{ n.item('orders', nav_active, path('app_my_orders'), 'Commandes et services', 'receipt') }}
+        {{ n.item('inbox', nav_active, path('app_inbox'), 'Messages', 'chat-dots') }}
+        {{ n.item('notif', nav_active, path('app_notifications'), 'Notifications', 'bell') }}
+        {{ n.item('profile', nav_active, path('app_profile'), 'Mon profil', 'person-circle') }}
+        {{ n.item('logins', nav_active, path('app_login_history'), 'Mes connexions', 'clock-history') }}
+        {% if is_granted('ROLE_ACTOR') %}<a class="sp-link sp-sep" href="{{ path('app_actor_space') }}"><i class="bi bi-shop" aria-hidden="true"></i> Espace acteur</a>{% endif %}
+        {% if is_granted('ROLE_MODERATOR') %}<a class="sp-link" href="{{ path('admin_moderation') }}"><i class="bi bi-shield-check" aria-hidden="true"></i> Modération</a>{% endif %}
+    {% endif %}
+</nav>

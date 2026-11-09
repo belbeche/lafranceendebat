@@ -1,0 +1,17 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Import de revendications{% endblock %}
+{% block admin %}
+<h1 class="h3">Import de revendications</h1>
+<p>Chaque ligne devient une revendication <strong>non publiée</strong>. Elle est relue, vérifiée (source, faits, droit de réponse), puis publiée par un administrateur. Même règle pour tous les acteurs, institutions et partis. Les traductions dans toutes les langues sont créées automatiquement par la commande <code>php bin/console app:contenu:traduire</code> (gratuite par défaut via MyMemory, dans la limite d'un quota quotidien) ou par les contributeurs.</p>
+<p class="meta">En-têtes : titre;resume;groupe;theme;source_url;source_nom;autorite;langue;verification. Modèle : docs/modele_revendications.csv. 500 lignes et 1 Mo maximum.</p>
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+{% if result %}
+    <div class="alert alert-success">{{ result.added }} ajoutée(s), {{ result.skipped }} déjà présente(s), {{ result.rejected|length }} refusée(s).</div>
+    {% if result.rejected %}<ul>{% for r in result.rejected %}<li>Ligne {{ r.line }} : {{ r.reason }}</li>{% endfor %}</ul>{% endif %}
+{% endif %}
+<form method="post" enctype="multipart/form-data" class="carte p-3">
+    <input type="hidden" name="_token" value="{{ csrf_token('rev_import') }}">
+    <input class="form-control mb-3" type="file" name="csv" accept=".csv,text/csv" required>
+    <button class="btn btn-primary">Importer</button>
+</form>
+{% endblock %}

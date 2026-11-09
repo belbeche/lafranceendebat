@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ t.title }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>{{ t.title }}</h1>
+    <p class="lede">{{ d.summary }}</p>
+    <p class="meta mb-0">{% if t.aiGenerated %}Analyse rédigée avec l'aide d'une IA qui a cherché ses sources sur le web, puis validée par un modérateur.{% else %}Analyse préparée par l'éditeur à partir des textes officiels, validée par un modérateur.{% endif %} Mise à jour le {{ t.updatedAt|date('d/m/Y') }}.</p>
+</div></header>
+<section class="section"><div class="container" style="max-width:820px">
+    {% for key, label in labels %}
+        {% if d.sections[key] is defined and d.sections[key] %}
+        <h2 class="h4 mt-4">{{ label }}</h2>
+        <ul class="list-unstyled">{% for it in d.sections[key] %}<li class="mb-2">{{ it.text }} <a class="small" href="{{ it.source_url }}" rel="nofollow noopener" target="_blank">Source</a></li>{% endfor %}</ul>
+        {% endif %}
+    {% endfor %}
+    {% if d.manques is defined and d.manques %}<h2 class="h4 mt-4">Ce qu'on ne trouve pas</h2><ul>{% for m in d.manques %}<li>{{ m }}</li>{% endfor %}</ul>{% endif %}
+    <h2 class="h4 mt-4">Sources consultées</h2>
+    <ul>{% for s in d.sources %}<li><a href="{{ s.url }}" rel="nofollow noopener" target="_blank">{{ s.label }}</a></li>{% endfor %}</ul>
+    <p class="small text-muted mt-4">Cette page ne prend pas parti. Chaque affirmation est attribuée et renvoie à sa source ; les chiffres d'un camp ne sont pas présentés comme des faits établis.</p>
+</div></section>
+{% endblock %}

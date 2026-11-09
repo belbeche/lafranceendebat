@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes candidatures{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes candidatures</h1><p class="lede mb-0">Chaque acteur répond directement. Vous êtes prévenu ici et par e-mail.</p></div></header>
+<section class="section"><div class="container" style="max-width:860px">
+    {% for a in apps %}<div class="carte mb-2">
+        <p class="mb-1"><span class="etiquette {{ a.status == 'acceptee' ? 'bleu' : 'rouge' }}">{{ a.status == 'acceptee' ? 'Acceptée' : (a.status == 'declinee' ? 'Non retenue' : 'En attente') }}</span> <span class="meta">{{ a.createdAt|date('d/m/Y') }}</span></p>
+        <h2 class="h6 mb-1">{{ a.mission }}</h2>
+        <p class="meta mb-1">Adressée à {{ a.fallbackToTeam ? "l'équipe de la plateforme (aucun acteur inscrit)" : a.recipient.publicName }}</p>
+        {% if a.responseNote %}<p class="mb-1">« {{ a.responseNote }} »</p>{% endif %}
+        {% if a.status == 'acceptee' %}<a class="btn btn-sm btn-bleu" href="{{ path('app_inbox_thread', {id: a.recipient.id}) }}">Écrire à l'acteur</a>{% endif %}
+    </div>{% else %}<p class="meta">Aucune candidature. <a href="{{ path('app_missions') }}">Voir les missions</a></p>{% endfor %}
+    {% if contactApps %}<h2 class="h5 mt-4">E-mails envoyés à des contacts publics</h2>{% for a in contactApps %}<div class="carte mb-2"><h3 class="h6 mb-1">{{ a.mission }}</h3><p class="meta mb-0">Envoyé à {{ a.contact.organisation }} le {{ a.createdAt|date('d/m/Y') }}. La réponse arrive sur votre e-mail.</p></div>{% endfor %}{% endif %}
+</div></section>
+{% endblock %}

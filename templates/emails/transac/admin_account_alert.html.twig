@@ -1,0 +1,10 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">{{ title }}</h1>
+<table style="border-collapse:collapse;font-size:14px">
+{% for k, v in lines %}<tr><td style="padding:3px 12px 3px 0;color:#555">{{ k }}</td><td style="padding:3px 0"><strong>{{ v }}</strong></td></tr>{% endfor %}
+</table>
+<p style="margin-top:18px"><a href="{{ userId ? url('admin_security_user', {id: userId}) : url('admin_security') }}" style="display:inline-block;background:#002395;color:#fff;padding:10px 20px;text-decoration:none;font-weight:bold">Ouvrir le journal{{ userId ? ' de ce compte' }}</a></p>
+<p style="font-size:12px;color:#777">Message automatique réservé aux administrateurs. Les alertes répétitives d'une même adresse IP sont regroupées (1 par heure).</p>
+{% endblock %}

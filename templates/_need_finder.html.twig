@@ -1,0 +1,28 @@
+{# Aide à tout moment : chaque sujet est à un clic, sur toutes les pages. #}
+<button type="button" class="need-fab" data-bs-toggle="offcanvas" data-bs-target="#needFinder" aria-controls="needFinder"><i class="bi bi-compass" aria-hidden="true"></i> <span>Que voulez-vous faire ?</span></button>
+<div class="offcanvas offcanvas-end" role="dialog" tabindex="-1" id="needFinder" aria-labelledby="needFinderTitle">
+    <div class="offcanvas-header"><h2 class="offcanvas-title h5 serif" id="needFinderTitle">Que voulez-vous faire ?</h2><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fermer"></button></div>
+    <div class="offcanvas-body">
+    {% set ns = next_step() %}<div class="next-step next-step-compact mb-3"><div><strong>{{ ns.title }}</strong><span>{{ ns.text }}</span></div><a class="btn btn-rouge btn-sm" href="{{ ns.url }}">{{ ns.cta }}</a></div>
+    <ul class="list-unstyled d-grid gap-2 mb-0">
+        <li><a class="need-link" href="{{ path('app_feed') }}"><i class="bi bi-newspaper" aria-hidden="true"></i><span>Fil d'actualité : tout ce qui bouge</span></a></li>
+        <li><a class="need-link" href="{{ path('app_community') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i><span>Agora : discuter librement et calmement</span></a></li>
+        <li><a class="need-link" href="{{ path('app_taxpayers') }}"><i class="bi bi-piggy-bank" aria-hidden="true"></i><span>Contribuable : déposer une demande</span></a></li>
+        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}<li><a class="need-link" href="{{ path('app_inbox') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i><span>Mes messages</span></a></li>
+        <li><a class="need-link" href="{{ path('app_my_requests') }}"><i class="bi bi-card-checklist" aria-hidden="true"></i><span>Suivre mes demandes</span></a></li>{% endif %}
+        <li><a class="need-link" href="{{ path('app_install') }}"><i class="bi bi-phone" aria-hidden="true"></i><span>Installer l'application sur mon téléphone</span></a></li>
+        <li><a class="need-link" href="{{ path('app_agenda') }}"><i class="bi bi-calendar-event" aria-hidden="true"></i><span>Agenda et rencontres</span></a></li>
+        <li><a class="need-link" href="{{ path('app_proposition_new') }}"><i class="bi bi-lightbulb" aria-hidden="true"></i><span>Proposer une idée</span></a></li>
+        <li><a class="need-link" href="{{ path('app_propositions') }}"><i class="bi bi-hand-thumbs-up" aria-hidden="true"></i><span>Soutenir ou voter</span></a></li>
+        <li><a class="need-link" href="{{ path('app_debats') }}"><i class="bi bi-chat-square-text" aria-hidden="true"></i><span>Débattre calmement</span></a></li>
+        <li><a class="need-link" href="{{ path('app_revendication_new') }}"><i class="bi bi-bookmark-star" aria-hidden="true"></i><span>Signaler un oubli, une revendication</span></a></li>
+        <li><a class="need-link" href="{{ path('app_missions') }}"><i class="bi bi-briefcase" aria-hidden="true"></i><span>Trouver une mission ou être rémunéré</span></a></li>
+        <li><a class="need-link" href="{{ path('app_services') }}"><i class="bi bi-shop" aria-hidden="true"></i><span>Trouver ou proposer un service</span></a></li>
+        <li><a class="need-link" href="{{ path('app_plan_marshall') }}"><i class="bi bi-graph-up-arrow" aria-hidden="true"></i><span>Comprendre le Plan Marshall citoyen</span></a></li>
+        <li><a class="need-link" href="{{ path('app_useful_contacts') }}"><i class="bi bi-envelope" aria-hidden="true"></i><span>Écrire à un élu, contacts utiles</span></a></li>
+        <li><a class="need-link" href="{{ path('app_revendications') }}"><i class="bi bi-translate" aria-hidden="true"></i><span>Traduire ou lire dans ma langue</span></a></li>
+        <li><a class="need-link" href="{{ path('app_role_request') }}"><i class="bi bi-person-check" aria-hidden="true"></i><span>Candidater : élu, association, médiateur</span></a></li>
+        <li><a class="need-link" href="{{ path('app_welcome') }}"><i class="bi bi-signpost-split" aria-hidden="true"></i><span>Je ne sais pas par où commencer</span></a></li>
+        <li><a class="need-link" href="{{ path('app_tutorials') }}"><i class="bi bi-mortarboard" aria-hidden="true"></i><span>Apprendre pas à pas</span></a></li>
+    </ul></div>
+</div>

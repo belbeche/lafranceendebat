@@ -1,0 +1,83 @@
+{% extends 'admin/_layout.html.twig' %}
+{% import _self as m %}
+{% macro kpi(value, label, hint) %}<div class="col-6 col-md-3"><div class="carte h-100"><p class="h3 mb-0" style="color:#002395">{{ value }}</p><p class="mb-0 small">{{ label }}</p>{% if hint %}<p class="meta mb-0">{{ hint }}</p>{% endif %}</div></div>{% endmacro %}
+{% macro bars(data, empty) %}
+    {% set max = 1 %}{% for k, v in data %}{% if v > max %}{% set max = v %}{% endif %}{% endfor %}
+    {% for k, v in data %}<div class="mb-1"><div class="d-flex justify-content-between small"><span class="text-truncate pe-2">{{ k ?: 'non renseigné' }}</span><span>{{ v }}</span></div><div class="progress" style="height:8px" role="img" aria-label="{{ k }} : {{ v }}"><div class="progress-bar" style="width:{{ (100 * v / max)|round }}%;background:#002395"></div></div></div>
+    {% else %}<p class="meta mb-0">{{ empty|default('Aucune donnée.') }}</p>{% endfor %}
+{% endmacro %}
+{% macro series(days, color) %}
+    {% set max = 1 %}{% for d, v in days %}{% if v > max %}{% set max = v %}{% endif %}{% endfor %}
+    <div class="d-flex align-items-end gap-1" style="height:90px" role="img" aria-label="Évolution jour par jour, maximum {{ max }}">
+    {% for d, v in days %}<div title="{{ d|date('d/m') }} : {{ v }}" style="flex:1;min-width:3px;height:{{ v ? (6 + 84 * v / max)|round : 2 }}px;background:{{ color|default('#002395') }};opacity:{{ v ? 1 : 0.25 }}"></div>{% endfor %}
+    </div>
+    <div class="d-flex justify-content-between meta"><span>{{ days|keys|first|date('d/m') }}</span><span>total {{ days|reduce((c, v) => c + v, 0) }}</span><span>{{ days|keys|last|date('d/m') }}</span></div>
+{% endmacro %}
+{% block title %}Statistiques{% endblock %}
+{% block admin %}
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2"><h1 class="h3 mb-0">{{ page_title }}</h1><a class="btn btn-sm btn-outline-dark" href="{{ path('admin_statistics_csv') }}">Exporter en CSV</a></div>
+<p class="meta">Ces chiffres décrivent les participants, pas la population française. Les statistiques d'audience (visiteurs) sont anonymisées ; l'activité des membres vient du journal de sécurité (12 mois).</p>
+
+<h2 class="h5 mt-4">Membres</h2>
+{% set mb = s.members %}
+<div class="row g-3">
+    {{ m.kpi(mb.total|default(0), 'comptes') }}{{ m.kpi(mb.new7|default(0), 'inscrits ces 7 jours', (mb.new30|default(0)) ~ ' sur 30 jours') }}
+    {{ m.kpi(mb.active30|default(0), 'connectés ces 30 jours', mb.total ? ((100 * (mb.active30|default(0)) / mb.total)|round) ~ ' % des comptes') }}
+    {{ m.kpi(mb.verified|default(0), 'adresses e-mail confirmées', mb.total ? ((100 * (mb.verified|default(0)) / mb.total)|round) ~ ' %') }}
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-md-6"><div class="carte h-100"><h3 class="h6">Inscriptions par jour (30 jours)</h3>{% if s.signups.days is defined %}{{ m.series(s.signups.days) }}{% endif %}</div></div>
+    <div class="col-md-3"><div class="carte h-100"><h3 class="h6">Profils</h3>{{ m.bars(mb.roles|default({})) }}</div></div>
+    <div class="col-md-3"><div class="carte h-100"><h3 class="h6">Vigilance</h3><p class="mb-1">{{ mb.restricted|default(0) }} compte(s) restreint(s)</p><p class="mb-1">{{ mb.disabled|default(0) }} compte(s) désactivé(s)</p><a href="{{ path('admin_security') }}">Journal de sécurité</a></div></div>
+</div>
+
+<h2 class="h5 mt-4">Participation</h2>
+{% set c = s.content %}
+<div class="row g-3">
+    {{ m.kpi(c.supports|default(0), 'soutiens aux propositions') }}{{ m.kpi(c.votes|default(0), 'votes enregistrés') }}
+    {{ m.kpi((c.discussions|default(0)) + (c.replies|default(0)), 'messages dans la communauté', (c.discussions|default(0)) ~ ' sujets, ' ~ (c.replies|default(0)) ~ ' réponses') }}
+    {{ m.kpi((c.amendements|default(0)) + (c.endorsements|default(0)), 'amendements et avis d\'acteurs', (c.amendements|default(0)) ~ ' amendements, ' ~ (c.endorsements|default(0)) ~ ' avis') }}
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Propositions par statut</h3>{{ m.bars(c.propositions|default({})) }}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Propositions validées par thème</h3>{{ m.bars(c.themes|default({})) }}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Arguments par position</h3>{{ m.bars(c.arguments|default({})) }}<h3 class="h6 mt-3">Débats par statut</h3>{{ m.bars(c.debats|default({})) }}</div></div>
+    <div class="col-md-6"><div class="carte h-100"><h3 class="h6">Propositions déposées par jour (30 jours)</h3>{% if c.props30 is defined %}{{ m.series(c.props30, '#ED2939') }}{% endif %}</div></div>
+    <div class="col-md-3"><div class="carte h-100"><h3 class="h6">Propositions les plus soutenues</h3><ol class="small ps-3 mb-0">{% for p in s.top %}<li><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title|slice(0, 60) }}</a> <span class="meta">({{ p.supportCount }})</span></li>{% else %}<li class="meta">Aucune.</li>{% endfor %}</ol></div></div>
+    <div class="col-md-3"><div class="carte h-100"><h3 class="h6">Contributeurs les plus actifs</h3><ol class="small ps-3 mb-0">{% for u in s.contributors %}<li>{{ u.name }} <span class="meta">({{ u.n }} propositions)</span></li>{% else %}<li class="meta">Aucun.</li>{% endfor %}</ol></div></div>
+</div>
+
+<h2 class="h5 mt-4">Audience</h2>
+{% set a = s.audience %}
+<div class="row g-3">
+    {{ m.kpi(a.today|default(0), 'visiteurs aujourd\'hui') }}{{ m.kpi(a.week|default(0), 'visiteurs sur 7 jours') }}{{ m.kpi(a.month|default(0), 'visiteurs sur 30 jours') }}{{ m.kpi(a.total|default(0), 'visiteurs uniques au total') }}
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Pages les plus vues (visiteurs)</h3>{% set pg = {} %}{% for p in a.pages|default([]) %}{% set pg = pg|merge({(p.page ?? p.pageVisited ?? '?'): (p.visits ?? p.count ?? p.total ?? 0)}) %}{% endfor %}{{ m.bars(pg) }}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Pages les plus lues (membres, 30 jours)</h3>{{ m.bars((s.activity.topPages|default({}))|slice(0, 10, true)) }}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Pays des membres connectés</h3>{{ m.bars((s.activity.countries|default({}))|slice(0, 10, true), 'Pays indisponible (en-tête du réseau de diffusion absent).') }}<h3 class="h6 mt-3">Appareils</h3>{{ m.bars((s.activity.devices|default({}))|slice(0, 6, true)) }}</div></div>
+    <div class="col-md-6"><div class="carte h-100"><h3 class="h6">Connexions de membres par jour (14 jours)</h3>{% if s.activity.logins14 is defined %}{{ m.series(s.activity.logins14) }}{% endif %}</div></div>
+    <div class="col-md-6"><div class="carte h-100"><h3 class="h6">Pages consultées par les membres (14 jours)</h3>{% if s.activity.pages14 is defined %}{{ m.series(s.activity.pages14, '#ED2939') }}{% endif %}</div></div>
+</div>
+
+<h2 class="h5 mt-4">Lettre, enquêtes, agenda</h2>
+{% set l = s.lettre %}{% set sv = s.surveys %}{% set ag = s.agenda %}
+<div class="row g-3">
+    {{ m.kpi(l.confirmed|default(0), 'abonnés confirmés à la lettre', (l.pending|default(0)) ~ ' en attente, ' ~ (l.unsub|default(0)) ~ ' désinscrits') }}
+    {{ m.kpi(sv.responses|default(0), 'réponses aux enquêtes', (sv.invited|default(0)) ~ ' invitations envoyées') }}
+    {{ m.kpi(ag.upcoming|default(0), 'événements à venir', (ag.imported|default(0)) ~ ' importés, ' ~ (ag.pending|default(0)) ~ ' en attente') }}
+    {{ m.kpi((s.moderation.pendingProps|default(0)), 'propositions à modérer', 'voir la modération') }}
+</div>
+<div class="row g-3 mt-1">
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Lettres par état</h3>{{ m.bars(l.lettres|default({})) }}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Agenda par type</h3>{{ m.bars(ag.byKind|default({})) }}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Signalements</h3>{{ m.bars((s.moderation.signalements|default({}))) }}<h3 class="h6 mt-3">Demandes de droits</h3>{{ m.bars((s.moderation.roleRequests|default({}))) }}</div></div>
+</div>
+
+<h2 class="h5 mt-4">Paiements et sécurité</h2>
+<div class="row g-3">
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Commandes de services</h3>{% for o in (s.commerce.orders|default([])) %}<p class="mb-1 small">{{ o.k }} : {{ o.n }} commande(s), {{ (o.amount / 100)|number_format(2, ',', ' ') }} €{% if o.commission %}, dont {{ (o.commission / 100)|number_format(2, ',', ' ') }} € de commission{% endif %}</p>{% else %}<p class="meta mb-0">Aucune commande.</p>{% endfor %}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Dons</h3>{% for o in (s.commerce.donations|default([])) %}<p class="mb-1 small">{{ o.k }} : {{ o.n }}, {{ (o.amount / 100)|number_format(2, ',', ' ') }} €</p>{% else %}<p class="meta mb-0">Aucun don.</p>{% endfor %}</div></div>
+    <div class="col-md-4"><div class="carte h-100"><h3 class="h6">Événements de sécurité (30 jours)</h3>{{ m.bars(s.security.events30|default({}), 'Rien à signaler.') }}</div></div>
+</div>
+{% endblock %}

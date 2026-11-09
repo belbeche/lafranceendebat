@@ -1,0 +1,13 @@
+{{ subject }}
+
+{{ bodyText }}
+
+{% if invitation %}
+Pour recevoir nos informations, confirmez ici : {{ consentUrl }}
+Ceci est le seul message que nous vous envoyons sans votre accord. Sans réponse de votre part, vous ne recevrez rien d'autre.
+{% endif %}
+--
+Pourquoi ce message : votre adresse professionnelle ({{ actor.email }}) est publiée sur {{ actor.sourceUrl }}. Nous vous écrivons à propos de vos fonctions ({{ actor.role ?: 'acteur public' }}, {{ actor.organisation }}). Cette adresse n'est conservée que pour ce démarchage.
+Ne plus recevoir ces messages (effet immédiat, définitif) : {{ unsubscribeUrl }}
+Vos droits d'accès, de rectification et d'opposition s'exercent en répondant à ce message.
+{{ publisher.name }}{% if publisher.address %}, {{ publisher.address }}{% endif %}

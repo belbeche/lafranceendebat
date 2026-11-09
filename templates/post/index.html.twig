@@ -1,0 +1,289 @@
+{# templates/post/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Actualités{% endblock %}
+
+{% block body %}
+<!-- Section Actualités -->
+<section id="actualites" class="py-5 bg-light">
+    <div class="container">
+        <!-- En-tête avec filtres -->
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6">
+                <h1 class="section-title mb-0">Fil d'Actualité</h1>
+                <p class="text-muted mb-0">Découvrez les dernières nouvelles de La France en Débat</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <div class="btn-group" role="group">
+                    <a href="{{ path('app_actualites') }}" class="btn btn-outline-primary {{ app.request.get('_route') == 'app_actualites' ? 'active' : '' }}">
+                        <i class="fas fa-th"></i> Tous
+                    </a>
+                    <a href="{{ path('app_actualites_by_type', {'type': 'video'}) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-video"></i> Vidéos
+                    </a>
+                    <a href="{{ path('app_actualites_by_type', {'type': 'image'}) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-image"></i> Images
+                    </a>
+                    <a href="{{ path('app_actualites_by_type', {'type': 'document'}) }}" class="btn btn-outline-primary">
+                        <i class="fas fa-file-pdf"></i> Documents
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grille des publications -->
+        <div class="row g-4">
+            {% for post in posts %}
+                <div class="col-lg-6 col-xl-4" id="post-{{ post.id }}">
+                    <div class="card h-100 shadow-sm post-card">
+                        <!-- En-tête de la carte -->
+                        <div class="card-header bg-white border-bottom-0 pb-0">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="badge 
+                                        {% if post.type == 'video' %}bg-primary
+                                        {% elseif post.type == 'image' %}bg-success
+                                        {% elseif post.type == 'document' %}bg-danger
+                                        {% else %}bg-secondary{% endif %} mb-2">
+                                        <i class="fas fa-{{ post.type == 'video' ? 'video' : (post.type == 'image' ? 'image' : (post.type == 'document' ? 'file-pdf' : 'file-alt')) }} me-1"></i>
+                                        {{ post.type|capitalize }}
+                                    </span>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i>
+                                    {{ post.createdAt|date('d/m/Y') }}
+                                </small>
+                            </div>
+                        </div>
+
+                        <!-- Média -->
+                        {% if post.isVideo and post.mediaPath %}
+                        <div class="ratio ratio-16x9">
+                            <video controls class="w-100 h-100" style="object-fit: cover;" poster="{{ asset('images/video-poster.jpg') }}">
+                                <source src="{{ asset('uploads/posts/' ~ post.mediaPath) }}" type="video/mp4">
+                                Votre navigateur ne supporte pas la vidéo.
+                            </video>
+                        </div>
+                        {% elseif post.isImage and post.mediaPath %}
+                        <img src="{{ asset('uploads/posts/' ~ post.mediaPath) }}" class="card-img-top" alt="{{ post.title }}" style="height: 250px; object-fit: cover; cursor: pointer;" 
+                             data-open-modal="{{ asset('uploads/posts/' ~ post.mediaPath) }}">
+                        {% elseif post.isDocument and post.mediaPath %}
+                        <div class="card-body text-center py-4 bg-light">
+                            <i class="fas fa-file-pdf fa-4x text-danger mb-3"></i>
+                            <p class="mb-2 fw-bold">{{ post.title }}</p>
+                            <a href="{{ asset('uploads/posts/' ~ post.mediaPath) }}" class="btn btn-primary btn-sm" download>
+                                <i class="fas fa-download me-1"></i>Télécharger
+                            </a>
+                        </div>
+                        {% endif %}
+
+                        <!-- Corps de la carte -->
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="{{ path('app_actualites_show', {'id': post.id}) }}" class="text-decoration-none text-dark">
+                                    {{ post.title }}
+                                </a>
+                            </h5>
+                            <p class="card-text flex-grow-1">{{ post.content|u.truncate(150, '...') }}</p>
+                            
+                            <!-- Auteur et actions -->
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
+                                    <span>
+                                        <i class="fas fa-user me-1"></i>
+                                        {{ post.author.firstName ?? 'Équipe La France en Débat' }}
+                                    </span>
+                                    <span>
+                                        <i class="fas fa-comments me-1"></i>
+                                        {{ post.comments|length }} commentaire(s)
+                                    </span>
+                                </div>
+
+                                <!-- Actions -->
+                                <div class="d-flex gap-2">
+                                    <a href="{{ path('app_actualites_show', {'id': post.id}) }}" class="btn btn-outline-primary btn-sm flex-fill">
+                                        <i class="fas fa-eye me-1"></i>Voir plus
+                                    </a>
+                                    {% if post.isDocument and post.mediaPath %}
+                                    <a href="{{ asset('uploads/posts/' ~ post.mediaPath) }}" class="btn btn-success btn-sm" download title="Télécharger">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section commentaires (repliable) -->
+                        <div class="card-footer bg-white border-top-0">
+                            <button class="btn btn-link p-0 text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#comments-{{ post.id }}">
+                                <small>
+                                    <i class="fas fa-comments me-1"></i>
+                                    Voir les commentaires ({{ post.comments|filter(c => c.isApproved)|length }})
+                                </small>
+                            </button>
+
+                            <div class="collapse mt-3" id="comments-{{ post.id }}">
+                                <!-- Liste des commentaires -->
+                                <div class="comments-list mb-3" style="max-height: 200px; overflow-y: auto;">
+                                    {% for comment in post.comments|filter(c => c.isApproved)|slice(0, 5) %}
+                                    <div class="comment-item border-bottom py-2">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <strong class="text-primary small">{{ comment.author.firstName ?? 'Utilisateur' }}</strong>
+                                            <small class="text-muted">{{ comment.createdAt|date('d/m/Y H:i') }}</small>
+                                        </div>
+                                        <p class="mb-0 small">{{ comment.content }}</p>
+                                    </div>
+                                    {% else %}
+                                    <p class="text-muted small mb-0">Aucun commentaire pour le moment.</p>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Message simple au lieu du formulaire -->
+                                <div class="alert alert-info small mb-0 py-2">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Pour commenter, rendez-vous sur la page détaillée de la publication.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Aucune publication -->
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <i class="fas fa-newspaper fa-4x text-muted mb-3"></i>
+                        <h3 class="text-muted">Aucune publication pour le moment</h3>
+                        <p class="text-muted">Revenez plus tard pour découvrir nos actualités.</p>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('admin_posts_new') }}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i>Créer la première publication
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination (si nécessaire) -->
+        {% if posts|length > 12 %}
+        <div class="row mt-5">
+            <div class="col-12">
+                <nav aria-label="Pagination des actualités">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Précédent</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Suivant</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Modal pour les images -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Visualisation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" id="modalImage" class="img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.post-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 12px;
+}
+
+.post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.comments-list {
+    scrollbar-width: thin;
+    scrollbar-color: #dee2e6 transparent;
+}
+
+.comments-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.comments-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.comments-list::-webkit-scrollbar-thumb {
+    background-color: #dee2e6;
+    border-radius: 20px;
+}
+
+.section-title {
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border-radius: 2px;
+}
+
+.comment-item {
+    border-bottom: 1px solid #f8f9fa !important;
+}
+
+.comment-item:last-child {
+    border-bottom: none !important;
+}
+
+.btn-group .btn.active {
+    background-color: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+</style>
+
+<script nonce="{{ csp_nonce() }}">
+document.addEventListener('click', function (e) { var t = e.target.closest('[data-open-modal]'); if (t) { openModal(t.getAttribute('data-open-modal')); } });
+function openModal(imageSrc) {
+    document.getElementById('modalImage').src = imageSrc;
+    new bootstrap.Modal(document.getElementById('imageModal')).show();
+}
+
+// Animation au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.post-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+{% include 'dossier/_head.html.twig' %}
+<section class="section"><div class="container" style="max-width:860px">
+    <blockquote class="carte mb-4"><p class="h4 serif mb-0">Le savoir ça se partage, ça ne se perd pas.</p></blockquote>
+    <p>Transmettre, c'est donner sans s'appauvrir : celui qui explique comprend mieux, celui qui apprend peut à son tour transmettre. Quand la connaissance circule, on se dispute moins sur les faits et plus sur les choix, ce qui rend le dialogue possible.</p>
+    <h2 class="h4 mt-4">Repères : comment la France a organisé l'école</h2>
+    <ul>
+        <li><strong>1833, loi Guizot :</strong> chaque commune de plus de 500 habitants doit entretenir une école primaire de garçons.</li>
+        <li><strong>1850, loi Falloux :</strong> organisation de la liberté de l'enseignement, avec la coexistence d'écoles publiques et privées.</li>
+        <li><strong>1881-1882, lois Ferry :</strong> gratuité de l'école primaire publique (1881), puis instruction obligatoire de 6 à 13 ans et laïcité des programmes (1882).</li>
+        <li><strong>1886, loi Goblet :</strong> le personnel enseignant des écoles publiques est laïque.</li>
+        <li><strong>1959 :</strong> la scolarité obligatoire est portée à 16 ans (réforme Berthoin, appliquée progressivement), et la loi Debré organise les contrats avec les écoles privées.</li>
+        <li><strong>1975, loi Haby :</strong> collège unique.</li>
+    </ul>
+    <p class="meta">Dates à vérifier dans la source : <a href="https://fr.wikipedia.org/wiki/Histoire_de_l%27%C3%A9ducation_en_France" rel="noopener noreferrer nofollow">Wikipédia, Histoire de l'éducation en France</a>. Chaque décision a été débattue en son temps, parfois durement.</p>
+    <h2 class="h4 mt-4">Ce que nous proposons</h2>
+    <ul>
+        <li>Mettre la transmission au centre de chaque débat : une question, des faits, des sources, puis des opinions.</li>
+        <li>Débattre des priorités éducatives du pays plutôt que d'opposer les camps les uns aux autres.</li>
+        <li>Faire de chaque réponse une occasion d'apprendre : source à l'appui, reformulation de l'autre, réponse possible.</li>
+    </ul>
+    <p><a class="btn btn-rouge" href="{{ path('app_debat_show', {slug: 'faut-il-apprendre-a-utiliser-l-intelligence-artificielle-des-l-ecole-2'}) }}">Débat en cours : apprendre l'IA dès l'école ?</a> <a class="btn btn-outline-dark" href="{{ path('app_debat_new') }}">Ouvrir un débat</a></p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Vérifiez votre boîte mail | La France en Débat{% endblock %}
+{% block body %}
+<section class="section"><div class="container"><div class="row justify-content-center"><div class="col-md-7 col-lg-5">
+    <h1 class="h2">Vérifiez votre boîte mail</h1>
+    <div class="form-card mt-3">
+        <p>Si un compte existe pour cette adresse, un email avec un lien de réinitialisation vient de partir. Le lien est valable {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.</p>
+        <ul class="mb-3">
+            <li>Rien dans votre boîte principale ? Regardez dans les courriers indésirables.</li>
+            <li>Pas reçu au bout de 5 minutes ? Refaites une demande : le nouveau lien remplace l'ancien. Vous pouvez en faire 3 par heure.</li>
+            <li>Le lien ne sert qu'une fois.</li>
+        </ul>
+        <a href="{{ path('app_login') }}" class="btn btn-bleu">Retour à la connexion</a>
+        <a href="{{ path('app_forgot_password_request') }}" class="btn btn-outline-secondary ms-2">Refaire une demande</a>
+    </div>
+</div></div></div></section>
+{% endblock %}

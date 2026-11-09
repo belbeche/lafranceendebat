@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'welcome.title'|trans }}{% endblock %}
+{% block body %}
+<section class="container py-5">
+    <h1 class="serif text-center">{{ 'welcome.title'|trans }}</h1>
+    <p class="lead text-center mb-4">{{ 'welcome.lede'|trans }}</p>
+    <div class="row g-3">
+        {% for key, p in profiles %}
+        <div class="col-12 col-md-6 col-lg-4">
+            <a class="hub-card d-block h-100 p-4 text-decoration-none" href="{{ path('app_welcome_profile', {profile: key}) }}">
+                <p class="serif h4 mb-1">{{ ('welcome.' ~ key ~ '.t')|trans }}</p>
+                <p class="mb-0 text-muted">{{ ('welcome.' ~ key ~ '.d')|trans }}</p>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+    <p class="text-center mt-4"><a href="{{ path('app_welcome_later') }}">{{ 'welcome.later'|trans }}</a></p>
+<p class="commons-note mt-4 mb-0">{{ 'commons.notice'|trans }}</p>
+</section>
+{% endblock %}

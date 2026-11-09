@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+{% block title %}Classement des artisans de paix{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Classements</h1>
+    <p class="lede">Il met en avant celles et ceux qui font avancer le dialogue : pas les plus bruyants, pas les plus nombreux, mais les plus utiles au débat.</p>
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        <nav class="mb-3 d-flex flex-wrap gap-2" aria-label="Type de classement">
+            {% for key, label in {paix: 'Artisans de paix', propositions: 'Propositions soutenues', tendances: 'Tendances (7 jours)', petitions: 'Pétitions'} %}
+                <a class="btn btn-sm {{ view == key ? 'btn-primary' : 'btn-outline-primary' }}" href="{{ path('app_ranking', {vue: key}) }}" {{ view == key ? 'aria-current="page"' }}>{{ label }}</a>
+            {% endfor %}
+        </nav>
+        {% if view != 'paix' %}
+            <ol class="path-steps">
+            {% for it in items %}
+                <li><span class="n">{{ loop.index }}</span>
+                    <div class="flex-grow-1"><a href="{{ path('app_proposition_show', {id: it.p.id}) }}"><strong>{{ it.p.title }}</strong></a><br><small class="text-muted">{{ it.p.theme }}{% if it.p.petition %} · Pétition{% endif %}</small></div>
+                    <span class="fw-bold">{{ it.n }}</span></li>
+            {% else %}
+                <li>Rien à classer pour l'instant. Soutenez une proposition ou déposez-en une.</li>
+            {% endfor %}
+            </ol>
+            <p class="limite mt-3">Classement fondé sur les soutiens consultatifs du réseau : il ne mesure pas l'opinion de la population.</p>
+        {% else %}
+        <div class="mb-3 d-flex gap-2">
+            <a class="btn btn-sm {{ period == 'mois' ? 'btn-bleu' : 'btn-outline-dark' }}" href="{{ path('app_ranking', {periode: 'mois'}) }}">Ce mois-ci</a>
+            <a class="btn btn-sm {{ period == 'tout' ? 'btn-bleu' : 'btn-outline-dark' }}" href="{{ path('app_ranking', {periode: 'tout'}) }}">Depuis le début</a>
+        </div>
+        {% if rows|length >= 1 %}
+        <div class="podium" aria-label="Podium">
+            {% for row in rows|slice(0, 3) %}<div class="podium-place podium-{{ row.rank }}"><span class="podium-rank">{{ row.rank }}</span><strong>{{ row.user.publicName }}</strong><small>{{ row.tier }}</small><span class="podium-score">{{ row.score }} pts</span></div>{% endfor %}
+        </div>
+        {% endif %}
+        <ol class="path-steps">
+        {% for row in rows %}
+            <li><span class="n">{{ row.rank }}</span>
+                <div class="flex-grow-1"><strong>{{ row.user.publicName }}</strong><br><small class="text-muted">{{ row.tier }} · {{ row.thanks }} remerciement{{ row.thanks > 1 ? 's' }} · {{ row.reformulations }} reformulation{{ row.reformulations > 1 ? 's' }}</small></div>
+                <span class="fw-bold">{{ row.score }}</span></li>
+        {% else %}
+            <li>Le classement est vide pour l'instant. Participez à l'Agora, reformulez, remerciez : il se remplit grâce au dialogue.</li>
+        {% endfor %}
+        </ol>
+        {% if is_granted('ROLE_USER') %}
+            <form method="post" action="{{ path('app_ranking_optin') }}" class="mt-3">
+                <input type="hidden" name="_token" value="{{ csrf_token('ranking_optin') }}">
+                <button class="btn {{ app.user.rankingOptIn ? 'btn-outline-dark' : 'btn-rouge' }}" type="submit">{{ app.user.rankingOptIn ? 'Ne plus apparaître dans le classement' : 'Je veux apparaître dans le classement' }}</button>
+                <p class="small text-muted mt-2">Participation volontaire. Seuls votre prénom et l'initiale de votre nom sont affichés.</p>
+            </form>
+        {% else %}
+            <p class="mt-3"><a href="{{ path('app_login') }}">Connectez-vous</a> pour choisir d'y figurer.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+    <div class="col-lg-4">
+        <aside class="carte mb-3">
+            <h2 class="h5">Pourquoi figurer au classement</h2>
+            <ul class="small ps-3 mb-2">
+                <li><strong>Vous êtes vu des acteurs.</strong> Votre niveau s'affiche à côté de votre candidature à une mission : élus et associations voient que vous savez dialoguer.</li>
+                <li><strong>Vous passez en vitrine.</strong> Les trois premiers du mois sont affichés sur la page d'accueil.</li>
+                <li><strong>Votre progression est visible.</strong> Vous voyez les points qui vous séparent du niveau suivant.</li>
+                <li><strong>Vous restez maître de votre image.</strong> Prénom et initiale seulement, retrait en un clic.</li>
+            </ul>
+            <p class="meta mb-0">Ce n'est ni un jeu d'argent ni un concours de popularité : rien n'est rémunéré, la reconnaissance est publique et mesurée sur le dialogue.</p>
+        </aside>
+        {% if me %}<aside class="carte mb-3">
+            <h2 class="h5">Votre progression</h2>
+            <p class="mb-1"><strong>{{ me.score }} point{{ me.score > 1 ? 's' }}</strong>{% if me.tier %} : {{ me.tier }}{% endif %}</p>
+            {% if me.next %}<div class="progress mb-2" role="progressbar" aria-label="Progression" aria-valuenow="{{ me.score }}" aria-valuemin="0" aria-valuemax="{{ me.score + me.next }}"><div class="progress-bar" style="width:{{ (me.score / (me.score + me.next) * 100)|round }}%;background:#002395"></div></div>
+            <p class="small mb-0">Encore {{ me.next }} point{{ me.next > 1 ? 's' }} pour devenir « {{ me.nextTier }} ». Reformulez la position d'un autre avant de répondre : 2 points par réponse.</p>
+            {% else %}<p class="small mb-0">Niveau maximum atteint. Merci pour votre travail de dialogue.</p>{% endif %}
+        </aside>{% endif %}
+        <aside class="carte">
+            <h2 class="h5">Comment les points sont gagnés</h2>
+            <ul class="small ps-3">
+                <li>1 point par remerciement « Merci pour ce dialogue » reçu d'une personne différente (plafond {{ thanksCap }}).</li>
+                <li>2 points par réponse publiée qui commence par une reformulation de la position de l'autre (plafond {{ refCap }}).</li>
+            </ul>
+            <h2 class="h6">Contre la triche</h2>
+            <ul class="small ps-3">
+                <li>Seuls les comptes de plus de 7 jours comptent pour remercier.</li>
+                <li>On ne peut pas se remercier soi-même, ni remercier plus de 3 fois la même personne.</li>
+                <li>Un message masqué par la modération ne rapporte plus rien.</li>
+                <li>Publier beaucoup ne rapporte rien en soi.</li>
+            </ul>
+            <h2 class="h6">Les niveaux</h2>
+            <ul class="small ps-3 mb-0">{% for min, label in tiers %}<li>{{ label }} : à partir de {{ min }} point{{ min > 1 ? 's' }}</li>{% endfor %}</ul>
+        </aside>
+    </div>
+</div></div></section>
+{% endblock %}

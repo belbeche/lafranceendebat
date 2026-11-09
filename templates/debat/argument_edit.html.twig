@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier mon argument{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Modifier mon argument</h1>
+<p class="lede mb-0">Débat : {{ debat.title }}</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if errors %}<div class="alert alert-danger"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<div class="limite mb-3">Les corrections faites dans les 5 minutes après la publication ne sont pas signalées. Au-delà, la page affiche « modifié le » et le nombre de modifications, pour que les lecteurs sachent que le texte a changé depuis les réponses.</div>
+<form method="post" class="form-card">
+    <input type="hidden" name="_token" value="{{ csrf_token('arg_edit' ~ argument.id) }}">
+    <p><span class="etiquette">{{ argument.stanceLabel }}</span> <span class="meta">La position (pour, contre, nuancé) ne se change pas : retirez l'argument et déposez-en un nouveau.</span></p>
+    {% if argument.parent %}
+    <div class="mb-3"><label class="form-label" for="reformulation">Ce que vous avez compris de la position à laquelle vous répondez</label><textarea class="form-control" id="reformulation" name="reformulation" rows="3" maxlength="1000" required>{{ d.reformulation }}</textarea></div>
+    {% endif %}
+    <div class="mb-3"><label class="form-label" for="content">Votre argument (20 à 6000 caractères)</label><textarea class="form-control" id="content" name="content" rows="9" maxlength="6000" required>{{ d.content }}</textarea></div>
+    <div class="mb-3"><label class="form-label" for="sourceUrl">Source (lien https, facultatif)</label><input class="form-control" type="url" id="sourceUrl" name="sourceUrl" value="{{ d.sourceUrl }}" maxlength="255"></div>
+    <button class="btn btn-rouge" type="submit">Enregistrer</button>
+    <a class="btn btn-link" href="{{ path('app_debat_show', {slug: debat.slug, _fragment: 'argument-' ~ argument.id}) }}">Annuler</a>
+</form>
+</div></section>
+{% endblock %}

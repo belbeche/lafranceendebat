@@ -1,0 +1,7 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Votre justificatif de contribution{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Merci pour votre soutien</h1>
+<p>Bonjour {{ name }}, votre contribution a bien été reçue. Vous trouverez en pièce jointe votre justificatif n° {{ number }} (PDF). Il atteste du paiement et ne donne pas droit à une réduction d'impôt.</p>
+<p style="font-size:13px;color:#555">Votre contribution ne finance ni un parti politique, ni un candidat, ni une campagne électorale.</p>
+{% endblock %}

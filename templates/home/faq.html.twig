@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block title %}Questions fréquentes{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Questions fréquentes</h1></div></header>
+<section class="section"><div class="container measure">
+    <h2 class="h5">{{ 'free.faq_q'|trans }}</h2><div class="mb-3">{% include '_free_promise.html.twig' %}</div>
+    <h2 class="h5">Un soutien est-il un vote ?</h2><p>Non. C'est un avis consultatif, sans valeur électorale.</p>
+    <h2 class="h5">Ma proposition sera-t-elle transmise ?</h2><p>Elle est relue, puis publiée si elle respecte la charte. Une transmission aux institutions n'est jamais garantie, et leur réponse non plus : tout est consigné dans le <a href="{{ path('app_suivi') }}">suivi</a>.</p>
+    <h2 class="h5">Pourquoi mon texte est-il bloqué ?</h2><p>Le filtre repère insultes, menaces et coordonnées personnelles. Reformulez : il explique la raison.</p>
+    <h2 class="h5">Comment supprimer mon compte ?</h2><p>Depuis votre profil. Vos contributions publiées sont anonymisées.</p>
+</div></section>
+{% endblock %}

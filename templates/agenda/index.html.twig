@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}Agenda{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Agenda</h1>
+    <p class="lede mb-0">Rencontres citoyennes, débats publics, réunions avec des candidats et des élus. Chaque rencontre a sa conversation sur la plateforme : questions avant, comptes rendus après. L'échange reste ici, modéré, sous la charte de paix.</p>
+</div></header>
+<section class="section"><div class="container"><div class="row"><div class="col-lg-8">
+    <nav aria-label="Filtrer par type de rencontre" class="mb-3 d-flex flex-wrap gap-2">
+        <a class="btn btn-sm {{ kind == '' ? 'btn-bleu' : 'btn-outline-dark' }}" href="{{ path('app_agenda') }}" {{ kind == '' ? 'aria-current="true"' }}>Toutes</a>
+        {% for k, label in kinds %}<a class="btn btn-sm {{ kind == k ? 'btn-bleu' : 'btn-outline-dark' }}" href="{{ path('app_agenda', {type: k}) }}" {{ kind == k ? 'aria-current="true"' }}>{{ label }}</a>{% endfor %}
+    </nav>
+    <h2 class="h4" id="a-venir">À venir</h2>
+    <ul class="list-unstyled" aria-labelledby="a-venir">
+    {% for e in upcoming %}
+        <li><article class="rangee" id="rencontre-{{ e.id }}">
+            <p class="mb-1"><span class="etiquette bleu">{{ e.kindLabel ?: 'Rencontre' }}</span></p>
+            <h3 class="h5">{{ e.name }}</h3>
+            <p class="mb-1"><i class="bi bi-calendar-event" aria-hidden="true"></i> <time datetime="{{ e.date|date('c') }}">{{ e.date|date('H:i') == '00:00' ? e.date|date('d/m/Y') : e.date|date('d/m/Y à H:i') }}</time>{% if e.location %} · <i class="bi bi-geo-alt" aria-hidden="true"></i> {{ e.location }}{% endif %}</p>
+            <p class="mb-2">{{ e.description|nl2br }}</p>
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                {% if threads[e.id] is defined %}
+                    <a class="btn btn-sm btn-bleu" href="{{ path('app_community_show', {id: threads[e.id].id}) }}">Rejoindre la conversation</a>
+                {% elseif is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <form method="post" action="{{ path('app_agenda_thread', {id: e.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('event' ~ e.id) }}"><button class="btn btn-sm btn-bleu" type="submit">Ouvrir la conversation</button></form>
+                {% else %}
+                    <a class="btn btn-sm btn-bleu" href="{{ path('app_login') }}">Se connecter pour échanger</a>
+                {% endif %}
+                <a class="btn btn-sm btn-outline-dark" href="{{ path('app_agenda_ics', {id: e.id}) }}">Ajouter à mon calendrier</a>
+                {% if e.link %}<a class="btn btn-sm btn-link" href="{{ e.link }}" rel="noopener nofollow" target="_blank">Lien d'inscription (site externe)</a>{% endif %}
+            </div>
+        </article></li>
+    {% else %}<li><div class="carte"><p class="mb-1"><strong>Aucune rencontre programmée.</strong></p><p class="mb-0">Vous organisez un débat ou une permanence ? <a href="{{ path('app_role_request') }}">Candidatez comme acteur</a> pour la publier, ou lancez un fil dans <a href="{{ path('app_community') }}">l'Agora</a>.</p></div></li>{% endfor %}
+    </ul>
+    {% if past|length %}
+        <h2 class="h4 mt-5" id="passees">Passées</h2>
+        <ul class="list-unstyled" aria-labelledby="passees">
+        {% for e in past %}<li><article class="rangee"><p class="meta mb-1"><time datetime="{{ e.date|date('c') }}">{{ e.date|date('d/m/Y') }}</time>{% if e.location %} · {{ e.location }}{% endif %}</p><h3 class="h6 mb-1">{{ e.name }}</h3>{% if threads[e.id] is defined %}<a href="{{ path('app_community_show', {id: threads[e.id].id}) }}">Lire les échanges</a>{% endif %}</article></li>{% endfor %}
+        </ul>
+    {% endif %}
+</div>
+<aside class="col-lg-4">{% include '_role_actions.html.twig' with {ctx: 'agenda'} only %}<div class="carte"><h2 class="h5">Pourquoi tout ici ?</h2><p class="mb-0">Pour que chaque rencontre garde une trace publique, que personne ne soit exclu et que les échanges ne soient pas détournés vers des groupes privés. Les liens externes ne servent qu'à s'inscrire.</p></div></aside>
+</div></div></section>
+{% endblock %}

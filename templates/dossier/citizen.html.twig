@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ dossier.title }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">{% if dossier.theme %}<span class="etiquette bleu">{{ dossier.theme }}</span>{% endif %}<h1 class="mt-2">{{ dossier.title }}</h1><p class="lead mb-1">{{ dossier.intro }}</p>
+<p class="meta mb-0">Dossier citoyen proposé par {{ dossier.authorDisplayName }}{% if dossier.publishedAt %} · publié le {{ dossier.publishedAt|date('d/m/Y') }}{% endif %}</p></div></header>
+<section class="section"><div class="container" style="max-width:820px">
+{% if not dossier.published %}<div class="alert alert-warning">{% if dossier.status == 'rejected' %}Refusé par la modération : {{ dossier.moderationNote }}{% else %}En attente de validation. Seuls vous et les modérateurs le voyez.{% endif %}</div>{% endif %}
+<div class="limite mb-4">Ce dossier est rédigé par un citoyen et relu avant publication pour sa neutralité et ses sources. Vérifiez toujours les sources citées.</div>
+<div class="measure">{{ dossier.body|e|nl2br }}</div>
+<h2 class="h4 mt-4">Sources</h2>
+<ul>{% for s in dossier.sourceList %}<li><a href="{{ s }}" target="_blank" rel="noopener noreferrer nofollow">{{ s }}</a></li>{% endfor %}</ul>
+<p class="mt-4"><a class="btn btn-link" href="{{ path('app_dossiers') }}">Tous les dossiers</a></p>
+</div></section>
+{% endblock %}

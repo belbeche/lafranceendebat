@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block title %}Soutenir l'initiative La France en Débat{% endblock %}
+{% block body %}
+<div class="container py-4" style="max-width:960px">
+<h1 class="h2">Soutenir l'initiative</h1>
+<p class="lead" style="max-width:68ch">La France en Débat est un espace de dialogue pacifié, sans parti et sans haine. Il vit si des citoyens s'en servent et le font connaître. Voici cinq façons d'aider, de la plus rapide à la plus engagée.</p>
+
+<section id="merci" class="card border-primary mb-4"><div class="card-body">
+  <h2 class="h5">1. Déclarer mon soutien <span class="badge text-bg-primary ms-1">{{ total }} {{ total > 1 ? 'soutiens' : 'soutien' }}</span></h2>
+  <p class="small text-muted mb-2">Un geste simple qui montre que l'initiative compte. Votre nom n'est affiché que si vous le demandez, et vous pouvez retirer votre soutien à tout moment.</p>
+  {% if mine %}
+    <p class="mb-2">Vous soutenez l'initiative{% if mine.publicName %} sous le nom « {{ mine.publicName }} »{% endif %}. Merci.</p>
+    <form method="post" action="{{ path('app_support_leave') }}"><input type="hidden" name="_token" value="{{ csrf_token('support') }}"><button class="btn btn-outline-secondary btn-sm">Retirer mon soutien</button></form>
+  {% elseif app.user %}
+    <form method="post" action="{{ path('app_support_join') }}" class="row g-2 align-items-end">
+      <input type="hidden" name="_token" value="{{ csrf_token('support') }}">
+      <div class="col-12"><div class="form-check"><input class="form-check-input" type="checkbox" name="public" value="1" id="sp-public"><label class="form-check-label" for="sp-public">Afficher mon prénom ou pseudo dans la liste des soutiens</label></div></div>
+      <div class="col-md-6"><label class="form-label small" for="sp-name">Prénom ou pseudo (facultatif)</label><input class="form-control" id="sp-name" name="public_name" maxlength="60" autocomplete="given-name"></div>
+      <div class="col-auto"><button class="btn btn-primary">Je soutiens l'initiative</button></div>
+    </form>
+  {% else %}
+    <a class="btn btn-primary" href="{{ path('app_login') }}">Me connecter pour soutenir</a> <a class="btn btn-outline-primary" href="{{ path('app_register') }}">Créer un compte gratuit</a>
+  {% endif %}
+  {% if names %}<p class="small mt-3 mb-0"><strong>Ils soutiennent :</strong> {{ names|join(', ') }}{% if total > names|length %} et d'autres.{% endif %}</p>{% endif %}
+</div></section>
+
+<section class="mb-4">
+  <h2 class="h5">2. En parler autour de moi</h2>
+  <p class="small text-muted">Le plus utile : un proche qui vient débattre. Un message prêt à envoyer, neutre, sans consigne de vote.</p>
+  {% set link = url('app_home') %}
+  <div class="row g-3">
+    {% for k, txt in {
+      'Message court': 'Je participe à La France en Débat : un espace pour débattre sans insultes, avec des sources vérifiables. ' ~ link,
+      'Pour un réseau social': 'Débattre sans haine, ça existe. La France en Débat réunit des propositions citoyennes, les positions sourcées et les votes réels des groupes à l\'Assemblée. Aucun parti derrière. ' ~ link,
+      'Pour un proche': 'Tu m\'avais dit que plus personne ne se parlait calmement. Regarde ce site : on y propose, on y débat, et chaque chiffre a sa source. ' ~ link
+    } %}
+    <div class="col-md-4"><div class="card h-100"><div class="card-body d-flex flex-column"><h3 class="h6">{{ k }}</h3><p class="small flex-grow-1" id="kit-{{ loop.index }}">{{ txt }}</p><button type="button" class="btn btn-sm btn-outline-primary" data-copy-text="kit-{{ loop.index }}">Copier le message</button></div></div></div>
+    {% endfor %}
+  </div>
+  <div class="mt-3">{% include '_share.html.twig' with {url: link, title: 'La France en Débat : débattre sans haine, avec des sources'} %}</div>
+</section>
+
+<section class="mb-4">
+  <h2 class="h5">3. Contribuer au contenu</h2>
+  <p class="small text-muted mb-1">Proposer, débattre, apporter une source : c'est ce qui rend le site utile à tous.</p>
+  <a class="btn btn-outline-primary btn-sm" href="{{ path('app_propositions') }}">Voir les propositions</a>
+  <a class="btn btn-outline-primary btn-sm" href="{{ path('app_debats') }}">Rejoindre un débat</a>
+  <a class="btn btn-outline-primary btn-sm" href="{{ path('app_positions') }}">Comparer les positions</a>
+</section>
+
+<section class="mb-4">
+  <h2 class="h5">4. Donner du temps ou des compétences</h2>
+  <p class="small text-muted mb-1">Modération, rédaction d'analyses sourcées, traduction, développement. Vous indiquez ce que vous savez faire, nous vous recontactons.</p>
+  <a class="btn btn-outline-primary btn-sm" href="{{ path('app_role_request') }}">Candidater pour aider</a>
+  <a class="btn btn-outline-primary btn-sm" href="{{ path('app_open_source') }}">Voir le code ouvert</a>
+</section>
+
+<section class="mb-4">
+  <h2 class="h5">5. Contribuer financièrement</h2>
+  {% if donationsOpen %}
+    <p class="small text-muted mb-1">Une contribution finance l'hébergement et le travail de modération. Elle ne va ni à un parti, ni à un candidat, ni à une campagne.</p>
+    <a class="btn btn-outline-primary btn-sm" href="{{ path('app_donate') }}">Contribuer</a>
+  {% else %}
+    <p class="small text-muted mb-0">Les contributions financières ne sont pas ouvertes pour l'instant. Le plus utile aujourd'hui reste de parler du site et d'y participer.</p>
+  {% endif %}
+</section>
+</div>
+<script nonce="{{ csp_nonce() }}">
+document.querySelectorAll('[data-copy-text]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var t = document.getElementById(b.getAttribute('data-copy-text')).textContent.trim();
+    var done = function () { b.textContent = 'Copié'; };
+    if (navigator.clipboard) { navigator.clipboard.writeText(t).then(done, function () {}); }
+  });
+});
+</script>
+{% endblock %}

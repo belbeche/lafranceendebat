@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes messages{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes messages</h1><p class="lede mb-0">Messagerie des acteurs publics et des citoyens qui leur écrivent. Les échanges restent sur la plateforme et apparaissent ici en direct.</p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% for t in threads %}
+    <a class="need-link mb-2 {{ t.unread ? 'need-unread' }}" href="{{ path('app_inbox_thread', {id: t.user.id}) }}">
+        <i class="bi bi-person-circle" aria-hidden="true"></i>
+        <span class="flex-grow-1"><strong>{{ t.user.publicName }}</strong><br><span class="meta">{{ t.last.body|u.truncate(80, '…') }} · {{ t.last.createdAt|date('d/m H:i') }}</span></span>
+        {% if t.unread %}<span class="badge bg-danger">{{ t.unread }}</span>{% endif %}
+    </a>
+{% else %}
+    <div class="carte"><p class="mb-2"><strong>Aucune conversation pour le moment.</strong></p>
+    <p class="mb-0">Un citoyen écrit à un acteur public (élu, association, prestataire, médiateur) ; un acteur peut écrire à un citoyen. Pour écrire à un acteur, ouvrez une proposition publiée et utilisez le bouton « Écrire » à côté de son avis, ou une offre de service. <a href="{{ path('app_propositions') }}">Voir les propositions</a>.</p></div>
+{% endfor %}
+</div></section>
+{% endblock %}

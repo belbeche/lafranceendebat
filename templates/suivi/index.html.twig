@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Suivi des institutions{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Suivi des institutions</h1>
+    <p class="lede">Qui a été saisi, par quelle voie, quand, et ce qui a été répondu. Ce registre ne dit pas ce que les institutions ont fait au-delà de ce qui est documenté.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: '', compact: true} only %}</div>
+<section class="section"><div class="container"><div class="row"><div class="col-lg-9">
+    <div class="limite mb-4"><strong>Ce qui n'est pas garanti.</strong> Une transmission n'oblige aucune institution à répondre. L'absence de réponse est enregistrée comme telle, sans interprétation.</div>
+    {% for t in transmissions %}
+        <article class="rangee {{ t.status in ['sent', 'no_answer'] ? 'sans-reponse' }}">
+            <p class="mb-1"><span class="etiquette bleu">{{ t.statusLabel }}</span> <span class="etiquette">{{ t.routeLabel }}</span></p>
+            <h3>{{ t.recipient }}</h3>
+            <p class="mb-1">Objet : {{ t.subjectTitle }}</p>
+            <p class="meta mb-1">
+                {% if t.sentAt %}Envoyée le {{ t.sentAt|date('d/m/Y') }}{% if t.status in ['sent', 'acknowledged'] %} · en attente depuis {{ t.daysWaiting }} jour{{ t.daysWaiting > 1 ? 's' }}{% endif %}{% else %}Préparée, pas encore envoyée{% endif %}
+            </p>
+            {% if t.responseSummary %}<blockquote class="mb-1">{{ t.responseSummary|nl2br }}</blockquote>{% endif %}
+            {% if t.referenceUrl %}<a href="{{ t.referenceUrl }}" rel="noopener nofollow" target="_blank">Document de référence</a>{% endif %}
+        </article>
+    {% else %}
+        <div class="carte">Aucune transmission enregistrée pour le moment.</div>
+    {% endfor %}
+</div></div></div></section>
+{% endblock %}

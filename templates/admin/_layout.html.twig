@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% set admin_native = true %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('css/lfed-admin.css') }}?v={{ asset_version() }}">{% endblock %}
+{% block body %}
+<div class="container section">
+    <div class="adm">
+        {% include 'admin/_nav.html.twig' %}
+        <div class="adm-main">{% block admin %}{% endblock %}</div>
+    </div>
+</div>
+{% endblock %}

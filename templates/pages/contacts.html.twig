@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ 'contacts.title'|trans }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>{{ 'contacts.title'|trans }}</h1><p class="lede mb-0">{{ 'contacts.lede'|trans }}</p></div></header>
+<section class="section"><div class="container">
+<h2 class="h4 mt-4">Sur la plateforme</h2>
+<div class="act-grid">
+<a class="carte-lien" href="{{ path('app_contact') }}"><div class="carte h-100 p-3"><h3 class="h6">Nous écrire</h3><p class="meta mb-0">Une question, un signalement, une demande de suppression de données.</p></div></a>
+<a class="carte-lien" href="{{ path('app_role_request') }}"><div class="carte h-100 p-3"><h3 class="h6">Candidater à un rôle</h3><p class="meta mb-0">Médiateur, acteur, élu, association.</p></div></a>
+<a class="carte-lien" href="{{ path('app_actors') }}"><div class="carte h-100 p-3"><h3 class="h6">Acteurs publics</h3><p class="meta mb-0">Élus, institutions, médiateurs à contacter.</p></div></a>
+</div>
+<h2 class="h4 mt-4">Se faire entendre</h2>
+<div class="act-grid">
+<a class="carte-lien" href="https://petitions.senat.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Pétitions au Sénat</h3><p class="meta mb-0">Déposer ou signer une pétition.</p></div></a>
+<a class="carte-lien" href="https://petitions.assemblee-nationale.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Pétitions à l'Assemblée nationale</h3><p class="meta mb-0">Déposer ou signer une pétition.</p></div></a>
+<a class="carte-lien" href="https://www.assemblee-nationale.fr/dyn/deputes" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Trouver mon député</h3><p class="meta mb-0">Coordonnées de votre circonscription.</p></div></a>
+<a class="carte-lien" href="https://www.senat.fr/senateurs/senatl.html" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Trouver mon sénateur</h3><p class="meta mb-0">Coordonnées par département.</p></div></a>
+<a class="carte-lien" href="https://www.referendum.interieur.gouv.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Référendum d'initiative partagée</h3><p class="meta mb-0">Soutien en ligne aux propositions de loi.</p></div></a>
+</div>
+<h2 class="h4 mt-4">Être aidé dans ses démarches</h2>
+<div class="act-grid">
+<a class="carte-lien" href="https://www.service-public.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Service-Public.fr</h3><p class="meta mb-0">Toutes les démarches administratives. Téléphone : 3939.</p></div></a>
+<a class="carte-lien" href="https://www.defenseurdesdroits.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Défenseur des droits</h3><p class="meta mb-0">Un litige avec un service public, une discrimination. Téléphone : 09 69 39 00 00.</p></div></a>
+<a class="carte-lien" href="https://www.francetravail.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">France Travail</h3><p class="meta mb-0">Emploi et formation. Téléphone : 3949.</p></div></a>
+<a class="carte-lien" href="https://www.ameli.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Ameli (Assurance maladie)</h3><p class="meta mb-0">Santé et remboursements. Téléphone : 3646.</p></div></a>
+<a class="carte-lien" href="https://www.caf.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Caf</h3><p class="meta mb-0">Aides et prestations familiales. Téléphone : 3230.</p></div></a>
+<a class="carte-lien" href="https://www.impots.gouv.fr" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">Impots.gouv.fr</h3><p class="meta mb-0">Impôts et déclarations.</p></div></a>
+</div>
+<h2 class="h4 mt-4">Protéger ses données</h2>
+<div class="act-grid">
+<a class="carte-lien" href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener noreferrer"><div class="carte h-100 p-3"><h3 class="h6">CNIL</h3><p class="meta mb-0">Exercer vos droits sur vos données personnelles.</p></div></a>
+</div>
+</div></section>
+{% endblock %}

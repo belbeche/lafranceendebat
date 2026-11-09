@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Consultations et votes{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Consultations, votes consultatifs, élections</h1>
+    <p class="lede">Quatre choses différentes, qu'il ne faut jamais confondre.</p></div></header>
+<section class="section"><div class="container"><div class="row g-3">
+    <div class="col-md-6"><div class="carte"><h2 class="h5">Consultation ouverte</h2><p class="mb-0">Un avis recueilli auprès des participants du réseau. Elle n'engage personne. Les résultats sont ceux des participants, pas ceux de la population.</p></div></div>
+    <div class="col-md-6"><div class="carte"><h2 class="h5">Vote consultatif du réseau</h2><p class="mb-0">Un vote organisé ici, un compte, un soutien par proposition. Il n'a aucune valeur juridique. Il peut être faussé : comptes multiples, pressions, inégalités d'accès. Les soutiens affichés sur ce site sont de cette nature.</p></div></div>
+    <div class="col-md-6"><div class="carte"><h2 class="h5">Élection officielle</h2><p class="mb-0">Régie par le code électoral, organisée par l'État. Ce site n'en organise aucune et n'en annonce aucun résultat.</p></div></div>
+    <div class="col-md-6"><div class="carte"><h2 class="h5">Référendum officiel</h2><p class="mb-0">Prévu par la Constitution (article 11 notamment). Voir les <a href="{{ path('app_institutional_routes') }}">voies institutionnelles</a> pour les seuils et les limites.</p></div></div>
+</div>
+<div class="limite mt-4 measure"><strong>Limites du vote en ligne.</strong> Usurpation d'identité, coercition, inégalités d'accès au numérique, difficulté de garantir le secret du vote. Ces limites sont la raison pour laquelle les soutiens de ce site ne sont jamais présentés comme un résultat électoral. Des alternatives hors ligne (permanences, documents imprimés) restent nécessaires pour ne pas exclure.</div>
+</div></section>
+{% endblock %}

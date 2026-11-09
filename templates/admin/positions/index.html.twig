@@ -1,0 +1,10 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Positions des candidats{% endblock %}
+{% block admin %}
+<h1 class="h3">Positions des candidats</h1>
+<form method="post" class="row g-2 mb-4"><input type="hidden" name="_token" value="{{ csrf_token('positions_admin') }}">
+    <div class="col-md-3"><input class="form-control" name="theme" placeholder="Thème (Immigration…)" maxlength="80"></div>
+    <div class="col-md-7"><input class="form-control" name="text" placeholder="Affirmation factuelle et neutre" maxlength="300" required></div>
+    <div class="col-md-2"><button class="btn btn-primary w-100">Ajouter</button></div></form>
+<table class="table"><tbody>{% for s in statements %}<tr><td>{{ s.theme }}</td><td><a href="{{ path('admin_positions_show', {id: s.id}) }}">{{ s.text }}</a></td><td>{{ s.published ? 'Publiée' : 'Brouillon' }}</td></tr>{% else %}<tr><td>Aucune affirmation.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

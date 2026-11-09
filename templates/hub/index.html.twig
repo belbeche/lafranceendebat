@@ -1,0 +1,96 @@
+{% extends 'space/_layout.html.twig' %}
+{% block title %}Mon espace{% endblock %}
+{% macro tile(icon, title, text, url) %}
+<div class="col-md-6 col-lg-4"><a class="carte-lien" href="{{ url }}"><div class="carte h-100 p-3"><h3 class="h5"><i class="bi bi-{{ icon }}" aria-hidden="true"></i> {{ title }}</h3><p class="meta mb-0">{{ text }}</p></div></a></div>
+{% endmacro %}
+{% import _self as m %}
+{% set nav_active = 'home' %}
+{% block space %}
+<h1>Bonjour {{ app.user.publicName }}. Que voulez-vous faire ?</h1>
+<div>
+    <nav class="hub-big hub-big-flat" aria-label="Actions principales">
+        <a href="{{ path('app_proposition_new') }}"><span class="hub-ico"><i class="bi bi-lightbulb" aria-hidden="true"></i></span>Proposer une idée</a>
+        <a href="{{ path('app_scrutins') }}"><span class="hub-ico"><i class="bi bi-check2-square" aria-hidden="true"></i></span>Donner mon avis</a>
+        <a href="{{ path('app_services') }}"><span class="hub-ico"><i class="bi bi-briefcase" aria-hidden="true"></i></span>Trouver un service</a>
+        <a href="{{ path('app_actors') }}"><span class="hub-ico rouge"><i class="bi bi-envelope" aria-hidden="true"></i></span>Écrire à un élu</a>
+    </nav>
+    <p class="mt-3 d-flex flex-wrap gap-2">
+        <a class="btn btn-outline-dark" href="{{ path('app_inbox') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i> Mes messages <span class="badge bg-danger" data-live-badge="messages" hidden>0</span></a>
+        <a class="btn btn-outline-dark" href="{{ path('app_notifications') }}"><i class="bi bi-bell" aria-hidden="true"></i> Notifications <span class="badge bg-danger" data-live-badge="notifications" hidden>0</span></a>
+        <a class="btn btn-outline-dark" href="{{ path('app_my_requests') }}"><i class="bi bi-card-checklist" aria-hidden="true"></i> Mes demandes</a>
+        <a class="btn btn-outline-dark" href="{{ path('app_taxpayers') }}"><i class="bi bi-piggy-bank" aria-hidden="true"></i> Espace contribuables</a>
+    </p>
+    <div class="row g-3 mt-1 mb-4">
+        <div class="col-lg-6"><section class="hub-box">
+            <h2>Ma proposition</h2>
+            {% if last %}
+                <p class="mb-0"><a href="{{ path('app_proposition_show', {id: last.id}) }}">« {{ last.title }} »</a></p>
+                <ol class="hub-steps">
+                    {% for s in steps %}<li class="{{ loop.index0 < current ? 'done' : (loop.index0 == current ? 'now' : '') }}"><span class="n">{% if loop.index0 < current %}<i class="bi bi-check-lg" aria-hidden="true"></i>{% else %}{{ loop.index }}{% endif %}</span>{{ s }}</li>{% endfor %}
+                </ol>
+            {% else %}
+                <p>Vous n'avez pas encore déposé d'idée.</p><a class="btn btn-primary" href="{{ path('app_proposition_new') }}">Déposer ma première proposition</a>
+            {% endif %}
+        </section></div>
+        <div class="col-lg-6"><section class="hub-box">
+            <h2>À faire</h2>
+            {% for t in todo %}<div class="hub-todo"><strong>{{ t.label }}</strong><br><a class="{{ t.red ? 'rouge' : '' }}" href="{{ t.url }}">{{ t.button }}</a></div>{% else %}<p>Rien à faire pour le moment.</p>{% endfor %}
+        </section></div>
+    </div>
+</div>
+<section class="sp-more"><div>
+    <h2 class="h5 mb-3">Mon compte</h2>
+    <div class="row g-3 mb-4">
+        {{ m.tile('person-circle', 'Mon profil', 'Consulter mes informations et mon activité.', path('app_profile')) }}
+        {{ m.tile('telephone', 'Contacts utiles', 'Élus, pétitions, aides et organismes officiels.', path('app_useful_contacts')) }}
+        {{ m.tile('compass', 'Marche à suivre', 'Toutes les démarches du site, expliquées pas à pas.', path('app_guide')) }}
+        {{ m.tile('pencil-square', 'Modifier mes informations', 'Nom, coordonnées, mot de passe.', path('app_profile_edit')) }}
+        {{ m.tile('collection', 'Mes propositions', 'Suivre leur validation et leurs soutiens.', path('app_my_propositions')) }}
+        {{ m.tile('receipt', 'Mes commandes et messages', 'Prestations demandées et échanges.', path('app_my_orders')) }}
+    </div>
+    <h2 class="h5 mb-3">Participer</h2>
+    <div class="row g-3 mb-4">
+        {{ m.tile('chat-square-text', 'Déposer une proposition', 'Une idée, un problème, une solution.', path('app_proposition_new')) }}
+        {{ m.tile('collection', 'Mes propositions', 'Suivre leur validation et leurs soutiens.', path('app_my_propositions')) }}
+        {{ m.tile('people', 'Débats et communauté', 'Lire, répondre, soutenir.', path('app_community')) }}
+        {{ m.tile('check2-square', 'Scrutins consultatifs', 'Donner votre avis.', path('app_scrutins')) }}
+    </div>
+    <h2 class="h5 mb-3">Services</h2>
+    <div class="row g-3 mb-4">
+        {{ m.tile('briefcase', 'Trouver un service', 'Médiation, formation, accompagnement par des acteurs vérifiés.', path('app_services')) }}
+        {{ m.tile('receipt', 'Mes commandes et messages', 'Suivre une prestation et échanger avec le prestataire.', path('app_my_orders')) }}
+    </div>
+    {% if is_granted('ROLE_ACTOR') %}
+    <h2 class="h5 mb-3">Acteur ou prestataire</h2>
+    <div class="row g-3 mb-4">
+        {{ m.tile('shop', 'Mon espace acteur', 'Prestations, commandes reçues, paiements, messages clients.', path('app_actor_space')) }}
+    </div>
+    {% endif %}
+    {% if is_granted('ROLE_ELU') or is_granted('ROLE_ASSOCIATION') %}
+    <h2 class="h5 mb-3">Mes espaces</h2>
+    <div class="row g-3 mb-4">
+        {% if is_granted('ROLE_ELU') %}{{ m.tile('bank', 'Espace élu et institution', 'Suivre et répondre aux propositions.', path('app_role_space', {slug: 'elu'})) }}{% endif %}
+        {% if is_granted('ROLE_ASSOCIATION') %}{{ m.tile('people', 'Espace association', 'Porter des initiatives citoyennes.', path('app_role_space', {slug: 'association'})) }}{% endif %}
+    </div>
+    {% endif %}
+    {% if is_granted('ROLE_MODERATOR') %}
+    <h2 class="h5 mb-3">Modération</h2>
+    <div class="row g-3 mb-4">
+        {{ m.tile('person-badge', 'Espace médiateur', 'Votre espace dédié.', path('app_role_space', {slug: 'mediateur'})) }}
+        {{ m.tile('shield-check', 'File de modération', 'Relire les contributions en attente.', path('admin_moderation')) }}
+    </div>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+    <h2 class="h5 mb-3">Administration</h2>
+    <div class="row g-3 mb-4">
+        {{ m.tile('speedometer2', 'Tableau de bord', 'Statistiques et gestion.', path('admin_dashboard')) }}
+        {{ m.tile('briefcase', 'Services et commandes', 'Relire les prestations, suivre les paiements.', path('admin_services')) }}
+        {{ m.tile('person-check', 'Candidatures aux droits', 'Approuver médiateurs et acteurs.', path('admin_role_requests')) }}
+    </div>
+    {% endif %}
+    <h2 class="h5 mb-3">Vous voulez aller plus loin ?</h2>
+    <div class="row g-3">
+        {{ m.tile('person-plus', 'Devenir médiateur ou acteur', 'Déposez une candidature, elle est examinée par l\'équipe.', path('app_role_request')) }}
+    </div>
+</div></section>
+{% endblock %}

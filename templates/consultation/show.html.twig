@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ c.question }}{% endblock %}
+{% block meta_og %}
+    <meta property="og:site_name" content="{{ site_name }}">
+    <meta property="og:title" content="{{ c.question }}">
+    <meta property="og:image" content="{{ absolute_url(asset('img/lfed-banner.jpg')) }}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:url" content="{{ url('app_consultation_show', {id: c.id}) }}">
+{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <p class="mb-2"><span class="etiquette bleu">Scrutin consultatif</span> {% if c.open %}<span class="etiquette rouge">Ouvert jusqu'au {{ c.closesAt|date('d/m/Y') }}</span>{% else %}<span class="etiquette">Clos</span>{% endif %}</p>
+    <h1>{{ c.question }}</h1>
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        {% if c.context %}<p>{{ c.context|nl2br }}</p>{% endif %}
+        {% if showResults %}
+            <h2 class="h5">Résultats {{ total }} avis</h2>
+            {% for opt in c.options %}
+                {% set n = tally[loop.index0]|default(0) %}
+                {% set pct = total > 0 ? (n * 100 / total)|round : 0 %}
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between"><span>{{ opt }}{% if mine and mine.choice == loop.index0 %} (votre avis){% endif %}</span><strong>{{ pct }} % ({{ n }})</strong></div>
+                    <div class="progress" role="progressbar" aria-label="{{ opt }}" aria-valuenow="{{ pct }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: {{ pct }}%"></div></div>
+                </div>
+            {% endfor %}
+        {% elseif c.open %}
+            {% if is_granted('ROLE_USER') %}
+            <form method="post" action="{{ path('app_consultation_vote', {id: c.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('ballot' ~ c.id) }}">
+                <fieldset><legend class="h5">Votre avis</legend>
+                {% for opt in c.options %}
+                    <div class="form-check mb-2"><input class="form-check-input" type="radio" name="choice" id="o{{ loop.index0 }}" value="{{ loop.index0 }}" required><label class="form-check-label" for="o{{ loop.index0 }}">{{ opt }}</label></div>
+                {% endfor %}
+                </fieldset>
+                <button class="btn btn-primary mt-2" type="submit">Donner mon avis</button>
+                <p class="meta mt-2">Un seul avis par personne, définitif. Les résultats s'affichent après votre avis.</p>
+            </form>
+            {% else %}
+                <p><a class="btn btn-primary" href="{{ path('app_login') }}">Se connecter pour donner son avis</a></p>
+            {% endif %}
+        {% else %}
+            <p class="limite">Ce scrutin n'est pas encore ouvert.</p>
+        {% endif %}
+        <p class="limite mt-4">Avis consultatif du réseau : il ne représente pas la population et n'a aucune valeur électorale ou juridique.</p>
+    </div>
+    <div class="col-lg-4">{% include '_share.html.twig' with {url: url('app_consultation_show', {id: c.id}), title: c.question} %}</div>
+</div></div></section>
+{% endblock %}

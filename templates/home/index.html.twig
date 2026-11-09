@@ -1,0 +1,405 @@
+{% extends 'base.html.twig' %}
+{% import "_macros.html.twig" as ui %}
+
+{% block title %}Dialogue. Paix. Démocratie.{% endblock %}
+
+{% block body %}
+<div class="home-flow">
+{# ZONE 1 : banniere, accroche, actions #}
+<section class="hx hx-native">
+    <div class="hx-brand">
+        <span class="hx-flag" aria-hidden="true"><i></i><i></i><i></i></span>
+        <h1 class="hx-title">La France en débat</h1>
+        <p class="hx-tag">Dialogue <span aria-hidden="true">·</span> Paix <span aria-hidden="true">·</span> Démocratie</p>
+        <p class="hx-sub">Parlons-nous avant de nous opposer.</p>
+    </div>
+    <div class="container">
+        <div class="hx-actions">
+            <p class="hx-lede">Un espace pour se parler avant de s'opposer : débattre avec méthode, proposer des solutions sourcées, donner son avis, et les porter jusqu'aux institutions.</p>
+            {% set ns = next_step() %}
+            <div class="next-step" role="region" aria-label="Votre prochaine étape"><div><strong>{{ ns.title }}</strong><span>{{ ns.text }}</span></div><a class="btn btn-rouge" href="{{ ns.url }}">{{ ns.cta }}</a></div>
+            <ul class="hx-intents list-unstyled" aria-label="Que voulez-vous faire ?">
+                <li><a href="{{ path('app_proposition_new') }}"><i class="bi bi-lightbulb" aria-hidden="true"></i>Proposer une idée</a></li>
+                <li><a href="{{ path('app_propositions') }}"><i class="bi bi-hand-thumbs-up" aria-hidden="true"></i>Soutenir</a></li>
+                <li><a href="{{ path('app_taxpayers') }}"><i class="bi bi-piggy-bank" aria-hidden="true"></i>Déposer une demande</a></li>
+                <li><a href="{{ path('app_missions') }}"><i class="bi bi-briefcase" aria-hidden="true"></i>Aider ou être rémunéré</a></li>
+                <li><a href="{{ path('app_community') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i>Agora : discuter</a></li>
+                <li><a href="{{ path('app_feed') }}"><i class="bi bi-newspaper" aria-hidden="true"></i>Fil d'actualité</a></li>
+            </ul>
+            <p class="meta"><a href="{{ path('app_welcome') }}">Je ne sais pas par où commencer</a></p>
+            <p class="hx-meta mb-0">{{ propositionCount }} proposition{{ propositionCount > 1 ? 's' }} publiée{{ propositionCount > 1 ? 's' }}. Gratuit pour toujours, sans publicité, sans parti.</p>
+        </div>
+    </div>
+    <div class="hx-strip" aria-hidden="true"><i></i><i></i><i></i></div>
+</section>
+
+{# APPEL A LA PAIX #}
+<section class="peace-ribbon" aria-label="{{ 'peace.title'|trans }}">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <p class="mb-0"><strong>{{ 'peace.title'|trans }}.</strong> {{ 'peace.text'|trans }}</p>
+        <a class="btn btn-sm btn-light" href="{{ path('app_charter') }}">{{ 'peace.cta'|trans }}</a>
+    </div>
+</section>
+
+{# POSITION + DOSSIERS #}
+<section class="section" id="position"><div class="container">
+    <blockquote class="carte mb-4"><p class="h4 serif mb-2">Je ne suis ni un parti politique, ni un syndicat. Je suis un citoyen qui pense que nous devons pouvoir nous retrouver autour d'une même table avant de nous retrouver les uns contre les autres.</p><p class="meta mb-0">Walid Belbeche, initiateur de La France en Débat</p></blockquote>
+    <div class="row g-3">
+        <div class="col-md-3"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_debat_show', {slug: 'faut-il-apprendre-a-utiliser-l-intelligence-artificielle-des-l-ecole-2'}) }}"><span class="etiquette rouge">Débat en cours</span><h2 class="h6 mt-2 mb-0">Faut-il apprendre à utiliser l'IA dès l'école ?</h2></a></div>
+        <div class="col-md-3"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_dossier', {slug: 'petition'}) }}"><span class="etiquette bleu">Pétition</span><h2 class="h6 mt-2 mb-0">Un débat national sur les priorités de la France</h2></a></div>
+        <div class="col-md-3"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_dossier', {slug: 'education'}) }}"><span class="etiquette bleu">Éducation</span><h2 class="h6 mt-2 mb-0">Le savoir se partage, il ne se perd pas</h2></a></div>
+        <div class="col-md-3"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_dossier', {slug: 'constitution'}) }}"><span class="etiquette bleu">Constitution</span><h2 class="h6 mt-2 mb-0">Ce que le texte permet aux citoyens</h2></a></div>
+    </div>
+    <p class="mt-3 mb-0"><a href="{{ path('app_tribunes') }}">Espace des journalistes indépendants</a> · <a href="{{ path('app_dossier', {slug: 'appel-paix'}) }}">Appel à l'apaisement</a> · <a href="{{ path('app_dossiers') }}">Tous les dossiers</a></p>
+</div></section>
+
+{# RELANCE ECONOMIQUE : Plan Marshall citoyen mis en avant #}
+<section class="section eco-band" id="relance">
+    <div class="container">
+        <h2 class="eco-title">{{ 'eco.title'|trans }}</h2>
+        <p class="eco-lede">{{ 'eco.lede'|trans }}</p>
+        <div class="act-grid mb-3">
+            <div class="act-card"><h3>{{ 'eco.l1t'|trans }}</h3><p class="mb-0">{{ 'eco.l1d'|trans }}</p></div>
+            <div class="act-card"><h3>{{ 'eco.l2t'|trans }}</h3><p class="mb-0">{{ 'eco.l2d'|trans }}</p></div>
+            <div class="act-card"><h3>{{ 'eco.l3t'|trans }}</h3><p class="mb-0">{{ 'eco.l3d'|trans }}</p></div>
+        </div>
+        <a class="btn btn-lg btn-rouge" href="{{ path('app_plan_marshall') }}">{{ 'eco.cta'|trans }}</a>
+        <a class="btn btn-lg btn-light" href="{{ path('app_plan_marshall') }}#agir">{{ 'eco.cta2'|trans }}</a>
+    </div>
+</section>
+<section class="section missions-band" id="missions"><div class="container">
+    <h2 class="serif text-center">Missions : chacun peut contribuer, certains peuvent en vivre</h2>
+    <p class="lead text-center">Le Plan Marshall citoyen a besoin de bras et de compétences. Choisissez ce que vous savez faire.</p>
+    <div class="row g-3">
+        <div class="col-md-4"><div class="carte h-100"><span class="etiquette bleu">Bénévole, reconnu</span><h3 class="h5 mt-2">Relire, vérifier, traduire</h3><p>Garder le débat apaisé, contrôler les sources, ouvrir la plateforme à toutes les langues.</p></div></div>
+        <div class="col-md-4"><div class="carte h-100"><span class="etiquette rouge">Rémunéré</span><h3 class="h5 mt-2">Diagnostic, achats groupés, mutualisation</h3><p>Des missions de terrain pour les structures de l'économie sociale et les PME, payées par ceux qui en ont besoin.</p></div></div>
+        <div class="col-md-4"><div class="carte h-100"><span class="etiquette rouge">Bénévole ou rémunéré</span><h3 class="h5 mt-2">Pilote de 100 jours</h3><p>Porter le pilote, évaluer en toute indépendance, publier même les résultats négatifs.</p></div></div>
+    </div>
+    <p class="text-center mt-3"><a class="btn btn-rouge" href="{{ path('app_missions') }}">Voir toutes les missions</a> <a class="btn btn-outline-dark" href="{{ path('app_tutorials') }}">Par où commencer ?</a></p>
+</div></section>
+
+{# POURQUOI MAINTENANT : constats sources #}
+<section class="section" id="pourquoi">
+    <div class="container">
+        <h2 class="zone-title">{{ 'why.title'|trans }}</h2>
+        <p class="zone-subtitle">{{ 'why.lede'|trans }}</p>
+        <div class="act-grid mb-2">
+            <div class="act-card"><p class="big-fact mb-1">5,0 %</p><p class="mb-0">{{ 'why.f1'|trans }}</p></div>
+            <div class="act-card"><p class="big-fact mb-1">3 460 Md€</p><p class="mb-0">{{ 'why.f2'|trans }}</p></div>
+            <div class="act-card"><p class="big-fact mb-1">77 Md€</p><p class="mb-0">{{ 'why.f3'|trans }}</p></div>
+        </div>
+        <p class="meta mb-1">{{ 'why.src'|trans }}</p>
+        <p class="mb-0">{{ 'why.more'|trans }}</p>
+    </div>
+</section>
+
+{# ZONE 2 : que voulez-vous faire ? #}
+<section class="section" id="portes">
+    <div class="container">
+        <h2 class="zone-title mb-3">Que voulez-vous faire ?</h2>
+        <div class="hx-doors">
+            <a class="hx-door" href="{{ path('app_debats') }}"><strong>Débattre</strong><span>Des faits vérifiés, puis des arguments pour, contre ou nuancés.</span><span class="meta mt-1"><i class="bi bi-arrow-right-short" aria-hidden="true"></i> {{ 'door.how'|trans }} {{ 'door.debate'|trans }}</span></a>
+            <a class="hx-door" href="{{ path('app_propositions') }}"><strong>Proposer</strong><span>Une mesure précise : qui décide, combien, comment la mesurer.</span><span class="meta mt-1"><i class="bi bi-arrow-right-short" aria-hidden="true"></i> {{ 'door.how'|trans }} {{ 'door.propose'|trans }}</span></a>
+            <a class="hx-door" href="{{ path('app_scrutins') }}"><strong>Donner mon avis</strong><span>Des scrutins consultatifs, une voix par personne.</span><span class="meta mt-1"><i class="bi bi-arrow-right-short" aria-hidden="true"></i> {{ 'door.how'|trans }} {{ 'door.opinion'|trans }}</span></a>
+            <a class="hx-door" href="{{ path('app_ranking', {vue: 'petitions'}) }}"><strong>Soutenir une pétition</strong><span>Les initiatives citoyennes qui avancent vers leur objectif.</span><span class="meta mt-1"><i class="bi bi-arrow-right-short" aria-hidden="true"></i> {{ 'door.how'|trans }} {{ 'door.petition'|trans }}</span></a>
+            <a class="hx-door" href="{{ path('app_actors') }}"><strong>Agir auprès des institutions</strong><span>Pétitions officielles, élus, médiateurs : les vraies voies.</span><span class="meta mt-1"><i class="bi bi-arrow-right-short" aria-hidden="true"></i> {{ 'door.how'|trans }} {{ 'door.institutions'|trans }}</span></a>
+            <a class="hx-door" href="{{ path('app_candidats') }}"><strong>Comparer les candidats</strong><span>Même fiche, ordre aléatoire, sans note.</span><span class="meta mt-1"><i class="bi bi-arrow-right-short" aria-hidden="true"></i> {{ 'door.how'|trans }} {{ 'door.candidates'|trans }}</span></a>
+        </div>
+    </div>
+</section>
+
+{# EN CE MOMENT : vie de la communauté #}
+<section class="section" id="en-ce-moment">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-2">
+            <h2 class="zone-title mb-0">{{ 'home.live.title'|trans }}</h2>
+            <a href="{{ path('app_community') }}" class="btn btn-outline-dark">{{ 'home.live.join'|trans }}</a>
+        </div>
+        <div class="stat-strip" aria-label="Chiffres de la communauté">
+            <div><strong>{{ memberCount }}</strong>{{ 'home.live.members'|trans }}</div>
+            <div><strong>{{ propositionCount }}</strong>{{ 'home.live.props'|trans }}</div>
+            <div><strong>{{ discussionCount }}</strong>{{ 'home.live.threads'|trans }}</div>
+            <div><strong>{{ openScrutins }}</strong>{{ 'home.live.ballots'|trans }}</div>
+        </div>
+        <div class="row g-3">
+            {% for d in latestDiscussions %}
+                <div class="col-md-6 col-lg-3"><a class="carte-lien" href="{{ path('app_community_show', {id: d.id}) }}"><div class="carte h-100 p-3">
+                    <span class="etiquette bleu">{{ d.categoryLabel }}</span>
+                    <h3 class="h6 mt-2">{{ tr(d, 'title') }}</h3>
+                    <p class="meta mb-0">{{ d.author ? d.author.publicName : 'Citoyen' }} · {{ d.lastActivityAt|ago }}</p>
+                </div></a></div>
+            {% else %}
+                <div class="col-12"><div class="carte"><a href="{{ path('app_community_new') }}">{{ 'home.live.empty'|trans }}</a></div></div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# MARCHE À SUIVRE #}
+<section class="section section-alt" id="comment-ca-marche">
+    <div class="container">
+        <h2 class="zone-title mb-3">{{ 'home.how.title'|trans }}</h2>
+        <div class="act-grid">
+            <div class="act-card"><h3>{{ 'home.how.1t'|trans }}</h3><p class="mb-2">{{ 'home.how.1d'|trans }}</p><a href="{{ path('app_register') }}">{{ 'guide.home.cta'|trans }}</a></div>
+            <div class="act-card"><h3>{{ 'home.how.2t'|trans }}</h3><p class="mb-2">{{ 'home.how.2d'|trans }}</p><a href="#portes">{{ 'home.how.2l'|trans }}</a></div>
+            <div class="act-card"><h3>{{ 'home.how.3t'|trans }}</h3><p class="mb-2">{{ 'home.how.3d'|trans }}</p><a href="{{ path('app_guide') }}">{{ 'home.how.3l'|trans }}</a></div>
+        </div>
+    </div>
+</section>
+
+{# CONTRIBUABLES #}
+<section class="section section-alt" id="remuneration"><div class="container">
+    <h2 class="serif">Les acteurs ont besoin de vous, certaines missions sont rémunérées</h2>
+    <p class="measure">Élus, associations et prestataires cherchent des bénévoles et des compétences. Chacun fixe son prix, la plateforme affiche la commission avant tout paiement.</p>
+    <div class="row g-3">
+        {% for m in paidMissions %}<div class="col-md-6 col-lg-3"><div class="carte h-100"><p class="mb-1"><span class="etiquette rouge">{{ m[4] == 'paid' ? 'Rémunérée' : 'Bénévole ou rémunérée' }}</span></p><h3 class="h6">{{ m[1] }}</h3><p class="meta">{{ m[3] }}</p><a class="btn btn-sm btn-rouge" href="{{ path('app_mission_apply', {key: m[0]}) }}">Candidater</a></div></div>{% endfor %}
+        {% for o in topOffers %}<div class="col-md-6 col-lg-3"><div class="carte h-100"><p class="mb-1"><span class="etiquette bleu">Service, {{ (o.priceCents / 100)|number_format(0, ',', ' ') }} €</span></p><h3 class="h6">{{ o.title }}</h3><p class="meta">{{ o.provider.publicName }}</p><a class="btn btn-sm btn-bleu" href="{{ path('app_service_show', {id: o.id}) }}">Voir</a></div></div>{% endfor %}
+    </div>
+    <p class="mt-3 mb-0"><a class="btn btn-outline-dark" href="{{ path('app_missions') }}">Toutes les missions</a> <a class="btn btn-outline-dark" href="{{ path('app_services') }}">Tous les services</a></p>
+</div></section>
+{% if peacePodium %}<section class="section" id="artisans"><div class="container">
+    <h2 class="serif">Les artisans de paix du mois</h2>
+    <p class="measure">Ceux qui font avancer le débat en reformulant et en remerciant. <a href="{{ path('app_ranking') }}">Voir le classement et y figurer</a>.</p>
+    <div class="podium">{% for row in peacePodium %}<div class="podium-place podium-{{ row.rank }}"><span class="podium-rank">{{ row.rank }}</span><strong>{{ row.user.publicName }}</strong><small>{{ row.tier }}</small><span class="podium-score">{{ row.score }} pts</span></div>{% endfor %}</div>
+</div></section>{% endif %}
+<section class="section section-alt" id="contribuables">
+    <div class="container">
+        <h2 class="serif">Contribuables : vous financez, vous avez le droit de comprendre et de demander</h2>
+        <p class="lead">Chaque euro public a une destination. Déposez une demande claire et sourcée : elle est relue, publiée avec droit de réponse, puis portée aux acteurs, qui vous répondent sur la plateforme.</p>
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-3"><div class="carte h-100"><h3 class="h5">Comprendre</h3><p>Chiffres publics de la Cour des comptes, expliqués simplement.</p><a href="{{ path('app_plan_marshall') }}#pourquoi">Voir les chiffres</a></div></div>
+            <div class="col-md-6 col-lg-3"><div class="carte h-100"><h3 class="h5">Demander</h3><p>Une revendication avec sa source publique, relue avant publication.</p><a href="{{ path('app_revendication_new') }}">Déposer ma demande</a></div></div>
+            <div class="col-md-6 col-lg-3"><div class="carte h-100"><h3 class="h5">Être écouté</h3><p>Élus, associations et prestataires répondent en messagerie, en direct.</p><a href="{{ path('app_taxpayers') }}">Espace contribuables</a></div></div>
+            <div class="col-md-6 col-lg-3"><div class="carte h-100"><h3 class="h5">Suivre</h3><p>Chaque étape de votre demande est notifiée, sur le site et par e-mail.</p><a href="{{ path('app_my_requests') }}">Mes demandes</a></div></div>
+        </div>
+    </div>
+</section>
+
+{# SOLUTIONS PAR SUJET #}
+<section class="section" id="sujets">
+    <div class="container">
+        <h2 class="zone-title">{{ 'themes.title'|trans }}</h2>
+        <p class="zone-subtitle">{{ 'themes.lede'|trans }}</p>
+        <div class="theme-chips">
+            {% for t in themes %}<a class="theme-chip" href="{{ path('app_propositions', {theme: t}) }}">{{ t }}</a>{% endfor %}
+        </div>
+    </div>
+</section>
+
+{# PARCOURS D'UNE PROPOSITION #}
+<section class="section section-alt" id="parcours">
+    <div class="container">
+        <h2 class="zone-title mb-3">{{ 'steps.title'|trans }}</h2>
+        <ol class="flow">
+            {% for i in 1..5 %}<li><span class="n">{{ i }}</span><span>{{ ('steps.' ~ i)|trans }}</span></li>{% endfor %}
+        </ol>
+    </div>
+</section>
+
+{# PILIERS : gérés dans l'administration (Piliers d'accueil) #}
+<section class="section" id="valeur">
+    <div class="container">
+        <h2 class="zone-title mb-3">Ce que vous y gagnez</h2>
+        <div class="value-grid">
+            <a class="value-card" href="{{ path('app_taxpayers') }}"><i class="bi bi-megaphone" aria-hidden="true"></i><strong>Être entendu</strong><span>Votre demande est relue, publiée avec sa source, puis suivie. Chaque étape vous est notifiée.</span><em>Déposer une demande</em></a>
+            <a class="value-card" href="{{ path('app_missions') }}"><i class="bi bi-cash-coin" aria-hidden="true"></i><strong>Être rémunéré</strong><span>Des acteurs cherchent des compétences. Vous fixez votre prix, la commission est affichée avant paiement.</span><em>Voir les missions</em></a>
+            <a class="value-card" href="{{ path('app_ranking') }}"><i class="bi bi-trophy" aria-hidden="true"></i><strong>Être reconnu</strong><span>Un niveau visible des acteurs quand vous candidatez, et le podium du mois sur l'accueil.</span><em>Voir le classement</em></a>
+            <a class="value-card" href="{{ path('app_community') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i><strong>Parler sans s'insulter</strong><span>Agora et débats modérés : sources exigées, insultes bloquées, droit de réponse garanti.</span><em>Entrer dans l'Agora</em></a>
+            <a class="value-card" href="{{ path('app_revendications') }}"><i class="bi bi-translate" aria-hidden="true"></i><strong>Être lu dans votre langue</strong><span>Les contenus sont traduits automatiquement en 12 langues, dont l'arabe, le hindi et le chinois.</span><em>Lire les demandes</em></a>
+            <a class="value-card" href="{{ path('app_register') }}"><i class="bi bi-shield-check" aria-hidden="true"></i><strong>Rester maître de vos données</strong><span>Gratuit pour toujours, sans publicité ni revente. Vos coordonnées ne vont qu'aux acteurs que vous choisissez.</span><em>Créer mon compte</em></a>
+        </div>
+    </div>
+</section>
+
+{% include '_principes.html.twig' %}
+
+{# Piliers et actions pour la paix : contenu gere dans l'administration (Piliers) #}
+{% if pillars|length %}
+<section class="section" id="piliers" aria-labelledby="piliers-titre"><div class="container">
+    <h2 class="serif text-center" id="piliers-titre">Piliers et actions pour la paix</h2>
+    <p class="text-center measure mx-auto">Ce que nous défendons (piliers), ce que nous faisons (actions) et ce que les participants en disent (témoignages).</p>
+    {% for kind, heading in {pilier: 'Nos piliers', action: 'Nos actions', temoignage: 'Témoignages'} %}
+        {% set group = pillars|filter(m => kind == 'pilier' ? m.type in ['valeur', 'pilier'] : m.type == kind) %}
+        {% if group|length %}
+        <h3 class="h5 mt-4">{{ heading }}</h3>
+        <div class="row g-3">
+            {% for m in group %}
+            <div class="col-md-6 col-lg-4"><article class="carte h-100">
+                <p class="mb-1"><span class="etiquette{{ m.type == 'action' ? ' rouge' : '' }}"><i class="bi {{ m.type == 'action' ? 'bi-lightning-charge' : (m.type == 'temoignage' ? 'bi-chat-quote' : 'bi-bank') }}" aria-hidden="true"></i> {{ m.type == 'action' ? 'Action' : (m.type == 'temoignage' ? 'Témoignage' : 'Pilier') }}</span>{% if m.badge %} <span class="etiquette bleu">{{ m.badge }}</span>{% endif %}</p>
+                <h4 class="h5">{{ m.titre }}</h4>
+                <p class="mb-2">{{ m.description }}</p>
+                {% if m.statistique %}<p class="meta mb-2"><strong>{{ m.statistique }}</strong></p>{% endif %}
+                {% if m.lien %}<a class="btn btn-sm btn-outline-dark" href="{{ m.lien }}" {{ m.lien starts with 'http' ? 'rel="noopener" target="_blank"' }}>En savoir plus<span class="visually-hidden"> sur {{ m.titre }}</span></a>{% endif %}
+            </article></div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endfor %}
+</div></section>
+{% endif %}
+{# ZONE 3 : registre des propositions, classées par soutiens #}
+<section class="section" id="registre">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+            <div>
+                <h2 class="zone-title">Les propositions les plus soutenues</h2>
+                <p class="zone-subtitle mb-0">Un soutien est un avis consultatif. Il n'a pas la valeur d'un vote officiel.</p>
+            </div>
+            <a href="{{ path('app_propositions') }}" class="btn btn-outline-dark">Voir toutes les propositions</a>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                {% for proposition in topPropositions %}
+                    {% include 'proposition/_row.html.twig' with {proposition: proposition, supportedIds: supportedIds} only %}
+                {% else %}
+                    <div class="carte"><p class="mb-2"><strong>Aucune proposition publiée pour le moment.</strong></p>
+                        <p class="mb-0">Les propositions sont publiées après relecture. <a href="{{ path('app_proposition_new') }}">Déposez la première.</a></p></div>
+                {% endfor %}
+            </div>
+            <div class="col-lg-4">
+                <div class="carte">
+                    <h3>Une solution concrète à proposer ?</h3>
+                    <p>Décrivez le problème, la mesure, son coût et qui peut la mettre en oeuvre. Une proposition précise a plus de chances d'être entendue.</p>
+                    <a href="{{ path('app_proposition_new') }}" class="btn btn-rouge w-100">Déposer une proposition</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ROLE DES ACTEURS #}
+<section class="section" id="acteurs">
+    <div class="container">
+        <h2 class="zone-title">{{ 'actors.title'|trans }}</h2>
+        <p class="zone-subtitle">{{ 'actors.lede'|trans }}</p>
+        <div class="act-grid mb-3">
+            {% for i in 1..5 %}<div class="act-card"><h3>{{ ('actors.a' ~ i)|trans }}</h3><p class="mb-0">{{ ('actors.a' ~ i ~ 'd')|trans }}</p></div>{% endfor %}
+        </div>
+        <a class="btn btn-bleu" href="{{ path('app_role_request') }}">{{ 'actors.cta'|trans }}</a>
+    </div>
+</section>
+
+{# Revendications à ne pas oublier #}
+<section class="section section-alt">
+    <div class="container">
+        <h2 class="zone-title">Ce qui a été dénoncé et ne doit pas être oublié</h2>
+        <p class="zone-subtitle">
+            {% if awaitingCount > 0 %}{{ awaitingCount }} revendication{{ awaitingCount > 1 ? 's' }} {{ awaitingCount > 1 ? 'attendent' : 'attend' }} encore une réponse publique.{% else %}Chaque revendication est suivie jusqu'à une réponse publique.{% endif %}
+            Les plus anciennes restées sans réponse passent en premier.
+        </p>
+        <div class="row g-3">
+            {% for r in forgotten %}
+                <div class="col-md-6">
+                    <a class="carte-lien" href="{{ path('app_revendication_show', {slug: r.slug}) }}">
+                        <div class="carte {{ r.awaitingAnswer ? 'border-danger-subtle' }}">
+                            <p class="mb-1"><span class="etiquette bleu">{{ r.groupLabel }}</span> <span class="etiquette {{ ui.revendication_status_class(r.status) }}">{{ r.statusLabel }}</span></p>
+                            <h3>{{ tr(r, 'title') }}</h3>
+                            <p class="meta mb-0">{% if r.awaitingAnswer %}Sans réponse publique depuis {{ r.daysSinceUpdate }} jour{{ r.daysSinceUpdate > 1 ? 's' }}{% else %}Mis à jour le {{ r.updatedAt|date('d/m/Y') }}{% endif %}</p>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div class="col-12"><div class="carte">Aucune revendication publiée pour le moment.</div></div>
+            {% endfor %}
+        </div>
+        <p class="meta mt-3 mb-1">{{ 'claims.rules'|trans }}</p>
+        <p class="mb-2"><a class="btn btn-rouge btn-sm" href="{{ path('app_revendication_new') }}">{{ 'claims.cta'|trans }}</a></p>
+        <p class="mt-3 mb-0"><a href="{{ path('app_revendications') }}">Voir toutes les revendications</a> · <a href="{{ path('app_suivi') }}">Voir qui a été saisi, et ce qui a été répondu</a></p>
+    </div>
+</section>
+
+{# FORCES POLITIQUES + CANDIDATURE 2027 #}
+<section class="section section-alt" id="comprendre">
+    <div class="container"><div class="row g-4">
+        <div class="col-lg-6"><div class="carte h-100">
+            <h2 class="h4">{{ 'forces.title'|trans }}</h2>
+            <p>{{ 'forces.lede'|trans }}</p>
+            <a class="btn btn-outline-dark" href="{{ path('app_political_forces') }}">{{ 'forces.cta'|trans }}</a>
+        </div></div>
+        <div class="col-lg-6"><div class="carte h-100">
+            <h2 class="h4">{{ 'run.title'|trans }}</h2>
+            <ul class="mb-2">{% for i in 1..4 %}<li>{{ ('run.c' ~ i)|trans }}</li>{% endfor %}</ul>
+            <p class="meta mb-2">{{ 'run.src'|trans }}</p>
+            <a href="https://www.conseil-constitutionnel.fr" target="_blank" rel="noopener noreferrer">{{ 'run.cta'|trans }}</a>
+        </div></div>
+    </div></div>
+</section>
+
+{# Débats et agenda #}
+<section class="section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <h2 class="zone-title">Débats ouverts</h2>
+                {% for d in openDebats %}
+                    <article class="rangee">
+                        <p class="mb-1"><span class="etiquette bleu">{{ d.theme }}</span></p>
+                        <h3><a href="{{ path('app_debat_show', {slug: d.slug}) }}">{{ d.title }}</a></h3>
+                        <p class="mb-0">{{ d.summary|u.truncate(180, '…', false) }}</p>
+                    </article>
+                {% else %}
+                    <p>Aucun débat ouvert pour le moment.</p>
+                {% endfor %}
+            </div>
+            <div class="col-lg-5">
+                <h2 class="zone-title">À venir</h2>
+                {% for e in upcomingEvents %}
+                    <article class="rangee">
+                        <p class="meta mb-1">{{ e.date|date('d/m/Y à H:i') }}{% if e.location %} · {{ e.location }}{% endif %}</p>
+                        <h3>{{ e.name }}</h3>
+                    </article>
+                {% else %}
+                    <p>Aucune rencontre programmée.</p>
+                {% endfor %}
+                <p><a href="{{ path('app_agenda') }}">Voir l'agenda</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Plan Marshall citoyen #}
+<section class="section section-alt" id="marshall">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-7">
+                <h2 class="zone-title">Le Plan Marshall citoyen</h2>
+                <p class="measure">Une méthode : mesurer avant de généraliser. Mutualiser les achats et les services des structures de l'économie sociale et solidaire, publier les résultats, bons ou mauvais, et réinvestir les économies constatées dans les missions sociales.</p>
+                <div class="limite measure mb-3"><strong>Limite honnête.</strong> Les économies annoncées par une mutualisation dépendent de chaque situation. Aucun chiffre n'est promis avant le diagnostic local.</div>
+                <a href="{{ path('app_plan_marshall') }}" class="btn btn-bleu">Lire le plan et le projet pilote</a>
+            </div>
+            <div class="col-lg-5">
+                <div class="carte">
+                    <h3>Voies institutionnelles</h3>
+                    <p>Pétition au Sénat ou à l'Assemblée, référendum d'initiative partagée : ce que chaque voie permet, et ce qu'elle ne garantit pas.</p>
+                    <a href="{{ path('app_institutional_routes') }}">Comprendre les voies légales</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Charte #}
+<section class="section">
+    <div class="container text-center">
+        <h2 class="zone-title justify-content-center">Un espace pacifié</h2>
+        <p class="mx-auto measure">Pas d'insulte, pas de menace, pas de rumeur présentée comme un fait. On peut être en colère sans devenir violent, et s'opposer sans devenir ennemis.</p>
+        <a href="{{ path('app_charter') }}" class="btn btn-outline-dark">Lire la charte de paix</a>
+    </div>
+</section>
+{# APPEL FINAL #}
+<section class="section"><div class="container measure"><div class="commons-note"><h2 class="serif h4">{{ 'commons.title'|trans }}</h2><p class="mb-0">{{ 'commons.text'|trans }}</p></div></div></section>
+<section class="final-band">
+    <div class="container text-center">
+        <h2>{{ 'final.title'|trans }}</h2>
+        <p>{{ 'final.lede'|trans }}</p>
+        <ul class="final-words">
+            <li><a href="{{ path('app_community_new') }}"><i class="bi bi-chat-dots" aria-hidden="true"></i>{{ 'final.w1'|trans }}</a></li>
+            <li><a href="{{ path('app_debats') }}"><i class="bi bi-people" aria-hidden="true"></i>{{ 'final.w2'|trans }}</a></li>
+            <li><a href="{{ path('app_scrutins') }}"><i class="bi bi-check2-square" aria-hidden="true"></i>{{ 'final.w3'|trans }}</a></li>
+            <li><a href="{{ path('app_proposition_new') }}"><i class="bi bi-gear" aria-hidden="true"></i>{{ 'final.w4'|trans }}</a></li>
+            <li><a href="{{ path('app_plan_marshall') }}"><i class="bi bi-flower1" aria-hidden="true"></i>{{ 'final.w5'|trans }}</a></li>
+        </ul>
+    </div>
+</section>
+</div>
+{% endblock %}

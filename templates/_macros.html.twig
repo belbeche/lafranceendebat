@@ -1,0 +1,26 @@
+{# Éléments d'interface partagés. #}
+{% macro support_button(proposition, supported, compact = false) %}
+    {% if is_granted('ROLE_USER') %}
+        {% if supported %}
+            <form method="post" action="{{ path('app_proposition_unsupport', {id: proposition.id}) }}" class="m-0">
+                <input type="hidden" name="_token" value="{{ csrf_token('support' ~ proposition.id) }}">
+                <button type="submit" class="btn btn-sm btn-outline-secondary" aria-label="Retirer mon soutien à : {{ proposition.title }}">Retirer mon soutien</button>
+            </form>
+        {% else %}
+            <form method="post" action="{{ path('app_proposition_support', {id: proposition.id}) }}" class="m-0">
+                <input type="hidden" name="_token" value="{{ csrf_token('support' ~ proposition.id) }}">
+                <button type="submit" class="btn btn-sm btn-bleu" aria-label="Soutenir : {{ proposition.title }}">Soutenir</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <a class="btn btn-sm btn-bleu" href="{{ path('app_login') }}" aria-label="Se connecter pour soutenir : {{ proposition.title }}">Se connecter pour soutenir</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro status_label(proposition) %}
+    {% if proposition.status == 'Validée' %}<span class="etiquette vert">Publiée</span>
+    {% elseif proposition.status == 'Rejetée' %}<span class="etiquette rouge">Non publiée</span>
+    {% else %}<span class="etiquette ambre">En attente de relecture</span>{% endif %}
+{% endmacro %}
+
+{% macro revendication_status_class(status) %}{{ status in ['answered', 'addressed'] ? 'vert' : (status == 'no_follow_up' ? 'rouge' : (status == 'transmitted' ? 'bleu' : 'ambre')) }}{% endmacro %}

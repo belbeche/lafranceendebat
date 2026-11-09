@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Candidater à un droit{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'candidater'} only %}
+<header class="page-head"><div class="container">
+    <h1>Candidater pour aider la communauté</h1>
+    <p class="mb-0">Certains droits (relire et modérer) sont confiés à des membres de confiance. L'équipe vérifie votre fonction sur un lien public avant d'accorder le droit, pour que chaque acteur affiché soit réel. Le droit peut être retiré. Pour candidater à une mission précise, passez par la page Missions : la candidature part directement aux acteurs concernés.</p>
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-7">
+        {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+        {% if blocked %}
+            <div class="limite">{{ blocked }}</div>
+        {% else %}
+        <form method="post" novalidate>
+            <input type="hidden" name="_token" value="{{ csrf_token('role_request') }}">
+            <label class="form-label fw-bold" for="role">Droit demandé</label>
+            <select class="form-select mb-3" id="role" name="role" onchange="location.search='role='+this.value">
+                {% for k, label in roles %}<option value="{{ k }}" {{ k == selected ? 'selected' }}>{{ label }}</option>{% endfor %}
+            </select>
+            {% set pk = perks[selected] ?? null %}
+            {% if pk %}
+            <div class="carte mb-3">
+                <h2 class="h6">Ce que ce droit vous permet</h2>
+                <ul class="mb-2">{% for c in pk.can %}<li>{{ c }}</li>{% endfor %}</ul>
+                <p class="meta mb-1"><strong>À fournir :</strong> {{ pk.proof }}</p>
+                <p class="meta mb-0"><strong>Ce que l'équipe vérifie :</strong> {{ pk.check }} Réponse sous 7 jours, notifiée ici et par e-mail.</p>
+            </div>{% endif %}
+            {% if selected != 'ROLE_MODERATOR' %}
+            <div class="row g-3 mb-3">
+                <div class="col-md-6"><label class="form-label fw-bold" for="organisation">Organisation ou structure</label><input class="form-control" id="organisation" name="organisation" value="{{ organisation }}" maxlength="120" required></div>
+                <div class="col-md-6"><label class="form-label fw-bold" for="territory">Territoire ou domaine (facultatif)</label><input class="form-control" id="territory" name="territory" value="{{ territory }}" maxlength="120" placeholder="Ex. Calvados, santé, école"></div>
+                <div class="col-12"><label class="form-label fw-bold" for="proof_url">Lien public qui prouve votre fonction</label><input class="form-control" id="proof_url" name="proof_url" type="url" value="{{ proofUrl }}" placeholder="https://" required></div>
+            </div>{% endif %}
+            <div class="mb-3"><label class="form-label fw-bold" for="phone">Téléphone de contact</label><input class="form-control" id="phone" name="phone" type="tel" value="{{ phone }}" required autocomplete="tel"><p class="meta mb-0">Vu seulement par l'équipe, pour vérifier votre demande.</p></div>
+            <label class="form-label fw-bold" for="motivation">Ce que vous comptez faire (80 à 1500 caractères)</label>
+            <textarea class="form-control mb-2" id="motivation" name="motivation" rows="7" maxlength="1500" required>{{ motivation }}</textarea>
+            <p class="meta">Quels sujets, quelle disponibilité, quel apport concret pour les citoyens. Pas de coordonnées dans ce texte.</p>
+            <button class="btn btn-primary" type="submit">Envoyer ma candidature</button>
+        </form>
+        {% endif %}
+    </div>
+    <div class="col-lg-5">
+        <div class="carte p-3">
+            <h2 class="h6">Vos candidatures</h2>
+            {% for r in mine %}
+                <p class="mb-2"><strong>{{ r.roleLabel }}</strong><br>
+                <span class="etiquette {{ r.status == 'approuvee' ? 'bleu' : (r.pending ? '' : 'rouge') }}">{{ r.status|replace({'_': ' '}) }}</span>
+                <span class="meta">le {{ r.createdAt|date('d/m/Y') }}</span>
+                {% if r.decisionNote %}<br><span class="meta">Réponse : {{ r.decisionNote }}</span>{% endif %}</p>
+            {% else %}
+                <p class="meta mb-0">Aucune candidature pour l'instant.</p>
+            {% endfor %}
+        </div>
+        <p class="meta mt-3">Conditions : aucune ancienneté requise, une candidature en cours à la fois, nouvelle tentative possible 30 jours après un refus.</p>
+    </div>
+</div></div></section>
+{% endblock %}

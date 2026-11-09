@@ -1,0 +1,51 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ isNew ? 'Nouvelle mesure' : 'Modifier la proposition' }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_programmes') }}">&larr; Propositions</a></p>
+<h1 class="h3">{{ isNew ? 'Ajouter une mesure de programme' : p.title|slice(0, 100) }}</h1>
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<form method="post" style="max-width:780px">
+    <input type="hidden" name="_token" value="{{ csrf_token('programme_edit') }}">
+    {% if isNew %}
+    <div class="row g-2 mb-3"><div class="col-md-3"><label class="form-label" for="gc">Sigle</label><input id="gc" name="group_code" class="form-control" maxlength="12" required value="{{ p.groupCode }}"></div>
+    <div class="col-md-6"><label class="form-label" for="gn">Nom de la formation</label><input id="gn" name="group_name" class="form-control" maxlength="160" required value="{{ p.groupName }}"></div>
+    <div class="col-md-3"><label class="form-label" for="gcol">Couleur (#RRGGBB)</label><input id="gcol" name="group_color" class="form-control" maxlength="7" value="{{ p.groupColor }}"></div></div>
+    <div class="mb-3"><label class="form-label" for="t">Mesure (titre)</label><input id="t" name="title" class="form-control" maxlength="255" required value="{{ p.title }}"></div>
+    <div class="mb-3"><label class="form-label" for="s">Résumé factuel (facultatif)</label><textarea id="s" name="summary" class="form-control" rows="3" maxlength="2000">{{ p.summary }}</textarea></div>
+    <div class="mb-3"><label class="form-label" for="u">Source : page officielle de la formation (https://)</label><input id="u" name="source_url" class="form-control" maxlength="255" required value="{{ p.sourceUrl }}"></div>
+    {% else %}
+    <p class="text-muted">{{ p.groupName }} · {{ p.source == 'AN' ? 'importée de l\'Assemblée nationale' : (p.source == 'SENAT' ? 'importée du Sénat' : 'saisie à la main') }} · <a href="{{ p.sourceUrl }}" rel="noopener nofollow" target="_blank">source</a></p>
+    {% endif %}
+    <div class="row g-2 mb-3"><div class="col-md-8"><label class="form-label" for="th">Thème indicatif</label><select id="th" name="theme" class="form-select"><option value="">Aucun</option>{% for t in themes %}<option value="{{ t }}" {{ p.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+    <div class="col-md-4 d-flex align-items-end"><div class="form-check"><input class="form-check-input" type="checkbox" id="pub" name="published" value="1" {{ p.published ? 'checked' }}><label class="form-check-label" for="pub">Publié</label></div></div></div>
+    <fieldset class="carte mb-3"><legend class="h6">Chiffrage (facultatif)</legend>
+        <p class="small text-muted">Aucun chiffre sans source. Un chiffrage sans niveau de crédibilité ou sans lien https:// est refusé.</p>
+        <div class="row g-2"><div class="col-md-4"><label class="form-label" for="cm">Millions d'euros par an</label><input id="cm" name="cost_millions" class="form-control" inputmode="numeric" value="{{ p.costMillions }}" placeholder="ex. 1200 ou -300"></div>
+        <div class="col-md-8"><label class="form-label" for="cc">Niveau de crédibilité</label><select id="cc" name="cost_credibility" class="form-select"><option value="">Choisir</option>{% for k, l in constant('App\\Entity\\PartyProposal::CREDIBILITY') %}<option value="{{ k }}" {{ p.costCredibility == k ? 'selected' }}>{{ k }} : {{ l }}</option>{% endfor %}</select></div></div>
+        <label class="form-label mt-2" for="cs">Source du chiffrage (https://)</label><input id="cs" name="cost_source" class="form-control" maxlength="255" value="{{ p.costSource }}">
+        <label class="form-label mt-2" for="cn">Précision (année, périmètre, hypothèse)</label><input id="cn" name="cost_note" class="form-control" maxlength="255" value="{{ p.costNote }}">
+    </fieldset>
+    <button class="btn btn-bleu">Enregistrer</button>
+</form>
+{% if not isNew %}
+{% set ai = p.aiAnalysis %}
+<section class="carte mt-4" style="max-width:780px" aria-labelledby="ia">
+    <h2 class="h5" id="ia">Hypothèse de chiffrage par IA (Gemini)</h2>
+    <p class="small text-muted">Calcul explicite : population × coût unitaire × recours + coût fixe − contrepartie. L'IA propose les paramètres, le résultat est calculé par le site. Jamais mélangé aux niveaux A, B, C. Invisible du public tant que vous ne l'avez pas validée. Fiabilité plafonnée à {{ constant('App\\Service\\Programme\\ProposalAnalyst::MAX_RELIABILITY') }}.</p>
+    {% if ai %}
+        <p class="mb-1"><strong>{{ ai.costable ? (p.aiLowMillions|number_format(0, ',', ' ')) ~ ' à ' ~ (p.aiHighMillions|number_format(0, ',', ' ')) ~ ' M€ par an (central ' ~ (p.aiCentralMillions|number_format(0, ',', ' ')) ~ ')' : 'Non chiffrable' }}</strong> · fiabilité {{ p.aiReliability }}/100 · {{ p.aiModel }} · {{ p.aiAt|date('d/m/Y') }} · {{ p.aiApproved ? 'PUBLIÉE' : 'en attente de validation' }}</p>
+        {% if ai.costable %}<p class="mb-1 small">{{ ai.formula }}</p>
+        <ul class="small">{% for k, r in ai.params %}{% if r.central != 0 or k in ['population', 'unit_cost_eur', 'take_up_pct'] %}<li><strong>{{ constant('App\\Service\\Programme\\CostModel::LABELS')[k] }}</strong> : {{ r.low|number_format(0, ',', ' ') }} / {{ r.central|number_format(0, ',', ' ') }} / {{ r.high|number_format(0, ',', ' ') }}{% if r.basis %}. <em>{{ r.basis }}</em>{% endif %}</li>{% endif %}{% endfor %}</ul>
+        {% else %}<p class="small">{{ ai.reason }}</p>{% endif %}
+        <p class="small mb-1"><strong>Argument favorable :</strong> {{ ai.argument_for }}</p>
+        <p class="small mb-1"><strong>Argument défavorable :</strong> {{ ai.argument_against }}</p>
+        {% if ai.missing_data %}<p class="small mb-2"><strong>Ce qui manque pour mieux chiffrer :</strong> {{ ai.missing_data|join(' ; ') }}</p>{% endif %}
+    {% endif %}
+    <div class="d-flex gap-2 flex-wrap">
+        <form method="post" action="{{ path('admin_programme_ai_run', {id: p.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('programme_ai' ~ p.id) }}"><button class="btn btn-outline-dark btn-sm">{{ ai ? 'Refaire l\'analyse' : 'Lancer l\'analyse Gemini' }}</button></form>
+        {% if ai and not p.aiApproved %}<form method="post" action="{{ path('admin_programme_ai_approve', {id: p.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('programme_ai' ~ p.id) }}"><button class="btn btn-bleu btn-sm">Valider et publier</button></form>{% endif %}
+        {% if ai %}<form method="post" action="{{ path('admin_programme_ai_remove', {id: p.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('programme_ai' ~ p.id) }}"><button class="btn btn-outline-danger btn-sm">Retirer</button></form>{% endif %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}

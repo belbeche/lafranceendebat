@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block title %}La lettre{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width:640px">
+    <div class="alert {{ ok ? 'alert-success' : 'alert-danger' }}" role="status">{{ message }}</div>
+    <a href="{{ path('app_home') }}">Retour à l'accueil</a>
+</div></section>
+{% endblock %}

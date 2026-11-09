@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Faille de sécurité / Security vulnerability
+    url: https://github.com/belbeche/lafranceendebat/security/advisories/new
+    about: Ne publiez jamais une faille dans un ticket. / Never post a vulnerability in a public issue.

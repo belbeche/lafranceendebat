@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}Candidats et élus{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Candidats et élus</h1>
+    <p class="lede">Chacun est présenté sur la même fiche. L'ordre est aléatoire à chaque affichage, et il n'y a ni note ni classement : la plateforme ne dit pas pour qui voter.</p>
+</div></header>
+<div class="container mt-3">{% include '_role_actions.html.twig' with {ctx: '', compact: true} only %}</div>
+<section class="section"><div class="container">
+    {% if comparableThemes|length %}
+        <div class="carte mb-4">
+            <h2 class="h5">Comparer par thème</h2>
+            <div class="d-flex flex-wrap gap-2">{% for t in comparableThemes %}<a class="etiquette bleu" href="{{ path('app_candidats_compare', {theme: t}) }}">{{ t }}</a>{% endfor %}</div>
+        </div>
+    {% endif %}
+    <div class="row g-3">
+        {% for c in candidats %}
+            <div class="col-md-6 col-lg-4"><a class="carte-lien" href="{{ path('app_candidat_show', {slug: c.slug}) }}"><div class="carte">
+                <h2 class="h5">{{ c.name }}</h2>
+                <p class="meta mb-1">{{ c.role ?: 'Fonction non renseignée' }}</p>
+                <p class="mb-1">{% if c.declaredLabel %}Se déclare : {{ c.declaredLabel }}{% else %}<span class="meta">Étiquette non renseignée</span>{% endif %}</p>
+                <p class="meta mb-0">{{ c.engagements|length }} engagement{{ c.engagements|length > 1 ? 's' }} documenté{{ c.engagements|length > 1 ? 's' }}{% if c.acceptsPublicDebate %} · a accepté un débat public{% endif %}</p>
+            </div></a></div>
+        {% else %}
+            <div class="col-12"><div class="carte">Aucun candidat publié pour le moment. Les fiches sont ajoutées par l'équipe à partir de sources officielles et du déclaratif des intéressés.</div></div>
+        {% endfor %}
+    </div>
+</div></section>
+{% endblock %}

@@ -1,0 +1,22 @@
+{# templates/admin/components/breadcrumb.html.twig #}
+{% if breadcrumb is defined and breadcrumb|length > 0 %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-light p-3 rounded">
+        {% for item in breadcrumb %}
+            {% if item.active is defined and item.active %}
+                <li class="breadcrumb-item active" aria-current="page">
+                    {{ item.label }}
+                </li>
+            {% else %}
+                <li class="breadcrumb-item">
+                    {% if item.url is defined %}
+                        <a href="{{ item.url }}">{{ item.label }}</a>
+                    {% else %}
+                        {{ item.label }}
+                    {% endif %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+</nav>
+{% endif %}

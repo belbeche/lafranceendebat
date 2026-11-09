@@ -1,0 +1,11 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Conversions{% endblock %}
+{% block admin %}
+<h1 class="h3">Conversions (30 jours)</h1>
+<p class="text-muted" style="max-width:70ch">Totaux par jour, sans aucune donnée sur les personnes. Les visites viennent de la mesure d'audience interne (conservée 90 jours) ; les étapes sont conservées sans limite car ce sont des totaux anonymes.</p>
+<table class="table table-sm"><thead><tr><th>Jour</th><th class="text-end">Visites</th>{% for k, l in labels %}<th class="text-end">{{ l }}</th>{% endfor %}</tr></thead><tbody>
+<tr class="fw-bold"><td>Total</td><td class="text-end">{{ total.visits }}</td>{% for k, l in labels %}<td class="text-end">{{ total[k] }}</td>{% endfor %}</tr>
+{% if total.visits > 0 %}<tr class="text-muted"><td>Inscriptions pour 100 visites</td><td></td><td class="text-end">{{ (total.inscription * 100 / total.visits)|round(1) }}</td><td colspan="{{ labels|length - 1 }}"></td></tr>{% endif %}
+{% for r in rows %}<tr><td>{{ r.day }}</td><td class="text-end">{{ r.visits }}</td>{% for k, l in labels %}<td class="text-end">{{ r.events[k] ?? 0 }}</td>{% endfor %}</tr>{% endfor %}
+</tbody></table>
+{% endblock %}

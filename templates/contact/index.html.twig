@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Contact{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Nous écrire</h1>
+    <p class="mb-0">Une question, une erreur à signaler, une proposition de partenariat ? Écrivez-nous. Un message respectueux reçoit toujours une réponse humaine.</p>
+</div></header>
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        {% for type, class in {success: 'success', error: 'danger'} %}
+            {% for message in app.flashes(type) %}<div class="alert alert-{{ class }}" role="{{ type == 'error' ? 'alert' : 'status' }}">{{ message }}</div>{% endfor %}
+        {% endfor %}
+        <div class="carte p-4 contact-carte">
+            {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.prenom) }}</div>
+                    <div class="col-md-6">{{ form_row(form.nom) }}</div>
+                    <div class="col-md-7">{{ form_row(form.email) }}</div>
+                    <div class="col-md-5">{{ form_row(form.telephone) }}</div>
+                    <div class="col-12">{{ form_row(form.sujet) }}</div>
+                    <div class="col-12">{{ form_row(form.message, {attr: {rows: 7}}) }}</div>
+                </div>
+                <div class="d-flex flex-wrap align-items-center gap-3 mt-3">
+                    <button type="submit" class="btn btn-lg btn-rouge px-4">Envoyer le message</button>
+                    <span class="meta">Vos données servent uniquement à vous répondre. <a href="{{ path('app_privacy_policy') }}">Politique de confidentialité</a></span>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <aside class="carte contact-aside">
+            <h2 class="h5">Autres voies</h2>
+            <dl class="mb-0">
+                <dt>Courriel</dt><dd>{{ publisher.email ?: 'Via le formulaire' }}</dd>
+                <dt>Courrier</dt><dd>{{ publisher.address ?: 'Adresse indiquée dans les mentions légales' }}</dd>
+                <dt>Éditeur</dt><dd><a href="{{ path('app_legal_notice') }}">Mentions légales</a></dd>
+            </dl>
+        </aside>
+        <aside class="carte mt-3 contact-aside">
+            <h2 class="h6">Ce que nous ne faisons pas</h2>
+            <p class="meta mb-0">Nous ne répondons pas aux menaces ni aux insultes, et nous ne transmettons aucun message aux institutions à votre place. Pour agir, voyez <a href="{{ path('app_actors') }}">les voies officielles</a>.</p>
+        </aside>
+    </div>
+</div></div></section>
+{% endblock %}

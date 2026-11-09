@@ -1,0 +1,5 @@
+{% macro avatar(user, size) %}
+    {% set name = user ? user.publicName : 'Citoyen' %}
+    {% set tone = (name|length + (name|first|lower|slice(0,1)|length)) % 4 %}
+    <span class="av av-{{ tone }} {{ size == 'lg' ? 'av-lg' : '' }}" aria-hidden="true">{{ name|first|upper }}</span>
+{% endmacro %}

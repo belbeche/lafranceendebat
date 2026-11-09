@@ -1,0 +1,11 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ action }} : {{ title }}{% endblock %}
+{% block admin %}
+<h1 class="h3">{{ action }} : {{ title }}</h1>
+<div class="form-card">
+    {{ form_start(form) }}{{ form_widget(form) }}
+    <button class="btn btn-bleu mt-3" type="submit">Enregistrer</button>
+    <a class="btn btn-link mt-3" href="{{ path(prefix ~ 'index') }}">Annuler</a>
+    {{ form_end(form) }}
+</div>
+{% endblock %}

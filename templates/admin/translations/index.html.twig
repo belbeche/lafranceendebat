@@ -1,0 +1,16 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Traductions{% endblock %}
+{% block admin %}
+<h1 class="h3">Traductions proposées ({{ items|length }})</h1>
+{% for t in items %}
+<div class="card mb-3"><div class="card-body">
+    <p class="mb-1"><strong>{{ t.type }} #{{ t.refId }}</strong> en {{ t.locale|upper }}{% if t.author %} par {{ t.author.publicName }}{% endif %}</p>
+    {% for k, v in t.fields %}{% if v %}<p class="mb-1"><span class="text-muted">{{ k }} :</span> {{ v }}</p>{% endif %}{% endfor %}
+    <form method="post" class="d-flex gap-2 mt-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('translation_decide' ~ t.id) }}">
+        <button class="btn btn-primary" formaction="{{ path('admin_translation_decide', {id: t.id, decision: 'approve'}) }}">Publier</button>
+        <button class="btn btn-outline-danger" formaction="{{ path('admin_translation_decide', {id: t.id, decision: 'reject'}) }}">Refuser</button>
+    </form>
+</div></div>
+{% else %}<p>Aucune traduction en attente.</p>{% endfor %}
+{% endblock %}

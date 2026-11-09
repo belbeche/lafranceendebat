@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% block title %}Votre commande{% endblock %}
+{% block body %}
+<section class="section"><div class="container" style="max-width: 640px">
+    <div class="carte p-4">
+    {% if order.status == 'payee' or order.status == 'terminee' %}
+        <h1 class="h3">Paiement reçu</h1>
+        <p>Votre commande « {{ order.offer.title }} » est payée. Les fonds sont conservés jusqu'à la réalisation de la prestation : vous pourrez les libérer depuis <a href="{{ path('app_my_orders') }}">Mes commandes</a>, ou ils seront reversés automatiquement {{ days }} jours après le paiement.</p>
+    {% elseif order.status == 'attente_paiement' %}
+        <h1 class="h3">Paiement en cours de confirmation</h1>
+        <p>Nous attendons la confirmation de Stripe. Rafraîchissez cette page dans un instant. Si vous avez annulé, rien n'a été débité.</p>
+    {% else %}
+        <h1 class="h3">Commande {{ order.status|replace({'_': ' '}) }}</h1>
+    {% endif %}
+    <a class="btn btn-outline-primary" href="{{ path('app_my_orders') }}">Mes commandes</a>
+    </div>
+</div></section>
+{% endblock %}

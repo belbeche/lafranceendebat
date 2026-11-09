@@ -1,0 +1,8 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Résultats : {{ s.title }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_surveys') }}">&larr; Enquêtes</a></p>
+<h1 class="h3">{{ s.title }}</h1>
+<p class="meta">{{ n }} réponse{{ n > 1 ? 's' }} · {{ s.sentCount }} invitation{{ s.sentCount > 1 ? 's' }} envoyée{{ s.sentCount > 1 ? 's' }}{% if s.sentCount %} · taux de réponse environ {{ (100 * n / s.sentCount)|round(1) }} %{% endif %} · <a href="{{ path('admin_survey_export', {id: s.id}) }}">export CSV</a> · <a href="{{ path('admin_survey_report', {id: s.id}) }}">procès-verbal imprimable</a>{% if s.status == 'open' %} · <a href="{{ path('admin_survey_field', {id: s.id}) }}">saisie de terrain</a>{% endif %}</p>
+{% include '_survey_bars.html.twig' with {stats: stats} only %}
+{% endblock %}

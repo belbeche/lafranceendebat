@@ -1,0 +1,14 @@
+{% for st in stats %}
+<article class="carte mb-3">
+    <h2 class="h6">{{ loop.index }}. {{ st.label }}</h2>
+    <p class="meta mb-2">{{ st.answered }} réponse{{ st.answered > 1 ? 's' }} sur {{ st.total }}{% if st.average %} · moyenne <strong>{{ st.average }}</strong> / 5{% endif %}</p>
+    {% if st.type == 'texte' %}
+        {% if st.texts %}<ul class="small mb-0">{% for t in st.texts %}<li>{{ t }}</li>{% endfor %}</ul>{% else %}<p class="meta mb-0">{{ st.textCount }} réponse{{ st.textCount > 1 ? 's' }} libre{{ st.textCount > 1 ? 's' }} (non publiées).</p>{% endif %}
+    {% else %}
+        {% for o, c in st.counts %}
+        <div class="mb-1"><div class="d-flex justify-content-between small"><span>{{ o }}</span><span>{{ c }} ({{ st.percent[o] }} %)</span></div>
+        <div class="progress" style="height:10px" role="img" aria-label="{{ o }} : {{ st.percent[o] }} %"><div class="progress-bar" style="width:{{ st.percent[o] }}%;background:#002395"></div></div></div>
+        {% endfor %}
+    {% endif %}
+</article>
+{% endfor %}

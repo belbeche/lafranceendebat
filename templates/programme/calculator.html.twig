@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}Calculateur de budget{% endblock %}
+{% block meta_description %}Additionnez le coût annuel estimé de propositions politiques chiffrées, avec la source et le niveau de crédibilité de chaque chiffre.{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Calculateur de budget</h1>
+<p class="lead mb-0">Cochez des propositions chiffrées pour voir leur coût annuel estimé, avec la crédibilité de chaque chiffre.</p></div></header>
+<section class="section"><div class="container" style="max-width:920px">
+<div class="alert alert-warning"><strong>Lisez avant de conclure.</strong> Les chiffres viennent de sources différentes, aux méthodes différentes. Les additionner donne un ordre de grandeur, pas un budget : des mesures se recoupent, certaines rapportent en retour, aucune n'est évaluée « toutes choses égales par ailleurs ». Les niveaux A, B et C sont séparés dans le résultat.</div>
+<dl class="row small">{% for k, l in constant('App\\Entity\\PartyProposal::CREDIBILITY') %}<dt class="col-sm-1">{{ k }}</dt><dd class="col-sm-11">{{ l }}</dd>{% endfor %}</dl>
+{% if picked %}
+<div class="carte mb-4" aria-live="polite">
+    <h2 class="h5">Chiffrages sourcés : {{ total >= 0 ? '' : '−' }}{{ (total|abs)|number_format(0, ',', ' ') }} millions d'euros par an</h2>
+    <p class="mb-1">Dont : niveau A {{ byLevel.A|number_format(0, ',', ' ') }} M€ · niveau B {{ byLevel.B|number_format(0, ',', ' ') }} M€ · niveau C {{ byLevel.C|number_format(0, ',', ' ') }} M€</p>
+    {% if includeAi %}<p class="mb-1 mt-2" style="border-top:1px dashed #999;padding-top:.5rem"><strong>À part : hypothèses IA non officielles ({{ ai.n }} proposition{{ ai.n > 1 ? 's' }}) :</strong> de {{ ai.low|number_format(0, ',', ' ') }} à {{ ai.high|number_format(0, ',', ' ') }} M€ par an, central {{ ai.central|number_format(0, ',', ' ') }} M€. Non ajoutées au résultat ci-dessus.</p>{% endif %}
+    <p class="meta mb-0">{{ picked|length }} proposition{{ picked|length > 1 ? 's' }} sélectionnée{{ picked|length > 1 ? 's' }}. Un chiffre positif est une dépense, un chiffre négatif une économie ou une recette.</p>
+</div>
+{% endif %}
+<form method="get">
+    <div class="d-flex gap-2 align-items-end mb-3"><div><label class="form-label" for="groupe">Afficher un seul groupe</label><select id="groupe" name="groupe" class="form-select"><option value="">Tous les groupes</option>{% for g in groups %}<option value="{{ g.code }}" {{ group == g.code ? 'selected' }}>{{ g.code }}</option>{% endfor %}</select></div></div>
+    {% if available %}
+    <div class="table-responsive"><table class="table align-middle"><thead><tr><th scope="col">Choisir</th><th scope="col">Proposition</th><th scope="col">Groupe</th><th scope="col">Coût annuel</th><th scope="col">Crédibilité</th></tr></thead><tbody>
+    {% for p in available %}
+    <tr><td><input type="checkbox" name="ids[]" value="{{ p.id }}" id="p{{ p.id }}" {{ p.id in ids ? 'checked' }} aria-label="Ajouter {{ p.title }}"></td>
+    <td><label for="p{{ p.id }}">{{ p.title }}</label> <a class="small" href="{{ path('app_programme_show', {id: p.id}) }}">fiche</a></td>
+    <td>{{ p.groupCode }}</td>{% if p.costed %}<td class="text-nowrap">{{ p.costMillions >= 0 ? '' : '−' }}{{ (p.costMillions|abs)|number_format(0, ',', ' ') }} M€</td><td><span class="etiquette rouge">{{ p.costCredibility }}</span> <span class="small">fiabilité {{ p.sourcedReliability }}</span></td>
+    {% else %}<td class="text-nowrap">{{ p.aiLowMillions|number_format(0, ',', ' ') }} à {{ p.aiHighMillions|number_format(0, ',', ' ') }} M€</td><td><span class="etiquette">hypothèse IA</span> <span class="small">fiabilité {{ p.aiReliability }}</span></td>{% endif %}</tr>
+    {% endfor %}</tbody></table></div>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="ia" name="ia" value="1" {{ includeAi ? 'checked' }}><label class="form-check-label" for="ia">Afficher à part les hypothèses de chiffrage par IA (non officielles, relues par la modération). Elles ne sont jamais ajoutées aux chiffrages sourcés.</label></div>
+    <button class="btn btn-bleu">Calculer</button> <a class="btn btn-outline-dark" href="{{ path('app_budget_calculator') }}">Tout décocher</a>
+    {% else %}
+    <p>Aucune proposition chiffrée pour le moment. Les chiffrages sourcés sont ajoutés par la modération, uniquement avec une source publiée et un niveau de crédibilité. Les hypothèses IA n'apparaissent qu'après relecture.</p>
+    {% endif %}
+</form>
+{% include 'programme/_source_note.html.twig' %}
+</div></section>
+{% endblock %}

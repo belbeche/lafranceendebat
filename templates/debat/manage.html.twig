@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gérer le débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Gérer ce débat</h1>
+<p class="lede mb-0">{{ debat.title }} <span class="etiquette">{{ debat.statusLabel }}</span></p></div></header>
+<section class="section"><div class="container" style="max-width:760px">
+{% if errors %}<div class="alert alert-danger"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+<div class="limite mb-3">Les modifications sont visibles tout de suite et la page indique « modifié le ». Les arguments déjà déposés ne changent pas : gardez le sens de la question, et corrigez plutôt les faits, les sources et la clarté.</div>
+<form method="post" class="form-card">
+    <input type="hidden" name="_token" value="{{ csrf_token('debat_manage' ~ debat.id) }}">
+    <div class="mb-3"><label class="form-label" for="title">Question posée au débat</label><input class="form-control" id="title" name="title" value="{{ d.title }}" maxlength="180" required></div>
+    <div class="mb-3"><label class="form-label" for="theme">Thème</label><select class="form-select" id="theme" name="theme" required>{% for t in themes %}<option {{ d.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}{% if d.theme and d.theme not in themes %}<option selected>{{ d.theme }}</option>{% endif %}<option value="__autre">Autre thème (je le précise)</option></select>
+        <input class="form-control mt-2" name="theme_other" maxlength="40" placeholder="Si « Autre thème » : votre thème" aria-label="Autre thème"></div>
+    <div class="mb-3"><label class="form-label" for="summary">Exposé neutre (100 à 6000 caractères)</label><textarea class="form-control" id="summary" name="summary" rows="8" maxlength="6000" required>{{ d.summary }}</textarea></div>
+    <div class="mb-3"><label class="form-label" for="facts">Faits vérifiés et sources (au moins un lien https)</label><textarea class="form-control" id="facts" name="facts" rows="5" required>{{ d.facts }}</textarea></div>
+    <div class="mb-3"><label class="form-label" for="authority">Autorité compétente (facultatif)</label><input class="form-control" id="authority" name="authority" value="{{ d.authority }}" maxlength="255"></div>
+    {% if isModerator %}
+    <hr><h2 class="h5">Gestion (modération)</h2>
+    <div class="mb-3"><label class="form-label" for="status">Statut</label><select class="form-select" id="status" name="status">{% for k, l in statuses %}<option value="{{ k }}" {{ d.status == k ? 'selected' }}>{{ l }}</option>{% endfor %}</select><div class="form-text">Ouvert : les arguments sont acceptés. Clos : lecture seule. Brouillon : masqué du public.</div></div>
+    <div class="mb-3"><label class="form-label" for="closesAt">Date de clôture (facultatif)</label><input class="form-control" type="date" id="closesAt" name="closesAt" value="{{ d.closesAt }}"></div>
+    <div class="mb-3"><label class="form-label" for="outcome">Compte rendu et suites données (facultatif)</label><textarea class="form-control" id="outcome" name="outcome" rows="5" maxlength="6000">{{ d.outcome }}</textarea></div>
+    {% endif %}
+    <button class="btn btn-rouge" type="submit">Enregistrer</button>
+    <a class="btn btn-link" href="{{ debat.status == 'draft' ? path('app_my_requests') : path('app_debat_show', {slug: debat.slug}) }}">Annuler</a>
+</form>
+</div></section>
+{% endblock %}

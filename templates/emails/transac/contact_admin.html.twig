@@ -1,0 +1,8 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Nouveau message de contact{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Nouveau message de contact</h1>
+<p><strong>De :</strong> {{ contact.prenom }} {{ contact.nom }} ({{ contact.email }})<br><strong>Sujet :</strong> {{ contact.sujet }}</p>
+<p style="white-space:pre-line;border-left:4px solid #002395;padding-left:12px">{{ contact.message }}</p>
+<p style="font-size:13px;color:#555">Répondre à cet e-mail écrit directement à l'expéditeur.</p>
+{% endblock %}

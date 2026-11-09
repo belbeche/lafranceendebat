@@ -1,0 +1,261 @@
+nav.debates: Debates
+nav.propositions: Proposals
+nav.forgotten: Not to be forgotten
+nav.more: More
+nav.candidates: Candidates
+nav.monitoring: Institutions tracker
+nav.agenda: Calendar
+nav.charter: Peace charter
+nav.method: Debate method
+nav.about: About
+nav.install: Install
+nav.submit: Submit a proposal
+nav.account: My account
+nav.profile: My profile
+nav.my_propositions: My proposals
+nav.admin: Administration
+nav.logout: Log out
+nav.login: Log in
+nav.register: Create my account (free)
+nav.language: Language
+nav.skip: Skip to content
+tab.home: Home
+tab.account: Account
+tab.login: Log in
+tab.submit: Submit a proposal
+banner.text: Here we tell facts from opinions. No hatred, no violence.
+banner.link: Read the peace charter
+free.badge: Free for life
+free.text: Free for everyone, forever. No subscription, no ads, no selling of data.
+free.title: Free, forever
+free.body: 'La France en Débat is and will remain free for every citizen: no subscription, no payment to sign up, vote or propose, no advertising and no resale of personal data. Core features will never be put behind a paywall.'
+free.faq_q: Is it really free?
+lang.title: Choose your language
+lang.subtitle: You can change it at any time from the menu.
+lang.continue: Continue in %language%
+lang.other_note: 'This language does not have a full interface yet: the menu is shown in English. Use your browser''s automatic translation for the rest of the site.'
+hero.title: Let's talk before we turn against each other.
+hero.cta_propose: Submit a proposal
+hero.cta_debate: Join a debate
+hero.cta_paths: What do you want to do?
+footer.project: The project
+footer.legal: Legal
+footer.independent: An independent, pluralist citizens' space. It is not tied to any party, candidate or institution.
+footer.disclaimer: Consultations on this site have no official electoral value.
+legal.notice: Legal notice
+legal.privacy: Privacy (GDPR)
+legal.terms: Terms of use
+legal.contact: Contact
+path.nav: Guided paths
+path.title: What do you want to do?
+path.subtitle: Pick your situation and we will guide you step by step. Reading needs no account.
+path.no_account: No account needed
+path.account: Free account required
+path.start: Start
+path.step: Step
+path.all: All paths
+path.go: Go
+path.discover.title: I am discovering
+path.discover.desc: Understand the site in three minutes, no account.
+path.discover.s1: 'Read the peace charter: the rules of the game.'
+path.discover.s2: Browse the most supported proposals.
+path.discover.s3: See what has been denounced and must not be forgotten.
+path.debate.title: I want to debate
+path.debate.desc: Give my view and answer others calmly.
+path.debate.s1: Pick an open debate and read the arguments.
+path.debate.s2: Create a free account (one minute).
+path.debate.s3: Post an argument, with a source if possible.
+path.propose.title: I want to propose
+path.propose.desc: Submit a concrete idea, reviewed before publication.
+path.propose.s1: Check the idea does not already exist.
+path.propose.s2: Create a free account.
+path.propose.s3: Submit the proposal with a source.
+path.forgotten.title: I want it not to be forgotten
+path.forgotten.desc: Keep an already denounced grievance alive.
+path.forgotten.s1: Read the grievances not to be forgotten.
+path.forgotten.s2: Support or amend a related proposal.
+path.forgotten.s3: 'See the institutional routes: petition, referendum, elected officials.'
+path.follow.title: I want to follow institutions
+path.follow.desc: Know who answered and who stayed silent.
+path.follow.s1: Open the institutions tracker.
+path.follow.s2: Browse candidates and their commitments.
+path.follow.s3: 'Do not miss key dates: the calendar.'
+
+guide.label: 'Step-by-step guide'
+guide.steps: 'steps'
+guide.page_title: 'Step-by-step guide'
+guide.page_lede: 'Every feature of the site explained in a few steps. No technical knowledge needed.'
+guide.home.t: 'Getting started'
+guide.home.cta: 'Create my account'
+guide.home.s1: 'Create a free account (one minute, an e-mail is enough).'
+guide.home.s2: 'Pick your entry point: debate, propose, give your opinion or act with institutions.'
+guide.home.s3: 'Come back to “My space”: it shows where your ideas stand and what is left to do.'
+guide.communaute.t: 'Join the conversation'
+guide.communaute.cta: 'Start a thread'
+guide.communaute.s1: 'Read the rules on the right, they fit in four lines.'
+guide.communaute.s2: 'Click “Start a thread” and write your topic calmly, with a precise title.'
+guide.communaute.s3: 'Reply to others by first rephrasing their idea: it is rewarded in the ranking.'
+guide.communaute.s4: 'A problematic message? Use “Report”, the team answers with a reason.'
+guide.debats.t: 'Take part in a debate'
+guide.debats.cta: 'See debates'
+guide.debats.s1: 'Open a debate and first read the sourced facts.'
+guide.debats.s2: 'Add an argument for, against or nuanced, with a source if possible.'
+guide.debats.s3: 'Support the strongest arguments, even if they go against your view.'
+guide.propositions.t: 'Submit and advance a proposal'
+guide.propositions.cta: 'Submit a proposal'
+guide.propositions.s1: 'Click “Submit a proposal”: problem, measure, estimated cost, who can act.'
+guide.propositions.s2: 'It is reviewed then published in the register (usually within 48 h).'
+guide.propositions.s3: 'Share it: each support moves it up the ranking.'
+guide.propositions.s4: 'Follow it in “My space” until it is passed to elected officials.'
+guide.scrutins.t: 'Give your opinion'
+guide.scrutins.cta: 'See ballots'
+guide.scrutins.s1: 'Choose an open ballot.'
+guide.scrutins.s2: 'Read the options and the arguments.'
+guide.scrutins.s3: 'Vote: one voice per person, consultative and public result.'
+guide.services.t: 'Find or offer a service'
+guide.services.cta: 'See services'
+guide.services.s1: 'Browse the services (mediation, training, support) and open the right one.'
+guide.services.s2: 'Order: payment is secured and held until completion.'
+guide.services.s3: 'Talk to the provider through the order messaging (no contact details to give).'
+guide.services.s4: 'Confirm when the service is done: the provider is then paid. A problem? Ask for a refund.'
+guide.candidater.t: 'Get a role'
+guide.candidater.cta: 'Apply'
+guide.candidater.s1: 'Choose the right: mediator, actor, elected official or association.'
+guide.candidater.s2: 'Explain in a few lines what you will bring.'
+guide.candidater.s3: 'The team answers. No account seniority is required.'
+guide.candidater.s4: 'Your dedicated space appears in “My space”.'
+guide.acteurs.t: 'Act with institutions'
+guide.acteurs.cta: 'Institutional routes'
+guide.acteurs.s1: 'Find the elected official, institution or mediator concerned.'
+guide.acteurs.s2: 'Use the right legal route (petition, referral, letter).'
+guide.acteurs.s3: 'Then post the follow-up on the platform so everyone sees the answer.'
+guide.plan.t: 'Apply the plan where you live'
+guide.plan.cta: 'Submit a result'
+guide.plan.s1: 'Find on the page the action that fits your situation (citizen, association, elected official, business).'
+guide.plan.s2: 'Do the first action in the “this week” list.'
+guide.plan.s3: 'Submit the result as a proposal so it can be compared and reused elsewhere.'
+home.live.title: 'Right now in the community'
+home.live.join: 'Join the Agora'
+home.live.members: 'registered citizens'
+home.live.props: 'published proposals'
+home.live.threads: 'discussion threads'
+home.live.ballots: 'open ballots'
+home.live.empty: 'The Agora is waiting for its first thread. Start it: a disagreement, an idea, anger to turn into something.'
+home.how.title: 'How it works, in three steps'
+home.how.1t: '1. I sign up'
+home.how.1d: 'Free forever, an e-mail is enough.'
+home.how.2t: '2. I take part'
+home.how.2d: 'Debate, proposal, ballot, petition or message to an elected official.'
+home.how.2l: 'Choose how'
+home.how.3t: '3. I follow the outcome'
+home.how.3d: '“My space” shows where each idea stands.'
+home.how.3l: 'See all step-by-step guides'
+door.how: 'How:'
+door.debate: 'Read the facts, then add an argument.'
+door.propose: 'Fill in 4 fields, review within 48 h.'
+door.opinion: 'Choose a ballot, vote once.'
+door.petition: 'Open, read, click support.'
+door.institutions: 'Choose the legal route and follow the answer.'
+door.candidates: 'Open two profiles side by side.'
+eco.title: 'Restarting the French economy: the Citizen Marshall Plan'
+eco.lede: 'Recover without breaking things: measure every expense, pool what can be pooled, reinvest proven savings in jobs, production and essential services.'
+eco.l1t: 'Measure'
+eco.l1d: 'A cost diagnosis in 3 to 5 volunteer organisations.'
+eco.l2t: 'Pool'
+eco.l2d: 'Joint purchasing and shared support functions, no monopoly.'
+eco.l3t: 'Reinvest'
+eco.l3d: 'Every proven saving goes back into jobs and useful missions.'
+eco.cta: 'Read the plan'
+eco.cta2: 'Act this week'
+nav.guide: 'Step-by-step guide'
+contacts.title: 'Useful contacts'
+contacts.lede: 'Who to contact and for what. Official links and numbers, to be checked on each organisation''s site before calling.'
+nav.contacts: 'Useful contacts'
+
+peace.title: 'A call for calm and peace'
+peace.text: 'In a country under tension, anger can be legitimate, violence never is. Here we listen, cite sources, offer concrete solutions and give everyone a right of reply.'
+peace.cta: 'Read the appeal and the charter'
+why.title: 'Why now?'
+why.lede: 'Official, sourced findings, not slogans. Anyone can check them, then debate them.'
+why.f1: 'Public deficit 2025: 5.0% of GDP, 2026 target judged at risk'
+why.f2: 'Public debt: €3,460 billion at end of 2025'
+why.f3: 'Debt service 2026: about €77 billion, up about €12 billion'
+why.src: 'Source: Cour des comptes, findings of 25 June 2026, reported by Public Sénat. Check and update before quoting.'
+why.more: 'Other challenges raised by citizens: purchasing power, jobs, strained public services, trust, energy transition, sovereignty.'
+tax.title: 'Taxpayers: you pay, you have the right to understand'
+tax.lede: 'Every proposal must say what it costs, who pays and how results are measured. Here is how to act.'
+tax.c1t: 'Understand'
+tax.c1d: 'Cour des comptes reports and open data on public spending, freely available.'
+tax.c2t: 'Propose a useful saving'
+tax.c2d: 'Apply the Marshall Plan five-question rule and submit a costed proposal with its source.'
+tax.c3t: 'Back what is measured'
+tax.c3d: 'The best sourced and costed proposals rise in the ranking.'
+tax.c4t: 'Ask for accountability'
+tax.c4d: 'File a sourced claim: it is tracked until a public answer.'
+tax.cta1: 'Cour des comptes reports'
+tax.cta2: 'Open data (data.gouv.fr)'
+themes.title: 'Concrete solutions, by topic'
+themes.lede: 'Pick a topic: see the published proposals, ranked by support.'
+steps.title: 'The path of a proposal, in five steps'
+steps.1: 'Citizens speak: they propose ideas and vote on priorities.'
+steps.2: 'Proposals are reviewed and analysed with experts and people on the ground.'
+steps.3: 'Solutions are grouped into concrete, costed projects with a timetable.'
+steps.4: 'They are brought to the competent elected officials and institutions.'
+steps.5: 'Citizens follow the decisions and what follows.'
+actors.title: 'The role of public actors and contributors'
+actors.lede: 'Everyone can contribute under the same rules: public source, verifiable facts, right of reply.'
+actors.a1: 'Parliament (National Assembly and Senate)'
+actors.a1d: 'Examine proposals, debate, vote laws, monitor implementation.'
+actors.a2: 'Local authorities'
+actors.a2d: 'Hold local debates, relay proposals, carry out actions.'
+actors.a3: 'State services'
+actors.a3d: 'Assess feasibility, mobilise resources, ensure coordination.'
+actors.a4: 'European institutions'
+actors.a4d: 'Integrate proposals, support funding, strengthen cooperation.'
+actors.a5: 'Associations, businesses, citizens'
+actors.a5d: 'Bring field expertise, test, measure, share results.'
+actors.cta: 'Become an actor'
+claims.cta: 'File a sourced claim'
+claims.rules: 'Rule for all actors, institutions and parties alike: public source, verifiable facts, no insults, right of reply, review before publication.'
+forces.title: 'Understand to choose better'
+forces.lede: 'The main political currents presented with the same structure, no scores or rankings. You compare.'
+forces.cta: 'See the political currents'
+run.title: 'Running in the 2027 presidential election: the rules'
+run.c1: 'Be French, at least 18, and registered on an electoral roll.'
+run.c2: 'Not be declared ineligible nor under guardianship, and have met national service obligations.'
+run.c3: 'Obtain 500 sponsorships from elected officials, from at least 30 departments or overseas collectivities, at most one tenth from the same department.'
+run.c4: 'File an interests declaration and an asset declaration with the Constitutional Council.'
+run.src: 'Source: LCP, candidacy conditions. Official dates are published by the Constitutional Council.'
+run.cta: 'Constitutional Council'
+final.title: 'Together, let us make our voice heard'
+final.lede: 'La France en Débat is you, it is us, it is now.'
+final.w1: 'Speak'
+final.w2: 'Debate'
+final.w3: 'Vote'
+final.w4: 'Act'
+final.w5: 'Build tomorrow'
+
+welcome.title: 'Welcome. Who are you?'
+welcome.lede: 'Pick your profile: we show your first steps, in three simple actions.'
+welcome.later: 'Later, I want to look around first'
+welcome.next: 'Your first steps'
+welcome.back: 'Change profile'
+welcome.banner: 'New here? Take a one-minute tour and find your first action.'
+welcome.banner.cta: 'Guide me'
+welcome.banner.later: 'Later'
+welcome.citoyen.t: 'Citizen'
+welcome.citoyen.d: 'I want to speak, understand and vote.'
+welcome.contribuable.t: 'Taxpayer'
+welcome.contribuable.d: 'I want to understand where the money goes and propose useful savings.'
+welcome.association.t: 'Association or collective'
+welcome.association.d: 'I carry initiatives and look for support.'
+welcome.entreprise.t: 'Business or freelancer'
+welcome.entreprise.d: 'I want to help the economic recovery and find partners.'
+welcome.elu.t: 'Elected official or institution'
+welcome.elu.d: 'I want to listen to citizens and answer.'
+welcome.expert.t: 'Provider or expert'
+welcome.expert.d: 'I offer a service (mediation, training, support).'
+commons.notice: 'This work belongs to no one: it is the result of contributions from citizens around the world. It rightfully belongs to no single person, and the effort must go on, carried by everyone.'
+commons.title: 'A common good'
+commons.text: 'This project does not belong to its initiator. Every citizen of the world who proposes, reviews, translates, checks or debates is a co-author. No one can claim ownership by right. For it to last, the effort must continue: contribute, pass it on, invite others.'
+nav.submit.short: 'Propose'

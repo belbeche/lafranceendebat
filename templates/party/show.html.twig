@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ p0.groupName }} : propositions{% endblock %}
+{% block meta_description %}{{ p0.groupName }} : {{ total }} proposition{{ total > 1 ? 's' }}, chiffrages sourcés et liens officiels.{% endblock %}
+{% block body %}
+<header class="page-head" {% if p0.groupColor %}style="border-left:8px solid {{ p0.groupColor }}"{% endif %}><div class="container"><p class="meta mb-1"><a class="text-white" href="{{ path('app_parties') }}">Partis et groupes</a></p><h1>{{ p0.groupName }}</h1>
+<p class="lead mb-0">{{ total }} proposition{{ total > 1 ? 's' }} publiée{{ total > 1 ? 's' }}, chacune avec sa source.</p></div></header>
+<section class="section"><div class="container" style="max-width:920px">
+{% if profile and (profile.officialSite or profile.programmeUrl) %}
+<p>{% if profile.officialSite %}<a class="btn btn-outline-dark btn-sm" href="{{ profile.officialSite }}" rel="noopener nofollow" target="_blank">Site officiel</a>{% endif %} {% if profile.programmeUrl %}<a class="btn btn-outline-dark btn-sm" href="{{ profile.programmeUrl }}" rel="noopener nofollow" target="_blank">Programme officiel</a>{% endif %}</p>
+{% endif %}
+<div class="carte mb-4"><h2 class="h5">Coût annuel des propositions chiffrées</h2>
+    <p class="small text-muted">Sommes des chiffrages <strong>sourcés</strong>, par niveau de crédibilité. Un chiffre positif est une dépense, un chiffre négatif une économie ou une recette. Ce n'est pas un budget : des mesures se recoupent.</p>
+    <table class="table table-sm mb-2"><thead><tr><th scope="col">Niveau</th><th scope="col">Propositions</th><th scope="col">Total (M€ par an)</th></tr></thead><tbody>
+    {% for k, l in constant('App\\Entity\\PartyProposal::CREDIBILITY') %}<tr><td><span class="etiquette rouge">{{ k }}</span> <span class="small">{{ l|split(' (')[0] }}</span></td><td>{{ byLevel[k].n }}</td><td>{{ byLevel[k].n ? byLevel[k].sum|number_format(0, ',', ' ') : '-' }}</td></tr>{% endfor %}
+    </tbody></table>
+    {% if ai.n %}<p class="small mb-1" style="border-top:1px dashed #999;padding-top:.5rem"><strong>À part, hypothèses IA non officielles ({{ ai.n }} proposition{{ ai.n > 1 ? 's' }}) :</strong> de {{ ai.low|number_format(0, ',', ' ') }} à {{ ai.high|number_format(0, ',', ' ') }} M€ par an, central {{ ai.central|number_format(0, ',', ' ') }} M€. Relues par la modération, jamais ajoutées aux chiffrages sourcés.</p>{% endif %}
+    <a class="btn btn-bleu btn-sm" href="{{ path('app_budget_calculator', {groupe: p0.groupCode}) }}">Ouvrir le calculateur pour ce groupe</a>
+</div>
+{% if themes %}<h2 class="h5">Par thème</h2><p>{% for t in themes %}<a class="etiquette bleu" href="{{ path('app_programmes', {groupe: p0.groupCode, theme: t.theme}) }}">{{ t.theme }} ({{ t.n }})</a> {% endfor %}</p>{% endif %}
+<h2 class="h5 mt-4">Propositions</h2>
+<ul class="list-unstyled">
+{% for p in items %}<li class="mb-3"><a href="{{ path('app_programme_show', {id: p.id}) }}"><strong>{{ p.title }}</strong></a><br>
+<span class="meta">{{ p.source == 'AN' ? 'Assemblée nationale' : (p.source == 'SENAT' ? 'Sénat' : 'Programme de la formation') }}{% if p.depositedAt %}, {{ p.depositedAt|date('d/m/Y') }}{% endif %}{% if p.theme %} · {{ p.theme }}{% endif %}{% if p.costed %} · {{ p.costMillions|number_format(0, ',', ' ') }} M€ (niveau {{ p.costCredibility }}){% endif %} · <a href="{{ p.sourceUrl }}" rel="noopener nofollow" target="_blank">source officielle</a></span></li>
+{% endfor %}
+</ul>
+{% if total > items|length %}<p><a href="{{ path('app_programmes', {groupe: p0.groupCode}) }}">Voir toutes les propositions ({{ total }})</a></p>{% endif %}
+{% include 'programme/_source_note.html.twig' %}
+</div></section>
+{% endblock %}

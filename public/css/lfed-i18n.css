@@ -1,0 +1,19 @@
+/* Gratuite, choix de langue, parcours */
+.free-pill { background: #fff; color: var(--bleu-nuit); border-radius: 999px; padding: .05rem .6rem; margin-inline-start: .4rem; white-space: nowrap; }
+.free-promise { display: flex; gap: .9rem; align-items: flex-start; background: #fff; border: 1px solid var(--filet); border-inline-start: 5px solid var(--rouge); border-radius: 10px; padding: 1rem 1.25rem; max-width: 68ch; }
+.free-promise i { color: var(--rouge); font-size: 1.4rem; }
+.lang-overlay { position: fixed; inset: 0; z-index: 3000; background: rgba(0,22,79,.92); display: grid; place-items: center; padding: 1rem; overflow-y: auto; }
+.lang-box { background: #fff; border-radius: 14px; max-width: 640px; width: 100%; padding: 1.75rem; max-height: 96vh; overflow-y: auto; }
+.lang-brand { font-weight: 700; font-size: 1.2rem; color: var(--bleu-nuit); margin-bottom: .5rem; }
+.lang-brand span { color: var(--rouge-texte); }
+.lang-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: .5rem; }
+.lang-chip { display: block; text-align: center; padding: .6rem .5rem; border: 1px solid var(--filet); border-radius: 8px; color: var(--encre, #14161f); text-decoration: none; }
+.lang-chip:hover, .lang-chip:focus { border-color: var(--bleu); background: #eef1fb; }
+.lang-chip.on { border-color: var(--bleu); background: #eef1fb; font-weight: 700; }
+.lang-menu { max-height: 70vh; overflow-y: auto; min-width: 12rem; }
+.path-card { display: block; height: 100%; padding: 1.25rem; background: #fff; border: 1px solid var(--filet); border-radius: 12px; text-decoration: none; color: inherit; transition: border-color .15s; }
+.path-card:hover, .path-card:focus { border-color: var(--bleu); color: inherit; }
+.path-steps { list-style: none; padding: 0; margin: 0; }
+.path-steps li { display: flex; gap: 1rem; align-items: center; background: #fff; border: 1px solid var(--filet); border-radius: 10px; padding: 1rem; margin-bottom: .75rem; }
+.path-steps .n { flex: 0 0 2.2rem; height: 2.2rem; border-radius: 50%; background: var(--bleu); color: #fff; display: grid; place-items: center; font-weight: 700; }
+[dir="rtl"] .bi-chevron-right::before, [dir="rtl"] .bi-arrow-right::before { transform: scaleX(-1); display: inline-block; }

@@ -1,0 +1,8 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Bienvenue{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Bienvenue, {{ user.firstName }}</h1>
+<p>Votre compte est créé. Ici, on se parle avant de s'opposer : débattre avec des faits, proposer des solutions, donner son avis.</p>
+<p><a href="{{ url('app_community') }}" style="display:inline-block;background:#002395;color:#fff;padding:12px 22px;text-decoration:none;font-weight:bold">Rejoindre la conversation</a></p>
+<p style="font-size:13px;color:#555">Trois règles : pas d'insulte, pas d'appel à la violence, des sources quand vous affirmez. Votre compte est gratuit pour toujours.</p>
+{% endblock %}

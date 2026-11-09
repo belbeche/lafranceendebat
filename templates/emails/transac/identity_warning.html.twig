@@ -1,0 +1,10 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Compte restreint{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">Votre compte est restreint</h1>
+<p>Bonjour {{ user.firstName }}, votre compte utilise une adresse e-mail temporaire, jetable ou suspecte. Merci d'utiliser une identité réelle et une adresse e-mail durable.</p>
+<p><strong>Ce qui change dès maintenant :</strong> vous pouvez toujours lire et débattre, mais les paiements et l'ouverture d'un compte Stripe sont bloqués.</p>
+<p><strong>Ce que vous devez faire :</strong> dans les {{ days }} jours, remplacez votre adresse e-mail par une adresse valide (profil, « Modifier »). La restriction est alors levée automatiquement. Passé ce délai, le compte est désactivé et les tentatives suspectes peuvent être signalées.</p>
+<p><a href="{{ url('app_identity_notice') }}" style="display:inline-block;background:#002395;color:#fff;padding:12px 22px;text-decoration:none;font-weight:bold">Lire la notice : utiliser une identité réelle</a></p>
+<p style="font-size:13px;color:#555">Si vous pensez qu'il s'agit d'une erreur, répondez à ce message ou écrivez-nous via la page contact.</p>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Enquêtes | La France en Débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Enquêtes</h1><p class="lead mb-0">Quelques minutes pour donner votre avis. Réponses anonymes, résultats publics dès cinq réponses.</p></div></header>
+<section class="section"><div class="container">
+    <h2 class="h4">En cours</h2>
+    <div class="row g-3 mb-5">{% for s in open %}<div class="col-md-6"><article class="carte h-100"><h3 class="h5">{{ s.title }}</h3><p>{{ s.intro|slice(0, 180)|e }}{{ s.intro|length > 180 ? '…' }}</p><p class="meta">{{ s.questions|length }} question{{ s.questions|length > 1 ? 's' }}{% if s.closesAt %} · jusqu'au {{ s.closesAt|date('d/m/Y') }}{% endif %}</p><a class="btn btn-bleu" href="{{ path('app_survey_show', {id: s.id}) }}">Répondre</a></article></div>{% else %}<div class="col-12"><p class="meta">Aucune enquête en cours.</p></div>{% endfor %}</div>
+    {% if closed %}<h2 class="h4">Résultats d'enquêtes terminées</h2><ul>{% for s in closed %}<li><a href="{{ path('app_survey_results', {id: s.id}) }}">{{ s.title }}</a></li>{% endfor %}</ul>{% endif %}
+</div></section>
+{% endblock %}

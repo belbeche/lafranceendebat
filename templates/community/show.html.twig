@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ tr(discussion, 'title') }}{% endblock %}
+{% block body %}
+{% import 'community/_macros.html.twig' as c %}
+<section class="section"><div class="container"><div class="row justify-content-center"><div class="col-lg-8 col-xl-7">
+    <p class="mb-3"><a href="{{ path('app_community') }}"><i class="bi bi-arrow-left" aria-hidden="true"></i> L'Agora de la diplomatie</a></p>
+    <article class="post-card post-main">
+        <div class="post-top">
+            {{ c.avatar(discussion.author, 'lg') }}
+            <div>
+                <strong>{{ discussion.author ? discussion.author.publicName : 'Citoyen' }}</strong>
+                <span class="meta"> · <time datetime="{{ discussion.createdAt|date('c') }}">{{ discussion.createdAt|ago }}</time></span><br>
+                <span class="etiquette bleu">{{ discussion.categoryLabel }}</span>{% if discussion.locked %} <span class="etiquette">Verrouillé</span>{% endif %}
+            </div>
+        </div>
+        {% include 'translation/_note.html.twig' with {e: discussion, type: 'discussion'} only %}
+        <h1 class="post-title h3">{{ tr(discussion, 'title') }}</h1>
+        <p class="post-text">{{ tr(discussion, 'body')|nl2br }}</p>
+        <p class="mb-2">{% include '_edit_actions.html.twig' with {mine: app.user and discussion.author and discussion.author.id == app.user.id, editUrl: path('app_community_edit', {id: discussion.id}), withdrawUrl: path('app_community_withdraw', {id: discussion.id}), token: 'disc_withdraw' ~ discussion.id, historyUrl: path('app_history', {type: 'discussion', id: discussion.id}), edited: discussion.editedAt, count: discussion.editCount} only %}</p>
+        {% include '_reliability.html.twig' with {text: discussion.body, sources: ''} only %}
+        <div class="post-bar">
+            <span class="meta"><i class="bi bi-chat-dots" aria-hidden="true"></i> {{ replies|length }} réponse{{ replies|length > 1 ? 's' }}</span>
+            <button type="button" class="act" data-copy="{{ url('app_community_show', {id: discussion.id}) }}"><i class="bi bi-link-45deg" aria-hidden="true"></i> Copier le lien</button>
+            {% if is_granted('ROLE_USER') %}<a class="act" href="{{ path('app_signalement_new', {type: 'discussion', id: discussion.id}) }}">Signaler</a>{% endif %}
+        </div>
+    </article>
+
+    <h2 class="h6 text-muted mb-3">Réponses</h2>
+    <div id="fil-reponses" data-live-url="{{ path('app_community_live', {id: discussion.id}) }}" data-last="{{ replies ? (replies|last).id : 0 }}">
+    {% for r in replies %}
+        {% include 'community/_reply.html.twig' with {r: r, thanks: thanks, thanked: thanked} only %}
+    {% else %}
+        <p class="post-empty" id="fil-vide">Aucune réponse pour le moment. Lancez la conversation, calmement.</p>
+    {% endfor %}
+    </div>
+    <p class="meta" id="fil-etat" role="status" aria-live="polite"></p>
+
+    {% if discussion.locked %}
+        <p class="post-empty">Ce fil est verrouillé par la modération.</p>
+    {% elseif is_granted('ROLE_USER') %}
+        <div class="compose">
+            <span class="compose-avatar" aria-hidden="true">{{ app.user.firstName|first|upper }}</span>
+            <div class="compose-body">
+            {{ form_start(form, {action: path('app_community_reply', {id: discussion.id})}) }}
+                {{ form_errors(form) }}
+                {{ form_label(form.body, 'Votre réponse', {label_attr: {class: 'visually-hidden'}}) }}
+                {{ form_widget(form.body, {attr: {class: 'form-control', rows: 3, placeholder: 'Écrivez votre réponse, calmement et avec des faits.'}}) }}
+                {{ form_errors(form.body) }}
+                <details {{ form.reformulation.vars.value ? 'open' }}>
+                    <summary>Reformuler d'abord (facultatif, +2 points)</summary>
+                    {{ form_widget(form.reformulation, {attr: {class: 'form-control mt-2', rows: 2, placeholder: 'Ce que je comprends de ce message : …'}}) }}
+                </details>
+                <div class="compose-actions">
+                    <span class="meta">Respect et sources : pas d'insultes, pas d'appel à la violence.</span>
+                    <button class="btn btn-primary" type="submit">Publier ma réponse</button>
+                </div>
+                {{ form_rest(form) }}
+            {{ form_end(form, {render_rest: false}) }}
+            </div>
+        </div>
+    {% else %}
+        <p class="post-empty">Pour répondre, <a href="{{ path('app_login') }}">connectez-vous</a> ou <a href="{{ path('app_register') }}">créez un compte gratuit</a>.</p>
+    {% endif %}
+</div></div></div></section>
+{% endblock %}

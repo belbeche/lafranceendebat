@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ tr(offer, 'title') }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><span class="etiquette">{{ offer.categoryLabel }}</span><h1 class="mt-2">{{ tr(offer, 'title') }}</h1><p class="mb-0">Par {{ offer.provider.publicName }}{% if offer.area %} · {{ offer.area }}{% endif %}</p>{% if is_granted('ROLE_USER') and app.user != offer.provider %}<p class="mt-2 mb-0"><a class="btn btn-sm btn-light" href="{{ path('app_inbox_thread', {id: offer.provider.id}) }}">Poser une question au prestataire</a></p>{% endif %}</div></header>
+{% include 'translation/_note.html.twig' with {e: offer, type: 'service_offer'} only %}
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-7"><div class="carte p-3"><p style="white-space: pre-line" class="mb-0">{{ tr(offer, 'description') }}</p></div></div>
+    <div class="col-lg-5"><div class="carte p-3">
+        <p class="h4 mb-3">{{ (split.amount / 100)|number_format(2, ',', ' ') }} €</p>
+        <table class="table table-sm mb-3">
+            <tr><td>Prix payé par vous</td><td class="text-end">{{ (split.amount / 100)|number_format(2, ',', ' ') }} €</td></tr>
+            <tr><td>Contribution de la plateforme ({{ (bps / 100)|number_format(1, ',', ' ') }} %)</td><td class="text-end">{{ (split.commission / 100)|number_format(2, ',', ' ') }} €</td></tr>
+            <tr><td>Reversé au prestataire</td><td class="text-end">{{ (split.net / 100)|number_format(2, ',', ' ') }} €</td></tr>
+        </table>
+        <p class="meta">La contribution est prélevée sur le prix, vous ne payez rien en plus. Le contrat est conclu entre vous et le prestataire. Vos fonds sont conservés par la plateforme puis reversés quand vous confirmez la prestation, ou automatiquement {{ days }} jours après le paiement. Paiement sécurisé par Stripe.</p>
+        {% if offer.isPublished %}
+            {% if app.user %}
+            <form method="post" action="{{ path('app_service_order', {id: offer.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('order' ~ offer.id) }}">
+                <label class="form-label" for="note">Message au prestataire (facultatif)</label>
+                <textarea class="form-control mb-2" id="note" name="note" rows="3" maxlength="1000"></textarea>
+                <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="no_political" name="no_political" value="1" required><label class="form-check-label" for="no_political">Je déclare que cette prestation n'est destinée ni à un parti, ni à un candidat, ni à une campagne électorale, et que je n'agis pas pour leur compte.</label></div>
+                <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="cgv" name="cgv" value="1" required><label class="form-check-label" for="cgv">J'accepte les <a href="{{ path('app_marketplace_terms') }}">conditions de la place de marché</a> et je comprends que le contrat est conclu avec le prestataire.</label></div>
+                <button class="btn btn-primary w-100">Payer {{ (split.amount / 100)|number_format(2, ',', ' ') }} €</button>
+            </form>
+            {% else %}<a class="btn btn-primary w-100" href="{{ path('app_login') }}">Connectez-vous pour commander</a>{% endif %}
+        {% else %}<p class="text-muted mb-0">Cette prestation n'est pas publiée ({{ offer.status }}).</p>{% endif %}
+    </div></div>
+</div></div></section>
+{% endblock %}

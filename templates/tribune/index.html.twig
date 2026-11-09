@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block title %}Journalistes indépendants : tribunes sourcées{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Journalistes indépendants : la parole est à vous</h1>
+    <p class="lead mb-3">Un espace pour publier des tribunes signées et sourcées, sans insulte ni attaque personnelle, avec un droit de réponse pour les personnes et institutions citées.</p>
+    {% if is_granted('ROLE_JOURNALIST') %}<a class="btn btn-lg btn-rouge" href="{{ path('app_tribune_new') }}">Écrire une tribune</a> <a class="btn btn-lg btn-outline-light" href="{{ path('app_tribune_mine') }}">Mes tribunes</a>
+    {% else %}<a class="btn btn-lg btn-rouge" href="{{ path('app_role_request', {role: 'ROLE_JOURNALIST'}) }}">Demander l'accès journaliste</a>{% endif %}
+</div></header>
+<section class="section"><div class="container">
+    <div class="row g-3 mb-4">
+        <div class="col-md-4"><div class="carte h-100"><h2 class="h5">1. Je demande l'accès</h2><p class="mb-0">Un lien public qui prouve votre activité (carte de presse, portfolio, média). Un administrateur vérifie.</p></div></div>
+        <div class="col-md-4"><div class="carte h-100"><h2 class="h5">2. J'écris et je source</h2><p class="mb-0">Titre, chapeau, texte, et au moins une source publique en https. Les faits doivent être vérifiables.</p></div></div>
+        <div class="col-md-4"><div class="carte h-100"><h2 class="h5">3. C'est relu puis publié</h2><p class="mb-0">Un médiateur relit. Un refus est toujours motivé. Les personnes citées peuvent répondre.</p></div></div>
+    </div>
+    <h2 class="serif">Dernières tribunes</h2>
+    <div class="row g-3">
+    {% for t in tribunes %}
+        <div class="col-md-6"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_tribune_show', {slug: t.slug}) }}"><h3 class="h5">{{ t.title }}</h3><p class="mb-1 text-muted">{{ t.lead }}</p><p class="meta mb-0">Par {{ t.author.publicName }} · {{ t.publishedAt|date('d/m/Y') }}</p></a></div>
+    {% else %}<div class="col-12"><div class="carte"><p class="mb-0">Aucune tribune publiée pour l'instant.</p></div></div>{% endfor %}
+    </div>
+</div></section>
+{% endblock %}

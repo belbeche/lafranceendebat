@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+{% include 'dossier/_head.html.twig' %}
+<section class="section"><div class="container" style="max-width:860px">
+    <div class="carte mb-4"><p class="mb-1"><span class="etiquette rouge">Statut au 8 novembre 2026</span></p>
+        <p class="mb-0">Pétition déposée le 3 novembre 2026 par Walid Belbeche. Elle est <strong>en cours de collecte</strong> : 5 soutiens sur les 100 000 requis pour être mise en ligne sur le site de l'Assemblée nationale, date limite le 19 juin 2029. Ce chiffre évolue : le décompte officiel est sur le site de l'Assemblée.</p></div>
+    <h2 class="h4">Ce que demande la pétition</h2>
+    <ol>
+        <li>Examiner, avec les jeunes, enseignants, établissements et familles, leurs préoccupations : études, coût de la vie, logement, emploi.</li>
+        <li>Évaluer publiquement les besoins en personnel et en matériel des services essentiels : santé, sécurité, éducation, justice, transports.</li>
+        <li>Mesurer l'effet de l'inflation selon les groupes sociaux et proposer des mesures durables pour le pouvoir d'achat.</li>
+        <li>Mener un travail parlementaire sur les métiers pénibles ou à risque, dont les conditions de travail et de retraite des sapeurs-pompiers.</li>
+        <li>Évaluer les difficultés du monde agricole et associer les agriculteurs aux travaux qui les concernent.</li>
+        <li>Expliquer aux citoyens les conséquences économiques, sociales et humaines du contexte géopolitique.</li>
+        <li>Privilégier le dialogue et la médiation pour préserver la paix civile.</li>
+        <li>Demander au Sénat un débat public, une mission d'information, des auditions, la publication des conclusions, et l'étude d'un référendum d'initiative partagée.</li>
+    </ol>
+    <h2 class="h4 mt-4">Soutenir ou lire la pétition</h2>
+    <p>La signature se fait uniquement sur le site de l'Assemblée nationale, qui vérifie l'identité des signataires. Cette plateforme ne recueille pas de signatures.</p>
+    <p><a class="btn btn-rouge" href="https://petitions.assemblee-nationale.fr/initiatives/i-7234" target="_blank" rel="noopener noreferrer">Ouvrir la pétition sur le site de l'Assemblée nationale</a></p>
+    <iframe title="Pétition n° 7234 sur le site de l'Assemblée nationale" src="https://petitions.assemblee-nationale.fr/initiatives/i-7234/embed.html" width="100%" height="420" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" style="border:1px solid #ddd;border-radius:8px"></iframe>
+    <p class="meta mt-2">Le cadre ci-dessus est fourni par l'Assemblée nationale. S'il ne s'affiche pas, utilisez le bouton.</p>
+    <h2 class="h4 mt-4">Prolonger le débat ici</h2>
+    <p>Chaque point peut devenir un <a href="{{ path('app_debat_new') }}">débat</a> ou une <a href="{{ path('app_proposition_new') }}">proposition</a>. Le débat national demandé commence par des questions posées calmement et sourcées.</p>
+    <p class="meta">Source : <a href="https://petitions.assemblee-nationale.fr/initiatives/i-7234" rel="noopener noreferrer nofollow">petitions.assemblee-nationale.fr, initiative i-7234</a>. Les informations de statut peuvent avoir changé depuis.</p>
+</div></section>
+{% endblock %}

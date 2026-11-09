@@ -1,0 +1,93 @@
+{% extends 'admin/_layout.html.twig' %}
+{% macro actions(type, id) %}
+<form method="post" action="{{ path('admin_moderation_decide', {type: type, id: id, decision: 'approve'}) }}" class="d-inline">
+    <input type="hidden" name="_token" value="{{ csrf_token('moderate' ~ type ~ id) }}"><button class="btn btn-sm btn-bleu">Publier</button></form>
+<form method="post" action="{{ path('admin_moderation_decide', {type: type, id: id, decision: 'reject'}) }}" class="d-inline-flex gap-1 mt-1">
+    <input type="hidden" name="_token" value="{{ csrf_token('moderate' ~ type ~ id) }}">
+    <input class="form-control form-control-sm" name="note" list="motifs" placeholder="Motif communiqué à l'auteur" aria-label="Motif du rejet" required maxlength="500">
+    <button class="btn btn-sm btn-outline-danger">Rejeter</button></form>
+{% endmacro %}
+{% macro take(kind, id, locks) %}{% set l = locks[kind ~ ':' ~ id] ?? null %}{% if l %}<span class="badge text-bg-warning">Pris par {{ l.user.publicName }} jusqu'à {{ l.expiresAt|date('H:i') }}</span>{% else %}<form method="post" action="{{ path('admin_moderation_take', {kind: kind, id: id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('take' ~ kind ~ id) }}"><button class="btn btn-sm btn-outline-secondary">Prendre en charge</button></form>{% endif %}{% endmacro %}
+{% block title %}Modération{% endblock %}
+{% block admin %}
+<datalist id="motifs">{% for r in reasons %}<option value="{{ r }}">{% endfor %}</datalist>
+<section class="carte p-3 mb-4"><h2 class="h5">Équipe, aujourd'hui</h2>{% for w in workload %}<div class="d-flex justify-content-between"><span>{{ w.name }}</span><span>{{ w.decided }} traité(s){{ w.held ? ', ' ~ w.held ~ ' en cours' }}</span></div>{% else %}<p class="meta mb-0">Aucune activité pour le moment.</p>{% endfor %}<p class="meta mb-0 mt-2">Un contenu pris en charge est verrouillé 15 minutes pour les autres modérateurs.</p></section>
+<h1 class="h3">File de modération</h1>
+<form method="post" action="{{ path('admin_moderation_reset_link') }}" class="carte mb-4 d-flex flex-wrap gap-2 align-items-end">
+    <input type="hidden" name="_token" value="{{ csrf_token('admin_reset_link') }}">
+    <div class="flex-grow-1"><label class="form-label mb-1" for="reset-email">Envoyer un lien de réinitialisation de mot de passe</label><input class="form-control" id="reset-email" name="email" type="email" required placeholder="adresse e-mail du compte"></div>
+    <button class="btn btn-bleu">Envoyer le lien</button>
+</form>
+
+{% import _self as m %}
+<h2 class="h5 mt-4">Propositions en attente ({{ propositions|length }})</h2>
+{% for p in propositions %}
+    <div class="rangee"><h3 class="h6"><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a> <span class="etiquette">{{ p.theme }}</span></h3>
+        <p class="mb-2">{{ p.description|u.truncate(300, '…') }}</p>{{ m.take('proposition', p.id, locks) }} {{ m.actions('proposition', p.id) }}</div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Demandes de contribuables en attente ({{ claims|length }})</h2>
+{% for c in claims %}
+    <div class="rangee"><h3 class="h6">{{ c.title }} <span class="etiquette">{{ c.theme }}</span></h3>
+        <p class="mb-1">{{ c.summary|u.truncate(300, '…') }}</p>
+        {% include '_reliability.html.twig' with {text: c.summary, sources: c.sourceUrl ?? ''} %}
+        <p class="meta mb-2">Source : {% if c.sourceUrl %}<a href="{{ c.sourceUrl }}" target="_blank" rel="noopener noreferrer nofollow">{{ c.sourceUrl }}</a>{% else %}aucune{% endif %}. Vérifiez la source et l'absence d'insulte avant de publier.</p>
+        {{ m.take('revendication', c.id, locks) }} <form method="post" action="{{ path('admin_moderation_claim', {id: c.id, decision: 'approve'}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('moderateclaim' ~ c.id) }}"><button class="btn btn-sm btn-bleu">Publier</button></form>
+        <form method="post" action="{{ path('admin_moderation_claim', {id: c.id, decision: 'reject'}) }}" class="d-inline-flex gap-1"><input type="hidden" name="_token" value="{{ csrf_token('moderateclaim' ~ c.id) }}"><input class="form-control form-control-sm" name="note" list="motifs" placeholder="Motif du refus" aria-label="Motif du refus"><button class="btn btn-sm btn-outline-dark">Refuser</button></form></div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Tribunes de journalistes en attente ({{ tribunes|length }})</h2>
+{% for t in tribunes %}
+    <div class="rangee"><h3 class="h6">{{ t.title }} <span class="meta">par {{ t.author.publicName }}</span></h3>
+        <p class="mb-1">{{ t.lead }}</p>
+        {% include '_reliability.html.twig' with {text: t.body, sources: t.sourceList} %}
+        <details class="mb-2"><summary>Lire le texte et les sources</summary><div class="mt-2">{{ t.body|e|nl2br }}</div><ul class="mt-2">{% for s in t.sourceList %}<li><a href="{{ s }}" target="_blank" rel="noopener noreferrer nofollow">{{ s }}</a></li>{% endfor %}</ul></details>
+        {{ m.take('tribune', t.id, locks) }} <form method="post" action="{{ path('admin_moderation_tribune', {id: t.id, decision: 'approve'}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('moderatetribune' ~ t.id) }}"><button class="btn btn-sm btn-bleu">Publier</button></form>
+        <form method="post" action="{{ path('admin_moderation_tribune', {id: t.id, decision: 'reject'}) }}" class="d-inline-flex gap-1"><input type="hidden" name="_token" value="{{ csrf_token('moderatetribune' ~ t.id) }}"><input class="form-control form-control-sm" name="note" list="motifs" placeholder="Motif du refus" aria-label="Motif du refus" required maxlength="500"><button class="btn btn-sm btn-outline-dark">Refuser</button></form></div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Fiches « Ils ont contribué » en attente ({{ inspirations|length }})</h2>
+{% for i in inspirations %}
+    <div class="rangee"><h3 class="h6">{{ i.name }} <span class="meta">{{ i.domainLabel }}{% if i.author %} · proposé par {{ i.author.publicName }}{% endif %}</span></h3>
+        <p class="mb-1">{{ i.summary|e|nl2br }}</p>
+        <p class="meta mb-2">Source : <a href="{{ i.sourceUrl }}" target="_blank" rel="noopener noreferrer nofollow">{{ i.sourceUrl }}</a></p>
+        {{ m.take('contributeur', i.id, locks) }} <form method="post" action="{{ path('admin_moderation_inspiration', {id: i.id, decision: 'approve'}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('moderateinsp' ~ i.id) }}"><button class="btn btn-sm btn-bleu">Publier</button></form>
+        <form method="post" action="{{ path('admin_moderation_inspiration', {id: i.id, decision: 'reject'}) }}" class="d-inline-flex gap-1"><input type="hidden" name="_token" value="{{ csrf_token('moderateinsp' ~ i.id) }}"><input class="form-control form-control-sm" name="note" list="motifs" placeholder="Motif du refus" aria-label="Motif du refus" required maxlength="500"><button class="btn btn-sm btn-outline-dark">Refuser</button></form></div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Annonces de mission en attente ({{ missionPosts|length }})</h2>
+{% for p in missionPosts %}
+    <div class="rangee"><h3 class="h6">{{ p.title }} <span class="meta">{{ p.kindLabel }} · {{ p.payLabel }} · par {{ p.author.publicName }}</span></h3>
+        <p class="mb-2">{{ p.description|e|nl2br }}</p>
+        {{ m.take('annonce', p.id, locks) }} <form method="post" action="{{ path('admin_moderation_missionpost', {id: p.id, decision: 'approve'}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('moderatemp' ~ p.id) }}"><button class="btn btn-sm btn-bleu">Publier</button></form>
+        <form method="post" action="{{ path('admin_moderation_missionpost', {id: p.id, decision: 'reject'}) }}" class="d-inline-flex gap-1"><input type="hidden" name="_token" value="{{ csrf_token('moderatemp' ~ p.id) }}"><input class="form-control form-control-sm" name="note" list="motifs" placeholder="Motif du refus" aria-label="Motif du refus" required maxlength="500"><button class="btn btn-sm btn-outline-dark">Refuser</button></form></div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Dossiers citoyens en attente ({{ dossiers|length }})</h2>
+{% for d in dossiers %}
+    <div class="rangee"><h3 class="h6">{{ d.title }} <span class="meta">par {{ d.authorDisplayName }}{% if d.theme %} · {{ d.theme }}{% endif %}</span></h3>
+        <p class="mb-1">{{ d.intro }}</p>
+        {% include '_reliability.html.twig' with {text: d.body, sources: d.sourceList} %}
+        <details class="mb-2"><summary>Lire le dossier et les sources</summary><div class="mt-2">{{ d.body|e|nl2br }}</div><ul class="mt-2">{% for s in d.sourceList %}<li><a href="{{ s }}" target="_blank" rel="noopener noreferrer nofollow">{{ s }}</a></li>{% endfor %}</ul></details>
+        {{ m.take('dossier', d.id, locks) }} <form method="post" action="{{ path('admin_moderation_dossier', {id: d.id, decision: 'approve'}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('moderatedossier' ~ d.id) }}"><button class="btn btn-sm btn-bleu">Publier</button></form>
+        <form method="post" action="{{ path('admin_moderation_dossier', {id: d.id, decision: 'reject'}) }}" class="d-inline-flex gap-1"><input type="hidden" name="_token" value="{{ csrf_token('moderatedossier' ~ d.id) }}"><input class="form-control form-control-sm" name="note" list="motifs" placeholder="Motif du refus" aria-label="Motif du refus" required maxlength="500"><button class="btn btn-sm btn-outline-dark">Refuser</button></form></div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Arguments en attente ({{ arguments|length }})</h2>
+{% for a in arguments %}
+    <div class="rangee"><p class="mb-2">{{ a.content|u.truncate(300, '…') }}</p>{{ m.take('argument', a.id, locks) }} {{ m.actions('argument', a.id) }}</div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Fils de l'Agora en attente ({{ discussions|length }})</h2>
+{% for d in discussions %}
+    <div class="rangee"><h3 class="h6">{{ d.title }} <span class="etiquette">{{ d.categoryLabel }}</span></h3>
+        <p class="mb-2">{{ d.body|u.truncate(300, '…') }}</p>{{ m.take('discussion', d.id, locks) }} {{ m.actions('discussion', d.id) }}</div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Réponses de l'Agora en attente ({{ replies|length }})</h2>
+{% for r in replies %}
+    <div class="rangee"><p class="meta mb-1">Dans : {{ r.discussion.title }}</p><p class="mb-2">{{ r.body|u.truncate(300, '…') }}</p>{{ m.take('reponse', r.id, locks) }} {{ m.actions('reponse', r.id) }}</div>
+{% else %}<p class="meta">Rien en attente.</p>{% endfor %}
+<h2 class="h5 mt-4">Signalements ouverts ({{ reports|length }})</h2>
+{% for r in reports %}
+    {% set t = targets[r.id] %}
+    <div class="rangee sans-reponse">
+        <p class="mb-1"><span class="etiquette rouge">{{ r.reasonLabel }}</span> <span class="meta">{{ r.targetType }} n° {{ r.targetId }} · {{ r.createdAt|date('d/m/Y H:i') }}</span></p>
+        {% if r.details %}<p class="mb-1">{{ r.details }}</p>{% endif %}
+        {% if t %}<p class="mb-2 meta">Contenu : {{ (t.title ?? t.content)|u.truncate(200, '…') }}</p>{{ m.actions(r.targetType, r.targetId) }}{% else %}<p class="meta">Contenu introuvable.</p>{% endif %}
+        <form method="post" action="{{ path('admin_moderation_dismiss', {id: r.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('dismiss' ~ r.id) }}"><button class="btn btn-sm btn-link">Classer sans suite</button></form>
+    </div>
+{% else %}<p class="meta">Aucun signalement ouvert.</p>{% endfor %}
+{% endblock %}

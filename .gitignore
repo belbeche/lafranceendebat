@@ -1,0 +1,95 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> secrets et sorties locales ###
+/.env.test.local
+*.pem
+*.key
+/public/uploads/
+/docs-prives/*.local*
+###< secrets et sorties locales ###
+
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> node ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< node ###
+
+###> editeurs et systeme ###
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
+*.tgz
+###< editeurs et systeme ###
+
+###> elements hors public (voir docs-prives/ELEMENTS_HORS_GIT.md) ###
+# Documents d'exploitation, d'audit et de finances : jamais publiés.
+/docs-prives/
+/STRIPE_INTEGRATION_TODO.md
+/docs/DEPLOIEMENT_SECURISE.md
+/docs/WEBHOOKS_PROD.md
+/docs/MAINTENANCE_ET_PANNE.md
+/docs/MISE_EN_PRODUCTION.md
+/docs/ENVOI_MASSE_SES.md
+/docs/CRON_ET_EXPLOITATION.md
+/docs/DEMARCHAGE_ACTEURS.md
+/docs/STRIPE_TESTER_UN_PAIEMENT.md
+/docs/RESTE_A_FAIRE.md
+# Livraisons successives et scripts de rangement ponctuels.
+/_update/
+/_ship*.sh
+# Ancien code de l'application d'origine (réservation, dons, visio) : conservé en local, hors dépôt public.
+/legacy/
+/src/Archive/
+/templates/_archive/
+# Exports et journaux locaux.
+/var/log/
+*.log
+*.sql
+*.bak
+###< elements hors public ###
+
+###> ancien projet yacht et secrets (ne jamais suivre) ###
+/.env
+/config/secrets/
+/bin/mercure/
+/bin/generate-mercure-tokens.php
+/src/Script/
+/public/2.mp4
+/public/intro.mp4
+/public/*.mp4
+/public/assets/video/
+/public/assets/docs/
+/public/assets/img/yacht/
+/public/assets/img/yacht-*.jpg
+/public/assets/img/joyme*
+/public/assets/img/lbf*.png
+/public/assets/img/slide*.jpg
+/public/assets/img/snr.png
+/public/assets/img/Capture*
+/public/js/booking-*.js
+/public/js/calendar.js
+/public/js/conference-modern.js
+/public/js/mercure-manager.js
+/public/js/planning-unified.js
+/public/js/video-conference.js
+/public/js/webrtc-manager.js
+/public/js/yacht-planning.js
+/public/serveur.js
+/public/plaquette_commercial.pdf
+/public/histoire.pdf
+###< ancien projet yacht et secrets ###

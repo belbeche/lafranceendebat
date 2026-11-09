@@ -1,0 +1,22 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Saisie de terrain : {{ s.title }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_surveys') }}">&larr; Enquêtes</a></p>
+<h1 class="h3">Saisie de terrain</h1>
+<p class="meta">{{ s.title }}. Recopiez fidèlement un questionnaire papier ou un entretien. Une fiche = une personne. N'écrivez aucun nom ni coordonnée.</p>
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<form method="post" style="max-width:760px">
+    <input type="hidden" name="_token" value="{{ csrf_token('survey_field' ~ s.id) }}">
+    <div class="mb-3"><label class="form-label fw-bold" for="place">Lieu de collecte</label><input id="place" class="form-control" name="place" maxlength="120" required value="{{ place }}" placeholder="Ex. Marché de Vesoul, samedi matin"></div>
+    {% for q in s.questions %}
+    {% set i = loop.index0 %}
+    <fieldset class="mb-3"><legend class="h6">{{ loop.index }}. {{ q.label }}{{ q.required ? ' *' }}</legend>
+        {% if q.type == 'texte' %}<textarea class="form-control" name="q[{{ i }}]" rows="2" maxlength="1000">{{ values[i]|default('') }}</textarea>
+        {% elseif q.type == 'echelle' %}{% for n in 1..5 %}<label class="me-3"><input type="radio" name="q[{{ i }}]" value="{{ n }}" {{ values[i]|default('') == n ~ '' ? 'checked' }}> {{ n }}</label>{% endfor %}
+        {% elseif q.type == 'multiple' %}{% for o in q.options %}<label class="d-block"><input type="checkbox" name="q[{{ i }}][]" value="{{ o }}" {{ o in (values[i]|default([])) ? 'checked' }}> {{ o }}</label>{% endfor %}
+        {% else %}{% for o in q.options %}<label class="d-block"><input type="radio" name="q[{{ i }}]" value="{{ o }}" {{ values[i]|default('') == o ? 'checked' }}> {{ o }}</label>{% endfor %}{% endif %}
+    </fieldset>
+    {% endfor %}
+    <button class="btn btn-bleu">Enregistrer cette fiche</button>
+</form>
+{% endblock %}

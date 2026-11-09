@@ -1,0 +1,35 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ label }}{% endblock %}
+{% block admin %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><h1 class="h3 mb-0">{{ label }}</h1><a href="{{ path('admin_rubriques') }}">Toutes les rubriques</a></div>
+<form class="row g-2 mb-3" method="get">
+<div class="col-12 col-md-5"><label class="visually-hidden" for="q">Rechercher</label><input id="q" name="q" value="{{ q }}" class="form-control" placeholder="Rechercher par titre"></div>
+<div class="col-8 col-md-4"><label class="visually-hidden" for="st">Statut</label><select id="st" name="statut" class="form-select"><option value="">Tous les statuts</option>{% for k, v in statuses %}<option value="{{ k }}" {{ status == k ? 'selected' }}>{{ v }}</option>{% endfor %}</select></div>
+<div class="col-4 col-md-3"><button class="btn btn-bleu w-100">Filtrer</button></div></form>
+<div class="table-responsive"><table class="table table-sm align-middle bg-white admin-table">
+<thead><tr><th scope="col">Titre</th><th scope="col">Auteur</th><th scope="col">Statut</th><th scope="col">Date</th><th></th></tr></thead><tbody>
+{% for e in rows %}{% set title = attribute(e, titleField) %}{% set tok = csrf_token('rub' ~ kind ~ e.id) %}
+<tr><td>{{ title }}{% if e.moderationNote %}<div class="small text-danger">Motif : {{ e.moderationNote }}</div>{% endif %}</td>
+<td>{{ e.author ? e.author.publicName : 'Citoyen' }}</td>
+<td>{{ statuses[e.status] ?? e.status }}</td><td>{{ e.createdAt|date('d/m/Y') }}</td>
+<td class="text-end text-nowrap">
+{% if kind == 'dossiers' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_rubrique_dossier_edit', {id: e.id}) }}">Corriger</a>{% endif %}
+{% if kind == 'contributeurs' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_rubrique_inspiration_advances', {id: e.id}) }}">Avancées</a>{% endif %}
+{% if e.status != 'published' %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'publier'}) }}"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><button class="btn btn-sm btn-bleu">Publier</button></form>{% else %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'retirer'}) }}"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><button class="btn btn-sm btn-outline-dark">Retirer</button></form>{% endif %}
+{% if e.status != 'rejected' %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'refuser'}) }}"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><label class="visually-hidden" for="n{{ e.id }}">Motif du refus</label><input id="n{{ e.id }}" name="note" class="form-control form-control-sm d-inline-block w-auto" placeholder="Motif" maxlength="500"><button class="btn btn-sm btn-outline-danger">Refuser</button></form>{% endif %}
+{% if is_granted('ROLE_ADMIN') %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'supprimer'}) }}" onsubmit="return confirm('Supprimer définitivement cet élément ? Cette action est irréversible.');"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><button class="btn btn-sm btn-danger">Supprimer</button></form>{% endif %}
+</td></tr>
+{% else %}<tr><td colspan="5" class="text-center text-muted">Aucun élément pour ce filtre.</td></tr>{% endfor %}
+</tbody></table></div>
+{% if kind == 'contributeurs' and not rows and not status and not q %}
+<div class="alert alert-info">Aucune fiche pour le moment. Charge les fiches de départ (Marshall, Monnet, Ostrom, Veil, Marie Curie...), chacune avec sa source publique.
+<form method="post" class="mt-2" action="{{ path('admin_rubrique_seed_contrib') }}"><input type="hidden" name="_token" value="{{ csrf_token('rubseed') }}"><button class="btn btn-bleu">Charger les fiches de départ</button></form></div>
+{% endif %}
+{% if editorial %}
+<h2 class="h5 mt-4">Intégrés à la plateforme ({{ editorial|length }})</h2>
+<p class="text-muted small">Ces dossiers sont écrits dans le code et toujours en ligne. Pour en modifier le texte, il faut une mise à jour du site. Les dossiers citoyens du tableau ci-dessus se gèrent ici.</p>
+<div class="table-responsive"><table class="table table-sm align-middle bg-white admin-table"><thead><tr><th scope="col">Dossier</th><th scope="col">Groupe</th><th></th></tr></thead><tbody>
+{% for d in editorial %}<tr><td>{{ d.title }}<div class="small text-muted">{{ d.intro }}</div></td><td>{{ d.group }}</td><td class="text-end"><a class="btn btn-sm btn-outline-dark" href="{{ d.url }}" target="_blank" rel="noopener">Voir la page</a></td></tr>{% endfor %}
+</tbody></table></div>
+{% endif %}
+{% endblock %}

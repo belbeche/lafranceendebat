@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes demandes{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes demandes</h1><p class="lede mb-0">Le suivi de tout ce que vous avez déposé. Chaque changement vous est notifié ici et par e-mail.</p></div></header>
+<section class="section"><div class="container" style="max-width:860px">
+    <p><a class="btn btn-rouge" href="{{ path('app_revendication_new') }}">Déposer une demande</a> <a class="btn btn-outline-dark" href="{{ path('app_proposition_new') }}">Déposer une proposition</a> <a class="btn btn-outline-dark" href="{{ path('app_inbox') }}">Mes messages</a></p>
+    <h2 class="h4 mt-4">Demandes et revendications</h2>
+    {% for c in claims %}
+        <div class="carte mb-2">
+            <p class="mb-1">{% if c.published %}<span class="etiquette bleu">Publiée</span>{% elseif c.moderationNote %}<span class="etiquette rouge">Refusée</span>{% else %}<span class="etiquette rouge">En relecture</span>{% endif %} <span class="meta">{{ c.raisedAt|date('d/m/Y') }} · {{ c.groupLabel }}</span></p>
+            <h3 class="h6 mb-1">{{ c.title }}</h3>
+            {% if c.published %}<a href="{{ path('app_revendication_show', {slug: c.slug}) }}">Voir la page publique</a>{% elseif c.moderationNote %}<span class="meta">Non publiée. Motif : {{ c.moderationNote }}</span>{% else %}<span class="meta">Source et faits en cours de vérification, avec droit de réponse avant publication.</span>{% endif %}
+        </div>
+    {% else %}<p class="meta">Aucune demande déposée.</p>{% endfor %}
+    <h2 class="h4 mt-4">Débats ouverts par moi</h2>
+    {% for d in debats %}<div class="carte mb-2"><p class="mb-1"><span class="etiquette {{ d.status == 'draft' ? 'rouge' : 'bleu' }}">{{ d.status == 'draft' ? 'En relecture' : d.statusLabel }}</span></p><h3 class="h6 mb-1">{% if d.status != 'draft' %}<a href="{{ path('app_debat_show', {slug: d.slug}) }}">{{ d.title }}</a>{% else %}{{ d.title }}{% endif %}</h3></div>
+    {% else %}<p class="meta">Aucun débat proposé. <a href="{{ path('app_debat_new') }}">Ouvrir un débat</a></p>{% endfor %}
+    {% if events|length %}<h2 class="h4 mt-4">Rencontres proposées</h2>{% for e in events %}<div class="carte mb-2"><p class="mb-1"><span class="etiquette {{ e.status == 'pending' ? 'rouge' : 'bleu' }}">{{ e.status == 'pending' ? 'En validation' : 'Publiée' }}</span> <span class="meta">{{ e.date|date('d/m/Y H:i') }}</span></p><h3 class="h6 mb-0">{{ e.name }}</h3></div>{% endfor %}{% endif %}
+    <h2 class="h4 mt-4">Propositions</h2>
+    {% for p in propositions %}
+        <div class="carte mb-2"><p class="mb-1"><span class="etiquette {{ p.validated ? 'bleu' : 'rouge' }}">{{ p.status }}</span> <span class="meta">{{ p.supportCount }} soutien{{ p.supportCount > 1 ? 's' }}</span></p><h3 class="h6 mb-1"><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a></h3></div>
+    {% else %}<p class="meta">Aucune proposition déposée.</p>{% endfor %}
+</div></section>
+{% endblock %}

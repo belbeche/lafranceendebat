@@ -1,0 +1,36 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Journal de sécurité{% endblock %}
+{% block admin %}
+<h1 class="h3">Journal de sécurité</h1>
+<p class="meta">Adresse IP, pays, appareil et pages par utilisateur. Conservé 12 mois. Données personnelles : usage de modération uniquement.</p>
+<div class="row g-2 mb-3">
+{% for t, label in types %}{% if counts[t] is defined %}<div class="col-6 col-md-3"><a class="d-block border p-2 text-decoration-none" href="?type={{ t }}"><strong>{{ counts[t] }}</strong> <small>{{ label }} (7 j)</small></a></div>{% endif %}{% endfor %}
+</div>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3"><select class="form-select" name="type"><option value="">Tous les types</option>{% for t, label in types %}<option value="{{ t }}" {{ f.type == t ? 'selected' }}>{{ label }}</option>{% endfor %}</select></div>
+    <div class="col-md-3"><input class="form-control" name="ip" value="{{ f.ip }}" placeholder="Adresse IP (début)"></div>
+    <div class="col-md-3"><input class="form-control" name="q" value="{{ f.q }}" placeholder="E-mail, page"></div>
+    <div class="col-md-3 d-flex gap-2"><button class="btn btn-bleu flex-fill">Filtrer</button><a class="btn btn-outline-dark" href="{{ path('admin_security_export', {type: f.type, ip: f.ip, q: f.q}) }}">CSV</a></div>
+</form>
+{% if restricted %}
+<div class="alert alert-warning"><strong>{{ restricted|length }} compte(s) restreint(s)</strong> :
+{% for r in restricted %}<a href="{{ path('admin_security_user', {id: r.id}) }}">{{ r.email }}</a>{{ not loop.last ? ', ' }}{% endfor %}</div>
+{% endif %}
+<p class="meta">{{ total }} événement(s).</p>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead><tr><th>Date</th><th>Événement</th><th>Utilisateur</th><th>IP</th><th>Pays</th><th>Appareil</th><th>Page ou détail</th></tr></thead>
+<tbody>
+{% for e in rows %}
+<tr>
+    <td class="text-nowrap">{{ e.at|date('d/m/Y H:i') }}</td>
+    <td>{{ e.typeLabel }}</td>
+    <td>{% if e.user %}<a href="{{ path('admin_security_user', {id: e.user.id}) }}">{{ e.user.email }}</a>{% else %}{{ e.label ?? 'inconnu' }}{% endif %}</td>
+    <td><a href="?ip={{ e.ip }}">{{ e.ip }}</a></td>
+    <td>{{ e.country ?? '?' }}{{ e.city ? ' ' ~ e.city }}</td>
+    <td>{{ e.device }}</td>
+    <td class="small">{{ e.path ?? e.detail }}</td>
+</tr>
+{% else %}<tr><td colspan="7" class="meta">Aucun événement.</td></tr>{% endfor %}
+</tbody></table></div>
+{% if pages > 1 %}<nav class="d-flex gap-2">{% if page > 1 %}<a class="btn btn-sm btn-outline-dark" href="?type={{ f.type }}&ip={{ f.ip }}&q={{ f.q }}&p={{ page - 1 }}">Précédent</a>{% endif %}<span class="meta">Page {{ page }} / {{ pages }}</span>{% if page < pages %}<a class="btn btn-sm btn-outline-dark" href="?type={{ f.type }}&ip={{ f.ip }}&q={{ f.q }}&p={{ page + 1 }}">Suivant</a>{% endif %}</nav>{% endif %}
+{% endblock %}

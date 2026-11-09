@@ -1,0 +1,28 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Contribution n° {{ d.id }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_donations') }}">&larr; Contributions</a></p>
+<h1 class="h3">Contribution n° {{ d.id }}</h1>
+<dl class="row" style="max-width:640px">
+    <dt class="col-sm-4">Contributeur</dt><dd class="col-sm-8">{{ d.donorName }}</dd>
+    <dt class="col-sm-4">E-mail</dt><dd class="col-sm-8">{{ d.donorEmail }}</dd>
+    {% if d.donorAddress %}<dt class="col-sm-4">Adresse</dt><dd class="col-sm-8">{{ d.donorAddress }}</dd>{% endif %}
+    <dt class="col-sm-4">Montant</dt><dd class="col-sm-8">{{ (d.amountCents / 100)|number_format(2, ',', ' ') }} €</dd>
+    <dt class="col-sm-4">Statut</dt><dd class="col-sm-8">{{ labels[d.status]|default(d.status) }}</dd>
+    <dt class="col-sm-4">Créée le</dt><dd class="col-sm-8">{{ d.createdAt|date('d/m/Y à H:i') }}</dd>
+    <dt class="col-sm-4">Session Stripe</dt><dd class="col-sm-8"><code>{{ d.stripeSessionId ?: 'aucune' }}</code></dd>
+    {% if d.receipt %}<dt class="col-sm-4">Reçu</dt><dd class="col-sm-8">{{ d.receipt.number }}</dd>{% endif %}
+</dl>
+{% if d.status != 'annulee' %}
+<div class="card card-body mb-3" style="max-width:640px"><h2 class="h6">Lien de la personne</h2>
+<p class="small text-muted mb-2">Si le contributeur a perdu sa page, renvoyez-lui son lien personnel par e-mail ou copiez-le.</p>
+<input class="form-control form-control-sm mb-2" readonly value="{{ pageUrl }}" aria-label="Lien personnel de la contribution" onclick="this.select()">
+<form method="post" action="{{ path('admin_donation_link', {id: d.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('donation' ~ d.id) }}"><button class="btn btn-sm btn-primary">Renvoyer le lien à {{ d.donorEmail }}</button></form></div>
+{% endif %}
+{% if d.status == 'attente_paiement' %}<p class="alert alert-info" style="max-width:640px">Paiement non confirmé. Vérifiez dans Stripe (onglet Paiements, recherche par la session ci-dessus) : si le paiement y figure comme réussi, rejouez l'événement <code>checkout.session.completed</code> depuis Développeurs &gt; Webhooks ; la contribution passera alors à « Payées ».</p>{% endif %}
+{% if d.status != 'payee' %}
+<form method="post" class="d-flex gap-2"><input type="hidden" name="_token" value="{{ csrf_token('donation' ~ d.id) }}">
+{% if d.status == 'attente_paiement' %}<button class="btn btn-outline-secondary" formaction="{{ path('admin_donation_cancel', {id: d.id}) }}">Annuler</button>{% endif %}
+<button class="btn btn-outline-danger" formaction="{{ path('admin_donation_delete', {id: d.id}) }}" onclick="return confirm('Supprimer définitivement ?')">Supprimer</button></form>
+{% else %}<p class="text-muted">Contribution payée : pièce comptable conservée 10 ans.</p>{% endif %}
+{% endblock %}

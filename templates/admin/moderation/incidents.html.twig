@@ -1,0 +1,21 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Signalements du filtre{% endblock %}
+{% block admin %}
+<h1 class="h3">Propos bloqués par le filtre</h1>
+<p class="text-muted">Contenus refusés avant publication, conservés 12 mois. Au moins 3 incidents en 30 jours = récidive. Lignes jaunes : texte publié mais jugé douteux par l'IA, à relire.</p>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead><tr><th>Date</th><th>Membre</th><th>Motif</th><th>Où</th><th>Extrait</th><th>30 j</th><th></th></tr></thead>
+<tbody>
+{% for i in incidents %}
+<tr class="{{ i.severity == 'haute' ? 'table-danger' : (i.severity == 'revue' ? 'table-warning' : '') }}">
+    <td>{{ i.createdAt|date('d/m/Y H:i') }}</td>
+    <td>{% if i.user %}<a href="{{ path('admin_security_user', {id: i.user.id}) }}">{{ i.user.fullName ?: i.user.email }}</a>{% else %}supprimé{% endif %}</td>
+    <td>{{ i.reasons|join(', ') }}</td>
+    <td><code>{{ i.context }}</code></td>
+    <td style="max-width:360px">{{ i.excerpt }}</td>
+    <td>{% set n = i.user ? counts[i.user.id]|default(0) : 0 %}{% if n >= 3 %}<strong class="text-danger">{{ n }}</strong>{% else %}{{ n }}{% endif %}</td>
+    <td>{% if i.status == 'nouveau' %}<form method="post" action="{{ path('admin_moderation_incident_done', {id: i.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('incident' ~ i.id) }}"><button class="btn btn-sm btn-outline-secondary">Traité</button></form>{% else %}<span class="text-muted">traité</span>{% endif %}</td>
+</tr>
+{% else %}<tr><td colspan="7" class="text-muted">Aucun propos bloqué pour le moment.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

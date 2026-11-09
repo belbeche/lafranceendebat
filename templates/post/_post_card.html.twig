@@ -1,0 +1,140 @@
+{# templates/post/_post_card.html.twig #}
+{% set post = post is defined ? post : null %}
+
+{% if post %}
+<div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
+    <!-- Image -->
+    {% if post.image %}
+        <div class="position-relative" style="height: 200px; overflow: hidden;">
+            <img src="{{ asset('uploads/posts/' ~ post.image) }}" 
+                 alt="{{ post.title }}"
+                 class="card-img-top w-100 h-100 object-fit-cover"
+                 style="transition: transform 0.3s ease;">
+            <!-- Statut -->
+            <span class="position-absolute top-0 end-0 m-3 badge 
+                {% if post.status == 'published' %}bg-success
+                {% elseif post.status == 'draft' %}bg-secondary
+                {% elseif post.status == 'pending' %}bg-warning
+                {% else %}bg-info{% endif %}">
+                {{ post.status|trans }}
+            </span>
+        </div>
+    {% else %}
+        <div class="bg-light d-flex align-items-center justify-content-center" 
+             style="height: 200px;">
+            <i class="fas fa-newspaper fa-4x text-muted"></i>
+        </div>
+    {% endif %}
+
+    <div class="card-body">
+        <!-- Titre -->
+        <h5 class="card-title fw-bold text-dark mb-2">
+            <a href="{{ path('app_actualites_show', {id: post.id}) }}" 
+               class="text-decoration-none text-dark">
+                {{ post.title }}
+            </a>
+        </h5>
+
+        <!-- Extrait -->
+        <p class="card-text text-muted mb-3">
+            {{ post.excerpt|default(post.content|striptags|slice(0, 150)) ~ '...' }}
+        </p>
+
+        <!-- Métadonnées -->
+        <div class="d-flex justify-content-between align-items-center text-muted small mb-3">
+            <div class="d-flex align-items-center">
+                {% if post.author.avatarPath %}
+                    <img src="{{ asset('uploads/avatars/' ~ post.author.avatarPath) }}" 
+                         class="rounded-circle me-2" 
+                         style="width: 24px; height: 24px; object-fit: cover;"
+                         alt="{{ post.author.fullName }}">
+                {% else %}
+                    <i class="fas fa-user-circle me-2 text-primary"></i>
+                {% endif %}
+                <span>{{ post.author.fullName }}</span>
+            </div>
+            <div>
+                <i class="far fa-calendar-alt me-1"></i>
+                {{ post.createdAt ? post.createdAt|date('d/m/Y') : post.createdAt|date('d/m/Y') }}
+            </div>
+        </div>
+
+        <!-- TODO  : Tags -->
+        {# {% if post.tags|length > 0 %}
+            <div class="mb-3">
+                {% for tag in post.tags|slice(0, 3) %}
+                    <span class="badge bg-light text-dark border me-1 mb-1">
+                        #{{ tag.name }}
+                    </span>
+                {% endfor %}
+                {% if post.tags|length > 3 %}
+                    <span class="badge bg-light text-muted">
+                        +{{ post.tags|length - 3 }}
+                    </span>
+                {% endif %}
+            </div>
+        {% endif %} #}
+
+        <!-- Statistiques -->
+        <div class="d-flex justify-content-between text-muted small">
+            <div>
+                <i class="far fa-eye me-1"></i>
+                {{ post.views ?? 0 }}
+            </div>
+            <div>
+                <i class="far fa-comment me-1"></i>
+                {{ post.comments|length }}
+            </div>
+            <!-- TODO LIKES + READING TIME -->
+            {# <div>
+                <i class="far fa-heart me-1"></i>
+                {{ post.likes|length }}
+            </div> #}
+            {# {% if post.readingTime %}
+                <div>
+                    <i class="far fa-clock me-1"></i>
+                    {{ post.readingTime }} min
+                </div>
+            {% endif %} #}
+        </div>
+    </div>
+
+    <!-- Actions -->
+    {% if is_granted('EDIT', post) or is_granted('ROLE_ADMIN') %}
+        <div class="card-footer bg-transparent border-top-0">
+            <div class="d-flex justify-content-between">
+                <a href="{{ path('admin_posts_edit', {id: post.id}) }}" 
+                   class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-edit me-1"></i>Modifier
+                </a>
+                <form action="{{ path('admin_posts_delete', {id: post.id}) }}" 
+                      method="post" 
+                      data-confirm="Supprimer cet article ?">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-trash me-1"></i>Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+// Effet hover sur l'image
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+        const img = card.querySelector('img');
+        if (img) {
+            card.addEventListener('mouseenter', () => {
+                img.style.transform = 'scale(1.05)';
+            });
+            card.addEventListener('mouseleave', () => {
+                img.style.transform = 'scale(1)';
+            });
+        }
+    });
+});
+</script>
+{% endif %}

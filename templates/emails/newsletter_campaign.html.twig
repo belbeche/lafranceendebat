@@ -1,0 +1,255 @@
+{# templates/emails/newsletter_campaign.html.twig #}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ subject }}</title>
+    <style>
+        /* Styles optimisés pour tous les clients email */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.5;
+            color: #333333;
+            background-color: #f5f5f5;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .content h2 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .content p {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #555555;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #e74c3c;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 20px 0;
+            text-align: center;
+            border: none;
+        }
+        
+        .features {
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 25px 0;
+            border-left: 4px solid #3498db;
+        }
+        
+        .feature-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .feature-item:before {
+            content: "•";
+            color: #3498db;
+            font-size: 20px;
+            position: absolute;
+            left: 0;
+        }
+        
+        .footer {
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #3498db;
+            text-decoration: underline;
+        }
+        
+        .social-links {
+            margin: 20px 0;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 8px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .unsubscribe {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Responsive */
+        @media only screen and (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        
+        /* Contenu newsletter */
+        .newsletter-content {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .newsletter-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+        
+        .newsletter-content h3 {
+            color: #2c3e50;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>{{ subject }}</h1>
+            {% if campaign.preheader is defined and campaign.preheader %}
+                <p style="margin-top: 10px; font-size: 16px; opacity: 0.9;">
+                    {{ campaign.preheader }}
+                </p>
+            {% endif %}
+        </div>
+        
+        <div class="content">
+            {% if campaign.greeting is defined and campaign.greeting %}
+                <p style="font-size: 16px; color: #2c3e50;">
+                    {{ campaign.greeting }}
+                </p>
+            {% endif %}
+            
+            <div class="newsletter-content">
+                {{ content|raw }}
+            </div>
+            
+            {% if campaign.ctaText is defined and campaign.ctaText and campaign.ctaUrl is defined and campaign.ctaUrl %}
+                <div style="text-align: center;">
+                    <a href="{{ campaign.ctaUrl }}" class="cta-button">
+                        {{ campaign.ctaText }}
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="footer">
+            <p>
+                <strong>{{ organization_name|default('SUSPENSION') }}</strong><br>
+                {{ organization_address|default(publisher.address) }}
+            </p>
+            
+            <div class="social-links">
+                {% if social_links.instagram is defined and social_links.instagram %}
+                    <a href="{{ social_links.instagram }}" target="_blank">Instagram</a>
+                {% endif %}
+                
+                {% if social_links.linkedin is defined and social_links.linkedin %}
+                    <a href="{{ social_links.linkedin }}" target="_blank">LinkedIn</a>
+                {% endif %}
+                
+                {% if social_links.facebook is defined and social_links.facebook %}
+                    <a href="{{ social_links.facebook }}" target="_blank">Facebook</a>
+                {% endif %}
+            </div>
+            
+            <div style="margin: 15px 0; font-size: 13px;">
+                <p>
+                    Email : <a href="mailto:{{ organization_email|default(publisher.email) }}">
+                        {{ organization_email|default(publisher.email) }}
+                    </a><br>
+                    Site web : <a href="{{ organization_website|default('https://www.labouffonne.eu/') }}">
+                        {{ organization_website|default('https://www.labouffonne.eu/') }}
+                    </a>
+                </p>
+            </div>
+            
+            <div class="unsubscribe">
+                <p>
+                    Vous recevez cet email car vous êtes inscrit à notre newsletter.
+                    <br>
+                    <a href="{{ unsubscribeUrl }}" style="color: #95a5a6; text-decoration: underline;">
+                        Se désinscrire
+                    </a>
+                </p>
+                <p style="font-size: 11px; margin-top: 10px;">
+                    © {{ "now"|date("Y") }} {{ organization_name|default('SUSPENSION') }}
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

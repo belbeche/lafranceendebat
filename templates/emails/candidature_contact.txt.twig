@@ -1,0 +1,17 @@
+Un citoyen souhaite contribuer : {{ mission }}
+
+{{ applicantName }} propose son aide pour cette mission de La France en Débat (plateforme citoyenne gratuite et non partisane).
+
+Message :
+{{ message }}
+
+Pour répondre, utilisez la réponse de ce message : elle parvient au candidat.
+{% if not consented %}
+Pour recevoir d'autres candidatures, confirmez ici : {{ consentUrl }}
+Ceci est le seul message que vous recevez sans votre accord.
+{% endif %}
+--
+Pourquoi ce message : votre adresse professionnelle est publiée sur {{ actor.sourceUrl }} et la candidature concerne vos fonctions ({{ actor.role ?: 'acteur public' }}, {{ actor.organisation }}).
+Ne plus recevoir ces messages (effet immédiat, définitif) : {{ unsubscribeUrl }}
+Vos droits d'accès, de rectification et d'opposition s'exercent en répondant à ce message.
+{{ publisher.name }}{% if publisher.address %}, {{ publisher.address }}{% endif %}

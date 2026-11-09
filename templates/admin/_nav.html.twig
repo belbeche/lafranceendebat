@@ -1,0 +1,36 @@
+{# Menu de la console : les entrées principales suivent la maquette, le reste est sous "Toutes les rubriques".
+   Pour ajouter une page, ajouter une ligne dans $main ou $more ci-dessous. #}
+{% set route = app.request.attributes.get('_route') %}
+{% set main = [
+  ['admin_dashboard', 'Tableau de bord', 'ROLE_ADMIN', ['admin_dashboard', 'admin_statistics']],
+  ['admin_approvals', 'À valider', 'ROLE_ADMIN', ['admin_approvals']],
+  ['admin_moderation', 'Modération', 'ROLE_MODERATOR', ['admin_moderation', 'admin_moderation_incidents']],
+  ['admin_actors', 'Acteurs publics', 'ROLE_ADMIN', ['admin_actors']],
+  ['admin_backups', 'Sauvegardes', 'ROLE_ADMIN', ['admin_backups']],
+  ['admin_rubriques', 'Contributeurs et rubriques', 'ROLE_MODERATOR', ['admin_rubriques', 'admin_rubrique']],
+  ['admin_users', 'Comptes et rôles', 'ROLE_ADMIN', ['admin_users', 'admin_role_requests']],
+  ['admin_debat_index', 'Débats et dossiers', 'ROLE_ADMIN', ['admin_debat_index']],
+  ['admin_mission_index', 'Missions et annonces', 'ROLE_ADMIN', ['admin_mission_index']],
+  ['admin_lettre_index', 'Lettre et envois', 'ROLE_ADMIN', ['admin_lettre_index', 'admin_lettre_ciblee']],
+  ['admin_security', 'Journal et sécurité', 'ROLE_ADMIN', ['admin_security', 'admin_logs']],
+] %}
+{% set more = [
+  ['admin_positions', 'Positions des candidats'], ['admin_theses', 'Analyses sourcées'], ['admin_programmes', 'Propositions des groupes'],
+  ['admin_proposition_index', 'Propositions'], ['admin_revendication_index', 'Revendications'], ['admin_revendication_import', 'Import de revendications'],
+  ['admin_transmission_index', 'Transmissions'], ['admin_candidat_index', 'Candidats'], ['admin_engagement_index', 'Engagements'],
+  ['admin_event_index', 'Agenda'], ['admin_agenda_import', 'Import de l\'agenda'], ['admin_translations', 'Traductions'],
+  ['admin_conversions', 'Conversions'], ['admin_visitors', 'Visiteurs'], ['admin_anon_index', 'Contributions anonymes'],
+  ['admin_donations', 'Contributions de soutien'], ['admin_services', 'Services et commandes'], ['admin_surveys', 'Enquêtes'],
+] %}
+<nav class="adm-nav no-print" aria-label="Administration">
+  <div class="adm-brand">La France en Débat</div>
+  <div class="adm-sub">Console d'administration</div>
+  {% for m in main %}{% if is_granted(m[2]) %}
+    <a href="{{ path(m[0]) }}"{% if route in m[3] %} aria-current="page"{% endif %}>{{ m[1] }}{% if m[0] == 'admin_approvals' %}{% set n = approval_count() %}{% if n > 0 %}<span class="adm-badge">{{ n }}</span>{% endif %}{% endif %}</a>
+  {% endif %}{% endfor %}
+  {% if is_granted('ROLE_ADMIN') %}
+  <details{% if route in more|map(x => x[0]) %} open{% endif %}><summary>Toutes les rubriques</summary>
+    {% for m in more %}<a href="{{ path(m[0]) }}"{% if route == m[0] %} aria-current="page"{% endif %}>{{ m[1] }}</a>{% endfor %}
+  </details>
+  {% endif %}
+</nav>

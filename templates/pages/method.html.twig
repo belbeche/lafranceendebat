@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Méthode de débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>La méthode de débat en 12 étapes</h1>
+    <p class="lede">La même méthode pour tous les sujets, afin que le désaccord porte sur les solutions et non sur les faits ou sur la manière de débattre.</p></div></header>
+<section class="section"><div class="container measure">
+    <ol class="fs-5">
+        {% for step in [
+            'Présentation neutre du problème.',
+            'Publication des faits vérifiés, avec leurs sources et leur date.',
+            'Identification des compétences juridiques des autorités concernées.',
+            'Témoignages des personnes directement touchées, avec leur accord.',
+            'Présentation de plusieurs solutions contradictoires.',
+            'Analyse des coûts, des bénéfices, des délais et des risques.',
+            'Questions du public.',
+            'Réponses des experts, élus ou candidats invités.',
+            'Délibération et formulation de propositions.',
+            'Publication d\'un compte rendu accessible.',
+            'Transmission aux acteurs compétents.',
+            'Suivi des réponses et des suites données.'
+        ] %}<li class="mb-2">{{ step }}</li>{% endfor %}
+    </ol>
+    <div class="limite">Sur ce site, les étapes 1 à 3 figurent en tête de chaque débat, les étapes 5 à 9 correspondent aux arguments et aux propositions, et les étapes 10 à 12 au compte rendu et au <a href="{{ path('app_suivi') }}">suivi des institutions</a>. Les témoignages (étape 4) et les rencontres avec invités (étape 8) passent par l'<a href="{{ path('app_agenda') }}">agenda</a>.</div>
+</div></section>
+{% endblock %}

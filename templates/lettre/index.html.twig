@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %}La lettre{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>La lettre de La France en Débat</h1>
+    <p class="lede">Un message de temps en temps : les débats ouverts, les propositions les plus soutenues, les réponses obtenues des institutions. Gratuit, sans publicité, sans pistage.</p></div></header>
+<section class="section"><div class="container"><div class="row g-4"><div class="col-lg-7">
+    <form method="post" action="{{ path('app_lettre_subscribe') }}" class="carte" novalidate>
+        <input type="hidden" name="_token" value="{{ csrf_token('lettre_subscribe') }}">
+        <div style="position:absolute;left:-9999px" aria-hidden="true"><label>Ne pas remplir <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="form-label fw-bold" for="lettre-email">Votre adresse e-mail</label>
+        <input id="lettre-email" class="form-control mb-3" type="email" name="email" required maxlength="180" autocomplete="email" inputmode="email">
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="lettre-consent" name="consent" value="1" required>
+            <label class="form-check-label" for="lettre-consent">Je souhaite recevoir la lettre de La France en Débat. Je peux me désinscrire en un clic à tout moment.</label>
+        </div>
+        <button class="btn btn-rouge">Recevoir la lettre</button>
+    </form>
+</div><div class="col-lg-5">
+    <div class="limite"><strong>Nos engagements.</strong> Double confirmation de votre adresse. Aucun pixel espion ni lien de suivi. Votre adresse n'est jamais vendue ni cédée. Un lien de désinscription dans chaque message.</div>
+</div></div></div></section>
+{% endblock %}

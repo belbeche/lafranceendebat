@@ -1,0 +1,39 @@
+{
+  "name": "ou-ma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "socket-server.js",
+  "scripts": {
+    "start": "node socket-server.js",
+    "dev": "nodemon socket-server.js",
+    "watch": "npm-watch",
+    "production": "yarn encore prod"
+  },
+  "watch": {
+    "build": {
+      "patterns": [
+        "assets"
+      ],
+      "extensions": "js,scss"
+    }
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "@fullcalendar/bootstrap5": "^6.1.19",
+    "@fullcalendar/core": "^6.1.19",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/interaction": "^6.1.19",
+    "@fullcalendar/timegrid": "^6.1.19",
+    "peerjs": "^1.5.5"
+  },
+  "devDependencies": {
+    "@symfony/webpack-encore": "^5.1.0",
+    "sass": "^1.90.0",
+    "sass-loader": "^16.0.1",
+    "nodemon": "^3.1.0",
+    "npm-watch": "^0.13.0"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+}

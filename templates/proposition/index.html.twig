@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}Propositions citoyennes{% endblock %}
+{% block body %}
+{% include '_howto.html.twig' with {key: 'propositions'} only %}
+<header class="page-head"><div class="container">
+    <h1>Propositions citoyennes</h1>
+    <p class="lede">{{ total }} proposition{{ total > 1 ? 's' }} publiée{{ total > 1 ? 's' }}, classée{{ total > 1 ? 's' }} par nombre de soutiens. Un soutien est un avis consultatif, pas un vote officiel.</p>
+</div></header>
+<section class="section"><div class="container">
+    <div class="row g-4">
+        <div class="col-lg-8">
+            {% for proposition in propositions %}
+                {% include 'proposition/_row.html.twig' with {proposition: proposition, supportedIds: supportedIds} only %}
+            {% else %}
+                <div class="carte"><p class="mb-0">Aucune proposition publiée{{ theme ? ' dans le thème « ' ~ theme ~ ' »' }}. <a href="{{ path('app_proposition_new') }}">Déposez-en une.</a></p></div>
+            {% endfor %}
+            {% if pages > 1 %}
+                <nav aria-label="Pagination"><ul class="pagination">
+                    {% for p in 1..pages %}
+                        <li class="page-item {{ p == page ? 'active' }}"><a class="page-link" href="{{ path('app_propositions', {page: p, theme: theme}) }}" {{ p == page ? 'aria-current="page"' }}>{{ p }}</a></li>
+                    {% endfor %}
+                </ul></nav>
+            {% endif %}
+        </div>
+        <div class="col-lg-4">
+            <div class="carte mb-3">
+                <h2 class="h5">Filtrer par thème</h2>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="etiquette {{ not theme ? 'bleu' }}" href="{{ path('app_propositions') }}">Tous</a>
+                    {% for t in themes %}<a class="etiquette {{ t == theme ? 'bleu' }}" href="{{ path('app_propositions', {theme: t}) }}">{{ t }}</a>{% endfor %}
+                </div>
+            </div>
+            {% include '_role_actions.html.twig' %}
+        </div>
+    </div>
+</div></section>
+{% endblock %}

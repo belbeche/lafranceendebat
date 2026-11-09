@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Merci{% endblock %}
+{% block body %}
+<main class="container py-5" style="max-width:640px">
+<h1 class="h2">Merci, c'est reçu</h1>
+<p>Un modérateur relira votre contribution. Elle ne sera jamais publiée sous votre nom.</p>
+<a class="btn btn-bleu" href="{{ path('app_home') }}">Retour à l'accueil</a>
+</main>
+{% endblock %}

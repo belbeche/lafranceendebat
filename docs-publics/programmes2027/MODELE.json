@@ -1,0 +1,10 @@
+{
+  "edition": "2027",
+  "group_code": "SIGLE",
+  "group_name": "Nom de la formation",
+  "group_color": "#002395",
+  "source_url": "https://site-officiel-de-la-formation.fr/programme",
+  "measures": [
+    { "title": "Titre court de la mesure", "summary": "Une phrase reformulée, sans jugement.", "theme": "Santé", "source_url": "https://site-officiel-de-la-formation.fr/programme/sante" }
+  ]
+}

@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+{% import '_macros.html.twig' as ui %}
+{% block title %}{{ tr(proposition, 'title') }}{% endblock %}
+{% block meta_og %}
+    <meta property="og:site_name" content="{{ site_name }}">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ proposition.petition ? 'Pétition : ' : '' }}{{ proposition.title }}">
+    <meta property="og:description" content="{{ proposition.description|striptags|u.truncate(180, '…') }}">
+    <meta property="og:url" content="{{ url('app_proposition_show', {id: proposition.id}) }}">
+    <meta property="og:image" content="{{ absolute_url(asset('img/lfed-banner.jpg')) }}">
+    <meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <p class="mb-2"><span class="etiquette bleu">{{ proposition.theme }}</span> {% if proposition.petition %}<span class="etiquette rouge">Pétition citoyenne</span> {% endif %}{{ ui.status_label(proposition) }}</p>
+    <h1>{{ tr(proposition, 'title') }}</h1>
+    <p class="meta mb-0">Proposée par {{ proposition.authorDisplayName }} le {{ proposition.createdAt|date('d/m/Y') }}{% set dl = dossier_link(proposition.dossierSlug) %}{% if dl %} · Dossier : <a href="{{ dl.url }}">{{ dl.title }}</a>{% endif %}</p>
+    <p class="mb-0 mt-2">{% include '_edit_actions.html.twig' with {mine: app.user and proposition.author and proposition.author.id == app.user.id, editUrl: path('app_proposition_edit', {id: proposition.id}), withdrawUrl: path('app_proposition_withdraw', {id: proposition.id}), token: 'prop_withdraw' ~ proposition.id, historyUrl: path('app_history', {type: 'proposition', id: proposition.id}), edited: proposition.editedAt, count: proposition.editCount} only %}</p>
+</div></header>
+{% include 'translation/_note.html.twig' with {e: proposition, type: 'proposition'} only %}
+<section class="section"><div class="container"><div class="row g-4">
+    <div class="col-lg-8">
+        {% if not proposition.validated %}
+            <div class="limite mb-3">
+                {% if proposition.status == 'Rejetée' %}Cette proposition n'a pas été publiée.{% if proposition.moderationNote %} Motif : {{ proposition.moderationNote }}{% endif %}
+                {% else %}Cette proposition est en attente de relecture. Seuls vous et les modérateurs la voient.{% endif %}
+            </div>
+        {% endif %}
+        {% if proposition.revendication %}
+            <p>Répond à la revendication : <a href="{{ path('app_revendication_show', {slug: proposition.revendication.slug}) }}">{{ proposition.revendication.title }}</a></p>
+        {% endif %}
+        {% if proposition.debat %}
+            <p>Rattachée au débat : <a href="{{ path('app_debat_show', {slug: proposition.debat.slug}) }}">{{ proposition.debat.title }}</a></p>
+        {% endif %}
+        {% if proposition.validated %}{% include '_read_stats.html.twig' with {stats: viewStats, kind: 'proposition', id: proposition.id} only %}{% endif %}
+        <div class="form-card">{% include 'proposition/_fiche.html.twig' %}</div>
+        {% if related|default([]) %}
+        <div class="carte mt-3"><h2 class="h6">Propositions proches</h2><ul class="mb-0">{% for r in related %}<li><a href="{{ path('app_proposition_show', {id: r.p.id}) }}">{{ r.p.title }}</a> <span class="meta">({{ r.p.supportCount }} soutien{{ r.p.supportCount > 1 ? 's' }})</span></li>{% endfor %}</ul></div>
+        {% endif %}
+        {% include '_reliability.html.twig' with {text: proposition.title ~ ' ' ~ proposition.description, sources: proposition.sourceUrl ?? ''} only %}
+        <p class="mt-3 no-print">
+            <a class="btn btn-outline-dark btn-sm" href="{{ path('app_proposition_sheet', {id: proposition.id}) }}">Fiche imprimable à transmettre</a>
+            {% if proposition.author and app.user and app.user != proposition.author and (is_granted('ROLE_ACTOR') or is_granted('ROLE_ELU') or is_granted('ROLE_ASSOCIATION')) %}<a class="btn btn-bleu btn-sm" href="{{ path('app_inbox_thread', {id: proposition.author.id}) }}">Écrire à l'auteur</a>{% endif %}
+            {% if is_granted('ROLE_USER') %}<a class="btn btn-link btn-sm" href="{{ path('app_signalement_new', {type: 'proposition', id: proposition.id}) }}">Signaler un problème</a>{% endif %}
+        </p>
+
+        {% if proposition.validated %}
+        <h2 class="h4 mt-5" id="avis-acteurs">Avis des acteurs</h2>
+        <p class="meta">Élus, associations, prestataires et médiateurs vérifiés peuvent approuver ou réserver leur avis, toujours avec une explication.</p>
+        {% for e in endorsements %}
+            <div class="argument {{ e.stance == 'decline' ? 'contre' : (e.stance == 'reserve' ? 'nuance' : 'pour') }}">
+                <p class="mb-1"><strong>{{ e.stanceLabel }}</strong> · {{ e.user.publicName }}{% if is_granted('ROLE_USER') and app.user != e.user %} · <a href="{{ path('app_inbox_thread', {id: e.user.id}) }}">Écrire</a>{% endif %}</p>
+                <p class="mb-1">{{ e.reason|nl2br }}</p>
+                <p class="meta mb-0">{{ e.createdAt|date('d/m/Y') }}</p>
+            </div>
+        {% else %}
+            <p class="meta">Aucun acteur ne s'est encore prononcé.</p>
+        {% endfor %}
+        {% if is_granted('ROLE_ACTOR') or is_granted('ROLE_ELU') or is_granted('ROLE_ASSOCIATION') or is_granted('ROLE_MODERATOR') %}
+            <form method="post" action="{{ path('app_endorse', {id: proposition.id}) }}" class="form-card mt-3">
+                <input type="hidden" name="_token" value="{{ csrf_token('endorse' ~ proposition.id) }}">
+                <div class="mb-3"><label class="form-label" for="en-stance">Votre position</label>
+                    <select id="en-stance" name="stance" class="form-select"><option value="approve">Approuve</option><option value="reserve">Approuve avec réserves</option><option value="decline">Ne soutient pas</option></select></div>
+                <div class="mb-3"><label class="form-label" for="en-reason">Votre raisonnement (30 caractères minimum)</label>
+                    <textarea id="en-reason" name="reason" class="form-control" rows="4" required minlength="30" maxlength="1500"></textarea></div>
+                <button class="btn btn-bleu" type="submit">Publier mon avis</button>
+            </form>
+        {% elseif is_granted('ROLE_USER') %}
+            <p class="meta"><a href="{{ path('app_role_request') }}">Candidatez à un droit d'acteur</a> pour donner un avis motivé.</p>
+        {% endif %}
+        {% endif %}
+        {% if proposition.validated %}
+        <h2 class="h4 mt-5" id="amendements">Amendements proposés</h2>
+        {% for a in amendements %}
+            <div class="argument nuance">
+                <p class="mb-1">{{ a.content|nl2br }}</p>
+                {% if a.justification %}<p class="meta mb-1">Justification : {{ a.justification }}</p>{% endif %}
+                <p class="meta mb-0">{{ a.authorDisplayName }} · {{ a.createdAt|date('d/m/Y') }}</p>
+            </div>
+        {% else %}
+            <p class="meta">Aucun amendement pour le moment.</p>
+        {% endfor %}
+        {% if is_granted('ROLE_USER') %}
+            <form method="post" action="{{ path('app_amendement_new', {id: proposition.id}) }}" class="form-card mt-3">
+                <input type="hidden" name="_token" value="{{ csrf_token('amend' ~ proposition.id) }}">
+                <div class="mb-3"><label class="form-label" for="am-content">Modification proposée</label>
+                    <textarea id="am-content" name="content" class="form-control" rows="3" required minlength="10" maxlength="2000"></textarea></div>
+                <div class="mb-3"><label class="form-label" for="am-just">Pourquoi (facultatif)</label>
+                    <textarea id="am-just" name="justification" class="form-control" rows="2" maxlength="2000"></textarea></div>
+                <button class="btn btn-bleu" type="submit">Proposer cet amendement</button>
+            </form>
+        {% else %}
+            <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour proposer un amendement.</p>
+        {% endif %}
+        {% endif %}
+    </div>
+    <div class="col-lg-4">
+        {% include '_role_actions.html.twig' %}
+        <div class="carte text-center">
+            <p class="soutien-nombre display-5 mb-0">{{ proposition.supportCount }}</p>
+            <p class="meta">soutien{{ proposition.supportCount > 1 ? 's' }} consultatif{{ proposition.supportCount > 1 ? 's' }}</p>
+            {% if proposition.petition and proposition.petitionGoal %}
+                <div class="progress mb-1" role="progressbar" aria-label="Avancement vers l'objectif" aria-valuenow="{{ proposition.petitionProgress }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar bg-danger" style="width: {{ proposition.petitionProgress }}%"></div></div>
+                <p class="meta">Objectif : {{ proposition.petitionGoal }} signatures ({{ proposition.petitionProgress }} %)</p>
+            {% endif %}
+            {% if proposition.validated %}{{ ui.support_button(proposition, supported) }}{% endif %}
+        </div>
+        {% if proposition.validated %}
+        <div class="carte mt-3">
+            <h2 class="h6">{{ proposition.petition ? 'Faire signer cette pétition' : 'Partager cette proposition' }}</h2>
+            {% include '_share.html.twig' with {url: url('app_proposition_show', {id: proposition.id}), title: proposition.title} %}
+        </div>
+        <div class="carte mt-3">
+            <h2 class="h6">Agir auprès des institutions</h2>
+            <p class="meta">Une lettre prête à envoyer à un élu ou à une institution, et les voies officielles.</p>
+            <a class="btn btn-rouge btn-sm" href="{{ path('app_proposition_letter', {id: proposition.id}) }}">Écrire à un acteur public</a>
+        </div>
+        {% endif %}
+        <div class="carte mt-3">
+            <h2 class="h6">Fiche complète à {{ proposition.sheetCompleteness }} / 7</h2>
+            <div class="completude" role="img" aria-label="{{ proposition.sheetCompleteness }} rubriques sur 7 renseignées"><span style="width: {{ (proposition.sheetCompleteness / 7 * 100)|round }}%"></span></div>
+            <p class="meta mt-2 mb-0">Cet indicateur mesure la transparence de la fiche, pas la qualité de la mesure.</p>
+        </div>
+    </div>
+</div></div></section>
+{% endblock %}

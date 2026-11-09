@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+{% block title %}Ils ont contribué, ils ont innové | La France en Débat{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Ils ont contribué, ils ont innové</h1>
+    <p class="lead mb-0">Cette plateforme ne nous appartient pas. Elle s'appuie sur des personnes qui ont ouvert la voie. Chaque fiche cite sa source. Vous en connaissez d'autres ? Proposez-les, la modération les relit.</p>
+</div></header>
+<section class="section"><div class="container">
+    <form method="get" class="row g-2 mb-3" role="search">
+        <div class="col-md-5"><label class="visually-hidden" for="q">Rechercher</label><input class="form-control" id="q" name="q" value="{{ q }}" placeholder="Rechercher un nom, un mot, une date" maxlength="60"></div>
+        <div class="col-md-4"><label class="visually-hidden" for="domaine">Domaine</label><select class="form-select" id="domaine" name="domaine"><option value="">Tous les domaines</option>{% for k, l in domains %}<option value="{{ k }}" {{ domain == k ? 'selected' }}>{{ l }}</option>{% endfor %}</select></div>
+        <div class="col-md-3 d-flex gap-2"><button class="btn btn-bleu flex-fill">Filtrer</button><a class="btn btn-outline-dark" href="{{ path('app_inspirations') }}">Effacer</a></div>
+    </form>
+    <p class="meta">{{ items|length }} fiche{{ items|length > 1 ? 's' }}. <a href="#proposer">Une personne manque ? Proposez-la.</a></p>
+    <div class="row g-3">
+    {% for i in items %}
+        <div class="col-md-6 col-lg-4"><article class="carte h-100">
+            <p class="meta mb-1">{{ i.domainLabel }}</p>
+            <h2 class="h5"><a class="stretched-link text-decoration-none" href="{{ path('app_inspiration_show', {id: i.id}) }}">{{ i.name }}</a></h2>
+            <p>{{ i.summary|e|nl2br }}</p>
+            {% if i.advances %}<p class="meta mb-1"><strong>{{ i.advances|length }} avancée{{ i.advances|length > 1 ? 's' }}</strong> à découvrir sur la fiche.</p>{% endif %}
+            <p class="meta mb-0 position-relative" style="z-index:2">Source : <a href="{{ i.sourceUrl }}" target="_blank" rel="noopener noreferrer nofollow">{{ i.sourceHost }}</a></p>
+        </article></div>
+    {% else %}
+        <div class="col-12"><p class="meta">Aucune fiche publiée dans ce domaine pour l'instant.</p></div>
+    {% endfor %}
+    </div>
+    <div id="proposer" class="form-card mt-5" style="max-width:720px">
+        <h2 class="h4">Proposer une personne</h2>
+        {% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+        {% if app.user %}
+        <form method="post">
+            <input type="hidden" name="_token" value="{{ csrf_token('inspiration') }}">
+            <div class="mb-3"><label class="form-label" for="name">Nom</label><input class="form-control" id="name" name="name" maxlength="120" required value="{{ d.name }}"></div>
+            <div class="mb-3"><label class="form-label" for="domain">Domaine</label><select class="form-select" id="domain" name="domain">{% for k, l in domains %}<option value="{{ k }}" {{ d.domain == k ? 'selected' }}>{{ l }}</option>{% endfor %}</select></div>
+            <div class="mb-3"><label class="form-label" for="summary">Ce qu'elle a apporté (40 à 600 caractères)</label><textarea class="form-control" id="summary" name="summary" rows="4" maxlength="600" required>{{ d.summary }}</textarea></div>
+            <div class="mb-3"><label class="form-label" for="source">Lien d'une source publique (https)</label><input class="form-control" id="source" name="source" type="url" maxlength="400" required value="{{ d.source }}"></div>
+            <p class="meta">Pas de personne privée sans son accord. Pour une personne vivante, une source officielle ou publiée par elle est exigée.</p>
+            <button class="btn btn-bleu" type="submit">Envoyer pour relecture</button>
+        </form>
+        {% else %}
+        <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour proposer une personne.</p>
+        {% endif %}
+    </div>
+</div></section>
+{% endblock %}

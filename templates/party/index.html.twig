@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Les partis et groupes politiques{% endblock %}
+{% block meta_description %}Les formations politiques et groupes parlementaires, leurs propositions de loi, leurs chiffrages sourcés et leurs liens officiels. Présentés tous de la même façon, sans classement.{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Les partis et groupes politiques</h1>
+<p class="lead mb-0">Ce que chaque formation a proposé, avec sa source officielle. Même présentation pour toutes, par ordre alphabétique : aucun classement, aucune note.</p></div></header>
+<section class="section"><div class="container" style="max-width:980px">
+{% include 'programme/_coverage_notice.html.twig' %}
+{% if parties %}
+<div class="row g-3">
+{% for p in parties %}
+<div class="col-md-6"><article class="carte h-100" {% if p.color %}style="border-left:6px solid {{ p.color }}"{% endif %}>
+    <h2 class="h5 mb-1"><a href="{{ path('app_party', {code: p.code}) }}">{{ p.name }}</a></h2>
+    <p class="meta mb-2">{{ p.source == 'SENAT' ? 'Sénat' : (p.source == 'AN' ? 'Assemblée nationale' : 'Programme publié par la formation') }}</p>
+    <p class="mb-2">{{ p.n }} proposition{{ p.n > 1 ? 's' }} · {{ p.costed }} chiffrée{{ p.costed > 1 ? 's' }} avec source</p>
+    {% set pf = profiles[p.code]|default(null) %}
+    <p class="small mb-0">{% if pf and pf.officialSite %}<a href="{{ pf.officialSite }}" rel="noopener nofollow" target="_blank">Site officiel</a>{% endif %}{% if pf and pf.programmeUrl %} · <a href="{{ pf.programmeUrl }}" rel="noopener nofollow" target="_blank">Programme officiel</a>{% endif %}{% if not pf or (not pf.officialSite and not pf.programmeUrl) %}Liens officiels : à renseigner par la modération{% endif %}</p>
+</article></div>
+{% endfor %}
+</div>
+{% else %}
+<p>Aucune proposition n'est encore importée. Les propositions de loi de l'Assemblée nationale et du Sénat arrivent par l'import officiel.</p>
+{% endif %}
+<p class="meta mt-4">Un parti qui souhaite publier ses mesures de programme peut écrire à la modération avec le lien de son site officiel : sans source officielle, rien n'est publié. Pour comparer des positions de candidats, des sites indépendants existent, comme <a href="https://monvote2027.fr/" rel="noopener nofollow" target="_blank">MonVote2027</a> ; nous n'en reprenons ni les notations ni les classements.</p>
+{% include 'programme/_source_note.html.twig' %}
+</div></section>
+{% endblock %}

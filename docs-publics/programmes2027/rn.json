@@ -1,0 +1,141 @@
+{
+ "edition": "2022",
+ "group_code": "RN",
+ "group_name": "Rassemblement National (programme 2022 : le site officiel ne publie pas de programme 2027)",
+ "group_color": "#0D378A",
+ "source_url": "https://rassemblementnational.fr/",
+ "measures": [
+  {
+   "title": "Arrêter l'immigration incontrôlée par référendum",
+   "summary": "[Programme 2022] Mettre fin à l'immigration de peuplement et au regroupement familial, traiter l'asile à l'étranger, réserver les aides sociales aux Français et supprimer le droit du sol, selon la page officielle.",
+   "theme": "Sécurité et réinsertion",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Éradiquer les idéologies islamistes et leurs réseaux",
+   "summary": "[Programme 2022] Mesure portée par une proposition de loi dont le texte est publié sur le site officiel.",
+   "theme": "Sécurité et réinsertion",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Faire de la sécurité une priorité du quinquennat",
+   "summary": "[Programme 2022] Rétablir les peines planchers, supprimer les réductions de peine pour les violences, doubler le nombre de magistrats, atteindre 85 000 places de prison en 2027 et établir une perpétuité réelle.",
+   "theme": "Justice",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Baisser la TVA à 5,5 % sur les produits énergétiques",
+   "summary": "[Programme 2022] Carburants, fioul, gaz et électricité traités comme biens de première nécessité.",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Permettre une hausse de salaires de 10 % exonérée de cotisations patronales",
+   "summary": "[Programme 2022] Jusqu'à 3 SMIC, par exonération de cotisations patronales sur l'augmentation.",
+   "theme": "Emploi et formation",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Renationaliser les autoroutes et privatiser l'audiovisuel public",
+   "summary": "[Programme 2022] Baisser les péages de 15 % et supprimer la redevance de 138 euros.",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Encourager l'entrée des jeunes dans la vie active",
+   "summary": "[Programme 2022] Chèque-formation mensuel de 200 à 300 euros, exonération d'impôt sur le revenu des jeunes actifs jusqu'à 30 ans, pas d'impôt sur les sociétés pendant 5 ans pour les entrepreneurs de moins de 30 ans.",
+   "theme": "Emploi et formation",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Soutenir les familles",
+   "summary": "[Programme 2022] Part fiscale complète dès le deuxième enfant, prêt à 0 % pour les jeunes familles, 100 000 logements étudiants en cinq ans, exonération des donations jusqu'à 100 000 euros par enfant tous les dix ans.",
+   "theme": "Retraites et solidarités",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Garantir une retraite digne",
+   "summary": "[Programme 2022] Réindexer les retraites sur l'inflation, minimum vieillesse à 1 000 euros par mois, refus de tout allongement de l'âge de départ, départ à 60 ans après 40 annuités pour ceux qui ont commencé avant 20 ans.",
+   "theme": "Retraites et solidarités",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Assurer les droits des personnes en situation de handicap",
+   "summary": "[Programme 2022] Déconjugaliser et revaloriser l'Allocation adulte handicapée, plan sur l'accès à la scolarité, application de la loi sur l'accessibilité.",
+   "theme": "Services publics",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Instaurer le référendum d'initiative citoyenne et la proportionnelle",
+   "summary": "[Programme 2022] Deux réformes institutionnelles annoncées sans détail de mise en œuvre sur la page.",
+   "theme": "Démocratie et dialogue",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Assurer l'indépendance énergétique",
+   "summary": "[Programme 2022] Arrêter les projets éoliens, relancer le nucléaire, l'hydroélectrique et l'hydrogène, sortir du marché européen de l'électricité.",
+   "theme": "Écologie et énergie",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Défendre les agriculteurs et une alimentation de qualité",
+   "summary": "[Programme 2022] Prix respectueux du travail des paysans, interdiction des importations ne respectant pas les normes françaises, 80 % de produits agricoles français dans les cantines.",
+   "theme": "Agriculture et alimentation",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Plan d'urgence pour la santé de 20 milliards d'euros",
+   "summary": "[Programme 2022] Arrêt des fermetures de lits et de maternités, revalorisation des soignants, suppression des ARS, lutte contre les déserts médicaux. Montant annoncé par le parti.",
+   "theme": "Santé",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Restaurer le système éducatif",
+   "summary": "[Programme 2022] Priorité au français, aux mathématiques et à l'histoire, revalorisation des enseignants, uniforme au primaire et au collège.",
+   "theme": "École et transmission",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Supprimer l'IFI et créer un impôt sur la fortune financière",
+   "summary": "[Programme 2022] Remplacer l'impôt sur la fortune immobilière par un impôt sur la fortune financière.",
+   "theme": "Finances publiques",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Favoriser l'accès à la propriété et au logement",
+   "summary": "[Programme 2022] 100 000 logements sociaux par an dont 20 000 pour étudiants et jeunes travailleurs, plan de réhabilitation de l'habitat ancien, fonds de garantie des loyers.",
+   "theme": "Pouvoir d'achat et logement",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Patriotisme économique pour réindustrialiser",
+   "summary": "[Programme 2022] Priorité aux PME dans les marchés publics, suppression de la CFE et des impôts de production, révision des accords de libre-échange.",
+   "theme": "Industrie et recherche",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Créer un fonds souverain français",
+   "summary": "[Programme 2022] Augmenter la rémunération de l'épargne et l'orienter vers les secteurs stratégiques et l'innovation.",
+   "theme": "Finances publiques",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Porter le budget de la défense à 55 milliards d'euros en 2027",
+   "summary": "[Programme 2022] Objectif chiffré par le parti, présenté comme renforçant la souveraineté.",
+   "theme": "Défense et résilience",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Créer un ministère d'État de la Mer et de l'Outre-mer",
+   "summary": "[Programme 2022] Création annoncée d'un ministère dédié.",
+   "theme": "Services publics",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  },
+  {
+   "title": "Créer un ministère de la lutte contre les fraudes",
+   "summary": "[Programme 2022] Fraudes fiscales, aux cotisations et prestations sociales, aux importations, ententes.",
+   "theme": "Finances publiques",
+   "source_url": "https://rassemblementnational.fr/22-mesures"
+  }
+ ]
+}

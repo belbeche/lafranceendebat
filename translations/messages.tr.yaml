@@ -1,0 +1,276 @@
+nav:
+  debates: Tartışmalar
+  propositions: Öneriler
+  forgotten: Unutulmamalı
+  more: 'Daha fazla'
+  candidates: Adaylar
+  agenda: Takvim
+  charter: 'Barış Şartı'
+  about: Hakkında
+  install: Yükle
+  submit: 'Öneri gönder'
+  account: Hesabım
+  profile: Profilim
+  my_propositions: Önerilerim
+  logout: 'Çıkış yap'
+  login: 'Giriş yap'
+  register: 'Hesap oluştur (ücretsiz)'
+  language: Dil
+  skip: 'İçeriğe geç'
+  monitoring: 'Kurumların izlenmesi'
+  method: 'Müzakere Yöntemi'
+  admin: Yönetim
+  guide: Prosedür
+  contacts: 'Faydalı kişiler'
+tab:
+  home: 'Ana sayfa'
+  account: Hesap
+  login: Giriş
+  submit: 'Öneri gönder'
+banner:
+  text: 'Burada olgular ile görüşler ayrılır. Nefret yok, şiddet yok.'
+  link: "Barış Şartı'nı oku"
+free:
+  badge: 'Ömür boyu ücretsiz'
+  text: 'Herkes için ücretsiz, sonsuza dek. Abonelik yok, reklam yok, veri satışı yok.'
+  title: 'Sonsuza dek özgür'
+  body: 'Tartışılan Fransa tüm vatandaşlar için ücretsizdir ve öyle kalacaktır: abonelik yok, kayıt, oy kullanma veya teklif etme için ödeme yok, reklam yok ve kişisel verilerin yeniden satışı yok. Temel işlevler asla bir ödemenin arkasına konulmayacaktır.'
+  faq_q: 'Gerçekten ücretsiz mi?'
+lang:
+  title: 'Dilinizi seçin'
+  subtitle: 'İstediğiniz zaman menüden değiştirebilirsiniz.'
+  continue: '%language% ile devam et'
+  other_note: 'Bu dilin henüz tam bir arayüzü yok: menü İngilizce gösterilir. Sitenin geri kalanı için tarayıcınızın otomatik çevirisini kullanın.'
+hero:
+  title: 'Karşı karşıya gelmeden önce konuşalım.'
+  cta_propose: 'Öneri gönder'
+  cta_debate: 'Bir tartışmaya katıl'
+  cta_paths: 'Ne yapmak istersiniz?'
+path:
+  nav: 'Rehberli yollar'
+  title: 'Ne yapmak istersiniz?'
+  subtitle: 'Durumunuzu seçin: Size adım adım yol göstereceğiz. Okuma bir hesap gerektirmez.'
+  no_account: 'Hesap Yok'
+  account: 'Ücretsiz hesap gerekli'
+  start: Başla
+  step: Adım
+  all: 'Tüm güzergâhlar'
+  go: Git
+  discover:
+    title: Keşfediyorum
+    desc: 'Bir hesap oluşturmadan siteyi üç dakika içinde anlayın.'
+    s1: 'Barış tüzüğünü okuyun: oyunun kuralları.'
+    s2: 'En çok desteklenen tekliflere göz atın.'
+    s3: 'Neyin bildirildiğini görün ve unutulmamalıdır.'
+  debate:
+    title: 'Tartışmak istiyorum'
+    desc: 'Fikrimi söyleyin ve başkalarına sakin bir şekilde yanıt verin.'
+    s1: 'Açık bir tartışma seçin ve argümanları okuyun.'
+    s2: 'Ücretsiz hesap oluşturun (bir dakika).'
+    s3: 'Mümkünse bir kaynakla bir argüman yayınlayın.'
+  propose:
+    title: 'Evlenme teklif etmek istiyorum'
+    desc: 'Somut bir fikir sunun, yayınlanmadan önce düzeltin.'
+    s1: 'Fikrin zaten var olup olmadığını kontrol edin.'
+    s2: 'Ücretsiz bir hesap oluşturun.'
+    s3: 'Teklifi bir kaynakla birlikte gönderin.'
+  forgotten:
+    title: 'Unutulmamasını istiyorum'
+    desc: 'Daha önce kınanmış bir iddiayı hayata geçirmek.'
+    s1: 'Hatırlamak için iddiaları okuyun.'
+    s2: 'İlgili bir teklifi desteklemek veya değiştirmek.'
+    s3: 'Bkz. kurumsal kanallar: dilekçe, RIP, seçilmiş yetkililer.'
+  follow:
+    title: 'Kurumları takip etmek istiyorum'
+    desc: 'Kimin cevap verdiğini ve kimin sessiz kaldığını bilin.'
+    s1: 'Kurumların izlenmesini açın.'
+    s2: 'Adaylara ve taahhütlerine danışın.'
+    s3: 'Randevuları kaçırmayın: gündem.'
+footer:
+  project: Proje
+  legal: Legal
+  independent: 'Bağımsız ve çoğulcu yurttaş alanı. Herhangi bir parti, aday veya kuruma bağlı değildir.'
+  disclaimer: 'Bu sitenin istişarelerinin resmi bir seçim değeri yoktur.'
+legal:
+  notice: 'Yasal Uyarılar'
+  privacy: 'Gizlilik (GDPR)'
+  terms: 'Şartlar ve Kullanım Koşulları'
+  contact: İletişim
+guide:
+  label: Prosedür
+  steps: Adımlar
+  page_title: Prosedür
+  page_lede: 'Sitenin her işlevi birkaç adımda açıklanmıştır. Teknik bilgi gerektirmez.'
+  home:
+    t: Başlarken
+    cta: 'Hesabımı oluştur'
+    s1: 'Ücretsiz bir hesap oluşturun (bir dakika, bir e - posta yeterlidir).'
+    s2: 'Ön kapınızı seçin: tartışın, teklif edin, fikrinizi belirtin veya kurumlarla birlikte hareket edin.'
+    s3: '"Benim Alanım" a geri dönün: Fikirlerinizin nerede durduğunu ve hala ne yapmanız gerektiğini görebilirsiniz.'
+  communaute:
+    t: 'Sohbete katıl'
+    cta: 'Açık Tel'
+    s1: 'Sağdaki kuralları okuyun, dört satıra sığarlar.'
+    s2: '"Bir konu aç" a tıklayın ve konunuzu kesin bir başlık ile sakince yazın.'
+    s3: 'Önce fikirlerini yeniden formüle ederek başkalarına yanıt verin: sıralamada değerlidir.'
+    s4: 'Sinir bozucu bir mesaj mı? "Bildir" i kullanın, ekip bir nedenden dolayı yanıt verir.'
+  debats:
+    t: 'Bir tartışmaya katılın'
+    cta: 'Tartışmaları Görüntüle'
+    s1: 'Bir tartışma başlatın ve önce kaynaklı gerçekleri okuyun.'
+    s2: 'Mümkünse bir kaynakla karşı, karşı veya nüanslı bir argüman ekleyin.'
+    s3: 'Fikrinize aykırı olsa bile, en güçlü argümanları destekleyin.'
+  propositions:
+    t: 'Bir teklif gönderin ve ilerletin'
+    cta: 'Teklif gönder'
+    s1: '"Teklif gönder" e tıklayın: sorun, ölçüm, tahmini maliyet, kimler harekete geçebilir.'
+    s2: 'Gözden geçirilir ve daha sonra kayıt defterinde yayınlanır (genellikle 48 saat içinde).'
+    s3: 'Paylaş: Her destekçi onu sıralamada yukarı taşır.'
+    s4: 'Seçilmiş yetkililere geçene kadar "Benim Alanım" da takip edin.'
+  scrutins:
+    t: 'Geri bildirimde bulunun'
+    cta: 'Anketleri Görüntüle'
+    s1: 'Açık bir oy pusulası seçin.'
+    s2: 'Seçenekleri ve argümanları okuyun.'
+    s3: 'Oy: kişi başına bir oy, tavsiye ve kamu sonucu.'
+  services:
+    t: 'Bir hizmet bulun veya sunun'
+    cta: Hizmetler
+    s1: 'Hizmetleri (arabuluculuk, eğitim, destek) gözden geçirin ve doğru olanı açın.'
+    s2: 'Ödeme: Ödeme güvenli ve beklemede.'
+    s3: 'Sipariş mesajlaşma sistemi aracılığıyla servis sağlayıcı ile değişim (iletişim bilgileri verilmeyecektir).'
+    s4: 'Hizmetin ne zaman verildiğini onaylayın: daha sonra hizmet sağlayıcıya ödeme yapılır. Sorun mu yaşıyorsunuz? Para iadesi isteyin.'
+  candidater:
+    t: 'Bir rol alın'
+    cta: Uygula
+    s1: 'Doğru olanı seçin: arabulucu, aktör, seçilmiş yetkili veya dernek.'
+    s2: 'Ne getireceğinizi birkaç satırda açıklayın.'
+    s3: 'Ekip yanıt verir. Hesap kıdemine gerek yoktur.'
+    s4: 'Özel yeriniz "Mekânım" bölümünde görünür.'
+  acteurs:
+    t: 'Kurumlarla çalışma'
+    cta: 'Kurumsal yollar'
+    s1: 'Seçilen ilgili yetkiliyi, kurumu veya arabulucuyu bulun.'
+    s2: 'Uygun yasal kanalı kullanın (dilekçe, sevk, mektup).'
+    s3: 'Ardından, herkesin cevabı görmesi için izleyiciyi platforma bırakın.'
+  plan:
+    t: 'Yakınınızdaki planı uygulayın'
+    cta: 'Sonucu Gönder'
+    s1: 'Sayfada durumunuza (vatandaş, dernek, seçilmiş yetkili, şirket) karşılık gelen eylemi bulun.'
+    s2: '“Bu hafta” listesindeki ilk eylemi yapın.'
+    s3: 'Sonucu, başka bir yerde karşılaştırılabilmesi ve tekrarlanabilmesi için bir teklif olarak sunun.'
+home:
+  live:
+    title: 'Şu anda toplulukta'
+    join: "Agora'ya Katıl"
+    members: 'kayıtlı vatandaşlar'
+    props: 'yayınlanan teklifler'
+    threads: iplikler
+    ballots: 'açık oy pusulaları'
+    empty: 'Agora ilk ipliğini bekliyor. Açın: bir anlaşmazlık, bir fikir, dönüştürülecek bir öfke.'
+  how:
+    title: 'İşleyiş, üç adımda'
+    1t: '1. Kaydolun'
+    1d: 'Sonsuza kadar ücretsiz, bir e - posta yeterlidir.'
+    2t: '2. Katılın'
+    2d: 'Seçilen bir yetkiliye müzakere, teklif, oylama, dilekçe veya mesaj.'
+    2l: 'Nasıl yapacağınızı seçin'
+    3t: '3. Ben sonucum'
+    3d: '"Benim Alanım" her fikrin nerede durduğunu gösterir.'
+    3l: 'Tüm adımları görün'
+door:
+  how: Comment
+  debate: 'Gerçekleri okuyun, ardından bir argüman ekleyin.'
+  propose: '4 alanı doldurun, 48 saat içinde düzeltin.'
+  opinion: 'Bir oy pusulası seçin, bir kez oy verin.'
+  petition: 'Aç, oku, desteğe tıkla.'
+  institutions: 'Yasal rotayı seçin ve cevabı takip edin.'
+  candidates: 'İki tapayı yan yana açın.'
+eco:
+  title: 'Fransız ekonomisini canlandırmak: Vatandaş Marshall Planı'
+  lede: 'Kırılmadan düzeltin: her masrafı ölçün, olabilecekleri bir araya getirin, kanıtlanmış tasarrufları istihdama, üretime ve temel hizmetlere yeniden yatırın.'
+  l1t: ÃlÃ§
+  l1d: '3 ila 5 gönüllü yapıda maliyet teşhisi.'
+  l2t: Havuz
+  l2d: 'Grup satın alma ve ortak destek fonksiyonları, tekel olmadan.'
+  l3t: 'Yeniden yatırım yapın'
+  l3d: 'Kanıtlanmış her tasarruf, faydalı işlere ve görevlere yeniden tahsis edilir.'
+  cta: 'Planı okuyun'
+  cta2: 'Bu Hafta'
+contacts:
+  title: 'Faydalı kişiler'
+  lede: 'Kiminle iletişime geçmeli, ne yapmalı. Aramadan önce her kuruluşun web sitesinde kontrol edilecek bağlantılar ve resmi numaralar.'
+peace:
+  title: 'Sakinlik ve huzur çağrısı'
+  text: 'Gerilim altındaki bir ülkede öfke meşrudur, şiddet asla. Burada birbirimizi dinliyoruz, kaynak sağlıyoruz, somut tekliflerde bulunuyoruz ve herkese bir cevap hakkı bırakıyoruz.'
+  cta: 'Aramayı ve başlatma belgesini okuyun'
+why:
+  title: 'Neden şimdi?"<ex id="_4"/>'
+  lede: 'Sloganlar değil, resmi ve kaynaklı gözlemler. Herkes onları kontrol edebilir ve daha sonra tartışabilir.'
+  f1: "Kamu açığı 2025 : GSYİH'nın % 5,0 'i, hedef 2026 tehdit altında kabul ediliyor"
+  f2: 'Kamu borcu: 2025 yılı sonunda 3.460 milyar Euro'
+  f3: 'Borç yükü 2026: yaklaşık 77 milyar Euro, yaklaşık 12 milyar Euro'
+  src: 'Kaynak: Sayıştay, 25 Haziran 2026 tarihli açıklama, Kamu Sénat tarafından iletilmiştir. Tekliften önce kontrol edilecek ve güncellenecektir.'
+  more: 'Vatandaşlar tarafından belirtilen diğer zorluklar: satın alma gücü, istihdam, baskı altındaki kamu hizmetleri, güven, enerji geçişi, egemenlik.'
+tax:
+  title: 'Vergi mükellefleri: finanse ediyorsunuz, anlama hakkına sahipsiniz'
+  lede: 'Her teklif, maliyetin ne kadar olduğunu, kimin ödediğini ve sonucun nasıl ölçüldüğünü belirtmelidir. İşte somut olarak nasıl hareket edeceğiniz.'
+  c1t: Anlamak
+  c1d: 'Sayıştay raporları ve kamu harcamalarına ilişkin açık veriler, açık erişim.'
+  c2t: 'Yararlı tasarruflar önerin'
+  c2d: 'Marshall Planının beş soruluk kuralını uygulayın ve maliyetlendirilmiş bir teklifi kaynağıyla birlikte dosyalayın.'
+  c3t: 'Ölçülenleri destekleyin'
+  c3d: 'En iyi kaynaklı ve maliyetlendirilmiş teklifler sıralamada yükselir.'
+  c4t: 'Hesap isteyin'
+  c4d: 'Kaynaklı bir talepte bulunun: kamuya açık bir cevaba kadar takip edilir.'
+  cta1: 'Sayıştay Raporları'
+  cta2: 'Açık veri (data.gouv.fr)'
+themes:
+  title: 'Konuya göre somut çözümler'
+  lede: 'Bir konu seçin: yayınlanan teklifleri desteklere göre sıralanmış olarak bulacaksınız.'
+steps:
+  title: 'Beş adımda bir teklifin yolculuğu'
+  1: 'Vatandaş kendini ifade eder: bir fikir önerir ve öncelikleri oylar.'
+  2: 'Teklifler, alandaki uzmanlar ve aktörlerle birlikte gözden geçirilir ve analiz edilir.'
+  3: 'Çözümler, bir zaman çizelgesi ile maliyetlendirilmiş somut projeler halinde gruplandırılır.'
+  4: 'Seçilen görevlilere ve yetkili kurumlara getirilir.'
+  5: 'Vatandaşlar verilen kararları ve takibi takip eder.'
+actors:
+  title: 'Kamu aktörlerinin ve katkıda bulunanların rolü'
+  lede: 'Herkes aynı kurallarla katkıda bulunabilir: kamusal kaynak, doğrulanabilir gerçekler, cevap hakkı.'
+  a1: 'Meclis (Millet Meclisi ve Senato)'
+  a1d: 'Teklifleri gözden geçirin, tartışın, yasaları oylayın, uygulamalarını izleyin.'
+  a2: 'Yerel yönetimler'
+  a2d: 'Yerel tartışmalar düzenlemek, teklifleri iletmek, eylemleri uygulamak.'
+  a3: 'Devlet daireleri'
+  a3d: 'Fizibiliteyi analiz edin, kaynakları harekete geçirin, koordinasyonu sağlayın.'
+  a4: 'Avrupa kurumları'
+  a4d: 'Teklifleri entegre edin, finansmanı destekleyin, işbirliğini güçlendirin.'
+  a5: 'Dernekler, şirketler, vatandaşlar'
+  a5d: 'Saha uzmanlığı sağlayın, test edin, ölçün, sonuçları paylaşın.'
+  cta: 'Oyuncu ol'
+claims:
+  cta: 'Kaynaklı bir talepte bulunun'
+  rules: 'Tüm aktörler, kurumlar ve partiler için ortak kural: kamu kaynağı, doğrulanabilir gerçekler, hakaret yok, cevap hakkı, yayınlanmadan önce düzeltme.'
+forces:
+  title: 'Daha iyi bir seçim için anlayın'
+  lede: 'Ana siyasi akımlar, derecelendirme veya sıralama olmaksızın aynı yapıyla sunuldu. Karşılaştırmak size kalmış.'
+  cta: 'Siyasi Güçleri Görüntüle'
+run:
+  title: "2027 'de Başkanlığa Aday Olmak: Kurallar"
+  c1: 'Fransız uyruklu olmak, en az 18 yaşında olmak, seçim listesine kayıtlı olmak.'
+  c2: 'Ulusal hizmet yükümlülüklerini yerine getirmek için uygun olmadığı veya vasilik veya küratörlük altında olmadığı beyan edilmemelidir.'
+  c3: 'En az 30 denizaşırı departman veya topluluktan, aynı departmanda en fazla onda biri olmak üzere seçilmiş yetkililerden 500 sponsorluk alın.'
+  c4: "Anayasa Konseyi'ne bir çıkar beyanı ve varlık beyanı dosyalayın."
+  src: 'Kaynak: LCP, uygulama gereksinimleri. Resmi tarihler Anayasa Konseyi tarafından yayınlanır.'
+  cta: 'Anayasa Konseyi'
+final:
+  title: 'Birlikte sesimizi duyuralım'
+  lede: 'Tartışan Fransa, sensin, biziz, şimdi.'
+  w1: Konuş
+  w2: Münazara
+  w3: Oylama
+  w4: 'Harekete geçmek.'
+  w5: 'Yarını inşa etmek'
+welcome:
+  title: 'Hoş geldiniz. Siz kimsiniz?'

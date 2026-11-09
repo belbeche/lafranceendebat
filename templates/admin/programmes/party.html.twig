@@ -1,0 +1,15 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Liens officiels : {{ name }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_programmes') }}">&larr; Propositions</a></p>
+<h1 class="h3">Liens officiels : {{ name }}</h1>
+{% for e in errors %}<div class="alert alert-danger">{{ e }}</div>{% endfor %}
+<form method="post" style="max-width:700px">
+    <input type="hidden" name="_token" value="{{ csrf_token('party_profile') }}">
+    <p class="small text-muted">Uniquement des adresses publiées par la formation elle-même. Aucune note, aucun commentaire. Ces liens s'affichent sur la page publique du parti.</p>
+    <div class="mb-3"><label class="form-label" for="s">Site officiel (https://)</label><input id="s" name="official_site" class="form-control" maxlength="255" value="{{ pf.officialSite }}"></div>
+    <div class="mb-3"><label class="form-label" for="p">Page officielle du programme (https://)</label><input id="p" name="programme_url" class="form-control" maxlength="255" value="{{ pf.programmeUrl }}"></div>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="c" name="checked" value="1"><label class="form-check-label" for="c">J'ai vérifié que ces liens mènent bien au site de la formation{% if pf.linksCheckedAt %} (dernière vérification : {{ pf.linksCheckedAt|date('d/m/Y') }}){% endif %}</label></div>
+    <button class="btn btn-bleu">Enregistrer</button>
+</form>
+{% endblock %}

@@ -1,0 +1,28 @@
+/* Console d'administration : habillage commun (barre latérale bleue, cartes, pastilles d'état).
+   Tout est sous .adm pour ne pas toucher au reste du site. Couleurs de la charte : bleu #002395, rouge #ED2939. */
+.adm { display: flex; flex-wrap: wrap; gap: 0; margin: 0 -12px; }
+.adm-nav { flex: 0 0 232px; background: #00164f; color: #fff; padding: 22px 14px; display: flex; flex-direction: column; gap: 2px; border-radius: 8px; align-self: flex-start; }
+.adm-nav .adm-brand { font-weight: 700; font-size: 18px; padding: 0 8px 2px; }
+.adm-nav .adm-sub { font-size: 12px; color: #b9c2e6; padding: 0 8px 14px; }
+.adm-nav a { color: #dfe4fa; text-decoration: none; padding: 10px 12px; font-size: 14px; border-radius: 6px; display: flex; justify-content: space-between; gap: 8px; }
+.adm-nav a:hover, .adm-nav a:focus-visible { background: #0b2a7a; color: #fff; }
+.adm-nav a[aria-current="page"] { background: #002395; color: #fff; }
+.adm-nav .adm-badge { background: #ED2939; color: #fff; border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 700; }
+.adm-nav details { margin-top: 10px; border-top: 1px solid #1b3a8f; padding-top: 8px; }
+.adm-nav summary { cursor: pointer; font-size: 13px; color: #b9c2e6; padding: 6px 12px; }
+.adm-main { flex: 999 1 640px; min-width: 0; padding: 0 0 0 24px; }
+@media (max-width: 991px) { .adm-main { padding: 20px 0 0; flex-basis: 100%; } .adm-nav { flex-basis: 100%; } }
+.adm-status { display: flex; flex-wrap: wrap; gap: 10px 26px; background: #fff; border: 1px solid #dde0ee; border-radius: 8px; padding: 16px 20px; margin-bottom: 18px; }
+.adm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: #1a7f4b; }
+.adm-dot.warn { background: #b26a00; }
+.adm-dot.bad { background: #ED2939; }
+.adm-todo { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 18px; }
+.adm-todo a, .adm-todo div { text-decoration: none; color: inherit; background: #fff; border: 1px solid #dde0ee; border-top: 4px solid #002395; border-radius: 8px; padding: 16px; display: block; }
+.adm-todo a.hot { border-top-color: #ED2939; }
+.adm-todo b { display: block; font-size: 32px; line-height: 1.1; }
+.adm-card { background: #fff; border: 1px solid #dde0ee; border-radius: 8px; padding: 18px 20px; margin-bottom: 18px; }
+.adm-card.ok { border-left: 6px solid #1a7f4b; }
+.adm-card.bad { border-left: 6px solid #ED2939; }
+.adm-quick { display: flex; flex-wrap: wrap; gap: 10px; }
+.adm-quick a { border: 1px solid #c9cde3; border-radius: 6px; padding: 9px 14px; font-size: 14px; text-decoration: none; color: #14182b; min-height: 44px; display: inline-flex; align-items: center; }
+.adm-quick a:hover { border-color: #002395; color: #002395; }

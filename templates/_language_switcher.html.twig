@@ -1,0 +1,11 @@
+<div class="dropdown">
+    <button class="btn btn-outline-blanc btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'nav.language'|trans }}">
+        <i class="bi bi-globe2" aria-hidden="true"></i> <span class="d-none d-sm-inline" translate="no">{{ lang_name(app.request.locale) }}</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end lang-menu" translate="no">
+        {% for code, l in languages() %}
+            <li><a class="dropdown-item {{ code == app.request.locale ? 'active' }}" href="{{ path('app_language', {code: code, next: current_path()}) }}" lang="{{ code }}" hreflang="{{ code }}">{{ l.name }}{% if not l.ui %} <small class="opacity-75">*</small>{% endif %}</a></li>
+        {% endfor %}
+        <li><span class="dropdown-item-text small text-muted">* {{ 'lang.other_note'|trans }}</span></li>
+    </ul>
+</div>

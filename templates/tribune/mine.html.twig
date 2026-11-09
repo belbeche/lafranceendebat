@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes tribunes{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mes tribunes</h1></div></header>
+<section class="section"><div class="container" style="max-width:860px">
+    <p><a class="btn btn-rouge" href="{{ path('app_tribune_new') }}">Écrire une tribune</a></p>
+    {% for t in tribunes %}
+        <div class="carte mb-2"><p class="mb-1">{% if t.published %}<span class="etiquette bleu">Publiée</span>{% elseif t.status == 'rejected' %}<span class="etiquette rouge">Refusée</span>{% else %}<span class="etiquette rouge">En relecture</span>{% endif %} <span class="meta">{{ t.createdAt|date('d/m/Y') }}</span></p>
+        <h2 class="h6 mb-1">{% if t.published %}<a href="{{ path('app_tribune_show', {slug: t.slug}) }}">{{ t.title }}</a>{% else %}{{ t.title }}{% endif %}</h2>
+        {% if t.moderationNote %}<p class="meta mb-0">Motif du refus : {{ t.moderationNote }}</p>{% endif %}</div>
+    {% else %}<p class="meta">Aucune tribune.</p>{% endfor %}
+</div></section>
+{% endblock %}

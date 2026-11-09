@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Écrire une tribune{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Écrire une tribune</h1><p class="lead mb-0">Signée, sourcée, sans insulte. Relue par un médiateur avant publication.</p></div></header>
+<section class="section"><div class="container" style="max-width:820px">
+    {% for e in errors %}<div class="alert alert-danger" role="alert">{{ e }}</div>{% endfor %}
+    <form method="post" novalidate>
+        <input type="hidden" name="_token" value="{{ csrf_token('tribune') }}">
+        <div class="mb-3"><label class="form-label" for="title">Titre</label><input class="form-control" id="title" name="title" maxlength="160" required value="{{ f.title }}"></div>
+        <div class="mb-3"><label class="form-label" for="lead">Chapeau (résumé en 300 caractères maximum)</label><textarea class="form-control" id="lead" name="lead" rows="2" maxlength="300" required>{{ f.lead }}</textarea></div>
+        <div class="mb-3"><label class="form-label" for="body">Texte (400 à 20 000 caractères)</label><textarea class="form-control" id="body" name="body" rows="14" maxlength="20000" required>{{ f.body }}</textarea></div>
+        <div class="mb-3"><label class="form-label" for="sources">Sources publiques en https (une par ligne)</label><textarea class="form-control" id="sources" name="sources" rows="4" required>{{ f.sources }}</textarea><div class="form-text">Rapports, décisions, textes de loi, articles. Pas de données personnelles.</div></div>
+        <button class="btn btn-bleu btn-lg">Envoyer en relecture</button>
+    </form>
+</div></section>
+{% endblock %}

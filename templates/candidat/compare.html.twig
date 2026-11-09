@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}Comparer : {{ theme ?: 'choisir un thème' }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container">
+    <h1>Comparer les engagements{{ theme ? ' : ' ~ theme }}</h1>
+    <p class="lede">Mêmes rubriques pour tous, ordre aléatoire à chaque affichage, aucune note. Une rubrique « non renseigné » signale un manque de transparence, pas un jugement sur la mesure.</p>
+</div></header>
+<section class="section"><div class="container">
+    <div class="d-flex flex-wrap gap-2 mb-4">
+        {% for t in themes %}<a class="etiquette {{ t == theme ? 'bleu' }}" href="{{ path('app_candidats_compare', {theme: t}) }}">{{ t }}</a>{% else %}<span class="meta">Aucun thème comparable pour l'instant.</span>{% endfor %}
+    </div>
+    <div class="row g-3">
+        {% for e in engagements %}
+            <div class="col-lg-6"><div class="form-card h-100">
+                <h2 class="h5 mb-0"><a href="{{ path('app_candidat_show', {slug: e.candidat.slug}) }}">{{ e.candidat.name }}</a></h2>
+                <p class="meta">{{ e.candidat.role }}</p>
+                <h3 class="h6">{{ e.title }}</h3>
+                {% include 'candidat/_engagement.html.twig' with {engagement: e} only %}
+            </div></div>
+        {% else %}
+            {% if theme %}<div class="col-12"><div class="carte">Aucun engagement documenté sur ce thème.</div></div>{% endif %}
+        {% endfor %}
+    </div>
+</div></section>
+{% endblock %}

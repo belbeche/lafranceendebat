@@ -1,0 +1,6 @@
+framework:
+    cache:
+        pools:
+            cache.dashboard:
+                adapter: cache.app
+                default_lifetime: 3600

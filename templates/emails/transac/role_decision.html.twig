@@ -1,0 +1,9 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}Votre candidature{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">{{ status == 'approuvee' ? 'Votre candidature est acceptée' : (status == 'retiree' ? 'Votre droit a été retiré' : 'Votre candidature n\'a pas été retenue') }}</h1>
+<p>Droit concerné : {{ roleLabel }}.</p>
+{% if note %}<p style="border-left:4px solid #002395;padding-left:12px">{{ note }}</p>{% endif %}
+{% if status == 'approuvee' %}<p>Merci de votre engagement. Vous pouvez dès maintenant agir depuis l'administration.</p>
+{% elseif status == 'refusee' %}<p>Vous pourrez candidater de nouveau après 30 jours.</p>{% endif %}
+{% endblock %}

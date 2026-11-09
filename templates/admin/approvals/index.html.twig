@@ -1,0 +1,59 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}À valider<script nonce="{{ csp_nonce() }}">
+document.querySelectorAll('[data-check-all]').forEach(function (a) {
+  a.addEventListener('change', function () {
+    document.querySelectorAll('input[data-group="' + a.dataset.checkAll + '"]').forEach(function (c) { c.checked = a.checked; });
+  });
+});
+document.querySelectorAll('button[data-confirm]').forEach(function (b) {
+  b.addEventListener('click', function (e) { if (!window.confirm(b.dataset.confirm)) { e.preventDefault(); } });
+});
+</script>
+{% endblock %}
+{% block admin %}
+<h1 class="h3">À valider</h1>
+<p class="text-muted">Tout ce qui attend une décision, au même endroit. Un clic suffit. Ce qui est rédigé par l'IA est étiqueté : relisez la source avant d'approuver.</p>
+{% if total > 0 %}<form method="post" action="{{ path('admin_approval_all') }}" class="mb-3"><input type="hidden" name="_token" value="{{ csrf_token('approvals') }}"><button class="btn btn-primary" data-confirm="Approuver les {{ total }} éléments en attente, y compris ceux rédigés par l'IA ?">Tout approuver ({{ total }})</button></form>{% endif %}
+{% if total == 0 %}<div class="alert alert-success">Rien à valider pour le moment.</div>{% endif %}
+{% for g in groups|filter(g => g.count > 0) %}
+<section id="{{ g.kind }}" class="mb-4">
+  <h2 class="h5">{{ g.label }} <span class="badge text-bg-secondary">{{ g.count }}</span></h2>
+  <form method="post" action="{{ path('admin_approval_batch', {kind: g.kind, decision: 'approuver'}) }}">
+  <input type="hidden" name="_token" value="{{ csrf_token('approvals') }}">
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+    <label class="form-check-label small"><input type="checkbox" class="form-check-input me-1" data-check-all="{{ g.kind }}"> Tout cocher</label>
+    <button class="btn btn-sm btn-primary">Approuver la sélection</button>
+    {% if g.items|first and (g.items|first).canReject %}<button class="btn btn-sm btn-outline-danger" formaction="{{ path('admin_approval_batch', {kind: g.kind, decision: 'refuser'}) }}">Refuser la sélection</button>{% endif %}
+    <button class="btn btn-sm btn-outline-primary" name="tout" value="1" data-confirm="Approuver les {{ g.count }} éléments de « {{ g.label }} » ?">Tout approuver ({{ g.count }})</button>
+  </div>
+  <ul class="list-group">
+  {% for it in g.items %}
+    <li class="list-group-item d-flex flex-wrap gap-2 justify-content-between align-items-start">
+      <input type="checkbox" class="form-check-input mt-2" name="ids[]" value="{{ it.id }}" data-group="{{ g.kind }}" aria-label="Sélectionner : {{ it.title }}">
+      <div class="flex-grow-1" style="min-width:16rem">
+        <strong>{{ it.title }}</strong>{% if it.ai %} <span class="badge text-bg-warning">recherche IA</span>{% endif %}
+        {% if it.detail %}<div class="small text-muted">{{ it.detail }}</div>{% endif %}
+        {% if it.sourceUrl and it.sourceUrl starts with 'https://' %}<a class="small" href="{{ it.sourceUrl }}" target="_blank" rel="noopener noreferrer nofollow">Voir la source</a>{% endif %}
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary btn-sm" formaction="{{ path('admin_approval_decide', {kind: it.kind, id: it.id, decision: 'approuver'}) }}" name="tout" value="0">Approuver</button>
+        {% if it.canReject %}<button class="btn btn-outline-danger btn-sm" formaction="{{ path('admin_approval_decide', {kind: it.kind, id: it.id, decision: 'refuser'}) }}">Refuser</button>{% endif %}
+      </div>
+    </li>
+  {% endfor %}
+  </ul>
+  </form>
+  {% if g.count > g.items|length %}<p class="small text-muted mt-2">{{ g.items|length }} affichés sur {{ g.count }}. Les suivants apparaissent après traitement.</p>{% endif %}
+</section>
+{% endfor %}
+<script nonce="{{ csp_nonce() }}">
+document.querySelectorAll('[data-check-all]').forEach(function (a) {
+  a.addEventListener('change', function () {
+    document.querySelectorAll('input[data-group="' + a.dataset.checkAll + '"]').forEach(function (c) { c.checked = a.checked; });
+  });
+});
+document.querySelectorAll('button[data-confirm]').forEach(function (b) {
+  b.addEventListener('click', function (e) { if (!window.confirm(b.dataset.confirm)) { e.preventDefault(); } });
+});
+</script>
+{% endblock %}

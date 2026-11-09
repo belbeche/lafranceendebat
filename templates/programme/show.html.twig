@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ p.title }}{% endblock %}
+{% block meta_description %}{{ p.groupName }} : {{ p.title }}. Source officielle, chiffrage et niveau de crédibilité.{% endblock %}
+{% block body %}
+<main class="container py-4" style="max-width:860px">
+<p><a href="{{ path('app_programmes', {groupe: p.groupCode}) }}">&larr; Toutes les propositions de {{ p.groupName }}</a></p>
+<p class="mb-1"><span class="etiquette" {% if p.groupColor %}style="border-left:6px solid {{ p.groupColor }}"{% endif %}>{{ p.groupName }}</span> {% if p.theme %}<span class="etiquette bleu">Thème indicatif : {{ p.theme }}</span>{% endif %}</p>
+<h1 class="h3">{{ p.title }}</h1>
+{% if p.summary %}<p>{{ p.summary }}</p>{% endif %}
+<p class="meta">{{ p.source == 'AN' ? 'Proposition de loi déposée à l\'Assemblée nationale' ~ (p.legislature ? ', ' ~ p.legislature ~ 'e législature' : '') : (p.source == 'SENAT' ? 'Proposition de loi déposée au Sénat (groupe actuel du premier signataire)' : 'Mesure publiée par la formation') }}{% if p.depositedAt %}, le {{ p.depositedAt|date('d/m/Y') }}{% endif %}.<br>
+Source : <a href="{{ p.sourceUrl }}" rel="noopener nofollow" target="_blank">{{ p.sourceUrl|replace({'https://': ''}) }}</a></p>
+
+<section class="carte mb-4" aria-labelledby="chiffrage">
+    <h2 class="h5" id="chiffrage">Coût estimé</h2>
+    {% if p.costed %}
+        <p class="mb-1"><strong>{{ p.costMillions >= 0 ? '' : '−' }}{{ (p.costMillions|abs)|number_format(0, ',', ' ') }} millions d'euros par an</strong> {{ p.costMillions >= 0 ? '(dépense)' : '(économie ou recette)' }}</p>
+        <p class="mb-1"><span class="etiquette rouge">Crédibilité, niveau {{ p.costCredibility }}</span> {{ constant('App\\Entity\\PartyProposal::CREDIBILITY')[p.costCredibility] }}</p>
+        <p class="mb-1">Source du chiffrage : <a href="{{ p.costSource }}" rel="noopener nofollow" target="_blank">{{ p.costSource|replace({'https://': ''}) }}</a>{% if p.costNote %}. {{ p.costNote }}{% endif %}</p>
+        <p class="meta mb-0">Fiabilité de lecture : {{ p.sourcedReliability }} sur 100 selon le niveau {{ p.costCredibility }}. Un chiffrage est une estimation, pas un fait : méthodes et hypothèses diffèrent d'un organisme à l'autre.</p>
+    {% else %}
+        <p class="mb-0">Cette proposition n'a pas de chiffrage sourcé à ce jour. Vous connaissez une estimation publiée ? Signalez-la à la modération avec son lien : sans source, aucun chiffre n'est affiché.</p>
+    {% endif %}
+</section>
+
+{% if p.aiPublic %}{% set ai = p.aiAnalysis %}
+<section class="carte mb-4" aria-labelledby="hypothese" style="border-style:dashed">
+    <h2 class="h5" id="hypothese">Hypothèse de chiffrage par IA <span class="etiquette">non officielle</span></h2>
+    <p class="meta">Produite par {{ p.aiModel }} le {{ p.aiAt|date('d/m/Y') }}, relue par la modération. Ce n'est pas un chiffrage sourcé : elle est affichée à part et n'entre jamais dans les niveaux A, B ou C.</p>
+    {% if ai.costable %}
+        <p class="mb-1"><strong>Entre {{ p.aiLowMillions|number_format(0, ',', ' ') }} et {{ p.aiHighMillions|number_format(0, ',', ' ') }} millions d'euros par an</strong> (scénario central : {{ p.aiCentralMillions|number_format(0, ',', ' ') }}). Un chiffre négatif est une économie ou une recette.</p>
+        <p class="mb-1">Calcul : {{ ai.formula }}.</p>
+        <ul class="small">{% for k, r in ai.params %}{% if r.central != 0 or k in ['population', 'unit_cost_eur', 'take_up_pct'] %}<li><strong>{{ constant('App\\Service\\Programme\\CostModel::LABELS')[k] }}</strong> : de {{ r.low|number_format(0, ',', ' ') }} à {{ r.high|number_format(0, ',', ' ') }}, central {{ r.central|number_format(0, ',', ' ') }}.{% if r.basis %} <em>{{ r.basis }}</em>{% endif %}</li>{% endif %}{% endfor %}</ul>
+    {% else %}
+        <p class="mb-1">Cette proposition ne se chiffre pas sérieusement : {{ ai.reason }}</p>
+    {% endif %}
+    <p class="mb-1"><strong>Fiabilité de l'hypothèse : {{ p.aiReliability }} sur 100</strong> (plafonnée à {{ constant('App\\Service\\Programme\\ProposalAnalyst::MAX_RELIABILITY') }} tant qu'aucune source officielle ne confirme).</p>
+    {% if ai.missing_data %}<p class="small mb-1">Ce qui manque pour mieux chiffrer : {{ ai.missing_data|join(' ; ') }}.</p>{% endif %}
+    <div class="row small g-2"><div class="col-md-6"><strong>Argument avancé en faveur</strong><br>{{ ai.argument_for }}</div><div class="col-md-6"><strong>Argument avancé contre</strong><br>{{ ai.argument_against }}</div></div>
+</section>
+{% endif %}
+
+<section class="carte mb-4" aria-labelledby="avis">
+    <h2 class="h5" id="avis">Votre avis</h2>
+    <p class="meta">Avis consultatif de membres : ce n'est ni un vote officiel ni un sondage représentatif.</p>
+    <p class="mb-2">{{ counts.pour }} plutôt favorable{{ counts.pour > 1 ? 's' }} · {{ counts.reserve }} voulant en savoir plus · {{ counts.contre }} plutôt défavorable{{ counts.contre > 1 ? 's' }}</p>
+    {% if app.user %}
+    <form method="post" action="{{ path('app_programme_opinion', {id: p.id}) }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('opinion' ~ p.id) }}">
+        <fieldset class="mb-2"><legend class="h6">Votre position</legend>
+            {% for k, label in constant('App\\Entity\\ProposalOpinion::STANCES') %}<label class="me-3"><input type="radio" name="stance" value="{{ k }}" {{ (mine ? mine.stance : 'reserve') == k ? 'checked' }}> {{ label }}</label>{% endfor %}
+        </fieldset>
+        <label class="form-label" for="comment">Votre argument (facultatif, 500 caractères)</label>
+        <textarea id="comment" name="comment" class="form-control mb-2" rows="3" maxlength="500">{{ mine ? mine.comment }}</textarea>
+        <div class="form-check mb-2"><input class="form-check-input" type="checkbox" id="charte" name="charte" value="1" required><label class="form-check-label" for="charte">Je m'engage à respecter la <a href="{{ path('app_charter') }}">charte de la paix</a> : je critique des idées, jamais des personnes, et je cite mes sources.</label></div>
+        <button class="btn btn-bleu">{{ mine ? 'Modifier mon avis' : 'Donner mon avis' }}</button>
+    </form>
+    {% else %}
+    <p class="mb-0"><a class="btn btn-bleu" href="{{ path('app_login') }}">Connectez-vous pour donner votre avis</a></p>
+    {% endif %}
+    {% if comments %}<h3 class="h6 mt-3">Arguments des membres</h3><ul class="list-unstyled">{% for c in comments %}<li class="mb-2"><span class="etiquette">{{ constant('App\\Entity\\ProposalOpinion::STANCES')[c.stance] }}</span> {{ c.comment }}</li>{% endfor %}</ul>{% endif %}
+</section>
+{% include 'programme/_source_note.html.twig' %}
+</main>
+{% endblock %}

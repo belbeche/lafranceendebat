@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+{% block title %}Nouveau mot de passe | La France en Débat{% endblock %}
+{% block body %}
+<section class="section"><div class="container"><div class="row justify-content-center"><div class="col-md-7 col-lg-5">
+    <h1 class="h2">Choisir un nouveau mot de passe</h1>
+    <p class="text-muted">10 caractères minimum. Une phrase courte et facile à retenir est plus solide qu'un mot compliqué.</p>
+    <div class="form-card mt-3">
+        {% for message in app.flashes('reset_password_error') %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endfor %}
+        {{ form_start(resetForm, {attr: {novalidate: 'novalidate'}}) }}
+            <div class="mb-3">
+                {{ form_label(resetForm.plainPassword.first, 'Nouveau mot de passe', {label_attr: {class: 'form-label'}}) }}
+                {{ form_widget(resetForm.plainPassword.first, {attr: {class: 'form-control', 'data-toggle-password': '1', autofocus: 'autofocus'}}) }}
+                {{ form_errors(resetForm.plainPassword.first) }}
+                <div class="progress mt-2" style="height:6px" aria-hidden="true"><div id="pw-bar" class="progress-bar" style="width:0"></div></div>
+                <small id="pw-hint" class="text-muted" aria-live="polite">0 / 10 caractères</small>
+            </div>
+            <div class="mb-3">
+                {{ form_label(resetForm.plainPassword.second, 'Confirmez le mot de passe', {label_attr: {class: 'form-label'}}) }}
+                {{ form_widget(resetForm.plainPassword.second, {attr: {class: 'form-control', 'data-toggle-password': '1'}}) }}
+                {{ form_errors(resetForm.plainPassword.second) }}
+            </div>
+            <button class="btn btn-bleu w-100" type="submit">Enregistrer le mot de passe</button>
+        {{ form_end(resetForm) }}
+    </div>
+</div></div></div></section>
+<script nonce="{{ csp_nonce() }}">
+(function () {
+  var i = document.getElementById('{{ resetForm.plainPassword.first.vars.id }}');
+  var bar = document.getElementById('pw-bar'), hint = document.getElementById('pw-hint');
+  if (!i) return;
+  i.addEventListener('input', function () {
+    var n = i.value.length, p = Math.min(100, Math.round(n / 14 * 100));
+    bar.style.width = p + '%';
+    bar.style.background = n < 10 ? '#ED2939' : (n < 14 ? '#e0a800' : '#198754');
+    hint.textContent = n < 10 ? n + ' / 10 caractères' : (n < 14 ? 'Correct, plus long serait mieux' : 'Solide');
+  });
+})();
+</script>
+{% endblock %}

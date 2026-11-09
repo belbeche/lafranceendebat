@@ -1,0 +1,28 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block admin %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">{{ title }}</h1>
+    <a class="btn btn-bleu" href="{{ path(prefix ~ 'new') }}">Ajouter</a>
+</div>
+<div class="table-responsive"><table class="table table-sm table-hover align-middle admin-table bg-white">
+    <thead><tr>{% for label in columns|keys %}<th scope="col">{{ label }}</th>{% endfor %}<th></th></tr></thead>
+    <tbody>
+    {% for row in rows %}
+        <tr>
+            {% for label, getter in columns %}
+                {% set v = attribute(row, getter) %}
+                <td>{% if v.format is defined %}{{ v|date('d/m/Y H:i') }}{% elseif v is same as(true) %}oui{% elseif v is same as(false) %}non{% else %}{{ v }}{% endif %}</td>
+            {% endfor %}
+            <td class="text-end text-nowrap">
+                <a class="btn btn-sm btn-outline-dark" href="{{ path(prefix ~ 'edit', {id: row.id}) }}">Modifier</a>
+                <form method="post" action="{{ path(prefix ~ 'delete', {id: row.id}) }}" class="d-inline" onsubmit="return confirm('Supprimer cet élément ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ prefix ~ row.id) }}">
+                    <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+    {% else %}<tr><td colspan="{{ columns|length + 1 }}" class="text-center text-muted">Aucun élément.</td></tr>{% endfor %}
+    </tbody>
+</table></div>
+{% endblock %}

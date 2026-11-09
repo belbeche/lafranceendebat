@@ -1,0 +1,20 @@
+{# Statistiques publiques de lecture. Variables : stats (ou null), kind, id #}
+<div class="carte mb-3" id="lectures">
+    <h2 class="h6 mb-2">L'intérêt des lecteurs, en toute transparence</h2>
+    {% if stats %}
+        <div class="read-stats">
+            <span><strong>{{ stats.views|number_format(0, ',', ' ') }}</strong> lecture{{ stats.views > 1 ? 's' }}</span>
+            {% if stats.samples > 0 %}
+                <span><strong>{{ stats.avgSeconds|duration }}</strong> de lecture en moyenne</span>
+                <span><strong>{{ stats.totalSeconds|duration }}</strong> cumulées</span>
+                <span><strong>{{ stats.engagedPct }} %</strong> ont lu en profondeur</span>
+                <span><strong>{{ stats.bouncePct }} %</strong> sont repartis en moins de 10 s</span>
+            {% endif %}
+        </div>
+        {% if stats.samples > 0 %}<div class="read-bar mt-2" role="img" aria-label="{{ stats.engagedPct }} % de lectures approfondies"><i style="width: {{ stats.engagedPct }}%"></i></div>{% endif %}
+        <p class="meta mt-2 mb-0"><strong>{{ stats.label }}.</strong> Le temps de lecture est mesuré sur {{ stats.samples }} lecteur{{ stats.samples > 1 ? 's' }} ayant accepté la mesure ; les lectures sont comptées une fois par personne et par jour, sans cookie ni identité. <a href="{{ path('app_privacy_policy') }}#lecture">Comment c'est calculé</a></p>
+    {% else %}
+        <p class="meta mb-0">Pas encore de lecture enregistrée.</p>
+    {% endif %}
+</div>
+{% if consent_audience() %}<script src="{{ asset('js/read-meter.js') }}" data-url="{{ path('app_read_meter') }}" data-kind="{{ kind }}" data-id="{{ id }}" defer></script>{% endif %}

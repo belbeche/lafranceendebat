@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mentions légales{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Mentions légales</h1></div></header>
+<section class="section"><div class="container measure">
+    <h2 class="h5">Éditeur</h2>
+    <p>{{ publisher.name ?: 'À compléter : nom de l\'éditeur' }}<br>{{ publisher.address ?: 'À compléter : adresse' }}
+    {% if publisher.siret %}<br>SIRET : {{ publisher.siret }}{% endif %}{% if publisher.rna %}<br>RNA : {{ publisher.rna }}{% endif %}<br>{{ publisher.vat_note }}</p>
+    <p>Directeur de la publication : {{ publisher.director ?: 'À compléter' }}<br>Contact : <a href="mailto:{{ publisher.email }}">{{ publisher.email }}</a></p>
+    <h2 class="h5">Hébergeur</h2>
+    <p>{% if publisher.host_name and publisher.host_name or publisher.host_address %}{{ publisher.host_name }}{% if publisher.host_address %}<br>{{ publisher.host_address }}{% endif %}{% else %}À compléter par l'éditeur (nom, adresse de l'hébergeur), conformément à l'article 6 de la loi pour la confiance dans l'économie numérique.{% endif %}</p>
+    <h2 class="h5">Indépendance politique et financement</h2>
+    <p>Le site ne reçoit aucun financement d'un parti, d'un candidat ou d'un groupement politique, et ne collecte aucun don pour eux. Les prestations pour un parti, un candidat ou une campagne sont interdites sur la place de marché (<a href="{{ path('app_marketplace_terms') }}">conditions</a>).</p>
+    <h2 class="h5">Place de marché et médiation</h2>
+    <p>Les missions rémunérées suivent les <a href="{{ path('app_marketplace_terms') }}">conditions de la place de marché</a>. Médiateur de la consommation : {% if publisher.mediator %}{{ publisher.mediator }}{% if publisher.mediator_url %} (<a href="{{ publisher.mediator_url }}" rel="noopener nofollow">{{ publisher.mediator_url }}</a>){% endif %}{% else %}à compléter par l'éditeur avant l'ouverture des paiements{% endif %}.</p>
+    <h2 class="h5">Nature du site</h2>
+    <p>Espace citoyen indépendant. Il n'est rattaché à aucun parti, candidat ni institution. Les consultations et soutiens n'ont aucune valeur d'élection ou de référendum officiel.</p>
+</div></section>
+{% endblock %}

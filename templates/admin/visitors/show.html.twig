@@ -1,0 +1,416 @@
+{# templates/admin/visitors/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail visiteur #{{ visitor.id }} - La France en Débat{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #0a1a2d 0%, #1a365d 100%); min-height: 100vh;">
+    <!-- Fil d'Ariane -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('admin_dashboard') }}" class="text-decoration-none text-gold"><i class="bi bi-house-door"></i> Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('admin_visitors') }}" class="text-decoration-none text-gold"><i class="bi bi-people"></i> Visiteurs</a></li>
+                    <li class="breadcrumb-item active text-white" aria-current="page">Détail visiteur #{{ visitor.id }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- En-tête -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4 overflow-hidden" style="backdrop-filter: blur(10px); border: 1px solid rgba(255,215,0,0.2);">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h3 mb-0 text-white">
+                            <i class="bi bi-person-vcard me-2" style="color: var(--gold);"></i>
+                            FICHE VISITEUR #{{ visitor.id }}
+                        </h2>
+                        <div>
+                            <a href="{{ path('admin_visitors') }}" class="btn btn-outline-gold rounded-pill px-4 me-2">
+                                <i class="bi bi-arrow-left me-2"></i>Retour
+                            </a>
+                            <button onclick="window.print()" class="btn btn-gold rounded-pill px-4">
+                                <i class="bi bi-printer me-2"></i>Imprimer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="row g-4">
+        <!-- Colonne gauche : Profil et informations personnelles -->
+        <div class="col-lg-4">
+            <!-- Carte de profil -->
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4 overflow-hidden mb-4" style="backdrop-filter: blur(10px); border: 1px solid rgba(255,215,0,0.2);">
+                <div class="card-body text-center p-5">
+                    <div class="position-relative d-inline-block mb-4">
+                        <div class="rounded-circle bg-gradient p-1" style="background: linear-gradient(135deg, var(--gold), var(--primary-blue)); width: 120px; height: 120px; margin: 0 auto;">
+                            <div class="rounded-circle bg-dark d-flex align-items-center justify-content-center" style="width: 100%; height: 100%;">
+                                <i class="bi bi-person-fill" style="font-size: 3.5rem; color: var(--gold);"></i>
+                            </div>
+                        </div>
+                        <span class="position-absolute bottom-0 end-0 bg-success rounded-circle p-2 border border-3 border-dark" style="width: 20px; height: 20px;"></span>
+                    </div>
+                    
+                    <h4 class="mb-1 text-white fw-bold">{{ visitor.ipAddress ?: 'IP non identifiée' }}</h4>
+                    <p class="text-light opacity-75 mb-3">
+                        <i class="bi bi-clock me-1" style="color: var(--gold);"></i>
+                        Visité le {{ visitor.visitedAt|date('d/m/Y à H:i:s') }}
+                    </p>
+                    
+                    <div class="d-flex justify-content-center gap-3 mb-4">
+                        {% if visitor.countryCode %}
+                        <span class="badge bg-dark text-gold py-2 px-3 rounded-pill border border-gold">
+                            <i class="bi bi-flag me-1"></i>
+                            {{ visitor.countryCode }}
+                        </span>
+                        {% endif %}
+                        {% if visitor.city %}
+                        <span class="badge bg-dark text-gold py-2 px-3 rounded-pill border border-gold">
+                            <i class="bi bi-geo-alt me-1"></i>
+                            {{ visitor.city }}
+                        </span>
+                        {% endif %}
+                    </div>
+                    
+                    <hr class="my-4 border-gold border-opacity-25">
+                    
+                    <div class="text-start">
+                        <h6 class="fw-bold mb-3 text-gold">
+                            <i class="bi bi-info-circle me-2"></i>
+                            INFORMATIONS TECHNIQUES
+                        </h6>
+                        
+                        <div class="mb-3">
+                            <label class="text-light opacity-75 small mb-1">Adresse IP</label>
+                            <div class="bg-dark bg-opacity-50 rounded-3 p-3 border border-gold border-opacity-25">
+                                <code class="text-gold">{{ visitor.ipAddress }}</code>
+                                <button class="btn btn-sm btn-link text-gold ms-2" onclick="copyToClipboard('{{ visitor.ipAddress }}')">
+                                    <i class="bi bi-files"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-light opacity-75 small mb-1">Page visitée</label>
+                            <div class="bg-dark bg-opacity-50 rounded-3 p-3 border border-gold border-opacity-25">
+                                <code class="text-gold">{{ visitor.pageVisited ?: 'Page d\'accueil' }}</code>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="text-light opacity-75 small mb-1">Langue du navigateur</label>
+                            <div class="bg-dark bg-opacity-50 rounded-3 p-3 border border-gold border-opacity-25">
+                                <span class="text-white">{{ visitor.language ?: 'Non détectée' }}</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="text-light opacity-75 small mb-1">Fuseau horaire</label>
+                            <div class="bg-dark bg-opacity-50 rounded-3 p-3 border border-gold border-opacity-25">
+                                <span class="text-white">{{ visitor.timezone ?: 'UTC' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Carte de géolocalisation -->
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4 overflow-hidden" style="backdrop-filter: blur(10px); border: 1px solid rgba(255,215,0,0.2);">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h5 class="mb-0 fw-bold text-gold">
+                        <i class="bi bi-globe2 me-2"></i>
+                        GÉOLOCALISATION
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    {% if visitor.latitude and visitor.longitude %}
+                        <div id="visitorMap" style="height: 250px; border-radius: 12px;" class="mb-3"></div>
+                        <div class="d-flex justify-content-between text-light opacity-75 small">
+                            <span><i class="bi bi-geo-alt me-1 text-gold"></i>Lat: {{ visitor.latitude }}</span>
+                            <span><i class="bi bi-geo-alt me-1 text-gold"></i>Long: {{ visitor.longitude }}</span>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-map text-gold" style="font-size: 3rem; opacity: 0.5;"></i>
+                            <p class="text-light opacity-50 mt-3">Données de géolocalisation non disponibles</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Colonne droite : Informations détaillées -->
+        <div class="col-lg-8">
+            <!-- Carte User-Agent -->
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4 overflow-hidden mb-4" style="backdrop-filter: blur(10px); border: 1px solid rgba(255,215,0,0.2);">
+                <div class="card-header bg-transparent border-0 pt-4 px-4">
+                    <h5 class="mb-0 fw-bold text-gold">
+                        <i class="bi bi-pc-display me-2"></i>
+                        INFORMATIONS SYSTÈME & NAVIGATEUR
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <!-- Navigateur -->
+                        <div class="col-md-4">
+                            <div class="bg-dark bg-opacity-50 rounded-4 p-4 text-center h-100 border border-gold border-opacity-25">
+                                <i class="bi bi-browser-chrome" style="font-size: 2.5rem; color: var(--gold);"></i>
+                                <h6 class="fw-bold mt-3 mb-2 text-white">NAVIGATEUR</h6>
+                                <p class="mb-0 text-light opacity-75">{{ visitor.browser ?: 'Non détecté' }}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Système d'exploitation -->
+                        <div class="col-md-4">
+                            <div class="bg-dark bg-opacity-50 rounded-4 p-4 text-center h-100 border border-gold border-opacity-25">
+                                <i class="bi bi-laptop" style="font-size: 2.5rem; color: var(--gold);"></i>
+                                <h6 class="fw-bold mt-3 mb-2 text-white">SYSTÈME</h6>
+                                <p class="mb-0 text-light opacity-75">{{ visitor.os ?: 'Non détecté' }}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Appareil -->
+                        <div class="col-md-4">
+                            <div class="bg-dark bg-opacity-50 rounded-4 p-4 text-center h-100 border border-gold border-opacity-25">
+                                <i class="bi bi-phone" style="font-size: 2.5rem; color: var(--gold);"></i>
+                                <h6 class="fw-bold mt-3 mb-2 text-white">APPAREIL</h6>
+                                <p class="mb-0 text-light opacity-75">{{ visitor.device ?: 'Non détecté' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- User-Agent complet -->
+                    <div class="mt-4">
+                        <label class="text-light opacity-75 small mb-2">User-Agent complet</label>
+                        <div class="bg-dark bg-opacity-75 text-gold rounded-3 p-3 border border-gold border-opacity-25" style="font-family: monospace; font-size: 0.85rem; word-break: break-all;">
+                            {{ visitor.userAgent ?: 'Non disponible' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carte Historique des visites -->
+            <div class="card border-0 bg-dark bg-opacity-25 backdrop-blur rounded-4 overflow-hidden" style="backdrop-filter: blur(10px); border: 1px solid rgba(255,215,0,0.2);">
+                <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-gold">
+                        <i class="bi bi-clock-history me-2"></i>
+                        HISTORIQUE DES VISITES ({{ visitorHistory|length }})
+                    </h5>
+                    <a href="#" class="btn btn-sm btn-gold rounded-pill px-3">Voir tout</a>
+                </div>
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover align-middle">
+                            <thead class="bg-gold bg-opacity-10">
+                                <tr>
+                                    <th class="py-3">Date</th>
+                                    <th class="py-3">Page</th>
+                                    <th class="py-3">Durée</th>
+                                    <th class="py-3">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for visit in visitorHistory|slice(0, 5) %}
+                                <tr class="visitor-row">
+                                    <td>
+                                        <i class="bi bi-calendar me-1 text-gold"></i>
+                                        {{ visit.visitedAt|date('d/m/Y H:i') }}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary bg-opacity-25 text-primary py-2 px-3 rounded-pill">
+                                            {{ visit.pageVisited ?: 'Accueil' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {% if visit.duration %}
+                                            <span class="text-gold">{{ visit.duration }} min</span>
+                                        {% else %}
+                                            <span class="text-light opacity-50">-</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('admin_visitor_show', {'id': visit.id}) }}" class="btn btn-sm btn-outline-gold rounded-circle">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">
+                                        <i class="bi bi-inbox text-gold" style="font-size: 2rem; opacity: 0.5;"></i>
+                                        <p class="text-light opacity-50 mt-2">Aucune visite précédente</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions supplémentaires -->
+            <div class="row mt-4 g-3">
+                <div class="col-md-6">
+                    <button class="btn btn-outline-gold w-100 py-3 rounded-pill" onclick="blockIP('{{ visitor.ipAddress }}')">
+                        <i class="bi bi-shield-lock me-2"></i>
+                        BLOQUER CETTE IP
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <form method="post" action="{{ path('admin_visitor_delete', {'id': visitor.id}) }}" 
+                          onsubmit="return confirm('Supprimer définitivement cette visite ?')">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ visitor.id) }}">
+                        <button type="submit" class="btn btn-outline-danger w-100 py-3 rounded-pill">
+                            <i class="bi bi-trash me-2"></i>
+                            SUPPRIMER CETTE VISITE
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.backdrop-blur {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.border-gold {
+    border-color: var(--gold) !important;
+}
+
+.text-gold {
+    color: var(--gold) !important;
+}
+
+.bg-gold {
+    background-color: var(--gold) !important;
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--gold), #ffd700);
+    color: var(--dark-blue);
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+    color: var(--dark-blue);
+}
+
+.btn-outline-gold {
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    background: transparent;
+}
+
+.btn-outline-gold:hover {
+    background: var(--gold);
+    color: var(--dark-blue);
+}
+
+.visitor-row {
+    transition: all 0.3s ease;
+}
+
+.visitor-row:hover {
+    background: rgba(255, 215, 0, 0.1) !important;
+    transform: translateX(5px);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: var(--gold);
+    opacity: 0.5;
+}
+
+/* Styles pour l'impression */
+@media print {
+    .btn, .btn-group, form, .dropdown {
+        display: none !important;
+    }
+    .card {
+        border: 1px solid #000 !important;
+        background: white !important;
+    }
+    body {
+        background: white !important;
+    }
+}
+</style>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        showToast('IP copiée dans le presse-papiers', 'success');
+    });
+}
+
+function blockIP(ip) {
+    if (confirm(`Voulez-vous vraiment bloquer l'IP ${ip} ?`)) {
+        // Appel AJAX pour bloquer l'IP
+        fetch('/admin/visitors/block-ip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ip: ip })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(`IP ${ip} bloquée avec succès`, 'success');
+            } else {
+                showToast('Erreur lors du blocage', 'error');
+            }
+        });
+    }
+}
+
+function showToast(message, type) {
+    // Utiliser votre système de toast existant
+    alert(message); // À remplacer par votre système de toast
+}
+</script>
+
+{% block javascripts %}
+{{ parent() }}
+{% if visitor.latitude and visitor.longitude %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialisation de la carte
+    const map = L.map('visitorMap').setView([{{ visitor.latitude }}, {{ visitor.longitude }}], 13);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+    
+    // Marqueur personnalisé style yacht
+    const yachtIcon = L.divIcon({
+        html: '<i class="bi bi-ship" style="font-size: 2rem; color: var(--gold); filter: drop-shadow(0 4px 4px rgba(0,0,0,0.2));"></i>',
+        className: 'custom-marker',
+        iconSize: [30, 30],
+        popupAnchor: [0, -15]
+    });
+    
+    L.marker([{{ visitor.latitude }}, {{ visitor.longitude }}], { icon: yachtIcon })
+        .addTo(map)
+        .bindPopup('<b style="color: var(--dark-blue);">Visiteur</b><br>{{ visitor.ipAddress }}');
+});
+</script>
+{% endif %}
+{% endblock %}
+{% endblock %}

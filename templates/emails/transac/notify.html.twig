@@ -1,0 +1,8 @@
+{% extends 'emails/transac/_layout.html.twig' %}
+{% block title %}{{ heading }}{% endblock %}
+{% block content %}
+<h1 style="font-size:20px;color:#00164f">{{ heading }}</h1>
+<p>{{ body|nl2br }}</p>
+<p><a href="{{ link }}" style="display:inline-block;background:#002395;color:#fff;padding:12px 22px;text-decoration:none;font-weight:bold">{{ cta }}</a></p>
+<p style="font-size:13px;color:#555">{{ footnote }}{% if unsubscribe|default %}<br><a href="{{ unsubscribe }}" style="color:#555">Ne plus recevoir ces e-mails</a>{% endif %}</p>
+{% endblock %}

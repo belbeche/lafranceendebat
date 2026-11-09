@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}Historique des modifications{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Historique des modifications</h1><p class="lede mb-0">{{ title }}</p></div></header>
+<section class="section"><div class="container" style="max-width:820px">
+<p><a href="{{ back }}">Retour au contenu</a></p>
+<p class="meta">Chaque entrée montre le texte tel qu'il était <strong>avant</strong> la modification. Les corrections faites dans les 5 minutes suivant la publication ne sont pas conservées.</p>
+{% for r in revisions %}
+    <article class="carte mb-3">
+        <h2 class="h6">{{ r.createdAt|date('d/m/Y à H:i') }} · modifié par {{ r.byModerator ? 'la modération' : 'son auteur' }}</h2>
+        {% for k, v in r.oldValues %}{% if v|trim != '' %}<p class="mb-2"><strong>{{ labels[k] ?? k }} (avant)</strong><br>{{ v|nl2br }}</p>{% endif %}{% endfor %}
+    </article>
+{% else %}
+    <div class="carte">Aucune version antérieure conservée pour ce contenu.</div>
+{% endfor %}
+</div></section>
+{% endblock %}

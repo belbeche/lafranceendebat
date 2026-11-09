@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Fiche : {{ proposition.title }}{% endblock %}
+{% block body %}
+<section class="section"><div class="container measure">
+    <p class="meta">Fiche de proposition citoyenne n° {{ proposition.id }} · La France en Débat · éditée le {{ 'now'|date('d/m/Y') }}</p>
+    <h1>{{ proposition.title }}</h1>
+    <p><span class="etiquette bleu">{{ proposition.theme }}</span> · {{ proposition.supportCount }} soutien{{ proposition.supportCount > 1 ? 's' }} consultatif{{ proposition.supportCount > 1 ? 's' }}, sans valeur de vote officiel · proposée par {{ proposition.authorDisplayName }}</p>
+    {% include 'proposition/_fiche.html.twig' %}
+    {% if amendements|length %}
+        <h2 class="h5 mt-4">Amendements proposés par des citoyens</h2>
+        <ul>{% for a in amendements %}<li>{{ a.content }}</li>{% endfor %}</ul>
+    {% endif %}
+    <div class="limite mt-4">Cette fiche exprime une proposition citoyenne. Elle ne constitue ni une pétition, ni une initiative législative officielle, et n'oblige aucune institution à répondre.</div>
+    <p class="no-print mt-3"><button class="btn btn-bleu" data-print>Imprimer</button> <a href="{{ path('app_proposition_show', {id: proposition.id}) }}">Retour</a></p>
+</div></section>
+{% endblock %}
