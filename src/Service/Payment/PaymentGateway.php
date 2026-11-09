@@ -20,7 +20,7 @@ interface PaymentGateway
     public function createCheckout(int $orderId, string $title, int $amountCents, string $buyerEmail, string $successUrl, string $cancelUrl): array;
 
     /** @return array{payment_intent:?string,paid:bool,amount:int} */
-    /** Don en ligne : encaisse sur le compte de la plateforme (l'association), sans virement a un tiers. */
+    /** Contribution de soutien en ligne : encaisse sur le compte de la plateforme (l'éditeur), sans virement à un tiers. */
     public function createDonationCheckout(int $donationId, int $amountCents, string $donorEmail, string $successUrl, string $cancelUrl): array;
 
     public function retrieveCheckout(string $sessionId): array;

@@ -68,7 +68,7 @@ class StripeGateway implements PaymentGateway
         $s = $this->post('/checkout/sessions', [
             'mode' => 'payment', 'customer_email' => $donorEmail, 'client_reference_id' => 'DON_' . $donationId,
             'success_url' => $successUrl, 'cancel_url' => $cancelUrl,
-            'line_items' => [['quantity' => 1, 'price_data' => ['currency' => 'eur', 'unit_amount' => $amountCents, 'product_data' => ['name' => 'Don à l\'association']]]],
+            'line_items' => [['quantity' => 1, 'price_data' => ['currency' => 'eur', 'unit_amount' => $amountCents, 'product_data' => ['name' => 'Contribution de soutien à La France en Débat']]]],
             'metadata' => ['donation_id' => (string) $donationId],
         ] + self::STUDIO_PARAMS, 'donation-' . $donationId);
 
