@@ -46,6 +46,10 @@ class Dossier
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $moderationNote = null;
 
+    /** Dossier rédigé par l'équipe (pas par un citoyen) : change la mention affichée sur la page. */
+    #[ORM\Column(options: ['default' => false])]
+    private bool $editorial = false;
+
     #[ORM\Column]
     private \DateTimeImmutable $createdAt;
 
@@ -79,6 +83,9 @@ class Dossier
     {
         return array_values(array_filter(array_map('trim', preg_split('/\R/', $this->sources) ?: []), static fn ($l) => preg_match('#^https://\S+$#i', $l) === 1));
     }
+
+    public function isEditorial(): bool { return $this->editorial; }
+    public function setEditorial(bool $v): self { $this->editorial = $v; return $this; }
 
     public function getStatus(): string { return $this->status; }
     public function isPublished(): bool { return self::STATUS_PUBLISHED === $this->status; }

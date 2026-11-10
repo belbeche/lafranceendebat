@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ n.title }}{% endblock %}
+{% block meta_description %}{{ n.summary|slice(0, 160) }}{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container" style="max-width:820px">
+  <p class="meta mb-1"><a class="text-white" href="{{ path('app_news') }}">Actualités</a></p>
+  <h1>{{ n.title }}</h1>
+  <p class="meta mb-0 text-white"><time datetime="{{ n.publishedOn|date('Y-m-d') }}">{{ n.publishedOn|date('d/m/Y') }}</time></p>
+</div></header>
+<section class="section"><div class="container" style="max-width:820px">
+  {% if not n.published %}<div class="alert alert-warning">Brouillon : visible uniquement par l'équipe de modération.</div>{% endif %}
+  <p class="lead">{{ n.summary }}</p>
+  {% if n.body %}<div class="measure">{{ n.body|md }}</div>{% endif %}
+  <div class="carte mt-4">
+    <h2 class="h6">Source</h2>
+    <p class="mb-1">{{ n.sourceName }}</p>
+    {% if n.sourceUrl %}<p class="mb-0"><a href="{{ n.sourceUrl }}" target="_blank" rel="noopener noreferrer nofollow">Consulter la source</a></p>{% endif %}
+  </div>
+  <p class="meta mt-3">Résumé établi par l'éditeur. Il distingue les faits des déclarations, rapportées avec leur auteur. En cas de doute, la source fait foi.</p>
+  <p class="mt-3"><a class="btn btn-link" href="{{ path('app_news') }}">Toutes les actualités</a></p>
+</div></section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block title %}L'actualité du moment{% endblock %}
+{% block meta_description %}L'actualité sociale et politique du moment, résumée de façon factuelle, avec la source de chaque information. Gratuit, sans compte.{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>L'actualité du moment</h1>
+<p class="lead mb-0">Les faits, en quelques lignes, avec la source de chacun. Gratuit et sans compte. Nous distinguons les faits des opinions : vérifiez toujours à la source.</p></div></header>
+<section class="section"><div class="container" style="max-width:860px">
+{% for n in items %}
+  <article class="carte mb-3">
+    <p class="meta mb-1"><time datetime="{{ n.publishedOn|date('Y-m-d') }}">{{ n.publishedOn|date('d/m/Y') }}</time> · Source : {{ n.sourceName }}</p>
+    <h2 class="h5 mb-2"><a href="{{ path('app_news_show', {slug: n.slug}) }}">{{ n.title }}</a></h2>
+    <p class="mb-2">{{ n.summary }}</p>
+    <p class="small mb-0"><a href="{{ path('app_news_show', {slug: n.slug}) }}">Lire la suite et la source</a></p>
+  </article>
+{% else %}
+  <p class="text-muted">Aucune actualité publiée pour le moment.</p>
+{% endfor %}
+{% if pages > 1 %}<nav class="d-flex gap-2 mt-3" aria-label="Pages">
+  {% if page > 1 %}<a class="btn btn-outline-dark" style="min-height:44px" href="{{ path('app_news', {page: page - 1}) }}">Plus récentes</a>{% endif %}
+  <span class="align-self-center small">Page {{ page }} sur {{ pages }}</span>
+  {% if page < pages %}<a class="btn btn-outline-dark" style="min-height:44px" href="{{ path('app_news', {page: page + 1}) }}">Plus anciennes</a>{% endif %}
+</nav>{% endif %}
+</div></section>
+{% endblock %}

@@ -50,6 +50,7 @@ class HomeController extends AbstractController
         \App\Repository\ServiceOfferRepository $offers,
         DiscussionRepository $discussions,
         ConsultationRepository $consultations,
+        \Doctrine\ORM\EntityManagerInterface $em,
     ): Response {
         $top = $propositions->findValidatedRanked(null, 6);
         $user = $this->getUser();
@@ -73,6 +74,7 @@ class HomeController extends AbstractController
             'discussionCount' => $discussions->count([]),
             'openScrutins' => count($consultations->findOpen()),
             'themes' => Proposition::THEMES,
+            'latestNews' => $em->getRepository(\App\Entity\NewsItem::class)->findBy(['status' => \App\Entity\NewsItem::PUBLISHED], ['publishedOn' => 'DESC', 'id' => 'DESC'], 3),
         ]);
     }
 

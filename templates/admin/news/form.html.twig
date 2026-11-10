@@ -1,0 +1,26 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}{{ isNew ? 'Nouvelle actualité' : 'Modifier l\'actualité' }}{% endblock %}
+{% block admin %}
+<p><a href="{{ path('admin_news') }}">&larr; Actualités</a></p>
+<h1 class="h3">{{ isNew ? 'Écrire une actualité' : 'Modifier l\'actualité' }}</h1>
+{% for e in errors %}<div class="alert alert-danger" role="alert">{{ e }}</div>{% endfor %}
+<form method="post" class="adm-card" style="max-width:820px">
+  <input type="hidden" name="_token" value="{{ csrf_token('news') }}">
+  <div class="mb-3"><label class="form-label" for="title">Titre</label><input id="title" name="title" class="form-control" maxlength="180" required value="{{ n.title }}"></div>
+  <div class="mb-3"><label class="form-label" for="summary">Résumé factuel (600 caractères maximum)</label><textarea id="summary" name="summary" class="form-control" rows="4" maxlength="600" required>{{ n.summary }}</textarea>
+    <div class="form-text">Les faits d'abord. Une déclaration s'attribue à son auteur (« selon la CGT… »).</div></div>
+  <div class="mb-3"><label class="form-label" for="body">Texte complet (facultatif)</label><textarea id="body" name="body" class="form-control" rows="10">{{ n.body }}</textarea>
+    <details class="form-text"><summary>Mise en forme possible</summary><code>## Titre</code>, <code>- puce</code>, <code>1. liste</code>, <code>&gt; citation</code>, <code>**gras**</code>, <code>*italique*</code>, <code>[texte](https://lien)</code>. Les lignes vides séparent les paragraphes.</details></div>
+  <div class="row g-3 mb-3">
+    <div class="col-md-5"><label class="form-label" for="source_name">Nom de la source</label><input id="source_name" name="source_name" class="form-control" maxlength="160" required value="{{ n.sourceName }}"></div>
+    <div class="col-md-5"><label class="form-label" for="source_url">Lien de la source (https)</label><input id="source_url" name="source_url" class="form-control" type="url" value="{{ n.sourceUrl }}" placeholder="https://"></div>
+    <div class="col-md-2"><label class="form-label" for="date">Date</label><input id="date" name="date" class="form-control" type="date" value="{{ n.publishedOn|date('Y-m-d') }}"></div>
+  </div>
+  <div class="d-flex flex-wrap gap-2 align-items-center">
+    <button class="btn btn-primary" style="min-height:44px">Enregistrer</button>
+    <button class="btn btn-outline-primary" style="min-height:44px" name="publier" value="1">Enregistrer et publier</button>
+    {% if not isNew and n.published %}<a class="btn btn-link" href="{{ path('app_news_show', {slug: n.slug}) }}" target="_blank" rel="noopener">Voir la page publique</a>{% endif %}
+    {% if not isNew and not n.published %}<a class="btn btn-link" href="{{ path('app_news_show', {slug: n.slug}) }}" target="_blank" rel="noopener">Aperçu</a>{% endif %}
+  </div>
+</form>
+{% endblock %}

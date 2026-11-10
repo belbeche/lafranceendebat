@@ -1,0 +1,56 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Actualités{% endblock %}
+{% block admin %}
+<div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Actualités</h1>
+  <a class="btn btn-primary" style="min-height:44px" href="{{ path('admin_news_new') }}">Écrire une actualité</a>
+</div>
+<p class="text-muted">L'actualité du moment, publiée gratuitement sur <a href="{{ path('app_news') }}">/actualites</a>. Écrivez-la ou collez un texte : elle arrive en brouillon, et ne se publie qu'avec une source https.</p>
+
+<section class="adm-card">
+  <h2 class="h5">Importer</h2>
+  <div class="row g-3">
+    <div class="col-lg-7">
+      <form method="post" action="{{ path('admin_news_import') }}" class="d-flex flex-column gap-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('news') }}">
+        <label class="form-label mb-0" for="texte">Coller un texte (la 1re ligne devient le titre)</label>
+        <textarea id="texte" name="texte" class="form-control" rows="6" placeholder="Titre de l'actualité&#10;&#10;Premier paragraphe : le résumé des faits.&#10;&#10;Suite du texte, si besoin."></textarea>
+        <div class="row g-2">
+          <div class="col-sm-5"><label class="form-label mb-0 small" for="source_nom">Source</label><input id="source_nom" name="source_nom" class="form-control" maxlength="160" placeholder="ex. LCP, communiqué de la CGT"></div>
+          <div class="col-sm-5"><label class="form-label mb-0 small" for="source_url">Lien https</label><input id="source_url" name="source_url" class="form-control" type="url" placeholder="https://"></div>
+          <div class="col-sm-2"><label class="form-label mb-0 small" for="date">Date</label><input id="date" name="date" class="form-control" type="date"></div>
+        </div>
+        <div><button class="btn btn-outline-primary" style="min-height:44px">Créer le brouillon</button></div>
+      </form>
+    </div>
+    <div class="col-lg-5">
+      <form method="post" action="{{ path('admin_news_import') }}" enctype="multipart/form-data" class="d-flex flex-column gap-2">
+        <input type="hidden" name="_token" value="{{ csrf_token('news') }}">
+        <label class="form-label mb-0" for="fichier">Ou un fichier JSON (une liste d'actualités)</label>
+        <input id="fichier" name="fichier" type="file" accept=".json,application/json" class="form-control">
+        <div class="form-check"><input class="form-check-input" type="checkbox" id="pub" name="publier" value="1"><label class="form-check-label small" for="pub">Publier directement celles qui ont une source https</label></div>
+        <div><button class="btn btn-outline-primary" style="min-height:44px">Importer le fichier</button></div>
+        <p class="small text-muted mb-0">Champs : <code>title</code>, <code>summary</code>, <code>body</code>, <code>source_name</code>, <code>source_url</code>, <code>date</code>.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<div class="table-responsive"><table class="table align-middle bg-white">
+  <thead><tr><th>Date</th><th>Titre</th><th>Source</th><th>État</th><th class="text-end">Actions</th></tr></thead>
+  <tbody>
+  {% for n in items %}
+    <tr>
+      <td class="text-nowrap">{{ n.publishedOn|date('d/m/Y') }}</td>
+      <td><a href="{{ path('admin_news_edit', {id: n.id}) }}">{{ n.title }}</a></td>
+      <td class="small">{{ n.sourceName ?: 'à compléter' }}{% if not n.sourceUrl %} <span class="badge text-bg-warning">sans lien</span>{% endif %}</td>
+      <td>{% if n.published %}<span class="badge text-bg-success">Publiée</span>{% else %}<span class="badge text-bg-secondary">Brouillon</span>{% endif %}</td>
+      <td class="text-end text-nowrap">
+        <form method="post" action="{{ path('admin_news_toggle', {id: n.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('news') }}"><button class="btn btn-sm {{ n.published ? 'btn-outline-secondary' : 'btn-primary' }}" style="min-height:44px">{{ n.published ? 'Retirer' : 'Publier' }}</button></form>
+        <form method="post" action="{{ path('admin_news_delete', {id: n.id}) }}" class="d-inline" data-confirm="Supprimer cette actualité ?"><input type="hidden" name="_token" value="{{ csrf_token('news') }}"><button class="btn btn-sm btn-outline-danger" style="min-height:44px">Supprimer</button></form>
+      </td>
+    </tr>
+  {% else %}<tr><td colspan="5" class="text-muted">Aucune actualité. Collez un texte ci-dessus pour commencer.</td></tr>{% endfor %}
+  </tbody>
+</table></div>
+{% endblock %}

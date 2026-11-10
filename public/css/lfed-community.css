@@ -254,3 +254,16 @@ html,body{max-width:100%;overflow-x:hidden}
 .obl{margin-bottom:.35rem}
 .obl-tag{display:inline-block;min-width:7.5rem;font-weight:700}
 .obl-ok .obl-tag{color:#2e7d32}.obl-wip .obl-tag{color:#b26a00}.obl-todo .obl-tag{color:#ED2939}
+
+/* Barre du haut sur petit téléphone : les actions passent sur une 2e ligne plutôt que de dépasser de l écran */
+@media (max-width: 420px) {
+  .navbar-master > .container { padding-left: 10px; padding-right: 10px; column-gap: 6px; }
+  .navbar-master .navbar-brand { font-size: 1rem; margin-right: 0; }
+  .navbar-master .btn { padding-left: .5rem; padding-right: .5rem; }
+  .navbar-master .d-flex.ms-auto { gap: .25rem !important; }
+}
+@media (max-width: 575px) {
+  .navbar-master > .container { flex-wrap: wrap; row-gap: 6px; }
+  .navbar-master .navbar-brand { flex: 1 1 auto; }
+  .navbar-master .d-flex.ms-auto { flex: 1 1 100%; justify-content: flex-end; }
+}

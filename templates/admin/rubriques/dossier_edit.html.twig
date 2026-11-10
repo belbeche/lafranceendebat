@@ -1,14 +1,23 @@
 {% extends 'admin/_layout.html.twig' %}
-{% block title %}Corriger le dossier{% endblock %}
+{% block title %}{{ isNew ? 'Nouveau dossier' : 'Modifier le dossier' }}{% endblock %}
 {% block admin %}
-<h1 class="h3">Corriger le dossier</h1>
+<p><a href="{{ path('admin_rubrique', {kind: 'dossiers'}) }}">&larr; Dossiers</a></p>
+<h1 class="h3">{{ isNew ? 'Nouveau dossier' : 'Modifier le dossier' }}</h1>
 {% for e in errors %}<div class="alert alert-danger" role="alert">{{ e }}</div>{% endfor %}
-<form method="post" class="bg-white border rounded p-3" style="max-width:760px">
-<input type="hidden" name="_token" value="{{ csrf_token('rubedit' ~ d.id) }}">
-<div class="mb-3"><label class="form-label" for="title">Titre</label><input id="title" name="title" class="form-control" value="{{ app.request.request.get('title', d.title) }}" maxlength="160" required></div>
-<div class="mb-3"><label class="form-label" for="theme">Thème</label><select id="theme" name="theme" class="form-select"><option value="">Aucun</option>{% set cur = app.request.request.get('theme', d.theme) %}{% for t in themes %}<option {{ cur == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
-<div class="mb-3"><label class="form-label" for="intro">Introduction (400 caractères max)</label><textarea id="intro" name="intro" class="form-control" rows="2" maxlength="400" required>{{ app.request.request.get('intro', d.intro) }}</textarea></div>
-<div class="mb-3"><label class="form-label" for="body">Texte</label><textarea id="body" name="body" class="form-control" rows="10" required>{{ app.request.request.get('body', d.body) }}</textarea></div>
-<div class="mb-3"><label class="form-label" for="sources">Sources (une adresse https par ligne)</label><textarea id="sources" name="sources" class="form-control" rows="4" required>{{ app.request.request.get('sources', d.sources) }}</textarea></div>
-<button class="btn btn-bleu">Enregistrer</button> <a class="btn btn-link" href="{{ path('admin_rubrique', {kind: 'dossiers'}) }}">Annuler</a></form>
+{% set r = app.request.request %}
+<form method="post" class="adm-card" style="max-width:820px">
+<input type="hidden" name="_token" value="{{ csrf_token(tokenId) }}">
+<div class="mb-3"><label class="form-label" for="title">Titre</label><input id="title" name="title" class="form-control" value="{{ r.get('title', d.title) }}" maxlength="160" required></div>
+<div class="row g-3 mb-3">
+  <div class="col-md-6"><label class="form-label" for="slug">Adresse de la page</label><input id="slug" name="slug" class="form-control" value="{{ r.get('slug', d.slug) }}" maxlength="150" placeholder="vide = tirée du titre"><div class="form-text">/dossiers/<strong>{{ r.get('slug', d.slug) ?: '…' }}</strong>. Reprendre l'adresse d'un dossier intégré (ex. histoire-guerres) remplace sa page.</div></div>
+  <div class="col-md-3"><label class="form-label" for="theme">Thème</label><select id="theme" name="theme" class="form-select"><option value="">Aucun</option>{% set cur = r.get('theme', d.theme) %}{% for t in themes %}<option {{ cur == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+  <div class="col-md-3"><label class="form-label" for="state">État</label>{% set st = r.get('state', isNew ? 'published' : d.status) %}<select id="state" name="state" class="form-select"><option value="published" {{ st == 'published' ? 'selected' }}>Publié</option><option value="pending" {{ st == 'pending' ? 'selected' }}>En attente</option><option value="rejected" {{ st == 'rejected' ? 'selected' }}>Retiré / refusé</option></select></div>
+</div>
+<div class="mb-3"><label class="form-label" for="intro">Résumé (400 caractères maximum)</label><textarea id="intro" name="intro" class="form-control" rows="2" maxlength="400" required>{{ r.get('intro', d.intro) }}</textarea></div>
+<div class="mb-3"><label class="form-label" for="body">Texte</label><textarea id="body" name="body" class="form-control" rows="16" required>{{ r.get('body', d.body) }}</textarea>
+  <details class="form-text"><summary>Mise en forme possible</summary><code>## Titre</code>, <code>### Sous-titre</code>, <code>- puce</code>, <code>1. liste</code>, <code>&gt; encadré</code>, <code>**gras**</code>, <code>*italique*</code>, <code>[texte](https://lien)</code>, <code>[page du site](/debats)</code>. Une ligne vide sépare les paragraphes.</details></div>
+<div class="mb-3"><label class="form-label" for="sources">Sources (une adresse https par ligne)</label><textarea id="sources" name="sources" class="form-control" rows="5" required>{{ r.get('sources', d.sources) }}</textarea></div>
+<div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="editorial" name="editorial" value="1" {{ (r.has('title') ? r.get('editorial') : (isNew or d.editorial)) ? 'checked' }}><label class="form-check-label" for="editorial">Dossier de la rédaction (sinon, mention « dossier citoyen »)</label></div>
+<div class="d-flex flex-wrap gap-2"><button class="btn btn-primary" style="min-height:44px">Enregistrer</button>{% if not isNew %}<a class="btn btn-outline-secondary" style="min-height:44px" href="{{ path('app_dossier_page', {slug: d.slug}) }}" target="_blank" rel="noopener">Voir la page</a>{% endif %}<a class="btn btn-link" href="{{ path('admin_rubrique', {kind: 'dossiers'}) }}">Annuler</a></div>
+</form>
 {% endblock %}

@@ -23,7 +23,18 @@ class DossierController extends AbstractController
     #[Route('/dossiers', name: 'app_dossiers', methods: ['GET'])]
     public function index(\App\Service\DossierCatalog $catalog): Response
     {
-        return $this->render('dossier/index.html.twig', ['dossiers' => self::DOSSIERS, 'starters' => $catalog->starters(), 'citizen' => $catalog->published()]);
+        // Un dossier publié en base avec le même adresse qu'un dossier intégré le remplace (titre et résumé modifiables sans code).
+        $dossiers = self::DOSSIERS;
+        $citizen = [];
+        foreach ($catalog->published() as $d) {
+            if (isset($dossiers[$d->getSlug()])) {
+                $dossiers[$d->getSlug()] = [$d->getTitle(), $d->getIntro()];
+            } elseif (!isset($catalog->starters()[$d->getSlug()])) {
+                $citizen[] = $d;
+            }
+        }
+
+        return $this->render('dossier/index.html.twig', ['dossiers' => $dossiers, 'starters' => $catalog->starters(), 'citizen' => $citizen]);
     }
 
     #[Route('/dossiers/proposer', name: 'app_dossier_new', methods: ['GET', 'POST'], priority: 10)]
@@ -83,15 +94,22 @@ class DossierController extends AbstractController
     }
 
     #[Route('/dossiers/{slug}', name: 'app_dossier', methods: ['GET'], requirements: ['slug' => 'petition|education|constitution|appel-paix|histoire-guerres|terrorisme-memoire|ils-ont-change-le-monde|ia-controle-humain'])]
-    public function show(string $slug): Response
+    public function show(string $slug, \Doctrine\ORM\EntityManagerInterface $em): Response
     {
+        // Version modifiable depuis l'administration : si elle existe et est publiée, elle remplace le gabarit d'origine.
+        $db = $em->getRepository(\App\Entity\Dossier::class)->findOneBy(['slug' => $slug]);
+        if ($db && ($db->isPublished() || $this->isGranted('ROLE_MODERATOR'))) {
+            return $this->render('dossier/citizen.html.twig', ['dossier' => $db]);
+        }
+
         return $this->render('dossier/' . $slug . '.html.twig', ['title' => self::DOSSIERS[$slug][0], 'intro' => self::DOSSIERS[$slug][1]]);
     }
 
     #[Route('/dossiers/{slug}', name: 'app_dossier_page', methods: ['GET'], requirements: ['slug' => '[a-z0-9-]+'], priority: -5)]
     public function page(string $slug, \App\Service\DossierCatalog $catalog, \Doctrine\ORM\EntityManagerInterface $em): Response
     {
-        if (isset($catalog->starters()[$slug])) {
+        $override = $em->getRepository(\App\Entity\Dossier::class)->findOneBy(['slug' => $slug, 'status' => \App\Entity\Dossier::STATUS_PUBLISHED]);
+        if (!$override && isset($catalog->starters()[$slug])) {
             [$title, $intro, $links, $theme] = $catalog->starters()[$slug];
 
             return $this->render('dossier/starter.html.twig', ['title' => $title, 'intro' => $intro, 'links' => $links, 'theme' => $theme, 'slug' => $slug]);

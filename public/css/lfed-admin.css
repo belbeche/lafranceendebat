@@ -11,7 +11,41 @@
 .adm-nav details { margin-top: 10px; border-top: 1px solid #1b3a8f; padding-top: 8px; }
 .adm-nav summary { cursor: pointer; font-size: 13px; color: #b9c2e6; padding: 6px 12px; }
 .adm-main { flex: 999 1 640px; min-width: 0; padding: 0 0 0 24px; }
-@media (max-width: 991px) { .adm-main { padding: 20px 0 0; flex-basis: 100%; } .adm-nav { flex-basis: 100%; } }
+@media (max-width: 991px) { .adm { margin: 0; padding: 0 12px; } .adm-main { padding: 20px 0 0; flex-basis: 100%; } .adm-nav { flex-basis: 100%; } }
+
+/* Menu replié sur petit écran (bouton "Menu"), toujours déplié dès 992 px */
+.adm-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.adm-links { display: flex; flex-direction: column; gap: 2px; }
+.adm-links.collapse:not(.show) { display: none; }
+.adm-toggle { display: none; background: #002395; color: #fff; border: 1px solid #3a56b8; border-radius: 6px; min-height: 44px; min-width: 88px; padding: 0 16px; font-size: 15px; }
+.adm-toggle:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+@media (max-width: 991px) {
+  .adm-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .adm-nav { padding: 14px; }
+  .adm-nav .adm-sub { padding-bottom: 0; }
+  .adm-links { padding-top: 12px; }
+  .adm-nav a { min-height: 44px; align-items: center; }
+  .adm-nav summary { min-height: 44px; display: flex; align-items: center; }
+}
+@media (min-width: 992px) { .adm-links, .adm-links.collapse:not(.show) { display: flex !important; } }
+
+/* Contenu : rien ne déborde de l'écran, tableaux défilants, boutons faciles à toucher */
+.adm-main { overflow-wrap: anywhere; }
+.adm-main > table, .adm-main > form > table { display: block; overflow-x: auto; }
+.adm-main img, .adm-main video, .adm-main pre, .adm-main textarea, .adm-main input, .adm-main select { max-width: 100%; }
+.adm-main pre { overflow-x: auto; }
+.adm-main .table-responsive table { min-width: 560px; }
+@media (max-width: 991px) {
+  .adm-main h1 { font-size: 1.5rem; }
+  .adm-card { padding: 14px; }
+  .adm-main .btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .adm-main .form-control, .adm-main .form-select { min-height: 44px; font-size: 16px; }
+  .adm-main td.text-nowrap { white-space: normal !important; }
+  .adm-main td.text-end form, .adm-main td.text-end .btn { margin: 2px 0; }
+  .adm-todo { grid-template-columns: repeat(2, 1fr); }
+  .adm-status { padding: 12px 14px; }
+}
+@media (max-width: 480px) { .adm-todo { grid-template-columns: 1fr; } .adm-todo b { font-size: 26px; } }
 .adm-status { display: flex; flex-wrap: wrap; gap: 10px 26px; background: #fff; border: 1px solid #dde0ee; border-radius: 8px; padding: 16px 20px; margin-bottom: 18px; }
 .adm-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: #1a7f4b; }
 .adm-dot.warn { background: #b26a00; }

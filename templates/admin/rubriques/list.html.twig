@@ -1,7 +1,7 @@
 {% extends 'admin/_layout.html.twig' %}
 {% block title %}{{ label }}{% endblock %}
 {% block admin %}
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><h1 class="h3 mb-0">{{ label }}</h1><a href="{{ path('admin_rubriques') }}">Toutes les rubriques</a></div>
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><h1 class="h3 mb-0">{{ label }}</h1><span class="d-flex gap-3 align-items-center">{% if kind == 'dossiers' %}<a class="btn btn-primary" style="min-height:44px" href="{{ path('admin_rubrique_dossier_new') }}">Nouveau dossier</a>{% endif %}<a href="{{ path('admin_rubriques') }}">Toutes les rubriques</a></span></div>
 <form class="row g-2 mb-3" method="get">
 <div class="col-12 col-md-5"><label class="visually-hidden" for="q">Rechercher</label><input id="q" name="q" value="{{ q }}" class="form-control" placeholder="Rechercher par titre"></div>
 <div class="col-8 col-md-4"><label class="visually-hidden" for="st">Statut</label><select id="st" name="statut" class="form-select"><option value="">Tous les statuts</option>{% for k, v in statuses %}<option value="{{ k }}" {{ status == k ? 'selected' }}>{{ v }}</option>{% endfor %}</select></div>
@@ -13,7 +13,7 @@
 <td>{{ e.author ? e.author.publicName : 'Citoyen' }}</td>
 <td>{{ statuses[e.status] ?? e.status }}</td><td>{{ e.createdAt|date('d/m/Y') }}</td>
 <td class="text-end text-nowrap">
-{% if kind == 'dossiers' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_rubrique_dossier_edit', {id: e.id}) }}">Corriger</a>{% endif %}
+{% if kind == 'dossiers' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_rubrique_dossier_edit', {id: e.id}) }}">Modifier</a>{% endif %}
 {% if kind == 'contributeurs' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_rubrique_inspiration_advances', {id: e.id}) }}">Avancées</a>{% endif %}
 {% if e.status != 'published' %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'publier'}) }}"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><button class="btn btn-sm btn-bleu">Publier</button></form>{% else %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'retirer'}) }}"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><button class="btn btn-sm btn-outline-dark">Retirer</button></form>{% endif %}
 {% if e.status != 'rejected' %}<form method="post" class="d-inline" action="{{ path('admin_rubrique_action', {kind: kind, id: e.id, action: 'refuser'}) }}"><input type="hidden" name="_token" value="{{ tok }}"><input type="hidden" name="statut" value="{{ status }}"><label class="visually-hidden" for="n{{ e.id }}">Motif du refus</label><input id="n{{ e.id }}" name="note" class="form-control form-control-sm d-inline-block w-auto" placeholder="Motif" maxlength="500"><button class="btn btn-sm btn-outline-danger">Refuser</button></form>{% endif %}
@@ -27,7 +27,7 @@
 {% endif %}
 {% if editorial %}
 <h2 class="h5 mt-4">Intégrés à la plateforme ({{ editorial|length }})</h2>
-<p class="text-muted small">Ces dossiers sont écrits dans le code et toujours en ligne. Pour en modifier le texte, il faut une mise à jour du site. Les dossiers citoyens du tableau ci-dessus se gèrent ici.</p>
+<p class="text-muted small">Ces dossiers sont d'origine dans le code. Pour les rendre modifiables ici, lancez une fois <code>php bin/console app:dossiers:importer-editoriaux</code> : ils apparaissent alors dans le tableau ci-dessus et leur page est remplacée par la version modifiée.</p>
 <div class="table-responsive"><table class="table table-sm align-middle bg-white admin-table"><thead><tr><th scope="col">Dossier</th><th scope="col">Groupe</th><th></th></tr></thead><tbody>
 {% for d in editorial %}<tr><td>{{ d.title }}<div class="small text-muted">{{ d.intro }}</div></td><td>{{ d.group }}</td><td class="text-end"><a class="btn btn-sm btn-outline-dark" href="{{ d.url }}" target="_blank" rel="noopener">Voir la page</a></td></tr>{% endfor %}
 </tbody></table></div>

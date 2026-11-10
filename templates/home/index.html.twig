@@ -237,6 +237,26 @@
     {% endfor %}
 </div></section>
 {% endif %}
+{# Actualité du moment : 3 dernières, publiées par l'équipe avec source #}
+{% if latestNews|default([]) %}
+<section class="section" id="actualites">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+            <h2 class="zone-title mb-0">L'actualité du moment</h2>
+            <a href="{{ path('app_news') }}">Toutes les actualités</a>
+        </div>
+        <div class="row g-3">
+        {% for n in latestNews %}
+            <div class="col-md-4"><article class="card h-100"><div class="card-body">
+                <p class="small text-muted mb-1">{{ n.publishedOn|date('d/m/Y') }}</p>
+                <h3 class="h6"><a href="{{ path('app_news_show', {slug: n.slug}) }}" class="stretched-link text-decoration-none">{{ n.title }}</a></h3>
+                <p class="small mb-0">{{ n.summary|length > 160 ? n.summary|slice(0,160) ~ '…' : n.summary }}</p>
+            </div></article></div>
+        {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
 {# ZONE 3 : registre des propositions, classées par soutiens #}
 <section class="section" id="registre">
     <div class="container">

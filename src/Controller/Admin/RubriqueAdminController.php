@@ -179,18 +179,37 @@ class RubriqueAdminController extends AbstractController
         return $this->render('admin/rubriques/advances_edit.html.twig', ['i' => $i]);
     }
 
+    #[Route('/dossiers/nouveau', name: 'admin_rubrique_dossier_new', methods: ['GET', 'POST'], priority: 10)]
+    public function newDossier(Request $request, EntityManagerInterface $em): Response
+    {
+        return $this->dossierForm(new Dossier(), $request, $em, true);
+    }
+
     #[Route('/dossiers/{id}/modifier', name: 'admin_rubrique_dossier_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'], priority: 5)]
     public function editDossier(Dossier $d, Request $request, EntityManagerInterface $em): Response
     {
+        return $this->dossierForm($d, $request, $em, false);
+    }
+
+    /**
+     * Création et modification complètes d'un dossier par l'administration : titre, adresse (slug), thème, résumé,
+     * texte (mise en forme simple, voir SafeMarkdown), sources https, état (publié / en attente / refusé) et mention "rédaction".
+     * Un dossier publié dont l'adresse est celle d'un dossier intégré (ex. histoire-guerres) remplace la page d'origine.
+     */
+    private function dossierForm(Dossier $d, Request $request, EntityManagerInterface $em, bool $isNew): Response
+    {
         $errors = [];
+        $tokenId = 'rubedit' . ($d->getId() ?? 'new');
         if ($request->isMethod('POST')) {
-            if (!$this->isCsrfTokenValid('rubedit' . $d->getId(), (string) $request->request->get('_token'))) {
+            if (!$this->isCsrfTokenValid($tokenId, (string) $request->request->get('_token'))) {
                 $errors[] = 'Session expirée. Réessayez.';
             }
             $title = trim((string) $request->request->get('title'));
             $intro = trim((string) $request->request->get('intro'));
             $body = trim((string) $request->request->get('body'));
             $theme = trim((string) $request->request->get('theme'));
+            $slug = trim((string) $request->request->get('slug'));
+            $state = (string) $request->request->get('state', $d->getStatus());
             $links = array_values(array_filter(array_map('trim', preg_split('/\R/', (string) $request->request->get('sources')) ?: [])));
             foreach ($links as $l) {
                 if (!preg_match('#^https://\S+$#i', $l)) {
@@ -202,16 +221,44 @@ class RubriqueAdminController extends AbstractController
             if ('' === $intro || mb_strlen($intro) > 400) { $errors[] = 'Introduction : 1 à 400 caractères.'; }
             if (mb_strlen($body) < 40) { $errors[] = 'Texte : 40 caractères minimum.'; }
             if (!$links) { $errors[] = 'Au moins une source https est requise.'; }
+            if ('' === $slug) {
+                $slug = (string) (new \Symfony\Component\String\Slugger\AsciiSlugger())->slug(mb_strtolower($title));
+            }
+            $slug = mb_substr(strtolower($slug), 0, 150);
+            if (!preg_match('/^[a-z0-9]+(-[a-z0-9]+)*$/', $slug) || 'proposer' === $slug || 'nouveau' === $slug) {
+                $errors[] = 'Adresse : lettres minuscules, chiffres et tirets seulement.';
+            } elseif (($other = $em->getRepository(Dossier::class)->findOneBy(['slug' => $slug])) && $other !== $d) {
+                $errors[] = 'Cette adresse est déjà utilisée par un autre dossier.';
+            } elseif (!$isNew && $slug !== $d->getSlug() && $this->dossierUses($em, $d) > 0) {
+                $errors[] = 'Ce dossier est utilisé par des débats ou propositions : son adresse ne peut plus changer.';
+            }
+            if (!in_array($state, [Dossier::STATUS_PENDING, Dossier::STATUS_PUBLISHED, Dossier::STATUS_REJECTED], true)) {
+                $errors[] = 'État inconnu.';
+            }
+            if ('' !== $theme && !in_array($theme, Proposition::THEMES, true)) {
+                $errors[] = 'Thème inconnu.';
+            }
             if (!$errors) {
-                $d->setTitle($title)->setIntro($intro)->setBody($body)->setTheme($theme ?: null)->setSources(implode("\n", $links));
+                $d->setTitle($title)->setSlug($slug)->setIntro($intro)->setBody($body)->setTheme($theme ?: null)->setSources(implode("\n", $links))->setEditorial($request->request->getBoolean('editorial'));
+                if ($isNew) {
+                    $d->setAuthor($this->getUser() instanceof \App\Entity\User ? $this->getUser() : null);
+                    $em->persist($d);
+                }
+                if (Dossier::STATUS_PUBLISHED === $state && !$d->isPublished()) {
+                    $d->publish();
+                } elseif (Dossier::STATUS_PENDING === $state && $d->isPublished()) {
+                    $d->reopen();
+                } elseif (Dossier::STATUS_REJECTED === $state && Dossier::STATUS_REJECTED !== $d->getStatus()) {
+                    $d->reject((string) ($d->getModerationNote() ?: 'Retiré par l\'administration.'));
+                }
                 $em->flush();
-                $this->addFlash('success', 'Dossier corrigé.');
+                $this->addFlash('success', $isNew ? 'Dossier créé.' : 'Dossier enregistré.');
 
                 return $this->redirectToRoute('admin_rubrique', ['kind' => 'dossiers']);
             }
         }
 
-        return $this->render('admin/rubriques/dossier_edit.html.twig', ['d' => $d, 'errors' => $errors, 'themes' => Proposition::THEMES]);
+        return $this->render('admin/rubriques/dossier_edit.html.twig', ['d' => $d, 'errors' => $errors, 'themes' => Proposition::THEMES, 'isNew' => $isNew, 'tokenId' => $tokenId]);
     }
 
     private function dossierUses(EntityManagerInterface $em, Dossier $d): int

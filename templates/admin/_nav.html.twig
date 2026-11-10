@@ -7,6 +7,7 @@
   ['admin_moderation', 'Modération', 'ROLE_MODERATOR', ['admin_moderation', 'admin_moderation_incidents']],
   ['admin_actors', 'Acteurs publics', 'ROLE_ADMIN', ['admin_actors']],
   ['admin_backups', 'Sauvegardes', 'ROLE_ADMIN', ['admin_backups']],
+  ['admin_news', 'Actualités', 'ROLE_ADMIN', ['admin_news', 'admin_news_new', 'admin_news_edit']],
   ['admin_rubriques', 'Contributeurs et rubriques', 'ROLE_MODERATOR', ['admin_rubriques', 'admin_rubrique']],
   ['admin_users', 'Comptes et rôles', 'ROLE_ADMIN', ['admin_users', 'admin_role_requests']],
   ['admin_debat_index', 'Débats et dossiers', 'ROLE_ADMIN', ['admin_debat_index']],
@@ -23,8 +24,12 @@
   ['admin_donations', 'Contributions de soutien'], ['admin_services', 'Services et commandes'], ['admin_surveys', 'Enquêtes'],
 ] %}
 <nav class="adm-nav no-print" aria-label="Administration">
-  <div class="adm-brand">La France en Débat</div>
-  <div class="adm-sub">Console d'administration</div>
+  <div class="adm-head">
+    <div><div class="adm-brand">La France en Débat</div><div class="adm-sub">Console d'administration</div></div>
+    {# Sur téléphone et tablette le menu est replié : un bouton l'ouvre (Bootstrap collapse). Sur grand écran il est toujours visible. #}
+    <button class="adm-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#admLinks" aria-expanded="false" aria-controls="admLinks">Menu</button>
+  </div>
+  <div id="admLinks" class="adm-links collapse">
   {% for m in main %}{% if is_granted(m[2]) %}
     <a href="{{ path(m[0]) }}"{% if route in m[3] %} aria-current="page"{% endif %}>{{ m[1] }}{% if m[0] == 'admin_approvals' %}{% set n = approval_count() %}{% if n > 0 %}<span class="adm-badge">{{ n }}</span>{% endif %}{% endif %}</a>
   {% endif %}{% endfor %}
@@ -33,4 +38,5 @@
     {% for m in more %}<a href="{{ path(m[0]) }}"{% if route == m[0] %} aria-current="page"{% endif %}>{{ m[1] }}</a>{% endfor %}
   </details>
   {% endif %}
+  </div>
 </nav>

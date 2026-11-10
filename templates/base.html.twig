@@ -59,7 +59,7 @@
             {# Menu en 4 rubriques : tout est a 2 clics au plus (rubrique, puis page). Meme liste pour le bureau et le mobile. #}
             {% set menu = [
                 {label: 'Débattre', route: 'app_debat', items: [['app_debats', 'nav.debates'|trans], ['app_propositions', 'nav.propositions'|trans], ['app_community', 'Agora de la diplomatie'], ['app_scrutins', 'Scrutins consultatifs']]},
-                {label: 'Comprendre', route: 'app_positions', items: [['app_positions', 'Positions et votes'], ['app_revendications', 'nav.forgotten'|trans], ['app_programmes', 'Propositions des groupes'], ['app_candidats', 'nav.candidates'|trans], ['app_parties', 'Partis et groupes'], ['app_dossiers', 'Dossiers'], ['app_agenda', 'nav.agenda'|trans]]},
+                {label: 'Comprendre', route: 'app_positions', items: [['app_news', 'Actualités'], ['app_positions', 'Positions et votes'], ['app_revendications', 'nav.forgotten'|trans], ['app_programmes', 'Propositions des groupes'], ['app_candidats', 'nav.candidates'|trans], ['app_parties', 'Partis et groupes'], ['app_dossiers', 'Dossiers'], ['app_agenda', 'nav.agenda'|trans]]},
                 {label: 'Agir', route: 'app_missions', items: [['app_missions', 'Missions'], ['app_support', 'Soutenir l\'initiative'], ['app_taxpayers', 'Contribuables'], ['app_actors', 'Acteurs publics'], ['app_inspirations', 'Ils ont contribué'], ['app_tribunes', 'Journalistes']]},
                 {label: 'À propos', route: 'app_about', items: [['app_charter', 'nav.charter'|trans], ['app_guide', 'nav.guide'|trans], ['app_method', 'nav.method'|trans], ['app_about', 'nav.about'|trans], ['app_ranking', 'Classement des artisans de paix']]},
             ] %}
@@ -124,7 +124,7 @@
     {% include '_flash_messages.html.twig' %}
     {% if lang_prompt() and route != 'app_language' %}{% include '_language_chooser.html.twig' %}{% endif %}
 
-    {% if app.request.cookies.get('lfed_welcome') is null and app.request.attributes.get('_route') not in ['app_welcome','app_welcome_profile','app_welcome_later','app_login','app_register'] %}
+    {% if app.request.cookies.get('lfed_welcome') is null and app.request.attributes.get('_route') not in ['app_welcome','app_welcome_profile','app_welcome_later','app_login','app_register'] and not (admin_native|default(false)) and not is_granted('ROLE_ADMIN') %}
     <div class="welcome-banner" role="region" aria-label="{{ 'welcome.banner.cta'|trans }}">
         <div class="container d-flex flex-wrap align-items-center gap-2 justify-content-between">
             <span>{{ 'welcome.banner'|trans }}</span>
