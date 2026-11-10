@@ -10,7 +10,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DomCrawler\Crawler;
 use Twig\Environment;
 
 /**
@@ -73,10 +72,22 @@ final class DossiersImportEditoriauxCommand extends Command
     /** @return array{0:string,1:list<string>} [markdown, sources https] */
     private function convert(string $html): array
     {
-        $root = (new Crawler('<div id="r">' . $html . '</div>'))->filter('#r');
+        // DOMDocument natif : DomCrawler n'est pas installé en production (dépendance de dev).
+        $doc = new \DOMDocument();
+        $prev = libxml_use_internal_errors(true);
+        $doc->loadHTML('<?xml encoding="UTF-8"><div id="r">' . $html . '</div>');
+        libxml_clear_errors();
+        libxml_use_internal_errors($prev);
+        $root = $doc->getElementById('r');
+        $start = $root;
+        $xp = new \DOMXPath($doc);
+        $box = $xp->query('//section//div[contains(concat(" ", normalize-space(@class), " "), " container ")]')->item(0);
+        if ($box) {
+            $start = $box;
+        }
         $sources = [];
         $out = [];
-        foreach ($root->filter('section')->count() ? $root->filter('section')->first()->filter('.container')->children() : $root->children() as $node) {
+        foreach ($start->childNodes as $node) {
             $this->block($node, $out, $sources);
         }
 
