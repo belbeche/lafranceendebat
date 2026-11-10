@@ -65,6 +65,10 @@ class Proposition
     #[Assert\Choice(choices: self::THEMES, message: 'Thème inconnu.')]
     private ?string $theme = null;
 
+    /** Département concerné (facultatif) : code officiel, ex. 70, 2A, 974. */
+    #[ORM\Column(length: 3, nullable: true)]
+    private ?string $department = null;
+
     /** Dossier de référence (identifiant dans DossierCatalog). */
     #[ORM\Column(length: 190, nullable: true)]
     private ?string $dossierSlug = null;
@@ -191,6 +195,8 @@ class Proposition
     public function getDossierSlug(): ?string { return $this->dossierSlug; }
     public function setDossierSlug(?string $v): self { $this->dossierSlug = $v; return $this; }
     public function setTheme(?string $theme): self { $this->theme = $theme; return $this; }
+    public function getDepartment(): ?string { return $this->department; }
+    public function setDepartment(?string $d): self { $this->department = \App\Service\Departments::valid($d) ? $d : null; return $this; }
 
     public function getSourceUrl(): ?string { return $this->sourceUrl; }
     public function setSourceUrl(?string $sourceUrl): self { $this->sourceUrl = $sourceUrl !== null && trim($sourceUrl) !== '' ? trim($sourceUrl) : null; return $this; }

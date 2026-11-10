@@ -1,0 +1,32 @@
+{# Piliers (ce que nous défendons), actions (ce que nous faisons), témoignages (ce que les participants en disent).
+   Variables : pillars (liste de Mission), full (true sur /piliers : titres de groupe en h2, pas de bouton "tout voir"). #}
+{% set groups = [
+  {kind: 'pilier', heading: 'Nos piliers', lead: 'Ce que nous défendons', icon: 'bi-bank'},
+  {kind: 'action', heading: 'Nos actions', lead: 'Ce que nous faisons', icon: 'bi-lightning-charge'},
+  {kind: 'temoignage', heading: 'Témoignages', lead: 'Ce que les participants en disent', icon: 'bi-chat-quote'}
+] %}
+{% set hn = full|default(false) ? 'h2' : 'h3' %}
+{% for g in groups %}
+  {% set group = pillars|filter(m => g.kind == 'pilier' ? m.type in ['valeur', 'pilier'] : m.type == g.kind) %}
+  {% if group|length %}
+  <{{ hn }} class="h4 mt-5 mb-1">{{ g.heading }}</{{ hn }}>
+  <p class="text-muted">{{ g.lead }}</p>
+  <div class="row g-3">
+    {% for m in group %}
+    <div class="col-md-6 col-lg-4"><article class="carte h-100 d-flex flex-column">
+      {% if g.kind == 'temoignage' %}
+        <i class="bi bi-chat-quote fs-3 text-muted" aria-hidden="true"></i>
+        <blockquote class="mb-2 flex-grow-1"><p class="mb-0">{{ m.description }}</p></blockquote>
+        <p class="meta mb-0"><strong>{{ m.titre }}</strong>{% if m.badge %} · {{ m.badge }}{% endif %}</p>
+      {% else %}
+        <p class="mb-1"><span class="etiquette{{ g.kind == 'action' ? ' rouge' : '' }}"><i class="bi {{ g.icon }}" aria-hidden="true"></i> {{ g.kind == 'action' ? 'Action' : 'Pilier' }}</span>{% if m.badge %} <span class="etiquette bleu">{{ m.badge }}</span>{% endif %}</p>
+        <h4 class="h5">{{ m.titre }}</h4>
+        <p class="mb-2 flex-grow-1">{{ m.description }}</p>
+        {% if m.statistique %}<p class="meta mb-2"><strong>{{ m.statistique }}</strong></p>{% endif %}
+        {% if m.lien %}<a class="btn btn-sm {{ g.kind == 'action' ? 'btn-rouge' : 'btn-outline-dark' }} align-self-start" style="min-height:44px;display:inline-flex;align-items:center" href="{{ m.lien }}" {{ m.lien starts with 'http' ? 'rel="noopener" target="_blank"' }}>{{ g.kind == 'action' ? 'Agir' : 'En savoir plus' }}<span class="visually-hidden"> : {{ m.titre }}</span></a>{% endif %}
+      {% endif %}
+    </article></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endfor %}

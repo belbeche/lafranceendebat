@@ -29,6 +29,12 @@ class ContactController extends AbstractController
             return new Response('Trop de messages. Réessayez plus tard.', Response::HTTP_TOO_MANY_REQUESTS, ['Retry-After' => '3600']);
         }
         $contact = new Contact();
+        // Lien "Signaler une erreur" depuis une actualite ou un dossier : on pre-remplit le sujet et la page concernee.
+        // On n'accepte qu'un chemin interne de forme connue, jamais une URL libre.
+        $ref = (string) $request->query->get('ref');
+        if ($request->isMethod('GET') && preg_match('#^(actualites|dossiers)/[a-z0-9-]{1,150}$#', $ref)) {
+            $contact->setSujet('correction')->setMessage("Page concernée : " . $request->getSchemeAndHttpHost() . '/' . $ref . "\n\nCe qui est inexact, et la source qui le montre :\n");
+        }
         $form = $this->createForm(ContactType::class, $contact);
         
         $form->handleRequest($request);

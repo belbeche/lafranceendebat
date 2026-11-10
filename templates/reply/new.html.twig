@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block title %}Droit de réponse{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container" style="max-width:820px"><h1>Droit de réponse</h1><p class="lead mb-0">À propos de : {{ title }}</p></div></header>
+<section class="section"><div class="container" style="max-width:820px">
+  <p class="measure">Vous êtes cité, ou une institution que vous représentez l'est. Répondez sur les faits : votre réponse sera publiée <strong>à côté du contenu</strong>, sans le modifier, après relecture par un modérateur. Les insultes et les menaces ne sont pas acceptées, quel que soit le camp.</p>
+  {% if errors %}<div class="alert alert-danger" role="alert"><ul class="mb-0">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul></div>{% endif %}
+  <form method="post" class="form-card adm-card">
+    <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ type ~ id) }}">
+    <div class="mb-3"><label class="form-label" for="r-name">Nom de la personne ou de l'institution</label><input class="form-control" id="r-name" name="name" value="{{ v.name }}" maxlength="120" required></div>
+    <div class="mb-3"><label class="form-label" for="r-role">Fonction ou qualité (facultatif)</label><input class="form-control" id="r-role" name="role" value="{{ v.role }}" maxlength="120"></div>
+    <div class="mb-3"><label class="form-label" for="r-email">Votre adresse e-mail</label><input class="form-control" id="r-email" type="email" name="email" value="{{ v.email }}" maxlength="180" required><div class="form-text">Jamais publiée. Elle sert uniquement à vérifier que la réponse vient bien de la personne ou de l'institution citée.</div></div>
+    <div class="mb-3"><label class="form-label" for="r-body">Votre réponse</label><textarea class="form-control" id="r-body" name="body" rows="8" maxlength="2000" required>{{ v.body }}</textarea><div class="form-text">20 à 2 000 caractères. Appuyez-vous sur des faits, avec un lien public si possible.</div></div>
+    <div class="mb-3" style="position:absolute;left:-9999px" aria-hidden="true"><label>Ne pas remplir<input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" id="r-ok" name="accord" value="1" required><label class="form-check-label" for="r-ok">Je confirme être la personne ou l'institution concernée, ou la représenter.</label></div>
+    <button class="btn btn-rouge" type="submit">Envoyer ma réponse</button>
+    <a class="btn btn-link" href="{{ backUrl }}">Annuler</a>
+  </form>
+</div></section>
+{% endblock %}

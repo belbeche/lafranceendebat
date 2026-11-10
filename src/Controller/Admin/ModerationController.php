@@ -23,7 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 class ModerationController extends AbstractController
 {
     #[Route('', name: 'admin_moderation', methods: ['GET'])]
-    public function index(\App\Service\ReliabilityChecker $reliability, PropositionRepository $propositions, ArgumentRepository $arguments, SignalementRepository $reports, ModerationService $moderation, DiscussionRepository $discussions, DiscussionReplyRepository $replies, \Doctrine\ORM\EntityManagerInterface $em, ModerationLocks $locks): Response
+    public function index(\App\Service\ReliabilityChecker $reliability, PropositionRepository $propositions, ArgumentRepository $arguments, SignalementRepository $reports, ModerationService $moderation, DiscussionRepository $discussions, DiscussionReplyRepository $replies, \Doctrine\ORM\EntityManagerInterface $em, ModerationLocks $locks, \App\Service\RefusalReasons $refusalReasons): Response
     {
         $open = $reports->findOpen(100);
         $targets = [];
@@ -51,7 +51,7 @@ class ModerationController extends AbstractController
             'dossiers' => $em->getRepository(\App\Entity\Dossier::class)->findBy(['status' => \App\Entity\Dossier::STATUS_PENDING], ['createdAt' => 'ASC'], 100),
             'locks' => $locks->activeMap(),
             'workload' => $locks->workload(),
-            'reasons' => ModerationLocks::REASONS,
+            'reasons' => $refusalReasons->active(),
             'reports' => $open,
             'targets' => $targets,
         ]);

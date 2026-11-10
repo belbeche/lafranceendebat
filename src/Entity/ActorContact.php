@@ -67,6 +67,14 @@ class ActorContact
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $invitedAt = null;
 
+    /** Fiche relue par un humain (adresse professionnelle publiee, source ouverte). Sans cette validation, aucune invitation n'est envoyee. */
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $validatedAt = null;
+
+    /** Adresse e-mail du moderateur qui a valide la fiche (trace interne). */
+    #[ORM\Column(length: 180, nullable: true)]
+    private ?string $validatedBy = null;
+
     /** Consentement explicite donne en cliquant le lien d'acceptation. Sans lui, aucun message autre que l'invitation. */
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $consentAt = null;
@@ -138,6 +146,11 @@ class ActorContact
     public function markContacted(): static { $this->lastContactedAt = new \DateTimeImmutable(); ++$this->contactCount; return $this; }
     /** Annule un marquage "contacté" quand l'envoi a échoué (le marquage précède l'envoi, pour ne jamais envoyer deux fois). */
     public function restoreContact(?\DateTimeImmutable $last, int $count, ?\DateTimeImmutable $invited): static { $this->lastContactedAt = $last; $this->contactCount = $count; $this->invitedAt = $invited; return $this; }
+    public function getValidatedAt(): ?\DateTimeImmutable { return $this->validatedAt; }
+    public function getValidatedBy(): ?string { return $this->validatedBy; }
+    public function isValidated(): bool { return null !== $this->validatedAt; }
+    public function validate(string $by): static { $this->validatedAt ??= new \DateTimeImmutable(); $this->validatedBy = mb_substr($by, 0, 180); return $this; }
+    public function unvalidate(): static { $this->validatedAt = null; $this->validatedBy = null; return $this; }
     public function getInvitedAt(): ?\DateTimeImmutable { return $this->invitedAt; }
     public function markInvited(): static { $this->invitedAt = new \DateTimeImmutable(); return $this; }
     public function getConsentAt(): ?\DateTimeImmutable { return $this->consentAt; }

@@ -33,13 +33,15 @@ class ModerationService
     }
 
     /** Retourne le contenu cible, ou null s'il n'existe plus. */
-    public function findTarget(string $type, int $id): Proposition|Argument|Discussion|DiscussionReply|null
+    public function findTarget(string $type, int $id): Proposition|Argument|Discussion|DiscussionReply|\App\Entity\NewsItem|\App\Entity\Dossier|null
     {
         return match ($type) {
             Signalement::TARGET_PROPOSITION => $this->propositions->find($id),
             Signalement::TARGET_ARGUMENT => $this->arguments->find($id),
             Signalement::TARGET_DISCUSSION => $this->discussions->find($id),
             Signalement::TARGET_REPLY => $this->replies->find($id),
+            Signalement::TARGET_NEWS => $this->em->getRepository(\App\Entity\NewsItem::class)->find($id),
+            Signalement::TARGET_DOSSIER => $this->em->getRepository(\App\Entity\Dossier::class)->find($id),
             default => null,
         };
     }
@@ -55,6 +57,25 @@ class ModerationService
         }
 
         $target = $this->findTarget($signalement->getTargetType(), $signalement->getTargetId());
+        // Actualites et dossiers : meme regle (3 personnes differentes), le contenu repasse en brouillon / en attente de relecture.
+        if ($target instanceof \App\Entity\NewsItem) {
+            if (!$target->isPublished()) {
+                return false;
+            }
+            $target->unpublish();
+            $this->em->flush();
+
+            return true;
+        }
+        if ($target instanceof \App\Entity\Dossier) {
+            if (!$target->isPublished()) {
+                return false;
+            }
+            $target->reopen();
+            $this->em->flush();
+
+            return true;
+        }
         if (!$target || $target->getStatus() !== Proposition::STATUS_VALIDATED) {
             return false;
         }
@@ -63,6 +84,15 @@ class ModerationService
         $this->em->flush();
 
         return true;
+    }
+
+    /** Une actualite ou un dossier est republie apres relecture : les signalements ouverts sont clos comme non fondes. */
+    public function dismissReportsFor(string $type, int $id): void
+    {
+        foreach ($this->signalements->findBy(['targetType' => $type, 'targetId' => $id, 'status' => Signalement::STATUS_OPEN]) as $report) {
+            $report->setStatus(Signalement::STATUS_DISMISSED);
+        }
+        $this->em->flush();
     }
 
     /** Un moderateur valide le contenu : les signalements ouverts sont clos comme non fondes. */

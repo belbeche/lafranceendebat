@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ name }} ({{ code }}){% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><p class="meta mb-1"><a class="text-white" href="{{ path('app_departments') }}">Départements</a></p><h1>{{ name }} ({{ code }})</h1><p class="lead mb-0">Ce qui est proposé et porté pour ce territoire.</p></div></header>
+<section class="section"><div class="container">
+<h2 class="h4">Propositions validées</h2>
+{% if props %}<ul class="list-unstyled">{% for p in props %}<li class="mb-2"><a href="{{ path('app_proposition_show', {id: p.id}) }}">{{ p.title }}</a> <span class="text-muted small">({{ p.theme }}, {{ p.supportCount }} soutien{{ p.supportCount > 1 ? 's' }})</span></li>{% endfor %}</ul>
+{% else %}<p class="text-muted">Aucune proposition pour ce département pour l'instant. <a href="{{ path('app_proposition_new') }}">Déposer une idée</a> et choisir « {{ name }} ».</p>{% endif %}
+<h2 class="h4 mt-4">Revendications portées</h2>
+{% if revs %}<ul class="list-unstyled">{% for r in revs %}<li class="mb-2"><a href="{{ path('app_revendication_show', {slug: r.slug}) }}">{{ r.title }}</a> <span class="text-muted small">({{ r.theme }})</span></li>{% endfor %}</ul>
+{% else %}<p class="text-muted">Aucune revendication pour ce département pour l'instant.</p>{% endif %}
+{% if institutions %}<h2 class="h4 mt-4">Institutions référencées sur place</h2>
+<ul>{% for i in institutions %}<li>{{ categories[i.c] ?? i.c }} : {{ i.n }}</li>{% endfor %}</ul>
+<p class="meta">Adresses professionnelles publiées par les organismes (Annuaire de l'administration). Elles ne sont pas affichées ici.</p>{% endif %}
+</div></section>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}Statistiques{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Statistiques de la plateforme</h1><p class="lead mb-0">Des chiffres publics, sans donnée personnelle, mis à jour en direct. Un soutien est un avis consultatif, pas un vote officiel.</p></div></header>
+<section class="section"><div class="container">
+<h2 class="h4">Vue d'ensemble</h2>
+<div class="row g-3 mb-4">
+{% for label, n in {'Propositions validées': key.propositions, 'Soutiens exprimés': key.soutiens, 'Débats ouverts': key.debats, 'Revendications portées': key.revendications, 'Dossiers sourcés': key.dossiers, 'Actualités publiées': key.actualites, 'Membres': key.membres, 'Institutions référencées': key.institutions} %}
+  <div class="col-6 col-md-3"><div class="carte h-100"><div class="h2 mb-0">{{ n|number_format(0, ',', ' ') }}</div><div class="text-muted">{{ label }}</div></div></div>
+{% endfor %}
+</div>
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2">
+  <h2 class="h4 mb-0">Par thème</h2>
+  <a class="btn btn-outline-primary" style="min-height:44px" href="{{ path('app_statistics_csv') }}">Télécharger (CSV, ouvre dans Excel)</a>
+</div>
+<div class="table-responsive mt-2"><table class="table align-middle bg-white">
+  <caption class="visually-hidden">Propositions, soutiens, débats et revendications par thème</caption>
+  <thead><tr><th scope="col">Thème</th><th scope="col" class="text-end">Propositions</th><th scope="col" class="text-end">Soutiens</th><th scope="col" class="text-end">Débats ouverts</th><th scope="col" class="text-end">Revendications</th></tr></thead>
+  <tbody>{% for t in themes %}<tr><th scope="row" class="fw-normal">{{ t.theme }}</th><td class="text-end">{{ t.propositions }}</td><td class="text-end">{{ t.soutiens }}</td><td class="text-end">{{ t.debats }}</td><td class="text-end">{{ t.revendications }}</td></tr>{% endfor %}</tbody>
+</table></div>
+
+<h2 class="h4 mt-4">Par département</h2>
+{% if depts %}<div class="table-responsive"><table class="table bg-white" style="max-width:720px"><thead><tr><th scope="col">Département</th><th scope="col" class="text-end">Propositions</th><th scope="col" class="text-end">Revendications</th></tr></thead><tbody>
+{% for d in depts %}<tr><th scope="row" class="fw-normal"><a href="{{ path('app_department', {code: d.code}) }}">{{ d.code }} - {{ d.name }}</a></th><td class="text-end">{{ d.propositions }}</td><td class="text-end">{{ d.revendications }}</td></tr>{% endfor %}
+</tbody></table></div><p><a href="{{ path('app_departments') }}">Voir tous les départements</a></p>
+{% else %}<p class="text-muted">Pas encore de contribution rattachée à un département. <a href="{{ path('app_departments') }}">Voir les départements</a>.</p>{% endif %}
+
+<h2 class="h4 mt-4">Suivi des revendications auprès des institutions</h2>
+<p class="text-muted">Où en sont les sujets portés par les citoyens : combien ont été transmis, combien ont reçu une réponse, combien sont restés sans suite.</p>
+<div class="table-responsive"><table class="table bg-white" style="max-width:620px">
+  <thead><tr><th scope="col">Situation</th><th scope="col" class="text-end">Nombre</th></tr></thead>
+  <tbody>{% for r in revStatus %}<tr><td>{{ r.label }}</td><td class="text-end">{{ r.n }}</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="meta">Données au {{ updated|date('d/m/Y H:i') }}. Méthode et limites : <a href="{{ path('app_method') }}">notre méthode</a>.</p>
+</div></section>
+{% endblock %}

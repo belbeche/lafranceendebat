@@ -183,6 +183,12 @@ class NotificationMailer
         $this->toAdmin('Nouveau signalement à examiner', 'Un contenu de type « ' . $s->getTargetType() . ' » (n° ' . $s->getTargetId() . ') a été signalé. Aucune décision automatique : un modérateur examine.', $this->urls->generate('admin_moderation', [], UrlGeneratorInterface::ABSOLUTE_URL));
     }
 
+    /** Droit de reponse depose : previent la moderation (le texte n'est pas recopie dans le mail). */
+    public function replySubmitted(\App\Entity\RightOfReply $r, string $title): void
+    {
+        $this->toAdmin('Nouveau droit de réponse à relire', 'Une réponse de « ' . $r->getAuthorName() . ' » concerne « ' . $title . ' ». Elle reste non publiée tant qu\'un modérateur n\'a pas vérifié l\'identité.', $this->urls->generate('admin_replies', [], UrlGeneratorInterface::ABSOLUTE_URL));
+    }
+
     /** Reponse dans une discussion : previent l'auteur du fil (une fois par 6 h et par fil par e-mail). */
     public function discussionReplied(\App\Entity\Discussion $d, \App\Entity\DiscussionReply $r): void
     {

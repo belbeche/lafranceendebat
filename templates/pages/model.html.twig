@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block title %}Un modèle proche de Wikipédia, pas de WikiLeaks{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container" style="max-width:860px">
+  <h1>Un modèle proche de Wikipédia, pas de WikiLeaks</h1>
+  <p class="lead mb-0">Comme Wikipédia, nous misons sur le savoir collaboratif : sources citées, historique visible, corrections ouvertes à tous. Nous ne sommes pas une plateforme de documents divulgués, comme WikiLeaks.</p>
+</div></header>
+<section class="section"><div class="container" style="max-width:960px">
+  <p class="measure">Notre promesse est plus précise : <strong>vérification indépendante, protection des sources, respect du droit</strong>. Cette page dit ce que cela veut dire, concrètement, et ce que nous ne faisons pas.</p>
+
+  <h2 class="h4 mt-4">Trois façons de faire</h2>
+  <div class="table-responsive"><table class="table bg-white align-top">
+    <caption>Comparaison de trois approches, à gros traits. Les deux premières colonnes décrivent leurs principes publics, pas un jugement sur ces organisations.</caption>
+    <thead><tr><th scope="col"></th><th scope="col">Wikipédia</th><th scope="col">WikiLeaks</th><th scope="col">La France en Débat</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Ce que c'est</th><td>Une encyclopédie écrite par des volontaires.</td><td>Un site qui publie des documents que des sources lui transmettent.</td><td>Un espace de débat, de propositions et de dossiers sourcés sur les sujets publics.</td></tr>
+      <tr><th scope="row">D'où vient le contenu</th><td>Du travail collectif, à partir de sources publiées.</td><td>De documents non publics, divulgués par des tiers.</td><td>De contributions de citoyens et de l'équipe, appuyées sur des sources publiques.</td></tr>
+      <tr><th scope="row">Qui peut corriger</th><td>Tout le monde, dans le cadre de règles communautaires.</td><td>Les documents sont publiés tels quels.</td><td>Tout le monde peut signaler une erreur ; les corrections passent par la modération.</td></tr>
+      <tr><th scope="row">Source de chaque affirmation</th><td>Attendue : le contenu doit pouvoir être vérifié.</td><td>Le document est lui-même la source.</td><td>Exigée pour les faits importants (lien https public).</td></tr>
+      <tr><th scope="row">Historique</th><td>Visible pour chaque page.</td><td>Non applicable.</td><td>Visible sur les contenus qui évoluent (débats, propositions, revendications, dossiers, actualités).</td></tr>
+      <tr><th scope="row">Ce que nous publions</th><td>Ce que des sources fiables ont déjà publié.</td><td>Ce qui n'était pas public.</td><td><strong>Uniquement ce qui est déjà public</strong> ou ce que l'auteur écrit lui-même.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 class="h4 mt-5">Nos cinq règles concrètes</h2>
+  <div class="row g-3">
+    <div class="col-md-6"><article class="carte h-100"><h3 class="h6">1. Une source publique, ou rien</h3><p class="mb-2">Une revendication, un dossier, une actualité : pas de lien https vers une source publique, pas de publication. Nous ne reprenons pas de document volé ou obtenu de façon illégale.</p><a href="{{ path('app_method') }}">Notre méthode</a></article></div>
+    <div class="col-md-6"><article class="carte h-100"><h3 class="h6">2. Un historique visible</h3><p class="mb-2">Quand un texte change, la version précédente reste consultable. Rien ne disparaît en silence.</p><a href="{{ path('app_debats') }}">Voir les débats</a></article></div>
+    <div class="col-md-6"><article class="carte h-100"><h3 class="h6">3. Des corrections ouvertes à tous</h3><p class="mb-2">Chaque contenu peut être signalé. Les personnes ou institutions citées ont un droit de réponse, publié à côté de la mise en cause.</p><a href="{{ path('app_contact') }}">Signaler ou demander une correction</a></article></div>
+    <div class="col-md-6"><article class="carte h-100"><h3 class="h6">4. La protection des sources</h3><p class="mb-2">On peut participer sans exposer son identité. Nous ne revendons rien et ne publions pas les coordonnées de ceux qui contribuent.</p><a href="{{ path('app_anonymous_contribution') }}">Participer anonymement</a></article></div>
+    <div class="col-md-12"><article class="carte h-100"><h3 class="h6">5. Le respect du droit</h3><p class="mb-2">Pas d'insulte, de menace, de diffamation ni de donnée personnelle. Pas de secret protégé par la loi. En cas de doute, nous retirons d'abord, nous discutons ensuite, et nous disons pourquoi.</p><a href="{{ path('app_charter') }}">La charte de paix</a></article></div>
+  </div>
+
+  <h2 class="h4 mt-5">Ce que nous ne faisons pas</h2>
+  <ul class="measure">
+    <li>Nous n'hébergeons pas de documents divulgués ni de fuites.</li>
+    <li>Nous ne désignons pas de coupables : nous exposons des faits sourcés, et chacun peut répondre.</li>
+    <li>Nous ne prenons pas parti pour un parti, un syndicat ou une personne. Nos chiffres renvoient à leur source officielle.</li>
+    <li>Nous ne cachons pas nos limites : l'intelligence artificielle ne publie rien seule, un humain relit avant toute mise en ligne.</li>
+  </ul>
+
+  <h2 class="h4 mt-5">Comment vérifier par vous-même</h2>
+  <ol class="measure">
+    <li>Ouvrez la source citée : elle doit dire ce que nous disons.</li>
+    <li>Regardez la date et l'auteur de la source.</li>
+    <li>Consultez l'historique du contenu pour voir ce qui a changé.</li>
+    <li>Si quelque chose ne va pas, signalez-le : la correction est publique.</li>
+  </ol>
+  <p class="meta">Le code est ouvert (<a href="{{ path('app_open_source') }}">code source</a>) : le fonctionnement peut aussi être contrôlé.</p>
+</div></section>
+{% endblock %}

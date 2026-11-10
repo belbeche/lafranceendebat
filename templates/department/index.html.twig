@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}Par département{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Par département</h1><p class="lead mb-0">Les propositions et revendications qui concernent un territoire. Un département s'ajoute, en option, quand on dépose une idée ou une revendication.</p></div></header>
+<section class="section"><div class="container">
+<div class="row g-2">
+{% for r in rows %}
+  <div class="col-6 col-md-4 col-lg-3"><a class="carte d-block h-100 text-decoration-none" href="{{ path('app_department', {code: r.code}) }}">
+    <strong>{{ r.code }} - {{ r.name }}</strong>
+    <div class="small text-muted">{{ r.propositions }} proposition{{ r.propositions > 1 ? 's' }}, {{ r.revendications }} revendication{{ r.revendications > 1 ? 's' }}</div>
+  </a></div>
+{% endfor %}
+</div></div></section>
+{% endblock %}

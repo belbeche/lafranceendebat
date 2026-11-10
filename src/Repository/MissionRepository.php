@@ -40,13 +40,34 @@ class MissionRepository extends ServiceEntityRepository
     }
 
     /** Piliers, actions et temoignages actifs, dans l'ordre d'affichage choisi dans l'administration. */
-    public function findForHome(): array
+    /**
+     * Accueil : au plus $perType éléments par famille (piliers/valeurs, actions, témoignages), dans l'ordre d'affichage.
+     * Une limite globale faisait disparaître une famille entière quand une autre était très fournie.
+     *
+     * @return list<Mission>
+     */
+    public function findForHome(int $perType = 3): array
+    {
+        $out = [];
+        foreach ([['valeur', 'pilier'], ['action'], ['temoignage']] as $types) {
+            $out = array_merge($out, $this->createQueryBuilder('m')
+                ->where('m.isActive = :a')->andWhere('m.type IN (:t)')
+                ->setParameter('a', true)->setParameter('t', $types)
+                ->orderBy('m.ordreAffichage', 'ASC')->addOrderBy('m.id', 'ASC')
+                ->setMaxResults($perType)->getQuery()->getResult());
+        }
+
+        return $out;
+    }
+
+    /** Page /piliers : tout, sans limite de famille (200 au plus). @return list<Mission> */
+    public function findAllForPillars(): array
     {
         return $this->createQueryBuilder('m')
             ->where('m.isActive = :a')->andWhere('m.type IN (:t)')
             ->setParameter('a', true)->setParameter('t', ['valeur', 'pilier', 'action', 'temoignage'])
             ->orderBy('m.ordreAffichage', 'ASC')->addOrderBy('m.id', 'ASC')
-            ->setMaxResults(12)->getQuery()->getResult();
+            ->setMaxResults(200)->getQuery()->getResult();
     }
 
     public function findMissions(): array

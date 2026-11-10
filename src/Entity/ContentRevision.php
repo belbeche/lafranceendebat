@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(columns: ['type', 'ref_id'])]
 class ContentRevision
 {
-    public const TYPES = ['debat', 'argument', 'proposition', 'discussion', 'reponse', 'revendication'];
+    public const TYPES = ['debat', 'argument', 'proposition', 'discussion', 'reponse', 'revendication', 'actualite', 'dossier'];
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

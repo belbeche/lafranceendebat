@@ -14,6 +14,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/admin/rubriques')]
 class RubriqueAdminController extends AbstractController
 {
+    public function __construct(private readonly \App\Service\RevisionRecorder $revisions, private readonly \App\Service\ModerationService $reports)
+    {
+    }
+
     private const KINDS = [
         'dossiers' => ['Dossiers de référence', Dossier::class, 'title', 'Dossier citoyen sourcé, utilisable dans les débats et propositions.'],
         'contributeurs' => ['Ils ont contribué', Inspiration::class, 'name', 'Fiches de personnes et de projets qui ont inspiré la plateforme.'],
@@ -239,6 +243,13 @@ class RubriqueAdminController extends AbstractController
                 $errors[] = 'Thème inconnu.';
             }
             if (!$errors) {
+                // Version avant modification : gardee si le dossier est deja publie (historique public).
+                if (!$isNew && $d->isPublished()) {
+                    $this->revisions->record('dossier', (int) $d->getId(),
+                        ['title' => $d->getTitle(), 'intro' => $d->getIntro(), 'body' => $d->getBody(), 'sources' => $d->getSources()],
+                        new \DateTimeImmutable('-1 day'), true,
+                        ['title' => $title, 'intro' => $intro, 'body' => $body, 'sources' => implode("\n", $links)]);
+                }
                 $d->setTitle($title)->setSlug($slug)->setIntro($intro)->setBody($body)->setTheme($theme ?: null)->setSources(implode("\n", $links))->setEditorial($request->request->getBoolean('editorial'));
                 if ($isNew) {
                     $d->setAuthor($this->getUser() instanceof \App\Entity\User ? $this->getUser() : null);
@@ -252,6 +263,9 @@ class RubriqueAdminController extends AbstractController
                     $d->reject((string) ($d->getModerationNote() ?: 'Retiré par l\'administration.'));
                 }
                 $em->flush();
+                if ($d->isPublished() && $d->getId()) {
+                    $this->reports->dismissReportsFor('dossier', (int) $d->getId());
+                }
                 $this->addFlash('success', $isNew ? 'Dossier créé.' : 'Dossier enregistré.');
 
                 return $this->redirectToRoute('admin_rubrique', ['kind' => 'dossiers']);

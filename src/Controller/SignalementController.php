@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Argument;
 use App\Entity\Discussion;
+use App\Entity\Dossier;
+use App\Entity\NewsItem;
 use App\Entity\DiscussionReply;
 use App\Entity\Proposition;
 use App\Entity\Signalement;
@@ -28,7 +30,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class SignalementController extends AbstractController
 {
-    #[Route('/signaler/{type}/{id}', name: 'app_signalement_new', requirements: ['type' => 'proposition|argument|discussion|reponse', 'id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/signaler/{type}/{id}', name: 'app_signalement_new', requirements: ['type' => 'proposition|argument|discussion|reponse|actualite|dossier', 'id' => '\d+'], methods: ['GET', 'POST'])]
     public function new(
         string $type,
         int $id,
@@ -39,7 +41,8 @@ class SignalementController extends AbstractController
         \App\Service\NotificationMailer $notifier,
     ): Response {
         $target = $moderation->findTarget($type, $id);
-        if (!$target || $target->getStatus() !== Proposition::STATUS_VALIDATED) {
+        $published = $target instanceof NewsItem || $target instanceof Dossier ? $target->isPublished() : (null !== $target && $target->getStatus() === Proposition::STATUS_VALIDATED);
+        if (!$target || !$published) {
             throw $this->createNotFoundException();
         }
 
@@ -79,8 +82,14 @@ class SignalementController extends AbstractController
     }
 
     /** @return array{0: string, 1: array<string, mixed>, 2: string} */
-    private function describe(Proposition|Argument|Discussion|DiscussionReply $target): array
+    private function describe(Proposition|Argument|Discussion|DiscussionReply|NewsItem|Dossier $target): array
     {
+        if ($target instanceof NewsItem) {
+            return ['app_news_show', ['slug' => $target->getSlug()], $target->getTitle()];
+        }
+        if ($target instanceof Dossier) {
+            return ['app_dossier_page', ['slug' => $target->getSlug()], $target->getTitle()];
+        }
         if ($target instanceof Discussion) {
             return ['app_community_show', ['id' => $target->getId()], (string) $target->getTitle()];
         }

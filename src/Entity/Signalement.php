@@ -19,7 +19,9 @@ class Signalement
     public const TARGET_ARGUMENT = 'argument';
     public const TARGET_DISCUSSION = 'discussion';
     public const TARGET_REPLY = 'reponse';
-    public const TARGETS = [self::TARGET_PROPOSITION, self::TARGET_ARGUMENT, self::TARGET_DISCUSSION, self::TARGET_REPLY];
+    public const TARGET_NEWS = 'actualite';
+    public const TARGET_DOSSIER = 'dossier';
+    public const TARGETS = [self::TARGET_PROPOSITION, self::TARGET_ARGUMENT, self::TARGET_DISCUSSION, self::TARGET_REPLY, self::TARGET_NEWS, self::TARGET_DOSSIER];
 
     public const REASONS = [
         'insulte' => 'Insulte ou attaque personnelle',

@@ -15,6 +15,7 @@
         <div class="row g-3 mb-3">
             <div class="col-md-6"><label class="form-label fw-bold" for="groupLabel">Portée par</label><select class="form-select" id="groupLabel" name="groupLabel">{% for g in groups %}<option {{ d.groupLabel == g ? 'selected' }}>{{ g }}</option>{% endfor %}</select></div>
             <div class="col-md-6"><label class="form-label fw-bold" for="theme">Thème</label><select class="form-select" id="theme" name="theme">{% for t in themes %}<option {{ d.theme == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+            <div class="col-md-6"><label class="form-label fw-bold" for="department">Département concerné (facultatif)</label><div class="form-text mb-1">S'il est déjà choisi, c'est d'après le code postal de votre profil : changez-le ou revenez à « Toute la France ».</div><select class="form-select" id="department" name="department"><option value="">Toute la France</option>{% for label, code in departments %}<option value="{{ code }}" {{ d.department == code ? 'selected' }}>{{ label }}</option>{% endfor %}</select></div>
         </div>
         <label class="form-label fw-bold" for="sourceUrl">Lien vers la source publique (https, obligatoire)</label>
         <input class="form-control mb-3" id="sourceUrl" name="sourceUrl" type="url" required value="{{ d.sourceUrl }}">

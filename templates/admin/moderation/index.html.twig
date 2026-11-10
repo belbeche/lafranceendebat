@@ -13,6 +13,7 @@
 <datalist id="motifs">{% for r in reasons %}<option value="{{ r }}">{% endfor %}</datalist>
 <section class="carte p-3 mb-4"><h2 class="h5">Équipe, aujourd'hui</h2>{% for w in workload %}<div class="d-flex justify-content-between"><span>{{ w.name }}</span><span>{{ w.decided }} traité(s){{ w.held ? ', ' ~ w.held ~ ' en cours' }}</span></div>{% else %}<p class="meta mb-0">Aucune activité pour le moment.</p>{% endfor %}<p class="meta mb-0 mt-2">Un contenu pris en charge est verrouillé 15 minutes pour les autres modérateurs.</p></section>
 <h1 class="h3">File de modération</h1>
+<p class="meta"><a href="{{ path('admin_reasons') }}">Gérer les motifs de refus proposés</a></p>
 <form method="post" action="{{ path('admin_moderation_reset_link') }}" class="carte mb-4 d-flex flex-wrap gap-2 align-items-end">
     <input type="hidden" name="_token" value="{{ csrf_token('admin_reset_link') }}">
     <div class="flex-grow-1"><label class="form-label mb-1" for="reset-email">Envoyer un lien de réinitialisation de mot de passe</label><input class="form-control" id="reset-email" name="email" type="email" required placeholder="adresse e-mail du compte"></div>
@@ -86,7 +87,7 @@
     <div class="rangee sans-reponse">
         <p class="mb-1"><span class="etiquette rouge">{{ r.reasonLabel }}</span> <span class="meta">{{ r.targetType }} n° {{ r.targetId }} · {{ r.createdAt|date('d/m/Y H:i') }}</span></p>
         {% if r.details %}<p class="mb-1">{{ r.details }}</p>{% endif %}
-        {% if t %}<p class="mb-2 meta">Contenu : {{ (t.title ?? t.content)|u.truncate(200, '…') }}</p>{{ m.actions(r.targetType, r.targetId) }}{% else %}<p class="meta">Contenu introuvable.</p>{% endif %}
+        {% if t %}<p class="mb-2 meta">Contenu : {{ (t.title ?? t.content)|u.truncate(200, '…') }}</p>{% if r.targetType == 'actualite' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_news_edit', {id: r.targetId}) }}">Ouvrir l'actualité</a>{% elseif r.targetType == 'dossier' %}<a class="btn btn-sm btn-outline-dark" href="{{ path('admin_rubrique_dossier_edit', {id: r.targetId}) }}">Ouvrir le dossier</a>{% else %}{{ m.actions(r.targetType, r.targetId) }}{% endif %}{% else %}<p class="meta">Contenu introuvable.</p>{% endif %}
         <form method="post" action="{{ path('admin_moderation_dismiss', {id: r.id}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('dismiss' ~ r.id) }}"><button class="btn btn-sm btn-link">Classer sans suite</button></form>
     </div>
 {% else %}<p class="meta">Aucun signalement ouvert.</p>{% endfor %}

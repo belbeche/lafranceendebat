@@ -17,6 +17,13 @@
     {% if n.sourceUrl %}<p class="mb-0"><a href="{{ n.sourceUrl }}" target="_blank" rel="noopener noreferrer nofollow">Consulter la source</a></p>{% endif %}
   </div>
   <p class="meta mt-3">Résumé établi par l'éditeur. Il distingue les faits des déclarations, rapportées avec leur auteur. En cas de doute, la source fait foi.</p>
+  {% include 'reply/_list.html.twig' with {type: 'actualite', id: n.id} only %}
+  <p class="meta mt-3">
+    <a href="{{ path('app_history', {type: 'actualite', id: n.id}) }}">Historique des modifications</a> ·
+    <a href="{{ path('app_contact', {ref: 'actualites/' ~ n.slug}) }}">Demander une correction</a> ·
+    <a href="{{ path('app_signalement_new', {type: 'actualite', id: n.id}) }}">Signaler ce contenu</a> ·
+    <a href="{{ path('app_model') }}">Notre modèle</a>
+  </p>
   <p class="mt-3"><a class="btn btn-link" href="{{ path('app_news') }}">Toutes les actualités</a></p>
 </div></section>
 {% endblock %}

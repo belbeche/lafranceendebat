@@ -80,6 +80,10 @@ class Revendication
     #[Assert\Choice(choices: Proposition::THEMES)]
     private ?string $theme = null;
 
+    /** Département concerné (facultatif) : code officiel, ex. 70, 2A, 974. */
+    #[ORM\Column(length: 3, nullable: true)]
+    private ?string $department = null;
+
     /** Ce qui est denonce ou demande, en termes factuels. */
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank]
@@ -144,6 +148,8 @@ class Revendication
     public function setGroupLabel(?string $v): self { $this->groupLabel = $v; return $this; }
     public function getTheme(): ?string { return $this->theme; }
     public function setTheme(?string $v): self { $this->theme = $v; return $this; }
+    public function getDepartment(): ?string { return $this->department; }
+    public function setDepartment(?string $d): self { $this->department = \App\Service\Departments::valid($d) ? $d : null; return $this; }
     public function getSummary(): ?string { return $this->summary; }
     public function setSummary(?string $v): self { $this->summary = $v; return $this; }
     public function getVerificationNote(): ?string { return $this->verificationNote; }

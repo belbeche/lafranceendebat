@@ -57,7 +57,11 @@ class RevendicationController extends AbstractController
     public function propose(Request $request, EntityManagerInterface $em, SluggerInterface $slugger, ContentModerator $moderator, RateLimiterFactory $claimUserLimiter, NotificationMailer $notifier): Response
     {
         $errors = [];
-        $d = ['title' => '', 'summary' => '', 'groupLabel' => 'Tous les citoyens', 'theme' => Proposition::THEMES[0], 'sourceUrl' => '', 'sourceLabel' => '', 'authority' => '', 'locale' => $request->getLocale()];
+        $d = ['title' => '', 'summary' => '', 'groupLabel' => 'Tous les citoyens', 'theme' => Proposition::THEMES[0], 'sourceUrl' => '', 'sourceLabel' => '', 'authority' => '', 'department' => '', 'locale' => $request->getLocale()];
+        if (!$request->isMethod('POST') && $this->getUser() instanceof \App\Entity\User) {
+            // Valeur par defaut d'apres le code postal du profil, modifiable ("Toute la France" reste possible).
+            $d['department'] = (string) \App\Service\Departments::fromPostalCode($this->getUser()->getPostalCode());
+        }
         if ($request->isMethod('POST')) {
             foreach ($d as $k => $v) {
                 $d[$k] = trim((string) $request->request->get($k, $v));
@@ -90,7 +94,7 @@ class RevendicationController extends AbstractController
                 while ($em->getRepository(Revendication::class)->findOneBy(['slug' => $slug])) {
                     $slug = mb_substr($base, 0, 180) . '-' . (++$n);
                 }
-                $r = (new Revendication())->setTitle($d['title'])->setSlug($slug)->setSummary($d['summary'])->setGroupLabel($d['groupLabel'])->setTheme($d['theme'])
+                $r = (new Revendication())->setTitle($d['title'])->setSlug($slug)->setSummary($d['summary'])->setGroupLabel($d['groupLabel'])->setTheme($d['theme'])->setDepartment($d['department'] ?: null)
                     ->setSourceUrl($d['sourceUrl'])->setSourceLabel($d['sourceLabel'] ?: null)->setCompetentAuthority($d['authority'] ?: null)->setLocale($d['locale'])
                     ->setSubmittedBy($this->getUser())->setIsPublished(false)->setRaisedAt(new \DateTimeImmutable())->setUpdatedAt(new \DateTimeImmutable());
                 $em->persist($r);
@@ -102,7 +106,7 @@ class RevendicationController extends AbstractController
             }
         }
 
-        return $this->render('revendication/new.html.twig', ['errors' => $errors, 'd' => $d, 'groups' => Revendication::GROUPS, 'themes' => Proposition::THEMES, 'locales' => Revendication::LOCALES]);
+        return $this->render('revendication/new.html.twig', ['errors' => $errors, 'd' => $d, 'groups' => Revendication::GROUPS, 'themes' => Proposition::THEMES, 'departments' => \App\Service\Departments::choices(), 'locales' => Revendication::LOCALES]);
     }
 
     #[Route('/{slug}', name: 'app_revendication_show', requirements: ['slug' => '[a-z0-9-]+'], methods: ['GET'])]

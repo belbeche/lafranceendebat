@@ -72,6 +72,8 @@ class PropositionController extends AbstractController
         $user = $this->getUser();
         $proposition = new Proposition();
         $proposition->setAuthor($user);
+        // Departement propose d'apres le code postal du profil. Ce n'est qu'une valeur par defaut : la personne peut la changer ou choisir "Toute la France".
+        $proposition->setDepartment(\App\Service\Departments::fromPostalCode($user->getPostalCode()));
 
         $revendication = null;
         if ($slug = (string) $request->query->get('revendication', '')) {

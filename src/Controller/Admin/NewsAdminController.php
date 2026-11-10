@@ -25,6 +25,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class NewsAdminController extends AbstractController
 {
+    public function __construct(private readonly \App\Service\RevisionRecorder $revisions, private readonly \App\Service\ModerationService $reports)
+    {
+    }
+
     #[Route('', name: 'admin_news', methods: ['GET'])]
     public function index(EntityManagerInterface $em): Response
     {
@@ -90,6 +94,7 @@ class NewsAdminController extends AbstractController
             return $this->redirectToRoute('admin_news_edit', ['id' => $n->getId()]);
         } else {
             $this->addFlash('success', 'Actualité publiée.');
+            $this->reports->dismissReportsFor('actualite', (int) $n->getId());
         }
         $em->flush();
 
@@ -112,6 +117,9 @@ class NewsAdminController extends AbstractController
         $errors = [];
         if ($request->isMethod('POST')) {
             $this->csrf($request);
+            // Version avant modification, gardee si l'actualite est deja publiee (historique public, cf. /notre-modele).
+            $before = $isNew ? [] : ['title' => $n->getTitle(), 'summary' => $n->getSummary(), 'body' => (string) $n->getBody(), 'sourceName' => $n->getSourceName(), 'sourceUrl' => (string) $n->getSourceUrl()];
+            $wasPublished = !$isNew && $n->isPublished();
             $n->setTitle((string) $request->request->get('title'))->setSummary((string) $request->request->get('summary'))->setBody((string) $request->request->get('body'))
                 ->setSourceName((string) $request->request->get('source_name'))->setSourceUrl((string) $request->request->get('source_url'));
             if ($dt = \DateTimeImmutable::createFromFormat('!Y-m-d', (string) $request->request->get('date'))) {
@@ -131,12 +139,16 @@ class NewsAdminController extends AbstractController
                 if ($isNew || '' === $n->getSlug()) {
                     $n->setSlug($news->uniqueSlug($n->getTitle()));
                 }
+                if ($wasPublished) {
+                    $this->revisions->record('actualite', (int) $n->getId(), $before, new \DateTimeImmutable('-1 day'), true, ['title' => $n->getTitle(), 'summary' => $n->getSummary(), 'body' => (string) $n->getBody(), 'sourceName' => $n->getSourceName(), 'sourceUrl' => (string) $n->getSourceUrl()]);
+                }
                 $em->persist($n);
                 $em->flush();
                 if ($request->request->getBoolean('publier') && ($p = $n->publish())) {
                     $this->addFlash('warning', 'Enregistrée en brouillon : ' . $p);
                 } elseif ($request->request->getBoolean('publier')) {
                     $em->flush();
+                    $this->reports->dismissReportsFor('actualite', (int) $n->getId());
                     $this->addFlash('success', 'Actualité publiée.');
                 } else {
                     $this->addFlash('success', 'Actualité enregistrée.');

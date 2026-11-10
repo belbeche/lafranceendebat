@@ -61,6 +61,7 @@ class ContactType extends AbstractType
                     'Service solidaire' => 'service',
                     'Proposer une activité' => 'activite',
                     'Devenir bénévole' => 'benevole',
+                    'Signaler une erreur ou demander une correction' => 'correction',
                     'Problème technique' => 'technique',
                     'Partnership / Partenariat' => 'partenariat',
                     'Autre demande' => 'autre'

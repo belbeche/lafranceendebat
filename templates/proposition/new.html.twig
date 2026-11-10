@@ -46,6 +46,7 @@
 
             <fieldset class="wiz-step" data-step="3" hidden>
                 <legend class="h5">Pour finir</legend>
+                {{ form_row(form.department, {help: 'Si votre idée concerne surtout un territoire. Elle apparaîtra aussi sur la page de ce département. S\'il est déjà choisi, c\'est d\'après le code postal de votre profil : changez-le ou revenez à « Toute la France ».'}) }}
                 {{ form_row(form.sourceUrl, {label: 'Un lien pour appuyer votre idée (facultatif)', help: 'INSEE, Légifrance, Cour des comptes, étude publiée... Une source rend la proposition plus crédible.'}) }}
                 <details class="mb-3 wiz-more">
                     <summary>Aller plus loin (facultatif) : coût, financement, délai, risques</summary>

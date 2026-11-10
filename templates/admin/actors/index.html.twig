@@ -2,7 +2,32 @@
 {% block title %}Acteurs publics{% endblock %}
 {% block admin %}
 <h1 class="h3">Acteurs publics (démarchage professionnel)</h1>
-<p>{{ eligible }} contact(s) jamais invité(s), {{ consented }} ont accepté de recevoir vos informations. Chaque contact reçoit une seule invitation, jamais de relance ; les suivants ne sont envoyés qu'à ceux qui ont accepté (au plus un par semaine). Statuts : {% for s, n in counts %}{{ s }} {{ n }}{{ not loop.last ? ', ' }}{% else %}aucun contact importé{% endfor %}.</p>
+<p class="text-muted">Ce sont des <strong>adresses professionnelles publiées par les organismes eux-mêmes</strong> (mairies, préfectures, départements, services de l'État, parlementaires), importées depuis l'Annuaire de l'administration et les données ouvertes de l'Assemblée et du Sénat. Chaque fiche garde sa page source. Chaque contact ne reçoit qu'une seule invitation, jamais de relance ; les messages suivants ne vont qu'à ceux qui ont accepté (au plus un par semaine). Une organisation qui a plusieurs adresses (même site, même téléphone ou même adresse postale) n'est contactée qu'une fois.</p>
+<section class="adm-card">
+  <h2 class="h5">Vue d'ensemble</h2>
+  <div class="adm-todo">
+    <div><b>{{ overview.total|number_format(0, ',', ' ') }}</b>contacts référencés</div>
+    <div><b>{{ overview.actifs|number_format(0, ',', ' ') }}</b>actifs (envoi possible)</div>
+    <div><b>{{ overview.a_valider|number_format(0, ',', ' ') }}</b>à valider (jamais invités)</div>
+    <div><b>{{ eligible|number_format(0, ',', ' ') }}</b>validés, prêts à inviter</div>
+    <div><b>{{ overview.invites|number_format(0, ',', ' ') }}</b>déjà invités</div>
+    <div><b>{{ consented|number_format(0, ',', ' ') }}</b>ont accepté de recevoir vos informations</div>
+    <div><b>{{ overview.tel|number_format(0, ',', ' ') }}</b>avec téléphone</div>
+    <div><b>{{ overview.site|number_format(0, ',', ' ') }}</b>avec site web</div>
+    <div><b>{{ overview.adresse|number_format(0, ',', ' ') }}</b>avec adresse postale</div>
+  </div>
+  <p class="small text-muted mb-0">Statuts : {% for st, n in counts %}{{ st }} {{ n }}{{ not loop.last ? ', ' }}{% else %}aucun contact importé{% endfor %}. {{ overview.sans_cp }} fiches sans code postal ne sont pas rattachées à un département.</p>
+</section>
+<div class="row g-3 mb-3">
+  <div class="col-lg-5"><section class="adm-card h-100"><h2 class="h6">Par catégorie</h2>
+    <div class="table-responsive"><table class="table table-sm mb-0"><thead><tr><th>Catégorie</th><th class="text-end">Total</th><th class="text-end">À inviter</th><th></th></tr></thead><tbody>
+    {% for c in byCategory %}<tr><td>{{ constant('App\\Entity\\ActorContact::CATEGORIES')[c.category] ?? c.category }}</td><td class="text-end">{{ c.total|number_format(0, ',', ' ') }}</td><td class="text-end">{{ c.todo|number_format(0, ',', ' ') }}</td><td class="text-end"><a href="{{ path('admin_actors', {category: c.category}) }}">Voir</a></td></tr>{% endfor %}
+    </tbody></table></div></section></div>
+  <div class="col-lg-7"><section class="adm-card h-100"><h2 class="h6">Par département</h2>
+    <div style="max-height:260px;overflow:auto"><table class="table table-sm mb-0"><thead><tr><th>Dép.</th><th class="text-end">Total</th><th class="text-end">À inviter</th><th></th></tr></thead><tbody>
+    {% for d in byDept %}<tr><td>{{ d.dept }}</td><td class="text-end">{{ d.total|number_format(0, ',', ' ') }}</td><td class="text-end">{{ d.todo|number_format(0, ',', ' ') }}</td><td class="text-end"><a href="{{ path('admin_actors', {dept: d.dept}) }}">Voir</a></td></tr>{% else %}<tr><td colspan="4" class="text-muted">Aucun code postal renseigné.</td></tr>{% endfor %}
+    </tbody></table></div></section></div>
+</div>
 {% for t, m in app.flashes %}{% for x in m %}<div class="alert alert-{{ t }}">{{ x }}</div>{% endfor %}{% endfor %}
 <h2 class="h5">Import automatique depuis les données ouvertes</h2>
 <p class="meta">Un clic par source officielle. Seules les adresses professionnelles publiées sont reprises, avec la page source. Rien n'est envoyé : chaque fiche reste à valider. Utilisez « Simuler » pour compter avant d'importer.</p>
@@ -36,10 +61,45 @@
     <button class="btn btn-primary">Importer</button>
 </form>
 <p><a class="btn btn-outline-primary" href="{{ path('admin_lettre_new') }}">Écrire une invitation ou un message</a></p>
-<h2 class="h5">Derniers contacts importés</h2>
-<table class="table table-sm"><thead><tr><th>Organisation</th><th>Fonction</th><th>E-mail</th><th>Coordonnées</th><th>Catégorie</th><th>Statut</th><th>Invité</th><th>Accord</th><th>Dernier envoi</th><th></th></tr></thead><tbody>
-{% for a in recent %}<tr><td>{{ a.organisation }}</td><td>{{ a.role }}</td><td>{{ a.email }}</td><td class="small">{{ a.phone }}{{ a.phone and (a.address or a.city) ? ' · ' }}{{ a.address }} {{ a.postalCode }} {{ a.city }}{% if a.website %}<br><a href="{{ a.website }}" rel="noopener nofollow">{{ a.website }}</a>{% endif %}</td><td>{{ a.categoryLabel }}</td><td>{{ a.status }}</td><td>{{ a.invitedAt ? a.invitedAt|date('d/m/Y') : '' }}</td><td>{{ a.consentAt ? 'oui' : '' }}</td><td>{{ a.lastContactedAt ? a.lastContactedAt|date('d/m/Y') : '' }}</td>
+<section class="adm-card" id="liste">
+<h2 class="h5">Filtrer les contacts</h2>
+<form method="get" action="{{ path('admin_actors') }}#liste" class="row g-2 mb-3">
+  <div class="col-md-4"><label class="form-label small mb-0" for="fq">Recherche (organisation, ville, e-mail, fonction)</label><input id="fq" class="form-control" name="q" value="{{ f.q }}"></div>
+  <div class="col-6 col-md-3"><label class="form-label small mb-0" for="fc">Catégorie</label><select id="fc" class="form-select" name="category"><option value="">Toutes</option>{% for k, v in constant('App\\Entity\\ActorContact::CATEGORIES') %}<option value="{{ k }}" {{ f.category == k ? 'selected' }}>{{ v }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><label class="form-label small mb-0" for="fd">Département</label><input id="fd" class="form-control" name="dept" value="{{ f.dept }}" maxlength="3" placeholder="ex. 70, 2A"></div>
+  <div class="col-md-3"><label class="form-label small mb-0" for="fv">Commune</label>{% if cities %}<select id="fv" class="form-select" name="city"><option value="">Toutes ({{ cities|length }})</option>{% for c in cities %}<option {{ f.city == c ? 'selected' }}>{{ c }}</option>{% endfor %}</select>{% else %}<input id="fv" class="form-control" name="city" value="{{ f.city }}" placeholder="Choisir un département pour la liste">{% endif %}</div>
+  <div class="col-6 col-md-2"><label class="form-label small mb-0" for="fs">Statut</label><select id="fs" class="form-select" name="status"><option value="">Tous</option>{% for st in ['actif', 'desinscrit', 'rebond', 'plainte'] %}<option {{ f.status == st ? 'selected' }}>{{ st }}</option>{% endfor %}</select></div>
+  {% for key, label in {validated: 'Validé par l\'équipe', invited: 'Déjà invité', consent: 'A accepté', phone: 'Téléphone', website: 'Site web', address: 'Adresse'} %}
+  <div class="col-6 col-md-2"><label class="form-label small mb-0" for="f_{{ key }}">{{ label }}</label><select id="f_{{ key }}" class="form-select" name="{{ key }}"><option value="">Peu importe</option><option value="oui" {{ f[key] == 'oui' ? 'selected' }}>Oui</option><option value="non" {{ f[key] == 'non' ? 'selected' }}>Non</option></select></div>
+  {% endfor %}
+  <div class="col-12 d-flex flex-wrap gap-2 align-items-end"><button class="btn btn-primary" style="min-height:44px">Filtrer</button><a class="btn btn-outline-secondary" style="min-height:44px" href="{{ path('admin_actors') }}">Réinitialiser</a>
+    <a class="btn btn-outline-primary" style="min-height:44px" href="{{ path('admin_actors_export', f|filter(v => v != '')) }}">Exporter ({{ total|number_format(0, ',', ' ') }}) en CSV / Excel</a>
+    <a class="btn btn-outline-primary" style="min-height:44px" href="{{ path('admin_lettre_new', {actor_category: f.category, actor_dept: f.dept}) }}">Écrire à cette catégorie / ce département</a></div>
+</form>
+<p class="small text-muted">{{ total|number_format(0, ',', ' ') }} contact(s) correspondent. Page {{ page }} sur {{ pages }}.</p>
+<form method="post" action="{{ path('admin_actors_validate') }}" id="selForm" class="carte p-3 mb-3">
+  <input type="hidden" name="_token" value="{{ csrf_token('actors_validate') }}">
+  {% for k, v in f %}{% if v != '' %}<input type="hidden" name="f[{{ k }}]" value="{{ v }}">{% endif %}{% endfor %}
+  <h3 class="h6">Valider la sélection</h3>
+  <p class="meta mb-2">Une invitation ne part que pour une fiche <strong>validée</strong>. Validez après avoir contrôlé l'adresse professionnelle et ouvert la source. Valider n'envoie rien.</p>
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-2">
+    <button class="btn btn-bleu" style="min-height:44px" name="mode" value="cochees">Valider les fiches cochées</button>
+    <button class="btn btn-outline-dark" style="min-height:44px" name="mode" value="retirer">Retirer la validation des cochées</button>
+  </div>
+  <div class="d-flex flex-wrap gap-2 align-items-center">
+    <label class="form-check mb-0"><input class="form-check-input" type="checkbox" name="controle" value="1"> <span class="form-check-label">J'ai relu ces fiches (adresse professionnelle publiée, source ouverte).</span></label>
+    <button class="btn btn-outline-primary" style="min-height:44px" name="mode" value="filtre">Valider les {{ total|number_format(0, ',', ' ') }} résultats du filtre</button>
+  </div>
+</form>
+<div class="table-responsive"><table class="table table-sm align-middle"><thead><tr><th><input type="checkbox" id="checkAll" aria-label="Tout cocher sur cette page"></th><th>Organisation</th><th>Fonction</th><th>E-mail</th><th>Coordonnées</th><th>Catégorie</th><th>Statut</th><th>Invité</th><th>Validé</th><th>Accord</th><th>Dernier envoi</th><th></th></tr></thead><tbody>
+{% for a in rows %}<tr><td><input type="checkbox" name="ids[]" value="{{ a.id }}" form="selForm" class="rowCheck" aria-label="Cocher {{ a.organisation }}"></td><td>{{ a.organisation }}<div class="small"><a href="{{ a.sourceUrl }}" rel="noopener nofollow" target="_blank">source</a></div></td><td>{{ a.role }}</td><td>{{ a.email }}</td><td class="small">{{ a.phone }}{{ a.phone and (a.address or a.city) ? ' · ' }}{{ a.address }} {{ a.postalCode }} {{ a.city }}{% if a.website %}<br><a href="{{ a.website }}" rel="noopener nofollow">{{ a.website }}</a>{% endif %}</td><td>{{ a.categoryLabel }}</td><td>{{ a.status }}</td><td>{{ a.invitedAt ? a.invitedAt|date('d/m/Y') : '' }}</td><td>{{ a.validatedAt ? a.validatedAt|date('d/m/Y') : '' }}</td><td>{{ a.consentAt ? 'oui' : '' }}</td><td>{{ a.lastContactedAt ? a.lastContactedAt|date('d/m/Y') : '' }}</td>
 <td>{% if a.status == 'actif' %}<form method="post" action="{{ path('admin_actor_exclude', {id: a.id}) }}"><input type="hidden" name="_token" value="{{ csrf_token('actor_exclude' ~ a.id) }}"><button class="btn btn-sm btn-outline-danger" data-confirm="Exclure définitivement ce contact ?">Exclure</button></form>{% endif %}</td></tr>
-{% else %}<tr><td colspan="10" class="text-muted">Aucun contact.</td></tr>{% endfor %}
-</tbody></table>
+{% else %}<tr><td colspan="12" class="text-muted">Aucun contact pour ces filtres.</td></tr>{% endfor %}
+</tbody></table></div>
+{% if pages > 1 %}<nav class="d-flex gap-2 flex-wrap" aria-label="Pagination">
+{% if page > 1 %}<a class="btn btn-outline-secondary btn-sm" href="{{ path('admin_actors', f|merge({page: page - 1})|filter(v => v != '')) }}#liste">Précédent</a>{% endif %}
+{% if page < pages %}<a class="btn btn-outline-secondary btn-sm" href="{{ path('admin_actors', f|merge({page: page + 1})|filter(v => v != '')) }}#liste">Suivant</a>{% endif %}
+</nav>{% endif %}
+</section>
+<script nonce="{{ csp_nonce() }}">document.getElementById('selForm')?.addEventListener('submit',function(e){var b=e.submitter;if(b&&b.value==='filtre'&&!window.confirm('Valider tous les contacts actifs de cette sélection ?')){e.preventDefault();}});document.getElementById('checkAll')?.addEventListener('change',function(e){document.querySelectorAll('.rowCheck').forEach(function(c){c.checked=e.target.checked;});});</script>
 {% endblock %}

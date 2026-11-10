@@ -1,0 +1,32 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Droits de réponse{% endblock %}
+{% block admin %}
+<h1 class="h3">Droits de réponse</h1>
+<p class="meta">Réponses déposées par des personnes ou institutions citées. Rien n'est publié sans votre validation. Vérifiez l'identité (adresse e-mail, site officiel) avant de cocher « identité vérifiée ».</p>
+{% for r in items %}
+  {% set t = titles[r.id] %}
+  <article class="adm-card mb-3">
+    <p class="mb-1"><span class="etiquette {{ r.status == 'published' ? 'bleu' : (r.status == 'pending' ? 'rouge' : '') }}">{{ r.status == 'published' ? 'Publiée' : (r.status == 'pending' ? 'À relire' : 'Refusée') }}</span>
+      <span class="meta">{{ r.targetType }} · {% if t.url %}<a href="{{ t.url }}" target="_blank" rel="noopener">{{ t.title }}</a>{% else %}{{ t.title }}{% endif %} · {{ r.createdAt|date('d/m/Y H:i') }}</span></p>
+    <p class="mb-1"><strong>{{ r.authorName }}</strong>{% if r.authorRole %} ({{ r.authorRole }}){% endif %} · <a href="mailto:{{ r.email }}">{{ r.email }}</a></p>
+    <div class="mb-2" style="overflow-wrap:anywhere">{{ r.body|e|nl2br }}</div>
+    {% if r.moderationNote %}<p class="meta">Motif de refus : {{ r.moderationNote }}</p>{% endif %}
+    {% if r.status != 'published' %}
+    <form method="post" action="{{ path('admin_reply_decide', {id: r.id, action: 'publier'}) }}" class="d-inline-flex gap-2 align-items-center me-2">
+      <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ r.id) }}">
+      <label class="meta mb-0"><input type="checkbox" name="identite" value="1"> identité vérifiée</label>
+      <button class="btn btn-sm btn-bleu">Publier</button>
+    </form>
+    {% endif %}
+    {% if r.status == 'pending' %}
+    <form method="post" action="{{ path('admin_reply_decide', {id: r.id, action: 'refuser'}) }}" class="d-inline-flex gap-1">
+      <input type="hidden" name="_token" value="{{ csrf_token('reply' ~ r.id) }}">
+      <input class="form-control form-control-sm" name="note" placeholder="Motif du refus" aria-label="Motif du refus" required minlength="5" maxlength="500">
+      <button class="btn btn-sm btn-outline-dark">Refuser</button>
+    </form>
+    {% elseif r.status == 'published' %}
+    <form method="post" action="{{ path('admin_reply_decide', {id: r.id, action: 'retirer'}) }}" class="d-inline"><input type="hidden" name="_token" value="{{ csrf_token('reply' ~ r.id) }}"><button class="btn btn-sm btn-outline-dark">Retirer de l'affichage</button></form>
+    {% endif %}
+  </article>
+{% else %}<p class="meta">Aucun droit de réponse reçu pour l'instant.</p>{% endfor %}
+{% endblock %}

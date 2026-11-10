@@ -10,6 +10,8 @@
 <div class="measure dossier-body">{{ dossier.body|md }}</div>
 <h2 class="h4 mt-4">Sources</h2>
 <ul>{% for s in dossier.sourceList %}<li><a href="{{ s }}" target="_blank" rel="noopener noreferrer nofollow">{{ s }}</a></li>{% endfor %}</ul>
+{% if dossier.id %}{% include 'reply/_list.html.twig' with {type: 'dossier', id: dossier.id} only %}{% endif %}
+{% if dossier.id %}<p class="meta mt-3"><a href="{{ path('app_history', {type: 'dossier', id: dossier.id}) }}">Historique des modifications</a> · <a href="{{ path('app_contact', {ref: 'dossiers/' ~ dossier.slug}) }}">Demander une correction</a> · <a href="{{ path('app_signalement_new', {type: 'dossier', id: dossier.id}) }}">Signaler ce contenu</a> · <a href="{{ path('app_model') }}">Notre modèle</a></p>{% endif %}
 <p class="mt-4"><a class="btn btn-link" href="{{ path('app_dossiers') }}">Tous les dossiers</a></p>
 </div></section>
 {% endblock %}

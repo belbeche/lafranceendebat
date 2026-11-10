@@ -22,6 +22,7 @@
             <dt>Voie juridique envisageable</dt><dd>{{ revendication.legalPath ?: 'Non renseignée' }}</dd>
         </dl>
 
+        {% include 'reply/_list.html.twig' with {type: 'revendication', id: revendication.id} only %}
         <h2 class="h4 mt-4">Transmissions et réponses</h2>
         {% for t in revendication.transmissions %}
             <div class="rangee">

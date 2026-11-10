@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+{% block title %}Piliers et actions pour la paix{% endblock %}
+{% block body %}
+<header class="page-head"><div class="container"><h1>Piliers et actions pour la paix</h1><p class="lead mb-0">Ce que nous défendons, ce que nous faisons et ce que les participants en disent.</p></div></header>
+<section class="section"><div class="container">
+  {% if pillars %}{% include '_pillars.html.twig' with {pillars: pillars, full: true} only %}
+  {% else %}<p class="text-muted">Rien à afficher pour l'instant.</p>{% endif %}
+  <p class="mt-5">Notre manière de travailler : <a href="{{ path('app_model') }}">un modèle proche de Wikipédia, pas de WikiLeaks</a>.</p>
+</div></section>
+{% endblock %}

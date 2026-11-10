@@ -1,0 +1,34 @@
+{% extends 'admin/_layout.html.twig' %}
+{% block title %}Motifs de refus{% endblock %}
+{% block admin %}
+<h1 class="h3">Motifs de refus</h1>
+<p class="meta">Ces motifs sont proposés en suggestion dans chaque champ « Motif du refus » de la <a href="{{ path('admin_moderation') }}">file de modération</a>. Le modérateur peut toujours écrire un motif libre. Un motif désactivé n'est plus proposé.</p>
+{% for t, m in app.flashes %}{% for x in m %}<div class="alert alert-{{ t }}">{{ x }}</div>{% endfor %}{% endfor %}
+{% if items is empty %}
+  <section class="adm-card">
+    <p class="mb-2">La liste n'a pas encore été créée : la modération propose pour l'instant les motifs par défaut ci-dessous.</p>
+    <ul>{% for d in defaults %}<li>{{ d }}</li>{% endfor %}</ul>
+    <form method="post" action="{{ path('admin_reasons_action', {action: 'charger'}) }}"><input type="hidden" name="_token" value="{{ csrf_token('reasons') }}"><button class="btn btn-bleu" style="min-height:44px">Créer la liste modifiable à partir de ces motifs</button></form>
+  </section>
+{% else %}
+  <section class="adm-card mb-3">
+    {% for r in items %}
+      <div class="d-flex flex-wrap gap-2 align-items-center border-bottom py-2">
+        <form method="post" action="{{ path('admin_reason_action', {id: r.id, action: 'renommer'}) }}" class="d-flex gap-2 flex-grow-1">
+          <input type="hidden" name="_token" value="{{ csrf_token('reasons') }}">
+          <input class="form-control" name="label" value="{{ r.label }}" maxlength="200" aria-label="Motif" {{ r.active ? '' : 'style="opacity:.6"' }}>
+          <button class="btn btn-outline-dark">Enregistrer</button>
+        </form>
+        <form method="post" action="{{ path('admin_reason_action', {id: r.id, action: 'monter'}) }}"><input type="hidden" name="_token" value="{{ csrf_token('reasons') }}"><button class="btn btn-outline-secondary" aria-label="Monter ce motif"{{ loop.first ? ' disabled' }}>↑</button></form>
+        <form method="post" action="{{ path('admin_reason_action', {id: r.id, action: 'basculer'}) }}"><input type="hidden" name="_token" value="{{ csrf_token('reasons') }}"><button class="btn btn-outline-secondary">{{ r.active ? 'Désactiver' : 'Réactiver' }}</button></form>
+        <form method="post" action="{{ path('admin_reason_action', {id: r.id, action: 'supprimer'}) }}" data-confirm="Supprimer ce motif ?"><input type="hidden" name="_token" value="{{ csrf_token('reasons') }}"><button class="btn btn-outline-danger">Supprimer</button></form>
+      </div>
+    {% endfor %}
+  </section>
+  <form method="post" action="{{ path('admin_reasons_action', {action: 'ajouter'}) }}" class="adm-card d-flex flex-wrap gap-2">
+    <input type="hidden" name="_token" value="{{ csrf_token('reasons') }}">
+    <input class="form-control flex-grow-1" name="label" placeholder="Nouveau motif (5 à 200 caractères)" aria-label="Nouveau motif" maxlength="200" required>
+    <button class="btn btn-bleu">Ajouter</button>
+  </form>
+{% endif %}
+{% endblock %}

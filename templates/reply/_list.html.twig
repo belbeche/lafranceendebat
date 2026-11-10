@@ -1,0 +1,14 @@
+{# Droits de reponse publies a cote d'un contenu + lien pour en deposer un. Parametres : type, id. #}
+{% set replies = published_replies(type, id) %}
+<section class="mt-4" aria-labelledby="droit-reponse-titre">
+  <h2 class="h5" id="droit-reponse-titre">Droit de réponse</h2>
+  {% for r in replies %}
+    <article class="carte mb-2">
+      <p class="meta mb-1">Réponse de <strong>{{ r.authorName }}</strong>{% if r.authorRole %} ({{ r.authorRole }}){% endif %}, publiée le {{ r.publishedAt|date('d/m/Y') }}{% if r.identityChecked %} · identité vérifiée par l'équipe{% else %} · identité non vérifiée{% endif %}</p>
+      <div style="overflow-wrap:anywhere">{{ r.body|e|nl2br }}</div>
+    </article>
+  {% else %}
+    <p class="meta mb-2">Aucune réponse publiée pour l'instant.</p>
+  {% endfor %}
+  <p class="meta mb-0">Vous êtes cité, ou une institution que vous représentez l'est ? <a href="{{ path('app_reply_new', {type: type, id: id}) }}">Exercer votre droit de réponse</a>. Elle sera publiée ici, sans modifier le contenu, après relecture.</p>
+</section>

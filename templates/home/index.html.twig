@@ -218,23 +218,8 @@
 <section class="section" id="piliers" aria-labelledby="piliers-titre"><div class="container">
     <h2 class="serif text-center" id="piliers-titre">Piliers et actions pour la paix</h2>
     <p class="text-center measure mx-auto">Ce que nous défendons (piliers), ce que nous faisons (actions) et ce que les participants en disent (témoignages).</p>
-    {% for kind, heading in {pilier: 'Nos piliers', action: 'Nos actions', temoignage: 'Témoignages'} %}
-        {% set group = pillars|filter(m => kind == 'pilier' ? m.type in ['valeur', 'pilier'] : m.type == kind) %}
-        {% if group|length %}
-        <h3 class="h5 mt-4">{{ heading }}</h3>
-        <div class="row g-3">
-            {% for m in group %}
-            <div class="col-md-6 col-lg-4"><article class="carte h-100">
-                <p class="mb-1"><span class="etiquette{{ m.type == 'action' ? ' rouge' : '' }}"><i class="bi {{ m.type == 'action' ? 'bi-lightning-charge' : (m.type == 'temoignage' ? 'bi-chat-quote' : 'bi-bank') }}" aria-hidden="true"></i> {{ m.type == 'action' ? 'Action' : (m.type == 'temoignage' ? 'Témoignage' : 'Pilier') }}</span>{% if m.badge %} <span class="etiquette bleu">{{ m.badge }}</span>{% endif %}</p>
-                <h4 class="h5">{{ m.titre }}</h4>
-                <p class="mb-2">{{ m.description }}</p>
-                {% if m.statistique %}<p class="meta mb-2"><strong>{{ m.statistique }}</strong></p>{% endif %}
-                {% if m.lien %}<a class="btn btn-sm btn-outline-dark" href="{{ m.lien }}" {{ m.lien starts with 'http' ? 'rel="noopener" target="_blank"' }}>En savoir plus<span class="visually-hidden"> sur {{ m.titre }}</span></a>{% endif %}
-            </article></div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    {% endfor %}
+    {% include '_pillars.html.twig' with {pillars: pillars, full: false} only %}
+    <p class="text-center mt-4 mb-0"><a class="btn btn-outline-dark" style="min-height:44px;display:inline-flex;align-items:center" href="{{ path('app_pillars') }}">Voir tous les piliers, actions et témoignages</a> <a class="btn btn-link" href="{{ path('app_model') }}">Notre modèle : Wikipédia, pas WikiLeaks</a></p>
 </div></section>
 {% endif %}
 {# Actualité du moment : 3 dernières, publiées par l'équipe avec source #}

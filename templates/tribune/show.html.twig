@@ -8,6 +8,6 @@
     <div>{{ t.body|e|nl2br }}</div>
     <h2 class="h5 mt-4">Sources</h2>
     <ul>{% for s in t.sourceList %}<li><a href="{{ s }}" target="_blank" rel="noopener noreferrer nofollow">{{ s }}</a></li>{% endfor %}</ul>
-    <p class="carte mt-4 mb-0">Vous êtes cité ou en désaccord ? Vous disposez d'un droit de réponse : <a href="{{ path('app_contact') }}">écrivez à l'équipe</a>, votre réponse sera publiée à la suite. Un contenu problématique peut aussi être signalé.</p>
+    {% include 'reply/_list.html.twig' with {type: 'tribune', id: t.id} only %}
 </article></section>
 {% endblock %}

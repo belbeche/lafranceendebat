@@ -59,6 +59,20 @@ class PageController extends AbstractController
         return $this->render('pages/method.html.twig');
     }
 
+    /** Explique notre modèle : savoir collaboratif et vérifié (comme Wikipédia), pas une plateforme de documents divulgués. */
+    /** Tous les piliers, actions et témoignages (contenu géré dans l'administration, rubrique Piliers). */
+    #[Route('/piliers', name: 'app_pillars', methods: ['GET'])]
+    public function pillars(\App\Repository\MissionRepository $missions): Response
+    {
+        return $this->render('pages/pillars.html.twig', ['pillars' => $missions->findAllForPillars()]);
+    }
+
+    #[Route('/notre-modele', name: 'app_model', methods: ['GET'])]
+    public function model(): Response
+    {
+        return $this->render('pages/model.html.twig');
+    }
+
     #[Route('/consultations-et-votes', name: 'app_consultations', methods: ['GET'])]
     public function consultations(): Response
     {

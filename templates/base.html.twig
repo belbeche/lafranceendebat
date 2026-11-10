@@ -11,12 +11,12 @@
     {% set _forced = app.request.attributes.get('_lang_forced') %}
     {% set _selfUrl = url(_route, app.request.attributes.get('_route_params') ?: {}) %}
     <link rel="canonical" href="{{ _selfUrl }}{{ _forced ? '?lang=' ~ _forced : '' }}">
-    {% set _noindex = app.request.pathInfo starts with '/admin' or app.request.pathInfo starts with '/profil' or app.request.pathInfo starts with '/messages' or app.request.pathInfo starts with '/connexion' or app.request.pathInfo starts with '/login' %}
+    {% set _noindex = app.request.pathInfo starts with '/admin' or app.request.pathInfo starts with '/profil' or app.request.pathInfo starts with '/messages' or app.request.pathInfo starts with '/connexion' or app.request.pathInfo starts with '/login' or app.request.pathInfo starts with '/droit-de-reponse' or app.request.pathInfo starts with '/signaler' %}
     {% if not _noindex and app.request.method == 'GET' and not app.request.query.all|filter((v, k) => k != 'lang' and k != 'page')|length %}
     {% for code, l in languages() %}{% if l.ui %}<link rel="alternate" hreflang="{{ code }}" href="{{ _selfUrl }}?lang={{ code }}">
     {% endif %}{% endfor %}<link rel="alternate" hreflang="x-default" href="{{ _selfUrl }}">
     {% endif %}
-    {% if app.request.pathInfo starts with '/admin' or app.request.pathInfo starts with '/profil' or app.request.pathInfo starts with '/messages' or app.request.pathInfo starts with '/connexion' or app.request.pathInfo starts with '/login' %}<meta name="robots" content="noindex, nofollow">{% endif %}
+    {% if app.request.pathInfo starts with '/admin' or app.request.pathInfo starts with '/profil' or app.request.pathInfo starts with '/messages' or app.request.pathInfo starts with '/connexion' or app.request.pathInfo starts with '/login' or app.request.pathInfo starts with '/droit-de-reponse' or app.request.pathInfo starts with '/signaler' %}<meta name="robots" content="noindex, nofollow">{% endif %}
     <script type="application/ld+json" nonce="{{ csp_nonce() }}">{{ {'@context': 'https://schema.org', '@type': 'Organization', 'name': site_name, 'url': url('app_home'), 'description': 'Plateforme citoyenne gratuite de débat apaisé, de propositions sourcées et de suivi des engagements.'}|json_encode(constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_HEX_TAG'))|raw }}</script>
     {% block meta_og %}
     <meta property="og:site_name" content="{{ site_name }}">
@@ -59,7 +59,7 @@
             {# Menu en 4 rubriques : tout est a 2 clics au plus (rubrique, puis page). Meme liste pour le bureau et le mobile. #}
             {% set menu = [
                 {label: 'Débattre', route: 'app_debat', items: [['app_debats', 'nav.debates'|trans], ['app_propositions', 'nav.propositions'|trans], ['app_community', 'Agora de la diplomatie'], ['app_scrutins', 'Scrutins consultatifs']]},
-                {label: 'Comprendre', route: 'app_positions', items: [['app_news', 'Actualités'], ['app_positions', 'Positions et votes'], ['app_revendications', 'nav.forgotten'|trans], ['app_programmes', 'Propositions des groupes'], ['app_candidats', 'nav.candidates'|trans], ['app_parties', 'Partis et groupes'], ['app_dossiers', 'Dossiers'], ['app_agenda', 'nav.agenda'|trans]]},
+                {label: 'Comprendre', route: 'app_positions', items: [['app_news', 'Actualités'], ['app_statistics', 'Statistiques'], ['app_departments', 'Par département'], ['app_positions', 'Positions et votes'], ['app_revendications', 'nav.forgotten'|trans], ['app_programmes', 'Propositions des groupes'], ['app_candidats', 'nav.candidates'|trans], ['app_parties', 'Partis et groupes'], ['app_dossiers', 'Dossiers'], ['app_agenda', 'nav.agenda'|trans]]},
                 {label: 'Agir', route: 'app_missions', items: [['app_missions', 'Missions'], ['app_support', 'Soutenir l\'initiative'], ['app_taxpayers', 'Contribuables'], ['app_actors', 'Acteurs publics'], ['app_inspirations', 'Ils ont contribué'], ['app_tribunes', 'Journalistes']]},
                 {label: 'À propos', route: 'app_about', items: [['app_charter', 'nav.charter'|trans], ['app_guide', 'nav.guide'|trans], ['app_method', 'nav.method'|trans], ['app_about', 'nav.about'|trans], ['app_ranking', 'Classement des artisans de paix']]},
             ] %}

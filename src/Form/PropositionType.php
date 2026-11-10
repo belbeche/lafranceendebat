@@ -28,6 +28,12 @@ class PropositionType extends AbstractType
                 'help' => 'Une phrase qui dit ce que vous proposez.',
                 'attr' => ['maxlength' => 180],
             ])
+            ->add('department', ChoiceType::class, [
+                'label' => 'Département concerné (facultatif)',
+                'required' => false,
+                'placeholder' => 'Toute la France',
+                'choices' => \App\Service\Departments::choices(),
+            ])
             ->add('theme', ChoiceType::class, [
                 'label' => 'Thème',
                 'choices' => array_combine(Proposition::THEMES, Proposition::THEMES),

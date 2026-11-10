@@ -7,6 +7,8 @@ use App\Entity\Debat;
 use App\Entity\Discussion;
 use App\Entity\DiscussionReply;
 use App\Entity\Proposition;
+use App\Entity\Dossier;
+use App\Entity\NewsItem;
 use App\Entity\Revendication;
 use App\Service\RevisionRecorder;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,10 +21,10 @@ class HistoryController extends AbstractController
 {
     private const LABELS = [
         'title' => 'Titre', 'theme' => 'Thème', 'summary' => 'Exposé', 'facts' => 'Faits et sources', 'authority' => 'Autorité compétente', 'outcome' => 'Compte rendu',
-        'content' => 'Texte', 'sourceUrl' => 'Source', 'reformulation' => 'Reformulation', 'description' => 'Mesure proposée', 'body' => 'Texte', 'sourceLabel' => 'Nom de la source',
+        'content' => 'Texte', 'sourceUrl' => 'Source', 'reformulation' => 'Reformulation', 'description' => 'Mesure proposée', 'body' => 'Texte', 'sourceLabel' => 'Nom de la source', 'intro' => 'Introduction', 'sources' => 'Sources', 'sourceName' => 'Nom de la source',
     ];
 
-    #[Route('/historique/{type}/{id}', name: 'app_history', requirements: ['type' => 'debat|argument|proposition|discussion|reponse|revendication', 'id' => '\d+'], methods: ['GET'])]
+    #[Route('/historique/{type}/{id}', name: 'app_history', requirements: ['type' => 'debat|argument|proposition|discussion|reponse|revendication|actualite|dossier', 'id' => '\d+'], methods: ['GET'])]
     public function show(string $type, int $id, EntityManagerInterface $em, RevisionRecorder $revisions): Response
     {
         [$class, $visible, $title, $back] = match ($type) {
@@ -31,6 +33,8 @@ class HistoryController extends AbstractController
             'proposition' => [Proposition::class, fn ($e) => $e->isValidated(), fn ($e) => $e->getTitle(), fn ($e) => $this->generateUrl('app_proposition_show', ['id' => $e->getId()])],
             'discussion' => [Discussion::class, fn ($e) => Proposition::STATUS_VALIDATED === $e->getStatus(), fn ($e) => $e->getTitle(), fn ($e) => $this->generateUrl('app_community_show', ['id' => $e->getId()])],
             'reponse' => [DiscussionReply::class, fn ($e) => Proposition::STATUS_VALIDATED === $e->getStatus(), fn ($e) => 'Réponse dans « ' . $e->getDiscussion()?->getTitle() . ' »', fn ($e) => $this->generateUrl('app_community_show', ['id' => $e->getDiscussion()->getId(), '_fragment' => 'reponse-' . $e->getId()])],
+            'actualite' => [NewsItem::class, fn ($e) => $e->isPublished(), fn ($e) => $e->getTitle(), fn ($e) => $this->generateUrl('app_news_show', ['slug' => $e->getSlug()])],
+            'dossier' => [Dossier::class, fn ($e) => $e->isPublished(), fn ($e) => $e->getTitle(), fn ($e) => $this->generateUrl('app_dossier_page', ['slug' => $e->getSlug()])],
             default => [Revendication::class, fn ($e) => $e->isPublished(), fn ($e) => $e->getTitle(), fn ($e) => $this->generateUrl('app_revendication_show', ['slug' => $e->getSlug()])],
         };
         $entity = $em->getRepository($class)->find($id);
